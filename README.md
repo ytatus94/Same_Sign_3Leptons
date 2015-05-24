@@ -12,3 +12,8 @@ Uncomment the Jet_deltaR branch in codes.
 v03:
 Modify some histogram Fill() functions.
 Fill pT, eta, phi using TLorentzVector in Fill().
+
+v04:
+Add new classes in header and source.
+Modify run.cxx to run the 50ns root file.
+Add functions to make plots in run.cxx.

@@ -27,28 +27,29 @@
 using namespace std;
 
 #define Mu_M 105.6583715
-
+/*
 struct OR_Object {
     TLorentzVector tlv;
     bool baseline;
     bool passOR;
-    int charge;
-    int flavor;
+    int  charge;
+    int  flavor;
+    double pT;
+    double eta;
+    double phi;
 };
-
-class Muon;
+*/
+class Particle;
+class Lepton;
 class Electron;
-class Jets;
+class Muon;
+class Jet;
 
-bool sort_by_Pt(const TLorentzVector tlv1, const TLorentzVector tlv2)
-{
-    return tlv1.Pt() > tlv2.Pt();
-}
-
-bool sort_descending_Pt(const OR_Object obj1, const OR_Object obj2)
-{
-    return obj1.tlv.Pt() > obj2.tlv.Pt();
-}
+// functions declarations
+template<typename T> bool sort_descending_Pt(T obj1, T obj2);
+template<> bool sort_descending_Pt(TLorentzVector tlv1, TLorentzVector tlv2); // explicit specialization
+double calculate_Ht(vector<Lepton> signal_leptons, vector<Jet> signal_jets);
+double calculate_Meff(double Ht, double Etmiss);
 
 class AnaNtupBunchSapcing : public TSelector {
 public:
@@ -82,7 +83,7 @@ public:
     Int_t fAtLeastFourJets_mumu;
     Int_t fSameSign_mumu;
     Int_t fMET_mumu;
-
+/*
     vector<TLorentzVector> m_el;
     vector<TLorentzVector> m_mu;
     vector<TLorentzVector> m_jet;
@@ -92,52 +93,79 @@ public:
     vector<OR_Object> m_mu_passOR;
     vector<OR_Object> m_jet_passOR;
     vector<OR_Object> m_lep_passOR;
-
-    vector<Muon>     vec_mu;
-    vector<Electron> vec_el;
-    vector<Jets>     vec_jet;
+*/
+    vector<Lepton>   vec_lept;
+    vector<Electron> vec_elec;
+    vector<Muon>     vec_muon;
+    vector<Jet>      vec_jets;
+    vector<Particle> vec_truthv;
     
     TH1* hCutFlows;
     
     TH1* hCut1_Njet;
+    TH1* hCut1_Njet_OR;
     TH1* hCut1_Jet_Pt;
     TH1* hCut1_Jet_Eta;
     TH1* hCut1_Jet_Phi;
+    TH1* hCut1_Jet_Pt1;
+    TH1* hCut1_Jet_Pt2;
+    TH1* hCut1_Jet_Pt3;
+    TH1* hCut1_Jet_Pt4;
     
     TH1* hCut1_Nelec;
+    TH1* hCut1_Nelec_OR;
     TH1* hCut1_Elec_Pt;
     TH1* hCut1_Elec_Eta;
     TH1* hCut1_Elec_Phi;
+    TH1* hCut1_Elec_Pt1;
+    TH1* hCut1_Elec_Pt2;
     
     TH1* hCut1_Nmuon;
+    TH1* hCut1_Nmuon_OR;
     TH1* hCut1_Muon_Pt;
     TH1* hCut1_Muon_Eta;
     TH1* hCut1_Muon_Phi;
+    TH1* hCut1_Muon_Pt1;
+    TH1* hCut1_Muon_Pt2;
     
     TH1* hCut1_Nlep;
+    TH1* hCut1_Nlep_OR;
     TH1* hCut1_lep_Pt;
+    TH1* hCut1_lep_Pt1;
+    TH1* hCut1_lep_Pt2;
     
     TH1* hCut1_MET;
     TH1* hCut1_Meff;
     TH1* hCut1_Nbjet;
+    TH1* hCut1_Nbjet_OR;
  
     TH1* hCut5_Njet;
     TH1* hCut5_Jet_Pt;
     TH1* hCut5_Jet_Eta;
     TH1* hCut5_Jet_Phi;
+    TH1* hCut5_Jet_Pt1;
+    TH1* hCut5_Jet_Pt2;
+    TH1* hCut5_Jet_Pt3;
+    TH1* hCut5_Jet_Pt4;
     
     TH1* hCut5_Nelec;
     TH1* hCut5_Elec_Pt;
     TH1* hCut5_Elec_Eta;
     TH1* hCut5_Elec_Phi;
+    TH1* hCut5_Elec_Pt1;
+    TH1* hCut5_Elec_Pt2;
     
     TH1* hCut5_Nmuon;
     TH1* hCut5_Muon_Pt;
     TH1* hCut5_Muon_Eta;
     TH1* hCut5_Muon_Phi;
+    TH1* hCut5_Muon_Pt1;
+    TH1* hCut5_Muon_Pt2;
     
     TH1* hCut5_Nlep;
     TH1* hCut5_lep_Pt;
+    TH1* hCut5_lep_Pt1;
+    TH1* hCut5_lep_Pt2;
     
     TH1* hCut5_MET;
     TH1* hCut5_Meff;
@@ -332,7 +360,7 @@ public :
    virtual TList  *GetOutputList() const { return fOutput; }
    virtual void    SlaveTerminate();
    virtual void    Terminate();
-
+/*
     virtual void SetElecTLV(int iEl, vector<double> *el_pt,
                                      vector<double> *el_eta,
                                      vector<double> *el_phi,
@@ -347,71 +375,92 @@ public :
                                      vector<double> *jet_eta,
                                      vector<double> *jet_phi,
                                      vector<double> *jet_E);
+*/
 
-    virtual void FillMuon(Int_t iMu, vector<double> *mu_pT,
-                                     vector<double> *mu_eta,
-                                     vector<double> *mu_phi,
-                                     vector<double> *mu_SFw,
-                                     vector<int>    *mu_charge,
-                                     vector<double> *mu_z0pvtx,
-                                     vector<double> *mu_d0pvtx,
-                                     vector<double> *mu_d0pvtxerr,
-                                     vector<double> *mu_sigd0,
-                                     vector<int>    *mu_isBad,
-                                     vector<int>	*mu_isSig,
-                                     vector<int>    *mu_isCosmic,
-                                     vector<int>    *mu_type,
-                                     vector<int>	*mu_origin,
-                                     vector<double> *mu_ptcone20,
-                                     vector<double> *mu_ptcone30,
-                                     vector<double> *mu_ptcone40,
-                                     vector<double> *mu_ptvarcone20,
-                                     vector<double> *mu_ptvarcone30,
-                                     vector<double> *mu_ptvarcone40,
-                                     vector<double> *mu_topoetcone20,
-                                     vector<double> *mu_topoetcone30,
-                                     vector<double> *mu_topoetcone40);
-
-    virtual void FillElec(Int_t iEl, vector<double>  *el_eta,
-                                     vector<double>  *el_phi,
-                                     vector<double>  *el_pT,
-                                     vector<double>  *el_E,
-                                     vector<int>     *el_charge,
-                                     vector<double>  *el_sigd0,
-                                     vector<double>  *el_z0pvtx,
-                                     vector<double>  *el_d0pvtx,
-                                     vector<double>  *el_d0pvtxerr,
-                                     vector<double>  *el_SFw,
-                                     vector<double>  *el_SFwMed,
-                                     vector<int>     *el_isSig,
-                                     vector<int>     *el_isSigMed,
-                                     vector<int>     *el_type,
-                                     vector<int>     *el_origin,
-                                     vector<double>  *el_ptcone20,
-                                     vector<double>  *el_ptcone30,
-                                     vector<double>  *el_ptcone40,
-                                     vector<double>  *el_ptvarcone20,
-                                     vector<double>  *el_ptvarcone30,
-                                     vector<double>  *el_ptvarcone40,
-                                     vector<double>  *el_topoetcone20,
-                                     vector<double>  *el_topoetcone30,
-                                     vector<double>  *el_topoetcone40);
+    virtual void FillElec(Int_t iEl,
+                          int   flavor,
+                          vector<double>  *el_eta,
+                          vector<double>  *el_phi,
+                          vector<double>  *el_pT,
+                          vector<double>  *el_E,
+                          vector<int>     *el_charge,
+                          vector<double>  *el_sigd0,
+                          vector<double>  *el_z0pvtx,
+                          vector<double>  *el_d0pvtx,
+                          vector<double>  *el_d0pvtxerr,
+                          vector<double>  *el_SFw,
+                          vector<double>  *el_SFwMed,
+                          vector<int>     *el_isSig,
+                          vector<int>     *el_isSigMed,
+                          vector<int>     *el_type,
+                          vector<int>     *el_origin,
+                          vector<double>  *el_ptcone20,
+                          vector<double>  *el_ptcone30,
+                          vector<double>  *el_ptcone40,
+                          vector<double>  *el_ptvarcone20,
+                          vector<double>  *el_ptvarcone30,
+                          vector<double>  *el_ptvarcone40,
+                          vector<double>  *el_topoetcone20,
+                          vector<double>  *el_topoetcone30,
+                          vector<double>  *el_topoetcone40);
     
-    virtual void FillJets(Int_t iJet, vector<double>  *jet_eta,
-                                      vector<double>  *jet_phi,
-                                      vector<double>  *jet_pT,
-                                      vector<double>  *jet_E,
-                                      vector<double>  *jet_quality,
-                                      vector<double>  *jet_JVF,
-                                      vector<double>  *jet_MV1,
-                                      vector<double>  *jet_SFw,
-                                      vector<int>     *jet_JetLabel,
-                                      vector<int>     *jet_nTrk,
-                                      vector<double>  *jet_deltaR);
-
+    virtual void FillMuon(Int_t iMu,
+                          int flavor,
+                          vector<double> *mu_pT,
+                          vector<double> *mu_eta,
+                          vector<double> *mu_phi,
+                          vector<double> *mu_SFw,
+                          vector<int>    *mu_charge,
+                          vector<double> *mu_z0pvtx,
+                          vector<double> *mu_d0pvtx,
+                          vector<double> *mu_d0pvtxerr,
+                          vector<double> *mu_sigd0,
+                          vector<int>    *mu_isBad,
+                          vector<int>	 *mu_isSig,
+                          vector<int>    *mu_isCosmic,
+                          vector<int>    *mu_type,
+                          vector<int>	 *mu_origin,
+                          vector<double> *mu_ptcone20,
+                          vector<double> *mu_ptcone30,
+                          vector<double> *mu_ptcone40,
+                          vector<double> *mu_ptvarcone20,
+                          vector<double> *mu_ptvarcone30,
+                          vector<double> *mu_ptvarcone40,
+                          vector<double> *mu_topoetcone20,
+                          vector<double> *mu_topoetcone30,
+                          vector<double> *mu_topoetcone40);
+    
+    virtual void FillJets(Int_t iJet,
+                          vector<double>  *jet_eta,
+                          vector<double>  *jet_phi,
+                          vector<double>  *jet_pT,
+                          vector<double>  *jet_E,
+                          vector<double>  *jet_quality,
+                          vector<double>  *jet_JVF,
+                          vector<double>  *jet_MV1,
+                          vector<double>  *jet_SFw,
+                          vector<int>     *jet_JetLabel,
+                          vector<int>     *jet_nTrk,
+                          vector<double>  *jet_deltaR);
+    
+    virtual void FillTruthV(Int_t iTruthV,
+                            vector<double>  *TruthV_eta,
+                            vector<double>  *TruthV_phi,
+                            vector<double>  *TruthV_pT,
+                            vector<double>  *TruthV_m);
+/*
     virtual void OverlapRemoval(vector<OR_Object> *el_obj,
                                 vector<OR_Object> *mu_obj,
                                 vector<OR_Object> *jet_obj,
+                                double dRejet = 0.2,
+                                double dRjetmu = 0.4,
+                                double dRjete = 0.4,
+                                double dRemu = 0.1,
+                                double dRee = 0.1);
+*/
+    virtual void OverlapRemoval(vector<Electron> *el_obj,
+                                vector<Muon>     *mu_obj,
+                                vector<Jet>      *jet_obj,
                                 double dRejet = 0.2,
                                 double dRjetmu = 0.4,
                                 double dRjete = 0.4,
@@ -627,6 +676,185 @@ Bool_t AnaNtupBunchSapcing::Notify()
    return kTRUE;
 }
 
+
+
+// class definitions
+class Particle {
+    TLorentzVector tlv;
+    bool    baseline;
+    bool    passOR;
+    double  pT;
+    double  eta;
+    double  phi;
+    double  E;
+    double  M;
+
+public:
+    Particle() : baseline(0), passOR(0), pT(0), eta(0), phi(0), E(0), M(0) {}
+    ~Particle() {}
+    // get methods
+    TLorentzVector get_TLV(){ return tlv; }
+    bool    get_baseline()  { return baseline; }
+    bool    get_passOR()    { return passOR; }
+    double  get_pt()        { return pT; }
+    double  get_eta()       { return eta; }
+    double  get_phi()       { return phi; }
+    double  get_E()         { return E; }
+    double  get_M()         { return M; }
+    // set methods
+    virtual void set_TLV_E(double Pt, double Eta, double Phi, double Energy) { tlv.SetPtEtaPhiE(Pt, Eta, Phi, Energy); }
+    virtual void set_TLV_M(double Pt, double Eta, double Phi, double Mass) { tlv.SetPtEtaPhiM(Pt, Eta, Phi, Mass); }
+    void    set_baseline(bool b){ baseline = b; }
+    void    set_passOR(bool b)  { passOR = b; }
+    void    set_pt(double d)    { pT = d; }
+    void    set_eta(double d)   { eta = d; }
+    void    set_phi(double d)   { phi = d; }
+    void    set_E(double d)     { E = d; }
+    void    set_M(double d)     { M = d; }
+};
+
+class Lepton : public Particle {
+    int     flavor;
+    bool    isSignal;
+    
+    double  SFw;
+    int     charge;
+    double  z0pvtx;
+    double  d0pvtx;
+    double  d0pvtxerr;
+    double  sigd0;
+    int     isSig;
+    int     type;
+    int     origin;
+    double  ptcone20;
+    double  ptcone30;
+    double  ptcone40;
+    double  ptvarcone20;
+    double  ptvarcone30;
+    double  ptvarcone40;
+    double  topoetcone20;
+    double  topoetcone30;
+    double  topoetcone40;
+    
+public:
+    Lepton() : flavor(0), isSignal(0),
+               SFw(0), charge(0), z0pvtx(0), d0pvtx(0), d0pvtxerr(0),
+               sigd0(0), isSig(0), type(0), origin(0),
+               ptcone20(0), ptcone30(0), ptcone40(0),
+               ptvarcone20(0), ptvarcone30(0), ptvarcone40(0),
+               topoetcone20(0), topoetcone30(0), topoetcone40(0) {}
+    ~Lepton() {}
+    // get methods
+    int     get_flavor()    { return flavor; }
+    bool    get_isSignal()  { return isSignal; }
+    double  get_SFw()       { return SFw; }
+    int     get_charge()    { return charge; }
+    double  get_z0pvtx()    { return z0pvtx; }
+    double  get_d0pvtx()    { return d0pvtx; }
+    double  get_d0pvtxerr() { return d0pvtxerr; }
+    double  get_sigd0()     { return sigd0; }
+    int     get_isSig()     { return isSig; }
+    int     get_type()      { return type; }
+    int     get_origin()    { return origin; }
+    double  get_ptcone20()  { return ptcone20; }
+    double  get_ptcone30()  { return ptcone30; }
+    double  get_ptcone40()  { return ptcone40; }
+    double  get_ptvarcone20() { return ptvarcone20; }
+    double  get_ptvarcone30() { return ptvarcone30; }
+    double  get_ptvarcone40() { return ptvarcone40; }
+    double  get_topoetcone20(){ return topoetcone20; }
+    double  get_topoetcone30(){ return topoetcone30; }
+    double  get_topoetcone40(){ return topoetcone40; }
+    // set methods
+    void    set_flavor(int i)   { flavor = i; }
+    void    set_isSignal(bool b){ isSignal = b; }
+    void    set_SFw(double d)   { SFw = d; }
+    void    set_charge(int i)   { charge = i; }
+    void    set_z0pvtx(double d){ z0pvtx = d; }
+    void    set_d0pvtx(double d){ d0pvtx = d; }
+    void    set_d0pvtxerr(double d) { d0pvtxerr = d; }
+    void    set_sigd0(double d) { sigd0 = d; }
+    void    set_isSig(int i)    { isSig = i; }
+    void    set_type(int i)     { type = i; }
+    void    set_origin(int i)   { origin = i; }
+    void    set_ptcone20(double d)      { ptcone20 = d; }
+    void    set_ptcone30(double d)      { ptcone30 = d; }
+    void    set_ptcone40(double d)      { ptcone40 = d; }
+    void    set_ptvarcone20(double d)   { ptvarcone20 = d; }
+    void    set_ptvarcone30(double d)   { ptvarcone30 = d; }
+    void    set_ptvarcone40(double d)   { ptvarcone40 = d; }
+    void    set_topoetcone20(double d)  { topoetcone20 = d; }
+    void    set_topoetcone30(double d)  { topoetcone30 = d; }
+    void    set_topoetcone40(double d)  { topoetcone40 = d; }
+
+};
+
+
+class Electron : public Lepton {    
+    double  SFwMed;
+    int     isSigMed;
+
+public:
+    Electron() : SFwMed(0), isSigMed(0) {}
+    ~Electron() {}
+    // get methods
+    double  get_SFwMed()   { return SFwMed; }
+    int     get_isSigMed() { return isSigMed; }
+    // set methods
+    void    set_SFwMed(double d) { SFwMed = d; }
+    void    set_isSigMed(int i)  { isSigMed = i; }
+};
+
+class Muon : public Lepton {
+    int     isBad;
+    int     isCosmic;
+    
+public:
+    Muon() : isBad(0), isCosmic(0) {}
+    ~Muon() {}
+    // get methods
+    int     get_isBad()  { return isBad; }
+    int     get_isCosmic() { return isCosmic; }
+    // set methods
+    void    set_isBad(int i)   { isBad = i; }
+    void    set_isCosmic(int i){ isCosmic = i; }
+};
+
+class Jet : public Particle {
+    bool    isBjet;
+    double  quality;
+    double  JVF;
+    double  MV1;
+    double  SFw;
+    int     JetLabel;
+    int     nTrk;
+    double  deltaR;
+    
+public:
+    Jet() : isBjet(0), quality(0), JVF(0), MV1(0), SFw(0), JetLabel(0), nTrk(0), deltaR(0) {}
+    ~Jet() {}
+    // get methods
+    bool    get_isBjet()  { return isBjet; }
+    double  get_quality() { return quality; }
+    double  get_MV1() { return MV1; }
+    double  get_JVF() { return JVF; }
+    double  get_SFw() { return SFw; }
+    int     get_JetLabel(){ return JetLabel; }
+    int     get_nTrk()    { return nTrk; }
+    int     get_deltaR()  { return deltaR; }
+    // set methods
+    void    set_isBjet(bool b) { isBjet = b; }
+    void    set_quality(double d){ quality = d; }
+    void    set_JVF(double d) { JVF = d; }
+    void    set_MV1(double d) { MV1 = d; }
+    void    set_SFw(double d) { SFw = d; }
+    void    set_JetLabel(int i) { JetLabel = i; }
+    void    set_nTrk(int i)   { nTrk = i; }
+    void    set_deltaR(double d) { deltaR = d; }
+};
+
+
+/*
 class Muon : public OR_Object {
     double  Mu_eta;
     double  Mu_phi;
@@ -903,5 +1131,70 @@ public:
     
     TLorentzVector get_JetTLV() { return tlv; }
 };
+
+class TruthV
+{
+    double  TruthV_eta;
+    double  TruthV_phi;
+    double  TruthV_pT;
+    double  TruthV_m;
+
+    TLorentzVector tlv;
+    
+public:
+    TruthV() {
+        TruthV_eta = 0;
+        TruthV_phi = 0;
+        TruthV_pT = 0;
+        TruthV_m = 0;
+    }
+    ~TruthV() {}
+    void set_TruthV_eta(double eta) { TruthV_eta = eta; }
+    void set_TruthV_phi(double phi) { TruthV_phi = phi; }
+    void set_TruthV_pT(double pT) { TruthV_pT = pT; }
+    void set_TruthV_m(double m) { TruthV_m = m; }
+    
+    void set_TruthV_TLV() { tlv.SetPtEtaPhiM( TruthV_pT, TruthV_eta, TruthV_phi, TruthV_m); }
+    
+    double get_TruthV_eta() { return TruthV_eta; }
+    double get_TruthV_phi() { return TruthV_phi; }
+    double get_TruthV_pT() { return TruthV_pT; }
+    double get_TruthV_m() { return TruthV_m; }
+    
+    TLorentzVector get_TruthV_TLV() { return tlv; }
+};
+*/
+
+// Function definitions
+template <typename T>
+bool sort_descending_Pt(T obj1, T obj2)
+{
+    return (obj1.get_TLV()).Pt() > (obj2.get_TLV()).Pt();
+}
+
+template <>  // explicit specialization
+bool sort_descending_Pt(TLorentzVector tlv1, TLorentzVector tlv2)
+{
+    return tlv1.Pt() > tlv2.Pt();
+}
+
+double calculate_Ht(vector<Lepton> signal_leptons, vector<Jet> signal_jets)
+{
+    double Ht = 0;
+    for (auto & lep : signal_leptons) {
+        Ht = Ht + lep.get_pt();
+    }
+    for (auto & jet : signal_jets) {
+        Ht = Ht + jet.get_pt();
+    }
+    return Ht;
+}
+
+
+double calculate_Meff(double Ht, double Etmiss)
+{
+    // the scalar sum of the signal leptons pT, all signal jets pT, and ETmiss
+    return  Ht + Etmiss;
+}
 
 #endif // #ifdef AnaNtupBunchSapcing_cxx
