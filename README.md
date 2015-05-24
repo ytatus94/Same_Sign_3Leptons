@@ -13,3 +13,5 @@ https://cds.cern.ch/record/2012029/files/
 
 The results for cutflow is on:
 https://docs.google.com/spreadsheets/d/1r_poVcxNaIF2i6vS8G2yA7B53V_9u03uo4aDi0rDoPM/edit?usp=sharing
+
+Login lxplus machine and setupATLAS then localSetupROOT.
