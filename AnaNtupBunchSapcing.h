@@ -249,7 +249,7 @@ public :
    vector<double>  *Jet_SFw;
    vector<int>     *Jet_JetLabel;
    vector<int>     *Jet_nTrk;
-   vector<double>  *Jet_deltaR;
+   //vector<double>  *Jet_deltaR;
    Int_t           NTruthV;
    vector<double>  *TruthV_eta;
    vector<double>  *TruthV_phi;
@@ -332,7 +332,7 @@ public :
    TBranch        *b_Jet_SFw;   //!
    TBranch        *b_Jet_JetLabel;   //!
    TBranch        *b_Jet_nTrk;   //!
-   TBranch        *b_Jet_deltaR;   //!
+   //TBranch        *b_Jet_deltaR;   //!
    TBranch        *b_NTruthV;   //!
    TBranch        *b_TruthV_eta;   //!
    TBranch        *b_TruthV_phi;   //!
@@ -440,8 +440,9 @@ public :
                           vector<double>  *jet_MV1,
                           vector<double>  *jet_SFw,
                           vector<int>     *jet_JetLabel,
-                          vector<int>     *jet_nTrk,
-                          vector<double>  *jet_deltaR);
+                          vector<int>     *jet_nTrk);
+                          //vector<int>     *jet_nTrk,
+                          //vector<double>  *jet_deltaR);
     
     virtual void FillTruthV(Int_t iTruthV,
                             vector<double>  *TruthV_eta,
@@ -572,7 +573,7 @@ void AnaNtupBunchSapcing::Init(TTree *tree)
    Jet_SFw = 0;
    Jet_JetLabel = 0;
    Jet_nTrk = 0;
-   Jet_deltaR = 0;
+   //Jet_deltaR = 0;
    TruthV_eta = 0;
    TruthV_phi = 0;
    TruthV_pT = 0;
@@ -651,7 +652,7 @@ void AnaNtupBunchSapcing::Init(TTree *tree)
    fChain->SetBranchAddress("Jet_SFw", &Jet_SFw, &b_Jet_SFw);
    fChain->SetBranchAddress("Jet_JetLabel", &Jet_JetLabel, &b_Jet_JetLabel);
    fChain->SetBranchAddress("Jet_nTrk", &Jet_nTrk, &b_Jet_nTrk);
-   fChain->SetBranchAddress("Jet_deltaR", &Jet_deltaR, &b_Jet_deltaR);
+   //fChain->SetBranchAddress("Jet_deltaR", &Jet_deltaR, &b_Jet_deltaR);
    fChain->SetBranchAddress("NTruthV", &NTruthV, &b_NTruthV);
    fChain->SetBranchAddress("TruthV_eta", &TruthV_eta, &b_TruthV_eta);
    fChain->SetBranchAddress("TruthV_phi", &TruthV_phi, &b_TruthV_phi);
@@ -828,10 +829,11 @@ class Jet : public Particle {
     double  SFw;
     int     JetLabel;
     int     nTrk;
-    double  deltaR;
+    //double  deltaR;
     
 public:
-    Jet() : isBjet(0), quality(0), JVF(0), MV1(0), SFw(0), JetLabel(0), nTrk(0), deltaR(0) {}
+    Jet() : isBjet(0), quality(0), JVF(0), MV1(0), SFw(0), JetLabel(0), nTrk(0) {}
+    //Jet() : isBjet(0), quality(0), JVF(0), MV1(0), SFw(0), JetLabel(0), nTrk(0), deltaR(0) {}
     ~Jet() {}
     // get methods
     bool    get_isBjet()  { return isBjet; }
@@ -841,7 +843,7 @@ public:
     double  get_SFw() { return SFw; }
     int     get_JetLabel(){ return JetLabel; }
     int     get_nTrk()    { return nTrk; }
-    int     get_deltaR()  { return deltaR; }
+    //int     get_deltaR()  { return deltaR; }
     // set methods
     void    set_isBjet(bool b) { isBjet = b; }
     void    set_quality(double d){ quality = d; }
@@ -850,7 +852,7 @@ public:
     void    set_SFw(double d) { SFw = d; }
     void    set_JetLabel(int i) { JetLabel = i; }
     void    set_nTrk(int i)   { nTrk = i; }
-    void    set_deltaR(double d) { deltaR = d; }
+    //void    set_deltaR(double d) { deltaR = d; }
 };
 
 

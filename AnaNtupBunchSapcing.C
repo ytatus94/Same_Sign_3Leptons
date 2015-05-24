@@ -235,8 +235,9 @@ void AnaNtupBunchSapcing::FillJets(Int_t iJet,
                                    vector<double>  *jet_MV1,
                                    vector<double>  *jet_SFw,
                                    vector<int>     *jet_JetLabel,
-                                   vector<int>     *jet_nTrk,
-                                   vector<double>  *jet_deltaR)
+                                   vector<int>     *jet_nTrk)
+                                   //vector<int>     *jet_nTrk,
+                                   //vector<double>  *jet_deltaR)
 {
     for (int i = 0; i < iJet; i++) {
         Jet je;
@@ -250,7 +251,7 @@ void AnaNtupBunchSapcing::FillJets(Int_t iJet,
         je.set_SFw( (*jet_SFw)[i] );
         je.set_JetLabel( (*jet_JetLabel)[i] );
         je.set_nTrk( (*jet_nTrk)[i] );
-        je.set_deltaR( (*jet_deltaR)[i] );
+        //je.set_deltaR( (*jet_deltaR)[i] );
         je.set_TLV_E(je.get_pt(), je.get_eta(), je.get_phi(), je.get_E());
         vec_jets.push_back(je);
     }
@@ -865,8 +866,9 @@ Bool_t AnaNtupBunchSapcing::Process(Long64_t entry)
              Jet_MV1,
              Jet_SFw,
              Jet_JetLabel,
-             Jet_nTrk,
-             Jet_deltaR);
+             Jet_nTrk);
+             //Jet_nTrk,
+             //Jet_deltaR);
     
     FillTruthV(NTruthV,
                TruthV_eta,

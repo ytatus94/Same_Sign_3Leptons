@@ -16,8 +16,15 @@ Fill pT, eta, phi using TLorentzVector in Fill().
 v04:
 Add new classes in header and source.
 Modify run.cxx to run the 50ns root file.
+user.jpoveda.t26_v04.50ns.110401.PowhegPythia_P2012_ttbar_nonallhad_output.root/
 Add functions to make plots in run.cxx.
 
 v05:
 Fix the bug in FillMuon().
 The order of the argument must match the order in the branch.
+
+v06:
+Comment out the lines include Jet_deltaR in header and source files.
+Modify run.cxx to run 25ns root file.
+user.jpoveda.t26_v04_p1872.204533.Herwigpp_UEEE4_CTEQ6L1_Gtt_G1000_T5000_L100_output.root.24717794
+This version can get the same result as cutflow study.
