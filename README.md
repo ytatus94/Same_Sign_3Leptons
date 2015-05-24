@@ -28,3 +28,10 @@ Comment out the lines include Jet_deltaR in header and source files.
 Modify run.cxx to run 25ns root file.
 user.jpoveda.t26_v04_p1872.204533.Herwigpp_UEEE4_CTEQ6L1_Gtt_G1000_T5000_L100_output.root.24717794
 This version can get the same result as cutflow study.
+
+v07:
+Uncomment the lines linclude Jet_deltaR in header and source files.
+Remove the unnecessary comment parts in header and source files.
+Modify run.cxx to run over all 50ns root files under 
+user.jpoveda.t26_v04.50ns.110401.PowhegPythia_P2012_ttbar_nonallhad_output.root/
+Add the output.txt which lists the cutflow counts for 50ns root files.

@@ -1,0 +1,31 @@
+All events           = 4999500   
+GRL                  = 4999500   
+Global flags         = 4999500   
+≥ 2 leptons (10 GeV) = 394240    
+== 2 leptons (20 GeV) = 254176    
+== 2 signal leptons (20 GeV) = 160101    
+**********
+Channel selection (20, 20 GeV): el-el = 38104     
+Trigger: el-el       = 38104     
+ml1l2 > 12 GeV: el-el = 37955     
+≥ 1 b jet (20 GeV): el-el = 32455     
+≥ 4 jets (50GeV): el-el = 1571      
+Same sign: el-el     = 24        
+MET > 150 GeV: el-el = 0         
+**********
+Channel selection (20, 20 GeV): el-mu = 80239     
+Trigger: el-mu       = 80239     
+ml1l2 > 12 GeV: el-mu = 79974     
+≥ 1 b jet (20 GeV): el-mu = 68416     
+≥ 4 jets (50GeV): el-mu = 3171      
+Same sign: el-mu     = 28        
+MET > 150 GeV: el-mu = 3         
+**********
+Channel selection (20, 20 GeV): mu-mu = 41758     
+Trigger: mu-mu       = 41758     
+ml1l2 > 12 GeV: mu-mu = 41666     
+≥ 1 b jet (20 GeV): mu-mu = 35786     
+≥ 4 jets (50GeV): mu-mu = 1583      
+Same sign: mu-mu     = 1         
+MET > 150 GeV: mu-mu = 0         
+
