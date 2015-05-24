@@ -406,9 +406,8 @@ public :
                                       vector<double>  *jet_MV1,
                                       vector<double>  *jet_SFw,
                                       vector<int>     *jet_JetLabel,
-                                      vector<int>     *jet_nTrk);
-//                                      vector<int>     *jet_nTrk,
-//                                      vector<double>  *jet_deltaR);
+                                      vector<int>     *jet_nTrk,
+                                      vector<double>  *jet_deltaR);
 
     virtual void OverlapRemoval(vector<OR_Object> *el_obj,
                                 vector<OR_Object> *mu_obj,
@@ -857,7 +856,7 @@ class Jets : public OR_Object {
     double  Jet_SFw;
     int     Jet_JetLabel;
     int     Jet_nTrk;
-//    double  Jet_deltaR;
+    double  Jet_deltaR;
     
     TLorentzVector tlv;
     
@@ -873,7 +872,7 @@ public:
         Jet_SFw = 0.;
         Jet_JetLabel = 0;
         Jet_nTrk = 0;
-//        Jet_deltaR = 0.;
+        Jet_deltaR = 0.;
     }
     ~Jets() {}
     void set_Jet_eta(double eta) { Jet_eta = eta; }
@@ -886,7 +885,7 @@ public:
     void set_Jet_SFw(double SFw) { Jet_SFw = SFw; }
     void set_Jet_JetLabel(int JetLabel) { Jet_JetLabel = JetLabel; }
     void set_Jet_nTrk(int nTrk) { Jet_nTrk = nTrk; }
-//    void set_Jet_deltaR(double deltaR) { Jet_deltaR = deltaR; }
+    void set_Jet_deltaR(double deltaR) { Jet_deltaR = deltaR; }
     
     void set_JetTLV() { tlv.SetPtEtaPhiE( Jet_pT, Jet_eta, Jet_phi, Jet_E ); }
     
@@ -900,7 +899,7 @@ public:
     double  get_Jet_SFw() { return Jet_SFw; }
     int     get_Jet_JetLabel() { return Jet_JetLabel; }
     int     get_Jet_nTrk() { return Jet_nTrk; }
-//    int     get_Jet_deltaR() { return Jet_deltaR; }
+    int     get_Jet_deltaR() { return Jet_deltaR; }
     
     TLorentzVector get_JetTLV() { return tlv; }
 };

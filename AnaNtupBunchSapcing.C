@@ -227,9 +227,8 @@ void AnaNtupBunchSapcing::FillJets(Int_t iJet, vector<double>  *jet_eta,
                                                vector<double>  *jet_MV1,
                                                vector<double>  *jet_SFw,
                                                vector<int>     *jet_JetLabel,
-                                               vector<int>     *jet_nTrk)
-//                                               vector<int>     *jet_nTrk,
-//                                               vector<double>  *jet_deltaR)
+                                               vector<int>     *jet_nTrk,
+                                               vector<double>  *jet_deltaR)
 {
     for (int i = 0; i < iJet; i++) {
         Jets je;
@@ -243,7 +242,7 @@ void AnaNtupBunchSapcing::FillJets(Int_t iJet, vector<double>  *jet_eta,
         je.set_Jet_SFw( (*jet_SFw)[i] );
         je.set_Jet_JetLabel( (*jet_JetLabel)[i] );
         je.set_Jet_nTrk( (*jet_nTrk)[i] );
-//        je.set_Jet_deltaR( (*jet_deltaR)[i] );
+        je.set_Jet_deltaR( (*jet_deltaR)[i] );
         je.set_JetTLV();
         vec_jet.push_back(je);
     }
@@ -579,8 +578,7 @@ Bool_t AnaNtupBunchSapcing::Process(Long64_t entry)
                   El_topoetcone20, El_topoetcone30, El_topoetcone40);
     FillJets(NJet, Jet_eta, Jet_phi, Jet_pT, Jet_E,
                    Jet_quality, Jet_JVF, Jet_MV1,
-                   Jet_SFw, Jet_JetLabel, Jet_nTrk);
-//                   Jet_SFw, Jet_JetLabel, Jet_nTrk, Jet_deltaR);
+                   Jet_SFw, Jet_JetLabel, Jet_nTrk, Jet_deltaR);
     
     fNumberOfEvents++;
     hCutFlows->Fill(0); // All events
@@ -680,9 +678,11 @@ Bool_t AnaNtupBunchSapcing::Process(Long64_t entry)
 */
     
     sort(m_lep.begin(), m_lep.end(), sort_by_Pt);
-    TLorentzVector l1l2 = m_lep[0] + m_lep[1];
-    hCut1_Meff->Fill( l1l2.M() );
-    
+    if (m_lep.size() >= 2) {
+	TLorentzVector l1l2 = m_lep[0] + m_lep[1];
+	hCut1_Meff->Fill( l1l2.M() );
+    }
+
     if (!passGRL) return kTRUE; // passGRL = -1 for MC
     fpassGRL++;
     hCutFlows->Fill(1); // GRL
