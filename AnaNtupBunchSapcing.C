@@ -765,7 +765,7 @@ Bool_t AnaNtupBunchSapcing::Process(Long64_t entry)
         hCutFlows->Fill(5); // == 2 signal leptons (20 GeV)
 
         int ielec = 0;
-        double el_pt = 0, el_eta = 0, el_phi = 0;
+        //double el_pt = 0, el_eta = 0, el_phi = 0;
         el_itr = m_el_passOR.begin();
         for (; el_itr != el_end; el_itr++) {
             if (el_itr->baseline == true && el_itr->passOR == true) {
@@ -784,15 +784,15 @@ Bool_t AnaNtupBunchSapcing::Process(Long64_t entry)
                         //el_tlv = el_tlv + el_itr->tlv;
                         //same_sign = same_sign * (*El_charge)[index];
                         ielec++;
-                        el_pt = el_itr->tlv.Pt();
-                        el_eta = el_itr->tlv.Eta();
-                        el_phi = el_itr->tlv.Phi();
+                        //el_pt = el_itr->tlv.Pt();
+                        //el_eta = el_itr->tlv.Eta();
+                        //el_phi = el_itr->tlv.Phi();
                         
-                        hCut5_Elec_Pt->Fill(el_pt);
-                        hCut5_Elec_Eta->Fill(el_eta);
-                        hCut5_Elec_Phi->Fill(el_phi);
+                        hCut5_Elec_Pt->Fill( el_itr->tlv.Pt() );
+                        hCut5_Elec_Eta->Fill( el_itr->tlv.Eta() );
+                        hCut5_Elec_Phi->Fill( el_itr->tlv.Phi() );
                         
-                        hCut5_lep_Pt->Fill(el_pt);
+                        hCut5_lep_Pt->Fill( el_itr->tlv.Pt() );
                     }
                 }
             }
@@ -801,7 +801,7 @@ Bool_t AnaNtupBunchSapcing::Process(Long64_t entry)
 
         
         int imuon = 0;
-        double mu_pt = 0, mu_eta = 0, mu_phi = 0;
+        //double mu_pt = 0, mu_eta = 0, mu_phi = 0;
         mu_itr = m_mu_passOR.begin();
         for (; mu_itr != mu_end; mu_itr++) {
             if (mu_itr->baseline == true && mu_itr->passOR == true) {
@@ -818,15 +818,15 @@ Bool_t AnaNtupBunchSapcing::Process(Long64_t entry)
                         //mu_tlv = mu_tlv + mu_itr->tlv;
                         //same_sign = same_sign * (*Mu_charge)[index];
                         imuon++;
-                        mu_pt = mu_itr->tlv.Pt();
-                        mu_eta = mu_itr->tlv.Eta();
-                        mu_phi = mu_itr->tlv.Phi();
+                        //mu_pt = mu_itr->tlv.Pt();
+                        //mu_eta = mu_itr->tlv.Eta();
+                        //mu_phi = mu_itr->tlv.Phi();
                         
-                        hCut5_Muon_Pt->Fill(mu_pt);
-                        hCut5_Muon_Eta->Fill(mu_eta);
-                        hCut5_Muon_Phi->Fill(mu_phi);
+                        hCut5_Muon_Pt->Fill( mu_itr->tlv.Pt() );
+                        hCut5_Muon_Eta->Fill( mu_itr->tlv.Eta() );
+                        hCut5_Muon_Phi->Fill( mu_itr->tlv.Phi() );
                         
-                        hCut5_lep_Pt->Fill(el_pt);
+                        hCut5_lep_Pt->Fill( mu_itr->tlv.Pt() );
                     }
                 }
             }
