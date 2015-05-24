@@ -170,29 +170,29 @@ void AnaNtupBunchSapcing::FillElec(Int_t iEl,
 
 void AnaNtupBunchSapcing::FillMuon(Int_t iMu,
                                    int   flavor,
-                                   vector<double> *mu_pT,
-                                   vector<double> *mu_eta,
-                                   vector<double> *mu_phi,
-                                   vector<double> *mu_SFw,
-                                   vector<int>    *mu_charge,
-                                   vector<double> *mu_z0pvtx,
-                                   vector<double> *mu_d0pvtx,
-                                   vector<double> *mu_d0pvtxerr,
-                                   vector<double> *mu_sigd0,
-                                   vector<int>    *mu_isBad,
-                                   vector<int>	  *mu_isSig,
-                                   vector<int>    *mu_isCosmic,
-                                   vector<int>    *mu_type,
-                                   vector<int>	  *mu_origin,
-                                   vector<double> *mu_ptcone20,
-                                   vector<double> *mu_ptcone30,
-                                   vector<double> *mu_ptcone40,
-                                   vector<double> *mu_ptvarcone20,
-                                   vector<double> *mu_ptvarcone30,
-                                   vector<double> *mu_ptvarcone40,
-                                   vector<double> *mu_topoetcone20,
-                                   vector<double> *mu_topoetcone30,
-                                   vector<double> *mu_topoetcone40)
+                                   vector<double>  *mu_eta,
+                                   vector<double>  *mu_phi,
+                                   vector<double>  *mu_pT,
+                                   vector<double>  *mu_SFw,
+                                   vector<int>     *mu_charge,
+                                   vector<double>  *mu_d0pvtx,
+                                   vector<double>  *mu_d0pvtxerr,
+                                   vector<double>  *mu_sigd0,
+                                   vector<double>  *mu_z0pvtx,
+                                   vector<int>     *mu_isBad,
+                                   vector<int>     *mu_isSig,
+                                   vector<int>     *mu_isCosmic,
+                                   vector<int>     *mu_type,
+                                   vector<int>     *mu_origin,
+                                   vector<double>  *mu_ptcone20,
+                                   vector<double>  *mu_ptcone30,
+                                   vector<double>  *mu_ptcone40,
+                                   vector<double>  *mu_ptvarcone20,
+                                   vector<double>  *mu_ptvarcone30,
+                                   vector<double>  *mu_ptvarcone40,
+                                   vector<double>  *mu_topoetcone20,
+                                   vector<double>  *mu_topoetcone30,
+                                   vector<double>  *mu_topoetcone40)
 {
     for (int i = 0; i < iMu; i++) {
         Muon mu;
@@ -1100,7 +1100,7 @@ Bool_t AnaNtupBunchSapcing::Process(Long64_t entry)
     }
     for (auto & mu_itr : vec_muon) {
         if (mu_itr.get_baseline() == true && mu_itr.get_passOR() == true) {
-            NMu++;
+            Nmu++;
             if ((mu_itr.get_TLV()).Pt() > 20000.) Nmu_pt20++;
             if (mu_itr.get_isSignal()) {
                 Nmu_sig++;
