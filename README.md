@@ -35,3 +35,9 @@ Remove the unnecessary comment parts in header and source files.
 Modify run.cxx to run over all 50ns root files under 
 user.jpoveda.t26_v04.50ns.110401.PowhegPythia_P2012_ttbar_nonallhad_output.root/
 Add the output.txt which lists the cutflow counts for 50ns root files.
+
+v08:
+Add root_ratio_plots.C. 
+Modify run.cxx:
+1. Add root files for tab, G1000_T5000_L100, and G1300_T5000_L700 for 50ns and 25ns.
+2. Overload make_plot() function for plotting 3 histograms.
