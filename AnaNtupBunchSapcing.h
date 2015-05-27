@@ -28,6 +28,7 @@ using namespace std;
 
 #define Mu_M 105.6583715
 
+// classes declarations
 class Particle;
 class Lepton;
 class Electron;
@@ -35,7 +36,7 @@ class Muon;
 class Jet;
 
 // functions declarations
-template<typename T> bool sort_descending_Pt(T obj1, T obj2);
+template<typename T> bool sort_descending_Pt(T obj1, T obj2); // NOTE: cannot use const ref for arguments.
 template<> bool sort_descending_Pt(TLorentzVector tlv1, TLorentzVector tlv2); // explicit specialization
 double calculate_Ht(vector<Lepton> signal_leptons, vector<Jet> signal_jets);
 double calculate_Meff(double Ht, double Etmiss);
@@ -73,16 +74,28 @@ public:
     Int_t fSameSign_mumu;
     Int_t fMET_mumu;
 
-    vector<Lepton>   vec_lept;
     vector<Electron> vec_elec;
     vector<Muon>     vec_muon;
     vector<Jet>      vec_jets;
+    vector<Lepton>   vec_lept;
     vector<Particle> vec_truthv;
+    
+    vector<Electron> vec_OR_elec;
+    vector<Muon>     vec_OR_muon;
+    vector<Jet>      vec_OR_jets;
+    vector<Lepton>   vec_OR_lept;
+    
+    vector<Electron> vec_signal_elec;
+    vector<Muon>     vec_signal_muon;
+    vector<Jet>      vec_signal_jets;
+    vector<Lepton>   vec_signal_lept;
     
     TH1* hCutFlows;
     
-    TH1* hCut1_Njet;
+    TH1* hCut1_Njet; // No OR
     TH1* hCut1_Njet_OR;
+    TH1* hCut1_Njet_OR_pt20;
+    TH1* hCut1_Njet_OR_pt50;
     TH1* hCut1_Jet_Pt;
     TH1* hCut1_Jet_Eta;
     TH1* hCut1_Jet_Phi;
@@ -91,7 +104,7 @@ public:
     TH1* hCut1_Jet_Pt3;
     TH1* hCut1_Jet_Pt4;
     
-    TH1* hCut1_Nelec;
+    TH1* hCut1_Nelec; // No OR
     TH1* hCut1_Nelec_OR;
     TH1* hCut1_Elec_Pt;
     TH1* hCut1_Elec_Eta;
@@ -99,7 +112,7 @@ public:
     TH1* hCut1_Elec_Pt1;
     TH1* hCut1_Elec_Pt2;
     
-    TH1* hCut1_Nmuon;
+    TH1* hCut1_Nmuon; // No OR
     TH1* hCut1_Nmuon_OR;
     TH1* hCut1_Muon_Pt;
     TH1* hCut1_Muon_Eta;
@@ -107,7 +120,7 @@ public:
     TH1* hCut1_Muon_Pt1;
     TH1* hCut1_Muon_Pt2;
     
-    TH1* hCut1_Nlep;
+    TH1* hCut1_Nlep; // No OR
     TH1* hCut1_Nlep_OR;
     TH1* hCut1_lep_Pt;
     TH1* hCut1_lep_Pt1;
@@ -115,10 +128,12 @@ public:
     
     TH1* hCut1_MET;
     TH1* hCut1_Meff;
-    TH1* hCut1_Nbjet;
+    TH1* hCut1_Nbjet; // No OR
     TH1* hCut1_Nbjet_OR;
  
     TH1* hCut5_Njet;
+    TH1* hCut5_Njet_pt20;
+    TH1* hCut5_Njet_pt50;
     TH1* hCut5_Jet_Pt;
     TH1* hCut5_Jet_Eta;
     TH1* hCut5_Jet_Phi;
@@ -149,9 +164,6 @@ public:
     TH1* hCut5_MET;
     TH1* hCut5_Meff;
     TH1* hCut5_Nbjet;
-    
-    
-    
     
     TTree* myTree;
 
@@ -411,6 +423,18 @@ public :
                             vector<double>  *TruthV_phi,
                             vector<double>  *TruthV_pT,
                             vector<double>  *TruthV_m);
+    
+    virtual void FillLeptons(vector<Electron> vec_elec, vector<Muon> vec_muon);
+    
+    virtual void FillORElectrons(vector<Electron> vec_elec);
+    virtual void FillORMuons(vector<Muon> vec_muon);
+    virtual void FillORJets(vector<Jet> vec_jets);
+    virtual void FillORLeptons(vector<Electron> vec_elec, vector<Muon> vec_muon);
+    
+    virtual void FillSignalElectrons(vector<Electron> vec_elec);
+    virtual void FillSignalMuons(vector<Muon> vec_muon);
+    virtual void FillSignalJets(vector<Jet> jets);
+    virtual void FillSignalLeptons(vector<Electron> signal_elec, vector<Muon> signal_muon);
 
     virtual void OverlapRemoval(vector<Electron> *el_obj,
                                 vector<Muon>     *mu_obj,
@@ -630,8 +654,6 @@ Bool_t AnaNtupBunchSapcing::Notify()
    return kTRUE;
 }
 
-
-
 // class definitions
 class Particle {
     TLorentzVector tlv;
@@ -743,7 +765,6 @@ public:
 
 };
 
-
 class Electron : public Lepton {    
     double  SFwMed;
     int     isSigMed;
@@ -809,7 +830,7 @@ public:
 
 // Function definitions
 template <typename T>
-bool sort_descending_Pt(T obj1, T obj2)
+bool sort_descending_Pt(T obj1, T obj2) // Cannot use bool sort_descending_Pt(const T & obj1, const T & obj2)
 {
     return (obj1.get_TLV()).Pt() > (obj2.get_TLV()).Pt();
 }
@@ -831,7 +852,6 @@ double calculate_Ht(vector<Lepton> signal_leptons, vector<Jet> signal_jets)
     }
     return Ht;
 }
-
 
 double calculate_Meff(double Ht, double Etmiss)
 {

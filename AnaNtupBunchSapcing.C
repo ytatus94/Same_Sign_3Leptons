@@ -232,6 +232,109 @@ void AnaNtupBunchSapcing::FillTruthV(Int_t iTruthV,
     }
 }
 
+void AnaNtupBunchSapcing::FillLeptons(vector<Electron> vec_elec, vector<Muon> vec_muon)
+{
+    for (auto & el_itr : vec_elec) {
+        vec_lept.push_back(el_itr);
+    }
+    for (auto & mu_itr : vec_muon) {
+        vec_lept.push_back(mu_itr);
+    }
+}
+
+void AnaNtupBunchSapcing::FillORElectrons(vector<Electron> vec_elec)
+{
+    for (auto & el_itr : vec_elec) {
+        if (el_itr.get_baseline() == true &&
+            el_itr.get_passOR() == true) {
+            vec_OR_elec.push_back(el_itr);
+        }
+    }
+}
+
+void AnaNtupBunchSapcing::FillORMuons(vector<Muon> vec_muon)
+{
+    for (auto & mu_itr : vec_muon) {
+        if (mu_itr.get_baseline() == true &&
+            mu_itr.get_passOR() == true) {
+            vec_OR_muon.push_back(mu_itr);
+        }
+    }
+}
+
+void AnaNtupBunchSapcing::FillORJets(vector<Jet> vec_jets)
+{
+    for (auto & jet_itr : vec_jets) {
+        if (jet_itr.get_baseline() == true &&
+            jet_itr.get_passOR() == true) {
+            vec_OR_jets.push_back(jet_itr);
+        }
+    }
+}
+
+void AnaNtupBunchSapcing::FillORLeptons(vector<Electron> vec_elec, vector<Muon> vec_muon)
+{
+    for (auto & el_itr : vec_elec) {
+        if (el_itr.get_baseline() == true &&
+            el_itr.get_passOR() == true) {
+            vec_OR_lept.push_back(el_itr);
+        }
+    }
+    for (auto & mu_itr : vec_muon) {
+        if (mu_itr.get_baseline() == true &&
+            mu_itr.get_passOR() == true) {
+            vec_OR_lept.push_back(mu_itr);
+        }
+    }
+}
+
+void AnaNtupBunchSapcing::FillSignalElectrons(vector<Electron> vec_elec)
+{
+    for (auto & el_itr : vec_elec) {
+        if (el_itr.get_baseline() == true &&
+            el_itr.get_passOR() == true &&
+            el_itr.get_isSignal() &&
+            el_itr.get_pt() > 20000.) {
+            vec_signal_elec.push_back(el_itr);
+        }
+    }
+}
+
+void AnaNtupBunchSapcing::FillSignalMuons(vector<Muon> vec_muon)
+{
+    for (auto & mu_itr : vec_muon) {
+        if (mu_itr.get_baseline() == true &&
+            mu_itr.get_passOR() == true &&
+            mu_itr.get_isSignal() &&
+            mu_itr.get_pt() > 20000.) {
+            vec_signal_muon.push_back(mu_itr);
+        }
+    }
+}
+
+void AnaNtupBunchSapcing::FillSignalJets(vector<Jet> vec_jets)
+{
+    for (auto & jet_itr : vec_jets) {
+        if (!jet_itr.get_baseline()) continue;
+        if (!jet_itr.get_passOR()) continue;
+        if (jet_itr.get_quality() == 1) continue; // 1=bad jet from SUSYTools IsGoodJet
+        if (jet_itr.get_isBjet()) continue;
+        if (jet_itr.get_pt() > 50000.) {
+            vec_signal_jets.push_back(jet_itr);
+        }
+    }
+}
+
+void AnaNtupBunchSapcing::FillSignalLeptons(vector<Electron> signal_elec, vector<Muon> signal_muon)
+{
+    for (auto & el_itr : signal_elec) {
+        vec_signal_lept.push_back(el_itr);
+    }
+    for (auto & mu_itr : signal_muon) {
+        vec_signal_lept.push_back(mu_itr);
+    }
+}
+
 void AnaNtupBunchSapcing::OverlapRemoval(vector<Electron> *el_obj,
                                          vector<Muon>     *mu_obj,
                                          vector<Jet>      *jet_obj,
@@ -387,8 +490,6 @@ void AnaNtupBunchSapcing::OverlapRemoval(vector<Electron> *el_obj,
 */
 }
 
-
-
 void AnaNtupBunchSapcing::Begin(TTree * /*tree*/)
 {
    // The Begin() function is called at the start of the query.
@@ -404,17 +505,21 @@ void AnaNtupBunchSapcing::Begin(TTree * /*tree*/)
     }
     fOutput->Add(hCutFlows);
 
-    hCut1_Njet = new TH1F("hCut1_Njet", "Number of Jets", 100, 0, 100);
+    hCut1_Njet    = new TH1F("hCut1_Njet", "Number of Jets", 100, 0, 100);
     hCut1_Njet_OR = new TH1F("hCut1_Njet_OR", "Number of Jets (OR)", 100, 0, 100);
-    hCut1_Jet_Pt = new TH1F("hCut1_Jet_Pt", "Jet pT", 100, 0, 1000000);
+    hCut1_Njet_OR_pt20 = new TH1F("hCut1_Njet_OR_pt20", "Number of Jets (OR) pT > 20 GeV", 100, 0, 100);
+    hCut1_Njet_OR_pt50 = new TH1F("hCut1_Njet_OR_pt50", "Number of Jets (OR) pT > 50 GeV", 100, 0, 100);
+    hCut1_Jet_Pt  = new TH1F("hCut1_Jet_Pt", "Jet pT", 100, 0, 2000); // 2000 GeV
     hCut1_Jet_Eta = new TH1F("hCut1_Jet_Eta", "Jet eta", 100, -5, 5);
     hCut1_Jet_Phi = new TH1F("hCut1_Jet_Phi", "Jet phi", 100, -5, 5);
-    hCut1_Jet_Pt1 = new TH1F("hCut1_Jet_Pt1", "Jet 1 pT", 100, 0, 1000000);
-    hCut1_Jet_Pt2 = new TH1F("hCut1_Jet_Pt2", "Jet 2 pT", 100, 0, 1000000);
-    hCut1_Jet_Pt3 = new TH1F("hCut1_Jet_Pt3", "Jet 3 pT", 100, 0, 1000000);
-    hCut1_Jet_Pt4 = new TH1F("hCut1_Jet_Pt4", "Jet 4 pT", 100, 0, 1000000);
+    hCut1_Jet_Pt1 = new TH1F("hCut1_Jet_Pt1", "Jet 1 pT", 100, 0, 2000);
+    hCut1_Jet_Pt2 = new TH1F("hCut1_Jet_Pt2", "Jet 2 pT", 100, 0, 2000);
+    hCut1_Jet_Pt3 = new TH1F("hCut1_Jet_Pt3", "Jet 3 pT", 100, 0, 2000);
+    hCut1_Jet_Pt4 = new TH1F("hCut1_Jet_Pt4", "Jet 4 pT", 100, 0, 2000);
     fOutput->Add(hCut1_Njet);
     fOutput->Add(hCut1_Njet_OR);
+    fOutput->Add(hCut1_Njet_OR_pt20);
+    fOutput->Add(hCut1_Njet_OR_pt50);
     fOutput->Add(hCut1_Jet_Pt);
     fOutput->Add(hCut1_Jet_Eta);
     fOutput->Add(hCut1_Jet_Phi);
@@ -423,13 +528,13 @@ void AnaNtupBunchSapcing::Begin(TTree * /*tree*/)
     fOutput->Add(hCut1_Jet_Pt3);
     fOutput->Add(hCut1_Jet_Pt4);
     
-    hCut1_Nelec = new TH1F("hCut1_Nelec", "Number of electrons", 10, 0, 10);
+    hCut1_Nelec    = new TH1F("hCut1_Nelec", "Number of electrons", 10, 0, 10);
     hCut1_Nelec_OR = new TH1F("hCut1_Nelec_OR", "Number of electrons (OR)", 10, 0, 10);
-    hCut1_Elec_Pt = new TH1F("hCut1_Elec_Pt", "Elec pT", 100, 0, 1000000);
+    hCut1_Elec_Pt  = new TH1F("hCut1_Elec_Pt", "Elec pT", 100, 0, 2000); // 2000 GeV
     hCut1_Elec_Eta = new TH1F("hCut1_Elec_Eta", "Elec eta", 100, -5, 5);
     hCut1_Elec_Phi = new TH1F("hCut1_Elec_Phi", "Elec phi", 100, -5, 5);
-    hCut1_Elec_Pt1 = new TH1F("hCut1_Elec_Pt1", "Elec 1 pT", 100, 0, 1000000);
-    hCut1_Elec_Pt2 = new TH1F("hCut1_Elec_Pt2", "Elec 2 pT", 100, 0, 1000000);
+    hCut1_Elec_Pt1 = new TH1F("hCut1_Elec_Pt1", "Elec 1 pT", 100, 0, 2000);
+    hCut1_Elec_Pt2 = new TH1F("hCut1_Elec_Pt2", "Elec 2 pT", 100, 0, 2000);
     fOutput->Add(hCut1_Nelec);
     fOutput->Add(hCut1_Nelec_OR);
     fOutput->Add(hCut1_Elec_Pt);
@@ -438,13 +543,13 @@ void AnaNtupBunchSapcing::Begin(TTree * /*tree*/)
     fOutput->Add(hCut1_Elec_Pt1);
     fOutput->Add(hCut1_Elec_Pt2);
 
-    hCut1_Nmuon = new TH1F("hCut1_Nmuon", "Number of muons", 10, 0, 10);
+    hCut1_Nmuon    = new TH1F("hCut1_Nmuon", "Number of muons", 10, 0, 10);
     hCut1_Nmuon_OR = new TH1F("hCut1_Nmuon_OR", "Number of muons (OR)", 10, 0, 10);
-    hCut1_Muon_Pt = new TH1F("hCut1_Muon_Pt", "Muon pT", 100, 0, 1000000);
+    hCut1_Muon_Pt  = new TH1F("hCut1_Muon_Pt", "Muon pT", 100, 0, 2000); // 2000 GeV
     hCut1_Muon_Eta = new TH1F("hCut1_Muon_Eta", "Muon eta", 100, -5, 5);
     hCut1_Muon_Phi = new TH1F("hCut1_Muon_Phi", "Muon phi", 100, -5, 5);
-    hCut1_Muon_Pt1 = new TH1F("hCut1_Muon_Pt1", "Muon 1 pT", 100, 0, 1000000);
-    hCut1_Muon_Pt2 = new TH1F("hCut1_Muon_Pt2", "Muon 2 pT", 100, 0, 1000000);
+    hCut1_Muon_Pt1 = new TH1F("hCut1_Muon_Pt1", "Muon 1 pT", 100, 0, 2000);
+    hCut1_Muon_Pt2 = new TH1F("hCut1_Muon_Pt2", "Muon 2 pT", 100, 0, 2000);
     fOutput->Add(hCut1_Nmuon);
     fOutput->Add(hCut1_Nmuon_OR);
     fOutput->Add(hCut1_Muon_Pt);
@@ -453,37 +558,41 @@ void AnaNtupBunchSapcing::Begin(TTree * /*tree*/)
     fOutput->Add(hCut1_Muon_Pt1);
     fOutput->Add(hCut1_Muon_Pt2);
     
-    hCut1_Nlep = new TH1F("hCut1_Nlep", "Number of leptons", 10, 0, 10);
+    hCut1_Nlep    = new TH1F("hCut1_Nlep", "Number of leptons", 10, 0, 10);
     hCut1_Nlep_OR = new TH1F("hCut1_Nlep_OR", "Number of leptons (OR)", 10, 0, 10);
-    hCut1_lep_Pt = new TH1F("hCut1_lep_Pt", "Lepton pT", 100, 0, 1000000);
-    hCut1_lep_Pt1 = new TH1F("hCut1_lep_Pt1", "Lepton 1 pT", 100, 0, 1000000);
-    hCut1_lep_Pt2 = new TH1F("hCut1_lep_Pt2", "Lepton 2 pT", 100, 0, 1000000);
+    hCut1_lep_Pt  = new TH1F("hCut1_lep_Pt", "Lepton pT", 100, 0, 2000); // 2000 GeV
+    hCut1_lep_Pt1 = new TH1F("hCut1_lep_Pt1", "Lepton 1 pT", 100, 0, 2000);
+    hCut1_lep_Pt2 = new TH1F("hCut1_lep_Pt2", "Lepton 2 pT", 100, 0, 2000);
     fOutput->Add(hCut1_Nlep);
     fOutput->Add(hCut1_Nlep_OR);
     fOutput->Add(hCut1_lep_Pt);
     fOutput->Add(hCut1_lep_Pt1);
     fOutput->Add(hCut1_lep_Pt2);
     
-    hCut1_MET = new TH1F("hCut1_MET", "MET", 100, 0, 1000000);
+    hCut1_MET = new TH1F("hCut1_MET", "MET", 100, 0, 5000); // 5000 GeV
     fOutput->Add(hCut1_MET);
     
-    hCut1_Meff = new TH1F("hCut1_Meff", "Meff", 100, 0, 1000000);
+    hCut1_Meff = new TH1F("hCut1_Meff", "Meff", 100, 0, 5000); // 5000 GeV
     fOutput->Add(hCut1_Meff);
     
-    hCut1_Nbjet = new TH1F("hCut1_Nbjet", "Number of b-jets", 10, 0, 10);
+    hCut1_Nbjet    = new TH1F("hCut1_Nbjet", "Number of b-jets", 10, 0, 10);
     hCut1_Nbjet_OR = new TH1F("hCut1_Nbjet_OR", "Number of b-jets (OR)", 10, 0, 10);
     fOutput->Add(hCut1_Nbjet);
     fOutput->Add(hCut1_Nbjet_OR);
     
-    hCut5_Njet = new TH1F("hCut5_Njet", "Number of Jets", 20, 0, 20);
-    hCut5_Jet_Pt = new TH1F("hCut5_Jet_Pt", "Jet pT", 100, 0, 1000000);
+    hCut5_Njet      = new TH1F("hCut5_Njet", "Number of Jets", 20, 0, 20);
+    hCut5_Njet_pt20 = new TH1F("hCut5_Njet_pt20", "Number of Jets pT > 20 GeV", 20, 0, 20);
+    hCut5_Njet_pt50 = new TH1F("hCut5_Njet_pt50", "Number of Jets pT > 50 GeV", 20, 0, 20);
+    hCut5_Jet_Pt  = new TH1F("hCut5_Jet_Pt", "Jet pT", 100, 0, 2000); // 2000 GeV
     hCut5_Jet_Eta = new TH1F("hCut5_Jet_Eta", "Jet eta", 100, -5, 5);
     hCut5_Jet_Phi = new TH1F("hCut5_Jet_Phi", "Jet phi", 100, -5, 5);
-    hCut5_Jet_Pt1 = new TH1F("hCut5_Jet_Pt1", "Jet 1 pT", 100, 0, 1000000);
-    hCut5_Jet_Pt2 = new TH1F("hCut5_Jet_Pt2", "Jet 2 pT", 100, 0, 1000000);
-    hCut5_Jet_Pt3 = new TH1F("hCut5_Jet_Pt3", "Jet 3 pT", 100, 0, 1000000);
-    hCut5_Jet_Pt4 = new TH1F("hCut5_Jet_Pt4", "Jet 4 pT", 100, 0, 1000000);
+    hCut5_Jet_Pt1 = new TH1F("hCut5_Jet_Pt1", "Jet 1 pT", 100, 0, 2000);
+    hCut5_Jet_Pt2 = new TH1F("hCut5_Jet_Pt2", "Jet 2 pT", 100, 0, 2000);
+    hCut5_Jet_Pt3 = new TH1F("hCut5_Jet_Pt3", "Jet 3 pT", 100, 0, 2000);
+    hCut5_Jet_Pt4 = new TH1F("hCut5_Jet_Pt4", "Jet 4 pT", 100, 0, 2000);
     fOutput->Add(hCut5_Njet);
+    fOutput->Add(hCut5_Njet_pt20);
+    fOutput->Add(hCut5_Njet_pt50);
     fOutput->Add(hCut5_Jet_Pt);
     fOutput->Add(hCut5_Jet_Eta);
     fOutput->Add(hCut5_Jet_Phi);
@@ -492,12 +601,12 @@ void AnaNtupBunchSapcing::Begin(TTree * /*tree*/)
     fOutput->Add(hCut5_Jet_Pt3);
     fOutput->Add(hCut5_Jet_Pt4);
     
-    hCut5_Nelec = new TH1F("hCut5_Nelec", "Number of electrons", 10, 0, 10);
-    hCut5_Elec_Pt = new TH1F("hCut5_Elec_Pt", "Elec pT", 100, 0, 1000000);
+    hCut5_Nelec    = new TH1F("hCut5_Nelec", "Number of electrons", 10, 0, 10);
+    hCut5_Elec_Pt  = new TH1F("hCut5_Elec_Pt", "Elec pT", 100, 0, 2000); // 2000 GeV
     hCut5_Elec_Eta = new TH1F("hCut5_Elec_Eta", "Elec eta", 100, -5, 5);
     hCut5_Elec_Phi = new TH1F("hCut5_Elec_Phi", "Elec phi", 100, -5, 5);
-    hCut5_Elec_Pt1 = new TH1F("hCut5_Elec_Pt1", "Elec 1 pT", 100, 0, 1000000);
-    hCut5_Elec_Pt2 = new TH1F("hCut5_Elec_Pt2", "Elec 2 pT", 100, 0, 1000000);
+    hCut5_Elec_Pt1 = new TH1F("hCut5_Elec_Pt1", "Elec 1 pT", 100, 0, 2000);
+    hCut5_Elec_Pt2 = new TH1F("hCut5_Elec_Pt2", "Elec 2 pT", 100, 0, 2000);
     fOutput->Add(hCut5_Nelec);
     fOutput->Add(hCut5_Elec_Pt);
     fOutput->Add(hCut5_Elec_Eta);
@@ -505,12 +614,12 @@ void AnaNtupBunchSapcing::Begin(TTree * /*tree*/)
     fOutput->Add(hCut5_Elec_Pt1);
     fOutput->Add(hCut5_Elec_Pt2);
     
-    hCut5_Nmuon = new TH1F("hCut5_Nmuon", "Number of muons", 10, 0, 10);
-    hCut5_Muon_Pt = new TH1F("hCut5_Muon_Pt", "Muon pT", 100, 0, 1000000);
+    hCut5_Nmuon    = new TH1F("hCut5_Nmuon", "Number of muons", 10, 0, 10);
+    hCut5_Muon_Pt  = new TH1F("hCut5_Muon_Pt", "Muon pT", 100, 0, 2000); // 2000 GeV
     hCut5_Muon_Eta = new TH1F("hCut5_Muon_Eta", "Muon eta", 100, -5, 5);
     hCut5_Muon_Phi = new TH1F("hCut5_Muon_Phi", "Muon phi", 100, -5, 5);
-    hCut5_Muon_Pt1 = new TH1F("hCut5_Muon_Pt1", "Muon 1 pT", 100, 0, 1000000);
-    hCut5_Muon_Pt2 = new TH1F("hCut5_Muon_Pt2", "Muon 2 pT", 100, 0, 1000000);
+    hCut5_Muon_Pt1 = new TH1F("hCut5_Muon_Pt1", "Muon 1 pT", 100, 0, 2000);
+    hCut5_Muon_Pt2 = new TH1F("hCut5_Muon_Pt2", "Muon 2 pT", 100, 0, 2000);
     fOutput->Add(hCut5_Nmuon);
     fOutput->Add(hCut5_Muon_Pt);
     fOutput->Add(hCut5_Muon_Eta);
@@ -518,19 +627,19 @@ void AnaNtupBunchSapcing::Begin(TTree * /*tree*/)
     fOutput->Add(hCut5_Muon_Pt1);
     fOutput->Add(hCut5_Muon_Pt2);
     
-    hCut5_Nlep = new TH1F("hCut5_Nlep", "Number of leptons", 10, 0, 10);
-    hCut5_lep_Pt = new TH1F("hCut5_lep_Pt", "Lepton pT", 100, 0, 1000000);
-    hCut5_lep_Pt1 = new TH1F("hCut5_lep_Pt1", "Lepton 1 pT", 100, 0, 1000000);
-    hCut5_lep_Pt2 = new TH1F("hCut5_lep_Pt2", "Lepton 2 pT", 100, 0, 1000000);
+    hCut5_Nlep    = new TH1F("hCut5_Nlep", "Number of leptons", 10, 0, 10);
+    hCut5_lep_Pt  = new TH1F("hCut5_lep_Pt", "Lepton pT", 100, 0, 2000); // 2000 GeV
+    hCut5_lep_Pt1 = new TH1F("hCut5_lep_Pt1", "Lepton 1 pT", 100, 0, 2000);
+    hCut5_lep_Pt2 = new TH1F("hCut5_lep_Pt2", "Lepton 2 pT", 100, 0, 2000);
     fOutput->Add(hCut5_Nlep);
     fOutput->Add(hCut5_lep_Pt);
     fOutput->Add(hCut5_lep_Pt1);
     fOutput->Add(hCut5_lep_Pt2);
     
-    hCut5_MET = new TH1F("hCut5_MET", "MET", 100, 0, 1000000);
+    hCut5_MET = new TH1F("hCut5_MET", "MET", 100, 0, 5000); // 5000 GeV
     fOutput->Add(hCut5_MET);
     
-    hCut5_Meff = new TH1F("hCut5_Meff", "Meff", 100, 0, 1000000);
+    hCut5_Meff = new TH1F("hCut5_Meff", "Meff", 100, 0, 5000); // 5000 GeV
     fOutput->Add(hCut5_Meff);
     
     hCut5_Nbjet = new TH1F("hCut5_Nbjet", "Number of b-jets", 10, 0, 10);
@@ -581,11 +690,21 @@ Bool_t AnaNtupBunchSapcing::Process(Long64_t entry)
    //
    // The return value is currently not used.
 
-    vec_lept.clear();
     vec_elec.clear();
     vec_muon.clear();
     vec_jets.clear();
+    vec_lept.clear();
     vec_truthv.clear();
+    
+    vec_OR_elec.clear();
+    vec_OR_muon.clear();
+    vec_OR_jets.clear();
+    vec_OR_lept.clear();
+    
+    vec_signal_elec.clear();
+    vec_signal_muon.clear();
+    vec_signal_jets.clear();
+    vec_signal_lept.clear();
     
     fChain->GetTree()->GetEntry(entry);
 
@@ -669,9 +788,12 @@ Bool_t AnaNtupBunchSapcing::Process(Long64_t entry)
     sort(vec_muon.begin(), vec_muon.end(), sort_descending_Pt<Muon>);
     sort(vec_jets.begin(), vec_jets.end(), sort_descending_Pt<Jet>);
 
-    // Get the baseline electrons, muons, and jets.
+    // Set the baseline for electrons, muons, and jets.
+    // Initialize passOR = 0 (Actually this step is not needed becuase passOR is initialized in the Particle() constructor.)
+    // Set the isSignal electrons and muons.
+    // Set the isBjet for jets.
     for (auto & el_itr : vec_elec) {
-        if ((el_itr.get_TLV()).Pt() > 10000. && fabs((el_itr.get_TLV()).Eta()) < 2.47) {
+        if (el_itr.get_pt() > 10000. && fabs(el_itr.get_eta()) < 2.47) {
             el_itr.set_baseline(1);
         }
         else {
@@ -688,7 +810,7 @@ Bool_t AnaNtupBunchSapcing::Process(Long64_t entry)
         }
     }
     for (auto & mu_itr : vec_muon) {
-        if ((mu_itr.get_TLV()).Pt() > 10000. && fabs((mu_itr.get_TLV()).Eta()) < 2.4) {
+        if (mu_itr.get_pt() > 10000. && fabs(mu_itr.get_eta()) < 2.4) {
             mu_itr.set_baseline(1);
         }
         else {
@@ -703,23 +825,30 @@ Bool_t AnaNtupBunchSapcing::Process(Long64_t entry)
         }
     }
     for (auto & jet_itr : vec_jets) {
-        if ((jet_itr.get_TLV()).Pt() > 20000. && fabs((jet_itr.get_TLV()).Eta()) < 2.8) {
+        if (jet_itr.get_pt() > 20000. && fabs(jet_itr.get_eta()) < 2.8) {
             jet_itr.set_baseline(1);
         }
         else {
             jet_itr.set_baseline(0);
         }
         jet_itr.set_passOR(0);
-        if ((jet_itr.get_TLV()).Pt() > 20000. && fabs((jet_itr.get_TLV()).Eta()) < 2.5 && jet_itr.get_MV1() > 0.7892) {
+        if (jet_itr.get_pt() > 20000. && fabs(jet_itr.get_eta()) < 2.5 && jet_itr.get_MV1() > 0.7892) {
             jet_itr.set_isBjet(1);
         }
     }
 
-    // Njet/Nelec/Nmuon before OR
+    // Fill leptons into vector. Put the FillLeptons() function at here
+    // then the lepton in the vector has correct baseline, flavor,
+    // and isSignal information. And the passOR is 0.
+    FillLeptons(vec_elec, vec_muon);
+    // Now sort leptons by descending Pt
+    sort(vec_lept.begin(), vec_lept.end(), sort_descending_Pt<Lepton>);
+    
+    // Dump Nelec, Nmuon, Njet, Nlept, Nbjet before OR.
     hCut1_Nelec->Fill(NEl);
     hCut1_Nmuon->Fill(NMu);
     hCut1_Njet->Fill(NJet);
-    hCut1_Nlep->Fill(NEl + NMu);
+    hCut1_Nlep->Fill( vec_lept.size() );
     int Nbjet = 0;
     for (auto & jet_itr : vec_jets) {
         if (!jet_itr.get_isBjet()) continue;
@@ -729,61 +858,93 @@ Bool_t AnaNtupBunchSapcing::Process(Long64_t entry)
     
     // Apply the overlap removal.
     OverlapRemoval(&vec_elec, &vec_muon, &vec_jets);
+    
+    // Fill OR electrons, OR muons, OR jets, and OR leptons into vectors.
+    FillORElectrons(vec_elec);
+    FillORMuons(vec_muon);
+    FillORJets(vec_jets);
+    FillORLeptons(vec_elec, vec_muon);
+    
+    // Fill signal electrons, signal muons, signal jets, and signal leptons into vectors.
+    FillSignalElectrons(vec_elec);
+    FillSignalMuons(vec_muon);
+    FillSignalJets(vec_jets);
+    FillSignalLeptons(vec_signal_elec, vec_signal_muon);
 
-    // Before applying any cuts
+    // Dump number of events before applying any cuts (but after baseline & OR).
     int NEl_OR = 0;
-    //cout << EventNumber << " vec_elec.size()=" << vec_elec.size() << endl;
-    for (auto & el_itr : vec_elec) {
-        if(!el_itr.get_passOR()) continue;
+    for (auto & el_itr : vec_OR_elec) {
         NEl_OR++;
-        hCut1_Elec_Pt->Fill( (el_itr.get_TLV()).Pt() );
-        hCut1_Elec_Eta->Fill( (el_itr.get_TLV()).Eta() );
-        hCut1_Elec_Phi->Fill( (el_itr.get_TLV()).Phi() );
-        hCut1_lep_Pt->Fill( (el_itr.get_TLV()).Pt() );
-        //if (vec_elec.size() >=3 )
-        //cout << el_itr.get_pt() << endl;
+        hCut1_Elec_Pt->Fill( el_itr.get_pt() / 1000. ); // in GeV
+        hCut1_Elec_Eta->Fill( el_itr.get_eta() );
+        hCut1_Elec_Phi->Fill( el_itr.get_phi() );
     }
-    hCut1_Nelec_OR->Fill(NEl_OR);
+    if (NEl_OR != 0) hCut1_Nelec_OR->Fill(NEl_OR); // avoid 0 to be dumped in first bin.
+    if (NEl_OR >= 2) { // Dump pT for leading and subleading electrons event.
+        hCut1_Elec_Pt1->Fill( vec_OR_elec[0].get_pt() / 1000. );
+        hCut1_Elec_Pt2->Fill( vec_OR_elec[1].get_pt() / 1000. );
+    }
 
     int NMu_OR = 0;
-    //cout << EventNumber << " vec_muon.size()=" << m_mu_passOR.size() << endl;
-    for (auto & mu_itr : vec_muon) {
-        if (!mu_itr.get_passOR()) continue;
+    for (auto & mu_itr : vec_OR_muon) {
         NMu_OR++;
-        hCut1_Muon_Pt->Fill( (mu_itr.get_TLV()).Pt() );
-        hCut1_Muon_Eta->Fill( (mu_itr.get_TLV()).Eta() );
-        hCut1_Muon_Phi->Fill( (mu_itr.get_TLV()).Phi() );
-        hCut1_lep_Pt->Fill( (mu_itr.get_TLV()).Pt() );
-        
-        //cout << mu.pT << endl;
+        hCut1_Muon_Pt->Fill( mu_itr.get_pt() / 1000. );
+        hCut1_Muon_Eta->Fill( mu_itr.get_eta() );
+        hCut1_Muon_Phi->Fill( mu_itr.get_phi() );
     }
-    hCut1_Nmuon_OR->Fill(NMu_OR);
+    if (NMu_OR != 0) hCut1_Nmuon_OR->Fill(NMu_OR); // avoid 0 to be dumped in first bin.
+    if (NMu_OR >= 2) { // Dump pT for leading and subleading muons event.
+        hCut1_Muon_Pt1->Fill( vec_OR_muon[0].get_pt() / 1000. );
+        hCut1_Muon_Pt2->Fill( vec_OR_muon[1].get_pt() / 1000.);
+    }
 
-    hCut1_Nlep_OR->Fill(NEl_OR + NMu_OR);
-    
-    int NJet_OR = 0;
-    //cout << EventNumber << " vec_jets.size()=" << m_jet_passOR.size() << endl;
-    for (auto & jet_itr : vec_jets) {
-        if (!jet_itr.get_passOR()) continue;
-        NJet_OR++;
-        hCut1_Jet_Pt->Fill( (jet_itr.get_TLV()).Pt() );
-        hCut1_Jet_Eta->Fill( (jet_itr.get_TLV()).Eta() );
-        hCut1_Jet_Phi->Fill( (jet_itr.get_TLV()).Phi() );
-        
-        //cout << jet.pT << endl;
+    int Nlept_OR = 0;
+    for (auto & lep_itr : vec_OR_lept) {
+        Nlept_OR++;
+        hCut1_lep_Pt->Fill( lep_itr.get_pt() / 1000. );
     }
-    hCut1_Njet_OR->Fill(NJet_OR);
+    if (Nlept_OR != 0) hCut1_Nlep_OR->Fill(Nlept_OR); // avoid 0 to be dumped in first bin.
+    if (Nlept_OR >= 2) { // Dump pT for leading and subleading leptons event.
+        hCut1_lep_Pt1->Fill( vec_OR_lept[0].get_pt() / 1000. );
+        hCut1_lep_Pt2->Fill( vec_OR_lept[1].get_pt() / 1000. );
+    }
+    
+    int NJet_OR = 0, NJet_OR_pt20 = 0, NJet_OR_pt50 = 0;
+    for (auto & jet_itr : vec_OR_jets) {
+        NJet_OR++;
+        hCut1_Jet_Pt->Fill( jet_itr.get_pt() / 1000. );
+        hCut1_Jet_Eta->Fill( jet_itr.get_eta() );
+        hCut1_Jet_Phi->Fill( jet_itr.get_phi() );
+        if (jet_itr.get_pt() > 20000.) NJet_OR_pt20++;
+        if (jet_itr.get_pt() > 50000.) NJet_OR_pt50++;
+    }
+    if (NJet_OR != 0) hCut1_Njet_OR->Fill(NJet_OR); // avoid 0 to be dumped in first bin.
+    if (NJet_OR_pt20 != 0) hCut1_Njet_OR_pt20->Fill(NJet_OR_pt20);
+    if (NJet_OR_pt50 != 0) hCut1_Njet_OR_pt50->Fill(NJet_OR_pt50);
+    if (NJet_OR >= 4) { // Dump pT for 4 leading jets, no requirement for jet pT > 50 GeV.
+        hCut1_Jet_Pt1->Fill( vec_OR_jets[0].get_pt() / 1000. );
+        hCut1_Jet_Pt2->Fill( vec_OR_jets[1].get_pt() / 1000. );
+        hCut1_Jet_Pt3->Fill( vec_OR_jets[2].get_pt() / 1000. );
+        hCut1_Jet_Pt4->Fill( vec_OR_jets[3].get_pt() / 1000. );
+    }
 
     int Nbjet_OR = 0;
-    for (auto & jet_itr : vec_jets) {
-        if (!jet_itr.get_passOR()) continue;
+    for (auto & jet_itr : vec_OR_jets) {
         if (!jet_itr.get_isBjet()) continue;
         Nbjet_OR++;
     }
-    hCut1_Nbjet_OR->Fill(Nbjet_OR);
+    if (Nbjet_OR != 0) hCut1_Nbjet_OR->Fill(Nbjet_OR); // avoid 0 to be dumped in first bin.
 
-    hCut1_MET->Fill(Etmiss_Et);
+    hCut1_MET->Fill(Etmiss_Et / 1000.);
 
+    // There is no signal leptons and signal jets before apply cuts.
+    //double meff = 0;
+    //hCut1_Meff->Fill(meff);
+    
+//----------------------------------//
+// Apply cuts
+//----------------------------------//
+    
     if (!passGRL) return kTRUE; // passGRL = -1 for MC
     fpassGRL++;
     hCutFlows->Fill(1); // GRL
@@ -801,41 +962,36 @@ Bool_t AnaNtupBunchSapcing::Process(Long64_t entry)
     int Nbjet_pt20 = 0, Njet_pt50 = 0;
     int same_sign = 1;
     
-    for (auto & el_itr : vec_elec) {
-        if (el_itr.get_baseline() == true && el_itr.get_passOR() == true) {
-            Nel++;
-            if ((el_itr.get_TLV()).Pt() > 20000.) Nel_pt20++;
-            if (el_itr.get_isSignal()) {
-                Nel_sig++;
-                if ((el_itr.get_TLV()).Pt() > 20000.) {
-                    Nel_sig_pt20++;
-                    el_tlv = el_tlv + el_itr.get_TLV();
-                    same_sign = same_sign * el_itr.get_charge();
-                }
+    for (auto & el_itr : vec_OR_elec) {
+        Nel++;
+        if (el_itr.get_pt() > 20000.) Nel_pt20++;
+        if (el_itr.get_isSignal()) {
+            Nel_sig++;
+            if (el_itr.get_pt() > 20000.) {
+                Nel_sig_pt20++;
+                el_tlv = el_tlv + el_itr.get_TLV();
+                same_sign = same_sign * el_itr.get_charge();
             }
         }
     }
-    for (auto & mu_itr : vec_muon) {
-        if (mu_itr.get_baseline() == true && mu_itr.get_passOR() == true) {
-            Nmu++;
-            if ((mu_itr.get_TLV()).Pt() > 20000.) Nmu_pt20++;
-            if (mu_itr.get_isSignal()) {
-                Nmu_sig++;
-                if ((mu_itr.get_TLV()).Pt() > 20000.) {
-                    Nmu_sig_pt20++;
-                    mu_tlv = mu_tlv + mu_itr.get_TLV();
-                    same_sign = same_sign * mu_itr.get_charge();
-                }
+    for (auto & mu_itr : vec_OR_muon) {
+        Nmu++;
+        if (mu_itr.get_pt() > 20000.) Nmu_pt20++;
+        if (mu_itr.get_isSignal()) {
+            Nmu_sig++;
+            if (mu_itr.get_pt() > 20000.) {
+                Nmu_sig_pt20++;
+                mu_tlv = mu_tlv + mu_itr.get_TLV();
+                same_sign = same_sign * mu_itr.get_charge();
             }
         }
     }
-    for (auto & jet_itr : vec_jets) {
-        if (!jet_itr.get_passOR()) continue;
+    for (auto & jet_itr : vec_OR_jets) {
         if (jet_itr.get_quality() == 1) continue; // 1=bad jet from SUSYTools IsGoodJet
         if (jet_itr.get_isBjet()) Nbjet_pt20++;
         if (jet_itr.get_pt() > 50000.) Njet_pt50++;
     }
-    
+
 //----------------------------------//
     
     if ( (Nel + Nmu) >= 2) {
@@ -849,169 +1005,203 @@ Bool_t AnaNtupBunchSapcing::Process(Long64_t entry)
     if ( (Nel_sig_pt20 + Nmu_sig_pt20) == 2) {
         fEqualTwoSignalLeptons++;
         hCutFlows->Fill(5); // == 2 signal leptons (20 GeV)
-
-        int ielec = 0;
-        for (auto & el_itr : vec_elec) {
-            if (el_itr.get_baseline() == true &&
-                el_itr.get_passOR() == true &&
-                el_itr.get_isSignal() == true &&
-                (el_itr.get_TLV()).Pt()  > 20000.) {
-                ielec++;
-                
-                hCut5_Elec_Pt->Fill( (el_itr.get_TLV()).Pt() );
-                hCut5_Elec_Eta->Fill( (el_itr.get_TLV()).Eta() );
-                hCut5_Elec_Phi->Fill( (el_itr.get_TLV()).Phi() );
-                
-                hCut5_lep_Pt->Fill( (el_itr.get_TLV()).Pt() );
-            }
-        }
-        hCut5_Nelec->Fill(ielec);
-        
-        int imuon = 0;
-        for (auto & mu_itr : vec_muon) {
-            if (mu_itr.get_baseline() == true &&
-                mu_itr.get_passOR() == true &&
-                mu_itr.get_isSignal() == true &&
-                (mu_itr.get_TLV()).Pt() > 20000.) {
-                imuon++;
-                
-                hCut5_Muon_Pt->Fill( (mu_itr.get_TLV()).Pt() );
-                hCut5_Muon_Eta->Fill( (mu_itr.get_TLV()).Eta() );
-                hCut5_Muon_Phi->Fill( (mu_itr.get_TLV()).Phi() );
-                
-                hCut5_lep_Pt->Fill( (mu_itr.get_TLV()).Pt() );
-            }
-        }
-        hCut5_Nmuon->Fill(imuon);
-
-        int ijets = 0, ibjets = 0;
-        double jet_pt = 0, jet_eta = 0, jet_phi = 0;
-        for (auto & jet_itr : vec_jets) {
-            if (!jet_itr.get_passOR()) continue;
-            if (jet_itr.get_quality() == 1) continue; // 1=bad jet from SUSYTools IsGoodJet
-            if (jet_itr.get_isBjet() == 1) ibjets++;
-            if ((jet_itr.get_TLV()).Pt() > 50000.) {
-                ijets++;
-                
-                hCut5_Jet_Pt->Fill( (jet_itr.get_TLV()).Pt() );
-                hCut5_Jet_Eta->Fill( (jet_itr.get_TLV()).Eta() );
-                hCut5_Jet_Phi->Fill( (jet_itr.get_TLV()).Phi() );
-            }
-        }
-        hCut5_Njet->Fill(ijets);
-        hCut5_Nbjet->Fill(ibjets);
-        
-        hCut5_Nlep->Fill(ielec + imuon);
-        
-        hCut5_MET->Fill(Etmiss_Et);
-        hCut5_Meff->Fill(0);
     }
+
+    int ielec = 0;
+    for (auto & el_itr : vec_signal_elec) {
+        if ( (Nel_sig_pt20 + Nmu_sig_pt20) == 2) {
+            ielec++;
+            hCut5_Elec_Pt->Fill( el_itr.get_pt() / 1000. );
+            hCut5_Elec_Eta->Fill( el_itr.get_eta() );
+            hCut5_Elec_Phi->Fill( el_itr.get_phi() );
+        }
+    }
+    if (ielec != 0) hCut5_Nelec->Fill(ielec); // avoid 0 to be dumped in first bin.
+    if (ielec >= 2 &&
+        (Nel_sig_pt20 + Nmu_sig_pt20) == 2) { // Dump pT for leading and subleading signal electrons event.
+        hCut5_Elec_Pt1->Fill( vec_signal_elec[0].get_pt() / 1000. );
+        hCut5_Elec_Pt2->Fill( vec_signal_elec[1].get_pt() / 1000. );
+    }
+        
+    int imuon = 0;
+    for (auto & mu_itr : vec_signal_muon) {
+        if ( (Nel_sig_pt20 + Nmu_sig_pt20) == 2) {
+            imuon++;
+            hCut5_Muon_Pt->Fill( mu_itr.get_pt() / 1000. );
+            hCut5_Muon_Eta->Fill( mu_itr.get_eta() );
+            hCut5_Muon_Phi->Fill( mu_itr.get_phi() );
+        }
+    }
+    if (imuon != 0) hCut5_Nmuon->Fill(imuon); // avoid 0 to be dumped in the first bin.
+    if (imuon >= 2 &&
+        (Nel_sig_pt20 + Nmu_sig_pt20) == 2) { // Dump pT for leading and subleading signal muons event.
+        hCut5_Muon_Pt1->Fill( vec_signal_muon[0].get_pt() / 1000. );
+        hCut5_Muon_Pt2->Fill( vec_signal_muon[1].get_pt() / 1000. );
+    }
+
+    int ilept = 0;
+    for (auto & lep_itr : vec_signal_lept) {
+        if ( (Nel_sig_pt20 + Nmu_sig_pt20) == 2) {
+            ilept++;
+            hCut5_lep_Pt->Fill( lep_itr.get_pt() / 1000. );
+        }
+    }
+    if (ilept != 0) hCut5_Nlep->Fill(ilept); // avoid 0 to be dumped in the first bin.
+    if (ilept >= 2 &&
+        (Nel_sig_pt20 + Nmu_sig_pt20) == 2) {
+        hCut5_lep_Pt1->Fill( vec_signal_lept[0].get_pt() / 1000. );
+        hCut5_lep_Pt2->Fill( vec_signal_lept[1].get_pt() / 1000. );
+    }
+        
+    int ijets = 0;
+    for (auto & jet_itr : vec_signal_jets) {
+        if ( (Nel_sig_pt20 + Nmu_sig_pt20) == 2) {
+            ijets++;
+            hCut5_Jet_Pt->Fill( jet_itr.get_pt() / 1000. );
+            hCut5_Jet_Eta->Fill( jet_itr.get_eta() );
+            hCut5_Jet_Phi->Fill( jet_itr.get_phi() );
+        }
+    }
+    if (ijets != 0) hCut5_Njet->Fill(ijets); // avoid 0 to be dumped in the first bin.
+    if (ijets >= 4 &&
+        (Nel_sig_pt20 + Nmu_sig_pt20) == 2) {
+        hCut5_Jet_Pt1->Fill( vec_signal_jets[0].get_pt() / 1000. );
+        hCut5_Jet_Pt2->Fill( vec_signal_jets[1].get_pt() / 1000. );
+        hCut5_Jet_Pt3->Fill( vec_signal_jets[2].get_pt() / 1000. );
+        hCut5_Jet_Pt4->Fill( vec_signal_jets[3].get_pt() / 1000. );
+    }
+    int ijets_pt20 = 0, ijets_pt50 = 0;
+    for (auto & jet_itr : vec_OR_jets) {
+        if (jet_itr.get_quality() == 1) continue; // 1=bad jet from SUSYTools IsGoodJet
+        if (jet_itr.get_isBjet()) continue;
+        if ( (Nel_sig_pt20 + Nmu_sig_pt20) == 2) {
+            if (jet_itr.get_pt() > 20000.) ijets_pt20++;
+            if (jet_itr.get_pt() > 50000.) ijets_pt50++;
+        }
+
+    }
+    if (ijets_pt20 != 0) hCut5_Njet_pt20->Fill(ijets_pt20); // avoid 0 to be dumped in the first bin.
+    if (ijets_pt50 != 0) hCut5_Njet_pt50->Fill(ijets_pt50); // avoid 0 to be dumped in the first bin.
+
+    int ibjets = 0;
+    for (auto & jet_itr : vec_OR_jets) {
+        if (!jet_itr.get_isBjet()) continue;
+        if ( (Nel_sig_pt20 + Nmu_sig_pt20) == 2) {
+            Nbjet_OR++;
+        }
+    }
+    if (ibjets != 0) hCut5_Nbjet->Fill(ibjets); // avoid 0 to be dumped in the first bin.
     
+    if ( (Nel_sig_pt20 + Nmu_sig_pt20) == 2) {
+        hCut5_MET->Fill(Etmiss_Et / 1000.);
+        double ht = calculate_Ht(vec_signal_lept, vec_signal_jets);
+        double meff = calculate_Meff(ht, Etmiss_Et);
+        hCut5_Meff->Fill(meff / 1000.);
+    }
+
 //----------------------------------//
     
     TLorentzVector ml1l2_tlv = el_tlv + mu_tlv;
-
-    hCut5_Meff->Fill( ml1l2_tlv.M() );
     
     // Channel separation [20,20]: El-El channel
     if (Nel_sig_pt20 == 2 && Nmu_sig_pt20 == 0) {
-	fChannelSelection_elel++;
-	hCutFlows->Fill(6); // Channel selection (20, 20 GeV)
+        fChannelSelection_elel++;
+        hCutFlows->Fill(6); // Channel selection (20, 20 GeV)
 
-	fTrigger_elel++;
-	hCutFlows->Fill(7); // Trigger
+        fTrigger_elel++;
+        hCutFlows->Fill(7); // Trigger
 
-	if (ml1l2_tlv.M() > 12000.) {
-	    fMl1l2_elel++;
-	    hCutFlows->Fill(8); // ml1l2 > 12 GeV
+        if (ml1l2_tlv.M() > 12000.) {
+            fMl1l2_elel++;
+            hCutFlows->Fill(8); // ml1l2 > 12 GeV
 
-	    if (Nbjet_pt20 >= 1) {
-		fAtLeastOneBJet_elel++;
-		hCutFlows->Fill(9); // ≥ 1 b jet (20 GeV)
+            if (Nbjet_pt20 >= 1) {
+                fAtLeastOneBJet_elel++;
+                hCutFlows->Fill(9); // ≥ 1 b jet (20 GeV)
 
-		if (Njet_pt50 >= 4) {
-		    fAtLeastFourJets_elel++;
-		    hCutFlows->Fill(10); // ≥ 4 jets (50GeV)
+                if (Njet_pt50 >= 4) {
+                    fAtLeastFourJets_elel++;
+                    hCutFlows->Fill(10); // ≥ 4 jets (50GeV)
 
-		    if (same_sign == 1) {
-			fSameSign_elel++;
-			hCutFlows->Fill(11); // Same sign
+                    if (same_sign == 1) {
+                        fSameSign_elel++;
+                        hCutFlows->Fill(11); // Same sign
 
-			if (Etmiss_Et > 150000.) {
-			    fMET_elel++;
-			    hCutFlows->Fill(12); // MET > 150 GeV
-			}
-		    }
-		}
-	    }
-	}
+                        if (Etmiss_Et > 150000.) {
+                            fMET_elel++;
+                            hCutFlows->Fill(12); // MET > 150 GeV
+                        }
+                    }
+                }
+            }
+        }
     }
 
     // Channel separation [20,20]: El-MU channel
     if (Nel_sig_pt20 == 1 && Nmu_sig_pt20 == 1) {
-	fChannelSelection_elmu++;
-	hCutFlows->Fill(13); // Channel selection (20, 20 GeV)
+        fChannelSelection_elmu++;
+        hCutFlows->Fill(13); // Channel selection (20, 20 GeV)
 
-	fTrigger_elmu++;
-	hCutFlows->Fill(14); // Trigger
+        fTrigger_elmu++;
+        hCutFlows->Fill(14); // Trigger
 
-	if (ml1l2_tlv.M() > 12000.) {
-	    fMl1l2_elmu++;
-	    hCutFlows->Fill(15); // ml1l2 > 12 GeV
+        if (ml1l2_tlv.M() > 12000.) {
+            fMl1l2_elmu++;
+            hCutFlows->Fill(15); // ml1l2 > 12 GeV
 
-	    if (Nbjet_pt20 >= 1) {
-		fAtLeastOneBJet_elmu++;
-		hCutFlows->Fill(16); // ≥ 1 b jet (20 GeV)
+            if (Nbjet_pt20 >= 1) {
+                fAtLeastOneBJet_elmu++;
+                hCutFlows->Fill(16); // ≥ 1 b jet (20 GeV)
 
-		if (Njet_pt50 >= 4) {
-		    fAtLeastFourJets_elmu++;
-		    hCutFlows->Fill(17); // ≥ 4 jets (50GeV)
+                if (Njet_pt50 >= 4) {
+                    fAtLeastFourJets_elmu++;
+                    hCutFlows->Fill(17); // ≥ 4 jets (50GeV)
 
-		    if (same_sign == 1) {
-			fSameSign_elmu++;
-			hCutFlows->Fill(18); // Same sign
+                    if (same_sign == 1) {
+                        fSameSign_elmu++;
+                        hCutFlows->Fill(18); // Same sign
 
-			if (Etmiss_Et > 150000.) {
-			    fMET_elmu++;
-			    hCutFlows->Fill(19); // MET > 150 GeV
-			}
-		    }
-		}
-	    }
-	}
+                        if (Etmiss_Et > 150000.) {
+                            fMET_elmu++;
+                            hCutFlows->Fill(19); // MET > 150 GeV
+                        }
+                    }
+                }
+            }
+        }
     }
     // Channel separation [20,20]: MU-MU channel
     if (Nel_sig_pt20 == 0 && Nmu_sig_pt20 == 2) {
-	fChannelSelection_mumu++;
-	hCutFlows->Fill(20); // Channel selection (20, 20 GeV)
+        fChannelSelection_mumu++;
+        hCutFlows->Fill(20); // Channel selection (20, 20 GeV)
 
-	fTrigger_mumu++;
-	hCutFlows->Fill(21); // Trigger
+        fTrigger_mumu++;
+        hCutFlows->Fill(21); // Trigger
 
-	if (ml1l2_tlv.M() > 12000.) {
-	    fMl1l2_mumu++;
-	    hCutFlows->Fill(22); // ml1l2 > 12 GeV
+        if (ml1l2_tlv.M() > 12000.) {
+            fMl1l2_mumu++;
+            hCutFlows->Fill(22); // ml1l2 > 12 GeV
 
-	    if (Nbjet_pt20 >= 1) {
-		fAtLeastOneBJet_mumu++;
-		hCutFlows->Fill(23); // ≥ 1 b jet (20 GeV)
+            if (Nbjet_pt20 >= 1) {
+                fAtLeastOneBJet_mumu++;
+                hCutFlows->Fill(23); // ≥ 1 b jet (20 GeV)
 
-		if (Njet_pt50 >= 4) {
-		    fAtLeastFourJets_mumu++;
-		    hCutFlows->Fill(24); // ≥ 4 jets (50GeV)
+                if (Njet_pt50 >= 4) {
+                    fAtLeastFourJets_mumu++;
+                    hCutFlows->Fill(24); // ≥ 4 jets (50GeV)
 
-		    if (same_sign == 1) {
-			fSameSign_mumu++;
-			hCutFlows->Fill(25); // Same sign
+                    if (same_sign == 1) {
+                        fSameSign_mumu++;
+                        hCutFlows->Fill(25); // Same sign
 
-			if (Etmiss_Et > 150000.) {
-			    fMET_mumu++;
-			    hCutFlows->Fill(26); // MET > 150 GeV
-			}
-		    }
-		}
-	    }
-	}
+                        if (Etmiss_Et > 150000.) {
+                            fMET_mumu++;
+                            hCutFlows->Fill(26); // MET > 150 GeV
+                        }
+                    }
+                }
+            }
+        }
     }
 
 
