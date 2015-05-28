@@ -5,8 +5,13 @@ void root_ratio_plots()
     gROOT->Reset();
 
     string file50ns = "results.root";
-    string file25ns = "../user.jpoveda.t26_v04_p1872.110401.PowhegPythia_P2012_ttbar_nonallhad_output.root/results.root";
     // ttbar
+    string file25ns = "../user.jpoveda.t26_v04_p1872.110401.PowhegPythia_P2012_ttbar_nonallhad_output.root/results.root";
+    // G1000_T5000_L100
+    //string file25ns = "../user.jpoveda.t26_v04_p1872.204533.Herwigpp_UEEE4_CTEQ6L1_Gtt_G1000_T5000_L100_output.root/results.root";
+    // G1300_T5000_L700
+    //string file25ns = "../user.jpoveda.t26_v04_p1872.204540.Herwigpp_UEEE4_CTEQ6L1_Gtt_G1300_T5000_L700_output.root/results.root";
+    
     make_ratio_plot(file50ns.c_str(), file25ns.c_str(),
                     "hCut5_Njet",
                     "nJet", "counts", "50ns/25ns",
@@ -117,6 +122,4 @@ void root_ratio_plots()
                     "Meff (GeV)", "counts", "50ns/25ns",
                     0., 3000.,
                     "ratio_ttbar_Meff.pdf");
-    // G1000_T5000_L100
-    // g1300_T5000_L700
 }
