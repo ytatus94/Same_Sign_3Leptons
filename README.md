@@ -47,3 +47,8 @@ v09:
 2. Add fill functions for leptons, OR e/mu/jet/lepton, and signal e/mu/jet/lepton.
 3. Change the unit for Pt, MET, and Meff to GeV.
 4. Replace (obj.get_TLV()).Pt() to obj.get_pt().
+
+v10:
+1. Change root_ratio_plots.C to make_rato_plot.C which can make a single ratio plot.
+2. Add a new root_ratio_plots.C which can make lots of ratio plots.
+3. Fix bugs in run.cxx

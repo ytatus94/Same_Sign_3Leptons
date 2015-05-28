@@ -1,6 +1,8 @@
-void root_ratio_plots(string file1, string file2, string hName,
-                      char *xtitle, char *top_ytitle, char *bottom_ytitle,
-                      double xlow, double xup)
+void make_ratio_plot(string file1, string file2, 
+                     string hName,
+                     char *xtitle, char *top_ytitle, char *bottom_ytitle,
+                     double xlow, double xup,
+                     string outputFileName)
 {
     gROOT->Reset();
 
@@ -106,4 +108,7 @@ void root_ratio_plots(string file1, string file2, string hName,
     l->SetLineWidth(2);
     l->SetLineColor(kRed);
     l->Draw("same");
+    
+    c->SaveAs(outputFileName.c_str());
+    c->Close();
 }

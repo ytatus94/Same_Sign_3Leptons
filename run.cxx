@@ -123,10 +123,10 @@ void root_plots()
               1, "nJet_all.pdf");
     make_plot(hCut1_Njet_OR_pt20, "nJet pT>20GeV", "counts", kBlue, 2,
               hCut5_Njet_pt20, kRed, 2,
-              1, "nJte_OR_pt20");
+              1, "nJet_OR_pt20.pdf");
     make_plot(hCut1_Njet_OR_pt50, "nJet pT>50GeV", "counts", kBlue, 2,
               hCut5_Njet_pt50, kRed, 2,
-              1, "nJet_OR_pt50");
+              1, "nJet_OR_pt50.pdf");
     make_plot(hCut1_Jet_Pt, "jet Pt (MeV)", "counts", kBlue, 2,
               hCut5_Jet_Pt, kRed, 2,
               1, "Jet_Pt.pdf");
