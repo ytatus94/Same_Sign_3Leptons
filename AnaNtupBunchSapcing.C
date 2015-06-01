@@ -509,13 +509,13 @@ void AnaNtupBunchSapcing::Begin(TTree * /*tree*/)
     hCut1_Njet_OR = new TH1F("hCut1_Njet_OR", "Number of Jets (OR)", 100, 0, 100);
     hCut1_Njet_OR_pt20 = new TH1F("hCut1_Njet_OR_pt20", "Number of Jets (OR) pT > 20 GeV", 100, 0, 100);
     hCut1_Njet_OR_pt50 = new TH1F("hCut1_Njet_OR_pt50", "Number of Jets (OR) pT > 50 GeV", 100, 0, 100);
-    hCut1_Jet_Pt  = new TH1F("hCut1_Jet_Pt", "Jet pT", 100, 0, 2000); // 2000 GeV
+    hCut1_Jet_Pt  = new TH1F("hCut1_Jet_Pt", "Jet pT", 40, 0, 2000); // 0 to 2000 GeV, 50GeV/bin
     hCut1_Jet_Eta = new TH1F("hCut1_Jet_Eta", "Jet eta", 100, -5, 5);
     hCut1_Jet_Phi = new TH1F("hCut1_Jet_Phi", "Jet phi", 100, -5, 5);
-    hCut1_Jet_Pt1 = new TH1F("hCut1_Jet_Pt1", "Jet 1 pT", 100, 0, 2000);
-    hCut1_Jet_Pt2 = new TH1F("hCut1_Jet_Pt2", "Jet 2 pT", 100, 0, 2000);
-    hCut1_Jet_Pt3 = new TH1F("hCut1_Jet_Pt3", "Jet 3 pT", 100, 0, 2000);
-    hCut1_Jet_Pt4 = new TH1F("hCut1_Jet_Pt4", "Jet 4 pT", 100, 0, 2000);
+    hCut1_Jet_Pt1 = new TH1F("hCut1_Jet_Pt1", "Jet 1 pT", 40, 0, 2000);
+    hCut1_Jet_Pt2 = new TH1F("hCut1_Jet_Pt2", "Jet 2 pT", 40, 0, 2000);
+    hCut1_Jet_Pt3 = new TH1F("hCut1_Jet_Pt3", "Jet 3 pT", 40, 0, 2000);
+    hCut1_Jet_Pt4 = new TH1F("hCut1_Jet_Pt4", "Jet 4 pT", 40, 0, 2000);
     fOutput->Add(hCut1_Njet);
     fOutput->Add(hCut1_Njet_OR);
     fOutput->Add(hCut1_Njet_OR_pt20);
@@ -530,11 +530,11 @@ void AnaNtupBunchSapcing::Begin(TTree * /*tree*/)
     
     hCut1_Nelec    = new TH1F("hCut1_Nelec", "Number of electrons", 10, 0, 10);
     hCut1_Nelec_OR = new TH1F("hCut1_Nelec_OR", "Number of electrons (OR)", 10, 0, 10);
-    hCut1_Elec_Pt  = new TH1F("hCut1_Elec_Pt", "Elec pT", 100, 0, 2000); // 2000 GeV
+    hCut1_Elec_Pt  = new TH1F("hCut1_Elec_Pt", "Elec pT", 40, 0, 2000); // 0 to 2000 GeV, 50GeV/bin
     hCut1_Elec_Eta = new TH1F("hCut1_Elec_Eta", "Elec eta", 100, -5, 5);
     hCut1_Elec_Phi = new TH1F("hCut1_Elec_Phi", "Elec phi", 100, -5, 5);
-    hCut1_Elec_Pt1 = new TH1F("hCut1_Elec_Pt1", "Elec 1 pT", 100, 0, 2000);
-    hCut1_Elec_Pt2 = new TH1F("hCut1_Elec_Pt2", "Elec 2 pT", 100, 0, 2000);
+    hCut1_Elec_Pt1 = new TH1F("hCut1_Elec_Pt1", "Elec 1 pT", 40, 0, 2000);
+    hCut1_Elec_Pt2 = new TH1F("hCut1_Elec_Pt2", "Elec 2 pT", 40, 0, 2000);
     fOutput->Add(hCut1_Nelec);
     fOutput->Add(hCut1_Nelec_OR);
     fOutput->Add(hCut1_Elec_Pt);
@@ -545,11 +545,11 @@ void AnaNtupBunchSapcing::Begin(TTree * /*tree*/)
 
     hCut1_Nmuon    = new TH1F("hCut1_Nmuon", "Number of muons", 10, 0, 10);
     hCut1_Nmuon_OR = new TH1F("hCut1_Nmuon_OR", "Number of muons (OR)", 10, 0, 10);
-    hCut1_Muon_Pt  = new TH1F("hCut1_Muon_Pt", "Muon pT", 100, 0, 2000); // 2000 GeV
+    hCut1_Muon_Pt  = new TH1F("hCut1_Muon_Pt", "Muon pT", 40, 0, 2000); // 0 to 2000 GeV, 50GeV/bin
     hCut1_Muon_Eta = new TH1F("hCut1_Muon_Eta", "Muon eta", 100, -5, 5);
     hCut1_Muon_Phi = new TH1F("hCut1_Muon_Phi", "Muon phi", 100, -5, 5);
-    hCut1_Muon_Pt1 = new TH1F("hCut1_Muon_Pt1", "Muon 1 pT", 100, 0, 2000);
-    hCut1_Muon_Pt2 = new TH1F("hCut1_Muon_Pt2", "Muon 2 pT", 100, 0, 2000);
+    hCut1_Muon_Pt1 = new TH1F("hCut1_Muon_Pt1", "Muon 1 pT", 40, 0, 2000);
+    hCut1_Muon_Pt2 = new TH1F("hCut1_Muon_Pt2", "Muon 2 pT", 40, 0, 2000);
     fOutput->Add(hCut1_Nmuon);
     fOutput->Add(hCut1_Nmuon_OR);
     fOutput->Add(hCut1_Muon_Pt);
@@ -560,19 +560,19 @@ void AnaNtupBunchSapcing::Begin(TTree * /*tree*/)
     
     hCut1_Nlep    = new TH1F("hCut1_Nlep", "Number of leptons", 10, 0, 10);
     hCut1_Nlep_OR = new TH1F("hCut1_Nlep_OR", "Number of leptons (OR)", 10, 0, 10);
-    hCut1_lep_Pt  = new TH1F("hCut1_lep_Pt", "Lepton pT", 100, 0, 2000); // 2000 GeV
-    hCut1_lep_Pt1 = new TH1F("hCut1_lep_Pt1", "Lepton 1 pT", 100, 0, 2000);
-    hCut1_lep_Pt2 = new TH1F("hCut1_lep_Pt2", "Lepton 2 pT", 100, 0, 2000);
+    hCut1_lep_Pt  = new TH1F("hCut1_lep_Pt", "Lepton pT", 40, 0, 2000); // 0 to 2000 GeV, 50GeV/bin
+    hCut1_lep_Pt1 = new TH1F("hCut1_lep_Pt1", "Lepton 1 pT", 40, 0, 2000);
+    hCut1_lep_Pt2 = new TH1F("hCut1_lep_Pt2", "Lepton 2 pT", 40, 0, 2000);
     fOutput->Add(hCut1_Nlep);
     fOutput->Add(hCut1_Nlep_OR);
     fOutput->Add(hCut1_lep_Pt);
     fOutput->Add(hCut1_lep_Pt1);
     fOutput->Add(hCut1_lep_Pt2);
     
-    hCut1_MET = new TH1F("hCut1_MET", "MET", 100, 0, 5000); // 5000 GeV
+    hCut1_MET = new TH1F("hCut1_MET", "MET", 100, 0, 5000); // 0 to 5000 GeV, 50GeV/bin
     fOutput->Add(hCut1_MET);
     
-    hCut1_Meff = new TH1F("hCut1_Meff", "Meff", 100, 0, 5000); // 5000 GeV
+    hCut1_Meff = new TH1F("hCut1_Meff", "Meff", 50, 0, 5000); // 0 to 5000 GeV, 100GeV/bin
     fOutput->Add(hCut1_Meff);
     
     hCut1_Nbjet    = new TH1F("hCut1_Nbjet", "Number of b-jets", 10, 0, 10);
@@ -583,13 +583,13 @@ void AnaNtupBunchSapcing::Begin(TTree * /*tree*/)
     hCut5_Njet      = new TH1F("hCut5_Njet", "Number of Jets", 20, 0, 20);
     hCut5_Njet_pt20 = new TH1F("hCut5_Njet_pt20", "Number of Jets pT > 20 GeV", 20, 0, 20);
     hCut5_Njet_pt50 = new TH1F("hCut5_Njet_pt50", "Number of Jets pT > 50 GeV", 20, 0, 20);
-    hCut5_Jet_Pt  = new TH1F("hCut5_Jet_Pt", "Jet pT", 100, 0, 2000); // 2000 GeV
+    hCut5_Jet_Pt  = new TH1F("hCut5_Jet_Pt", "Jet pT", 40, 0, 2000); // 0 to 2000 GeV, 50GeV/bin
     hCut5_Jet_Eta = new TH1F("hCut5_Jet_Eta", "Jet eta", 100, -5, 5);
     hCut5_Jet_Phi = new TH1F("hCut5_Jet_Phi", "Jet phi", 100, -5, 5);
-    hCut5_Jet_Pt1 = new TH1F("hCut5_Jet_Pt1", "Jet 1 pT", 100, 0, 2000);
-    hCut5_Jet_Pt2 = new TH1F("hCut5_Jet_Pt2", "Jet 2 pT", 100, 0, 2000);
-    hCut5_Jet_Pt3 = new TH1F("hCut5_Jet_Pt3", "Jet 3 pT", 100, 0, 2000);
-    hCut5_Jet_Pt4 = new TH1F("hCut5_Jet_Pt4", "Jet 4 pT", 100, 0, 2000);
+    hCut5_Jet_Pt1 = new TH1F("hCut5_Jet_Pt1", "Jet 1 pT", 40, 0, 2000);
+    hCut5_Jet_Pt2 = new TH1F("hCut5_Jet_Pt2", "Jet 2 pT", 40, 0, 2000);
+    hCut5_Jet_Pt3 = new TH1F("hCut5_Jet_Pt3", "Jet 3 pT", 40, 0, 2000);
+    hCut5_Jet_Pt4 = new TH1F("hCut5_Jet_Pt4", "Jet 4 pT", 40, 0, 2000);
     fOutput->Add(hCut5_Njet);
     fOutput->Add(hCut5_Njet_pt20);
     fOutput->Add(hCut5_Njet_pt50);
@@ -602,11 +602,11 @@ void AnaNtupBunchSapcing::Begin(TTree * /*tree*/)
     fOutput->Add(hCut5_Jet_Pt4);
     
     hCut5_Nelec    = new TH1F("hCut5_Nelec", "Number of electrons", 10, 0, 10);
-    hCut5_Elec_Pt  = new TH1F("hCut5_Elec_Pt", "Elec pT", 100, 0, 2000); // 2000 GeV
+    hCut5_Elec_Pt  = new TH1F("hCut5_Elec_Pt", "Elec pT", 40, 0, 2000); // 0 to 2000 GeV, 50GeV/bin
     hCut5_Elec_Eta = new TH1F("hCut5_Elec_Eta", "Elec eta", 100, -5, 5);
     hCut5_Elec_Phi = new TH1F("hCut5_Elec_Phi", "Elec phi", 100, -5, 5);
-    hCut5_Elec_Pt1 = new TH1F("hCut5_Elec_Pt1", "Elec 1 pT", 100, 0, 2000);
-    hCut5_Elec_Pt2 = new TH1F("hCut5_Elec_Pt2", "Elec 2 pT", 100, 0, 2000);
+    hCut5_Elec_Pt1 = new TH1F("hCut5_Elec_Pt1", "Elec 1 pT", 40, 0, 2000);
+    hCut5_Elec_Pt2 = new TH1F("hCut5_Elec_Pt2", "Elec 2 pT", 40, 0, 2000);
     fOutput->Add(hCut5_Nelec);
     fOutput->Add(hCut5_Elec_Pt);
     fOutput->Add(hCut5_Elec_Eta);
@@ -615,11 +615,11 @@ void AnaNtupBunchSapcing::Begin(TTree * /*tree*/)
     fOutput->Add(hCut5_Elec_Pt2);
     
     hCut5_Nmuon    = new TH1F("hCut5_Nmuon", "Number of muons", 10, 0, 10);
-    hCut5_Muon_Pt  = new TH1F("hCut5_Muon_Pt", "Muon pT", 100, 0, 2000); // 2000 GeV
+    hCut5_Muon_Pt  = new TH1F("hCut5_Muon_Pt", "Muon pT", 40, 0, 2000); // 0 to 2000 GeV, 50GeV/bin
     hCut5_Muon_Eta = new TH1F("hCut5_Muon_Eta", "Muon eta", 100, -5, 5);
     hCut5_Muon_Phi = new TH1F("hCut5_Muon_Phi", "Muon phi", 100, -5, 5);
-    hCut5_Muon_Pt1 = new TH1F("hCut5_Muon_Pt1", "Muon 1 pT", 100, 0, 2000);
-    hCut5_Muon_Pt2 = new TH1F("hCut5_Muon_Pt2", "Muon 2 pT", 100, 0, 2000);
+    hCut5_Muon_Pt1 = new TH1F("hCut5_Muon_Pt1", "Muon 1 pT", 40, 0, 2000);
+    hCut5_Muon_Pt2 = new TH1F("hCut5_Muon_Pt2", "Muon 2 pT", 40, 0, 2000);
     fOutput->Add(hCut5_Nmuon);
     fOutput->Add(hCut5_Muon_Pt);
     fOutput->Add(hCut5_Muon_Eta);
@@ -628,18 +628,18 @@ void AnaNtupBunchSapcing::Begin(TTree * /*tree*/)
     fOutput->Add(hCut5_Muon_Pt2);
     
     hCut5_Nlep    = new TH1F("hCut5_Nlep", "Number of leptons", 10, 0, 10);
-    hCut5_lep_Pt  = new TH1F("hCut5_lep_Pt", "Lepton pT", 100, 0, 2000); // 2000 GeV
-    hCut5_lep_Pt1 = new TH1F("hCut5_lep_Pt1", "Lepton 1 pT", 100, 0, 2000);
-    hCut5_lep_Pt2 = new TH1F("hCut5_lep_Pt2", "Lepton 2 pT", 100, 0, 2000);
+    hCut5_lep_Pt  = new TH1F("hCut5_lep_Pt", "Lepton pT", 40, 0, 2000); // 0 to 2000 GeV, 50GeV/bin
+    hCut5_lep_Pt1 = new TH1F("hCut5_lep_Pt1", "Lepton 1 pT", 40, 0, 2000);
+    hCut5_lep_Pt2 = new TH1F("hCut5_lep_Pt2", "Lepton 2 pT", 40, 0, 2000);
     fOutput->Add(hCut5_Nlep);
     fOutput->Add(hCut5_lep_Pt);
     fOutput->Add(hCut5_lep_Pt1);
     fOutput->Add(hCut5_lep_Pt2);
     
-    hCut5_MET = new TH1F("hCut5_MET", "MET", 100, 0, 5000); // 5000 GeV
+    hCut5_MET = new TH1F("hCut5_MET", "MET", 100, 0, 5000); // 0 to 5000 GeV, 50GeV/bin
     fOutput->Add(hCut5_MET);
     
-    hCut5_Meff = new TH1F("hCut5_Meff", "Meff", 100, 0, 5000); // 5000 GeV
+    hCut5_Meff = new TH1F("hCut5_Meff", "Meff", 50, 0, 5000); // 0 to 5000 GeV, 100GeV/bin
     fOutput->Add(hCut5_Meff);
     
     hCut5_Nbjet = new TH1F("hCut5_Nbjet", "Number of b-jets", 10, 0, 10);

@@ -58,3 +58,8 @@ For some unkonw reason, root_ratio_plots.C cannot upload to GitHub. Re-commit ro
 
 v12:
 Modify root_ratio_plots.C. Then new version includes 3 different input files.
+
+v13:
+1. Change the bin size of histograms.
+2. Remove the y title from ratio plots.
+3. Add the error bars in ratio plots.

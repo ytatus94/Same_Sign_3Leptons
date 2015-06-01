@@ -1,7 +1,7 @@
 void make_ratio_plot(string file1, string file2, 
                      string hName,
                      char *xtitle, char *top_ytitle, char *bottom_ytitle,
-                     double xlow, double xup,
+                     double xlow, double xup, double ylow, double yup,
                      string outputFileName)
 {
     gROOT->Reset();
@@ -16,6 +16,9 @@ void make_ratio_plot(string file1, string file2,
     h2->SetDirectory(0);
     f2->Close();
 
+    h1->Sumw2();
+    h2->Sumw2();
+
     // Normalize to one.
     Double_t scale1 = 1./h1->Integral();
     h1->Scale(scale1);
@@ -27,22 +30,23 @@ void make_ratio_plot(string file1, string file2,
     h1->SetLineWidth(2);
     h1->SetMarkerStyle(20);
     h1->SetMarkerColor(kBlue);
-    h1->SetMarkerSize(1);
+    h1->SetMarkerSize(1.5);
     // X axis h1 plot settings
     h1->GetXaxis()->SetRangeUser(xlow, xup);
     // Y axis h1 plot settings
-    //h1->SetYTitle("counts");
     h1->SetYTitle(top_ytitle);
     h1->GetYaxis()->SetTitleSize(20);
     h1->GetYaxis()->SetTitleFont(43);
     h1->GetYaxis()->SetTitleOffset(1.55);
+    h1->SetMinimum(ylow); // Define Y minimum.
+    h1->SetMaximum(yup);	// Define Y maximum.
 
     // h2 settings
     h2->SetLineColor(kRed);
     h2->SetLineWidth(2);
     h2->SetMarkerStyle(26);
     h2->SetMarkerColor(kRed);
-    h2->SetMarkerSize(1);
+    h2->SetMarkerSize(1.5);
 
     // Define the Canvas
     TCanvas *c = new TCanvas("c", "canvas", 800, 800);
@@ -72,15 +76,15 @@ void make_ratio_plot(string file1, string file2,
 
     //Define the ratio plot
     TH1 *h3 = (TH1*)h1->Clone("h3");
-//    h3->SetLineColor(kBlack);
+    h3->SetLineColor(kBlack);
     h3->SetMinimum(0.); // Define Y minimum.
     h3->SetMaximum(2.);	// Define Y maximum.
-//    h3->Sumw2(); // sum of squares of weights
+    h3->Sumw2(); // sum of squares of weights
     h3->SetStats(0); // No statistics on lower plot
     h3->Divide(h2); // calculate the ratio
     h3->SetMarkerStyle(20);
     h3->SetMarkerColor(kBlack);
-    h3->SetMarkerSize(1);
+    h3->SetMarkerSize(1.5);
 
     // Ratio plot (h3) settings
     h3->SetTitle(""); // Remove the ratio title
