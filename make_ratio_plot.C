@@ -79,7 +79,7 @@ void make_ratio_plot(string file1, string file2,
     h3->SetLineColor(kBlack);
     h3->SetMinimum(0.); // Define Y minimum.
     h3->SetMaximum(2.);	// Define Y maximum.
-    h3->Sumw2(); // sum of squares of weights
+    //h3->Sumw2(); // sum of squares of weights
     h3->SetStats(0); // No statistics on lower plot
     h3->Divide(h2); // calculate the ratio
     h3->SetMarkerStyle(20);
