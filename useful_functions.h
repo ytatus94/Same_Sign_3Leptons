@@ -35,7 +35,7 @@ double calculate_Ht(vector<Lepton> signal_leptons, vector<Jet> signal_jets)
 
 double calculate_Meff(double Ht, double Etmiss)
 {
-    // the scalar sum of the signal leptons pT, all signal jets pT, and ETmi    ss
+    // the scalar sum of the signal leptons pT, all signal jets pT, and ETmiss
     return  Ht + Etmiss;
 }
 

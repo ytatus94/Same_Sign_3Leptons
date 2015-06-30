@@ -10,3 +10,6 @@ v01:
    - Leptons.h: basic properties of leptons are defined in Lepton class which inherits from Particle class. The Muon and Electron classes are inherit from Lepton class.
    - Jet.h: properties of Jets which inherits from Particle class.
 4. OverlapRemoval and the other useful functions are defined in separate files.
+
+v02:
+After discussing with Ximo, I made lots of modifications. This version can get the same number of event for cut 1 to cut 7.

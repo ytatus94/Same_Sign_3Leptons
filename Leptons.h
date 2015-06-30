@@ -1,5 +1,5 @@
 #ifndef LEPTONS_H
-#define LEPTONS_N
+#define LEPTONS_H
 
 #include "Particle.h"
 

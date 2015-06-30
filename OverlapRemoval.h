@@ -19,6 +19,7 @@ void OverlapRemoval(vector<Electron> *el_obj,
             jet_itr->set_passOR(1);
         else
             jet_itr->set_passOR(0);
+
     }
 
     vector<Muon>::iterator mu_itr = mu_obj->begin();
@@ -38,9 +39,11 @@ void OverlapRemoval(vector<Electron> *el_obj,
         bool el_sel = el_itr->get_baseline();
         if (el_sel)
             el_itr->set_passOR(1);
-        else
+        else {
             el_itr->set_passOR(0);
-
+            continue;
+        }
+        
         jet_itr = jet_obj->begin();
         jet_end = jet_obj->end();
         for (; jet_itr != jet_end; jet_itr++) {
@@ -48,21 +51,39 @@ void OverlapRemoval(vector<Electron> *el_obj,
             TLorentzVector el4vec = el_itr->get_TLV();
             TLorentzVector jet4vec = jet_itr->get_TLV();
             if (el4vec.DeltaR(jet4vec) < dRejet) {
-                jet_itr->set_passOR(0);
+                if (jet_itr->get_pt() > 20000. &&
+                    fabs(jet_itr->get_eta()) < 2.5 &&
+                    jet_itr->get_MV2c20() > -0.5517) {
+                    jet_itr->set_passOR(1);
+                }
+                else {
+                    jet_itr->set_passOR(0);
+                }
             }
         }
     }
 
+    jet_itr = jet_obj->begin();
+    jet_end = jet_obj->end();
+    for (; jet_itr != jet_end; jet_itr++) {
+        //if (jet_itr->get_passOR() == true &&
+          if  (fabs(jet_itr->get_eta()) < 4.5 &&
+            jet_itr->get_quality() == true) { // quality==1 are BAD jets
+            jet_itr->set_baseline(0);
+            jet_itr->set_cleaning(0);
+        }
+    }
+    
     // Remove electrons and muons overlapping with jets
     el_itr = el_obj->begin();
     el_end = el_obj->end();
     for (; el_itr != el_end; el_itr++) {
         if (!el_itr->get_passOR()) continue;
-
         jet_itr = jet_obj->begin();
         jet_end = jet_obj->end();
         for (; jet_itr != jet_end; jet_itr++) {
             if (!jet_itr->get_passOR()) continue;
+            if (!(jet_itr->get_phi()) > 2.8) continue;
             TLorentzVector el4vec = el_itr->get_TLV();
             TLorentzVector jet4vec = jet_itr->get_TLV();
             if (el4vec.DeltaR(jet4vec) < dRjete) {
@@ -80,10 +101,17 @@ void OverlapRemoval(vector<Electron> *el_obj,
         jet_end = jet_obj->end();
         for (; jet_itr != jet_end; jet_itr++) {
             if (!jet_itr->get_passOR()) continue;
+            if (!jet_itr->get_cleaning()) continue;
+            if (!(jet_itr->get_phi()) > 2.8) continue;
             TLorentzVector mu4vec = mu_itr->get_TLV();
             TLorentzVector jet4vec = jet_itr->get_TLV();
             if (mu4vec.DeltaR(jet4vec) < dRjetmu) {
-                mu_itr->set_passOR(0);
+                if (jet_itr->get_nTrk() < 3) {
+                    jet_itr->set_passOR(0);
+                }
+                else {
+                    mu_itr->set_passOR(0);
+                }
             }
         }
     }
@@ -103,7 +131,7 @@ void OverlapRemoval(vector<Electron> *el_obj,
             TLorentzVector mu4vec = mu_itr->get_TLV();
             if (el4vec.DeltaR(mu4vec) < dRemu) {
                 el_itr->set_passOR(0);
-                //mu_itr->set_passOR(0); // Otilia says we remove electron      only.
+                mu_itr->set_passOR(0);
             }
         }
     }

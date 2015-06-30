@@ -18,12 +18,16 @@ using namespace std;
 class MySelector : public AnaNtupSelector {
 public:
     // Variables for counting number of events after cuts
-    int fNumberOfEvents;
-    int fpassGRL;
-    int fDetError;
-    int fAtLeastTwoLeptons;
-    int fEqualTwoLeptons;
-    int fEqualTwoSignalLeptons;
+    int fAllEventsBeforeDerivations;
+    int fAllEventsInNtuple;
+    int fGRL;
+    int fTrigger;
+    int fGlobalFlags;
+    int fJetAndMuonCleaning;
+    int fPrimaryVertex;
+    int fCosmicsVeto;
+    int fAtLeastTwoBaselineLeptons;
+    int fAtLeastTwoSignalLeptons;
     // El-El channel
     int fChannelSelection_elel;
     int fTrigger_elel;
@@ -64,8 +68,174 @@ public:
     vector<Jet>      vec_signal_jets;
     vector<Lepton>   vec_signal_lept;
 
-    TH1* hCutFlows;
+    TH1 *hCutFlows;
+/*
+    // For baseline leptons
+    TH1 *h_mll_baseline_OS_ee;
+    TH1 *h_mll_baseline_OS_emu;
+    TH1 *h_mll_baseline_OS_mumu;
+    TH1 *h_mll_baseline_SS_ee;
+    TH1 *h_mll_baseline_SS_emu;
+    TH1 *h_mll_baseline_SS_mumu;
     
+    TH1 *h_ptvarcone20_pt_baseline_OS_ee;
+    TH1 *h_ptvarcone20_pt_baseline_OS_emu;
+    TH1 *h_ptvarcone20_pt_baseline_OS_mumu;
+    TH1 *h_ptvarcone20_pt_baseline_SS_ee;
+    TH1 *h_ptvarcone20_pt_baseline_SS_emu;
+    TH1 *h_ptvarcone20_pt_baseline_SS_mumu;
+    
+    TH1 *h_ptvarcone30_pt_baseline_OS_ee;
+    TH1 *h_ptvarcone30_pt_baseline_OS_emu;
+    TH1 *h_ptvarcone30_pt_baseline_OS_mumu;
+    TH1 *h_ptvarcone30_pt_baseline_SS_ee;
+    TH1 *h_ptvarcone30_pt_baseline_SS_emu;
+    TH1 *h_ptvarcone30_pt_baseline_SS_mumu;
+    
+    TH1 *h_ptvarcone40_pt_baseline_OS_ee;
+    TH1 *h_ptvarcone40_pt_baseline_OS_emu;
+    TH1 *h_ptvarcone40_pt_baseline_OS_mumu;
+    TH1 *h_ptvarcone40_pt_baseline_SS_ee;
+    TH1 *h_ptvarcone40_pt_baseline_SS_emu;
+    TH1 *h_ptvarcone40_pt_baseline_SS_mumu;
+    
+    TH1 *h_topoetcone20_pt_baseline_OS_ee;
+    TH1 *h_topoetcone20_pt_baseline_OS_emu;
+    TH1 *h_topoetcone20_pt_baseline_OS_mumu;
+    TH1 *h_topoetcone20_pt_baseline_SS_ee;
+    TH1 *h_topoetcone20_pt_baseline_SS_emu;
+    TH1 *h_topoetcone20_pt_baseline_SS_mumu;
+    
+    TH1 *h_topoetcone30_pt_baseline_OS_ee;
+    TH1 *h_topoetcone30_pt_baseline_OS_emu;
+    TH1 *h_topoetcone30_pt_baseline_OS_mumu;
+    TH1 *h_topoetcone30_pt_baseline_SS_ee;
+    TH1 *h_topoetcone30_pt_baseline_SS_emu;
+    TH1 *h_topoetcone30_pt_baseline_SS_mumu;
+    
+    TH1 *h_topoetcone40_pt_baseline_OS_ee;
+    TH1 *h_topoetcone40_pt_baseline_OS_emu;
+    TH1 *h_topoetcone40_pt_baseline_OS_mumu;
+    TH1 *h_topoetcone40_pt_baseline_SS_ee;
+    TH1 *h_topoetcone40_pt_baseline_SS_emu;
+    TH1 *h_topoetcone40_pt_baseline_SS_mumu;
+
+    // For signal leptons
+    TH1 *h_mll_signal_OS_ee;
+    TH1 *h_mll_signal_OS_emu;
+    TH1 *h_mll_signal_OS_mumu;
+    TH1 *h_mll_signal_SS_ee;
+    TH1 *h_mll_signal_SS_emu;
+    TH1 *h_mll_signal_SS_mumu;
+    
+    TH1 *h_ptvarcone20_pt_signal_OS_ee;
+    TH1 *h_ptvarcone20_pt_signal_OS_emu;
+    TH1 *h_ptvarcone20_pt_signal_OS_mumu;
+    TH1 *h_ptvarcone20_pt_signal_SS_ee;
+    TH1 *h_ptvarcone20_pt_signal_SS_emu;
+    TH1 *h_ptvarcone20_pt_signal_SS_mumu;
+    
+    TH1 *h_ptvarcone30_pt_signal_OS_ee;
+    TH1 *h_ptvarcone30_pt_signal_OS_emu;
+    TH1 *h_ptvarcone30_pt_signal_OS_mumu;
+    TH1 *h_ptvarcone30_pt_signal_SS_ee;
+    TH1 *h_ptvarcone30_pt_signal_SS_emu;
+    TH1 *h_ptvarcone30_pt_signal_SS_mumu;
+    
+    TH1 *h_ptvarcone40_pt_signal_OS_ee;
+    TH1 *h_ptvarcone40_pt_signal_OS_emu;
+    TH1 *h_ptvarcone40_pt_signal_OS_mumu;
+    TH1 *h_ptvarcone40_pt_signal_SS_ee;
+    TH1 *h_ptvarcone40_pt_signal_SS_emu;
+    TH1 *h_ptvarcone40_pt_signal_SS_mumu;
+    
+    TH1 *h_topoetcone20_pt_signal_OS_ee;
+    TH1 *h_topoetcone20_pt_signal_OS_emu;
+    TH1 *h_topoetcone20_pt_signal_OS_mumu;
+    TH1 *h_topoetcone20_pt_signal_SS_ee;
+    TH1 *h_topoetcone20_pt_signal_SS_emu;
+    TH1 *h_topoetcone20_pt_signal_SS_mumu;
+    
+    TH1 *h_topoetcone30_pt_signal_OS_ee;
+    TH1 *h_topoetcone30_pt_signal_OS_emu;
+    TH1 *h_topoetcone30_pt_signal_OS_mumu;
+    TH1 *h_topoetcone30_pt_signal_SS_ee;
+    TH1 *h_topoetcone30_pt_signal_SS_emu;
+    TH1 *h_topoetcone30_pt_signal_SS_mumu;
+    
+    TH1 *h_topoetcone40_pt_signal_OS_ee;
+    TH1 *h_topoetcone40_pt_signal_OS_emu;
+    TH1 *h_topoetcone40_pt_signal_OS_mumu;
+    TH1 *h_topoetcone40_pt_signal_SS_ee;
+    TH1 *h_topoetcone40_pt_signal_SS_emu;
+    TH1 *h_topoetcone40_pt_signal_SS_mumu;
+    
+    TH1 *h_pt_leading_signal_OS_ee;
+    TH1 *h_pt_leading_signal_OS_emu;
+    TH1 *h_pt_leading_signal_OS_mumu;
+    TH1 *h_pt_leading_signal_SS_ee;
+    TH1 *h_pt_leading_signal_SS_emu;
+    TH1 *h_pt_leading_signal_SS_mumu;
+    
+    TH1 *h_pt_subleading_signal_OS_ee;
+    TH1 *h_pt_subleading_signal_OS_emu;
+    TH1 *h_pt_subleading_signal_OS_mumu;
+    TH1 *h_pt_subleading_signal_SS_ee;
+    TH1 *h_pt_subleading_signal_SS_emu;
+    TH1 *h_pt_subleading_signal_SS_mumu;
+    
+    // For jets
+    TH1 *h_jet_multiplicities_pt20_OS_ee;
+    TH1 *h_jet_multiplicities_pt20_OS_emu;
+    TH1 *h_jet_multiplicities_pt20_OS_mumu;
+    TH1 *h_jet_multiplicities_pt20_SS_ee;
+    TH1 *h_jet_multiplicities_pt20_SS_emu;
+    TH1 *h_jet_multiplicities_pt20_SS_mumu;
+    
+    TH1 *h_jet_multiplicities_pt50_OS_ee;
+    TH1 *h_jet_multiplicities_pt50_OS_emu;
+    TH1 *h_jet_multiplicities_pt50_OS_mumu;
+    TH1 *h_jet_multiplicities_pt50_SS_ee;
+    TH1 *h_jet_multiplicities_pt50_SS_emu;
+    TH1 *h_jet_multiplicities_pt50_SS_mumu;
+    
+    TH1 *h_pt_1st_jets;
+    TH1 *h_pt_2nd_jets;
+    TH1 *h_pt_3rd_jets;
+    TH1 *h_pt_4th_jets;
+    
+    // For Etmiss (baseline)
+    TH1 *h_MET_baseline_OS_ee;
+    TH1 *h_MET_baseline_OS_emu;
+    TH1 *h_MET_baseline_OS_mumu;
+    TH1 *h_MET_baseline_SS_ee;
+    TH1 *h_MET_baseline_SS_emu;
+    TH1 *h_MET_baseline_SS_mumu;
+
+    // For Etmiss (signal)
+    TH1 *h_MET_signal_OS_ee;
+    TH1 *h_MET_signal_OS_emu;
+    TH1 *h_MET_signal_OS_mumu;
+    TH1 *h_MET_signal_SS_ee;
+    TH1 *h_MET_signal_SS_emu;
+    TH1 *h_MET_signal_SS_mumu;
+
+	// For Meff (baseline)
+    TH1 *h_meff_baseline_OS_ee;
+    TH1 *h_meff_baseline_OS_emu;
+    TH1 *h_meff_baseline_OS_mumu;
+    TH1 *h_meff_baseline_SS_ee;
+    TH1 *h_meff_baseline_SS_emu;
+    TH1 *h_meff_baseline_SS_mumu;
+    
+	// For Meff (signal)
+    TH1 *h_meff_signal_OS_ee;
+    TH1 *h_meff_signal_OS_emu;
+    TH1 *h_meff_signal_OS_mumu;
+    TH1 *h_meff_signal_SS_ee;
+    TH1 *h_meff_signal_SS_emu;
+    TH1 *h_meff_signal_SS_mumu;
+*/    
 public:
     TTree	*fChain; //!pointer to the analyzed TTree or TChain
 
@@ -179,10 +349,10 @@ public:
                                vector<Muon>     *mu_obj,
                                vector<Jet>      *jet_obj,
                                double dRejet = 0.2,
-                               double dRjetmu = 0.4,
+                               double dRjetmu = 0.2,
                                double dRjete = 0.4,
-                               double dRemu = 0.1,
-                               double dRee = 0.1);
+                               double dRemu = 0.01,
+                               double dRee = 0.05);
 
    ClassDef(MySelector,0);
 };
@@ -200,13 +370,17 @@ void MySelector::Init(TTree *tree)
     // (once per file to be processed).
     
     AnaNtupSelector::Init(tree);
-    
-    fNumberOfEvents = 0;
-    fpassGRL = 0;
-    fDetError = 0;
-    fAtLeastTwoLeptons = 0;
-    fEqualTwoLeptons = 0;
-    fEqualTwoSignalLeptons = 0;
+
+    fAllEventsBeforeDerivations = 0;
+    fAllEventsInNtuple = 0;
+    fGRL = 0;
+    fTrigger = 0;
+    fGlobalFlags = 0;
+    fJetAndMuonCleaning = 0;
+    fPrimaryVertex = 0;
+    fCosmicsVeto = 0;
+    fAtLeastTwoBaselineLeptons = 0;
+    fAtLeastTwoSignalLeptons = 0;
     // El-El channel
     fChannelSelection_elel = 0;
     fTrigger_elel = 0;
