@@ -776,14 +776,15 @@ Bool_t MySelector::Process(Long64_t entry)
     sort(vec_jets.begin(), vec_jets.end(), sort_descending_Pt<Jet>);
     
     // Set the baseline for electrons, muons, and jets.
-    // Initialize passOR = 0 (Actually this step is not needed becuase passOR is initialized in the Particle() constructor.)
     // Set the isSignal electrons and muons and set the isBjet for jets.
     for (auto & el_itr : vec_elec) {
         if (el_itr.get_isLooseLH() == true &&
             el_itr.get_pt() > 10000. &&
             fabs(el_itr.get_eta()) < 2.47 &&
             fabs(el_itr.get_sigd0()) < 5.) {
-            if (fabs(el_itr.get_eta()) > 1.37 && fabs(el_itr.get_eta()) < 1.52) { // Reject electrons in the crack region: 1.37<|eta|<1.52
+            // Reject electrons in the crack region: 1.37<|eta|<1.52
+            if (fabs(el_itr.get_eta()) > 1.37 &&
+                fabs(el_itr.get_eta()) < 1.52) {
                 el_itr.set_baseline(0);
             }
             else {
@@ -793,10 +794,9 @@ Bool_t MySelector::Process(Long64_t entry)
         else {
             el_itr.set_baseline(0);
         }
-        el_itr.set_passOR(0);
         double theta = (el_itr.get_TLV()).Theta();
         if (el_itr.get_isTightLH() == true &&
-            el_itr.get_eta() <= 2. &&
+            fabs(el_itr.get_eta()) <= 2. &&
             el_itr.get_passIsoGradLoose() == true &&
             fabs(el_itr.get_z0pvtx() * TMath::Sin(theta)) < 0.5) {
             el_itr.set_isSignal(1);
@@ -810,7 +810,6 @@ Bool_t MySelector::Process(Long64_t entry)
         else {
             mu_itr.set_baseline(0);
         }
-        mu_itr.set_passOR(0);
         double theta = (mu_itr.get_TLV()).Theta();
         if (mu_itr.get_passIsoGradLoose() == true &&
             fabs(mu_itr.get_sigd0()) < 3.0 &&
@@ -820,23 +819,22 @@ Bool_t MySelector::Process(Long64_t entry)
     }
     for (auto & jet_itr : vec_jets) {
         if (jet_itr.get_pt() > 20000. &&
-            fabs(jet_itr.get_eta()) < 4.5) {
+            fabs(jet_itr.get_eta()) < 4.5) { // baseline jet requires |eta| < 2.8 but we need |eta| < 4.5 for jet cleanning.
             jet_itr.set_baseline(1);
         }
         else {
             jet_itr.set_baseline(0);
         }
-        jet_itr.set_passOR(0);
         if (jet_itr.get_pt() > 20000. &&
             fabs(jet_itr.get_eta()) < 2.5 &&
             jet_itr.get_MV2c20() > -0.0436) {
-                jet_itr.set_isBjet(1);
+            jet_itr.set_isBjet(1);
         }
     }
     
     // Fill leptons into vector. Put the FillLeptons() function at here
-    // then the lepton in the vector has correct baseline, flavor,
-    // and isSignal information. And the passOR is 0.
+    // then the lepton in the vector has correct baseline, flavor, and isSignal information.
+    // And the passOR is 0.
     Fill_leptons(vec_elec, vec_muon);
     // Now sort leptons by descending Pt
     sort(vec_lept.begin(), vec_lept.end(), sort_descending_Pt<Lepton>);
@@ -871,8 +869,6 @@ Bool_t MySelector::Process(Long64_t entry)
     if (DetError) return kTRUE; // DetError = 0 => pass
     fGlobalFlags++;
     hCutFlows->Fill(4); // Cut 4: Global flags (data only)
-
-    //cout << "cut4: " << EventNumber << endl;
     
     // Bad muon event veto cut: veto any event where a baseline muon BEFORE overlap removal
     int badMuon = 0;
@@ -884,82 +880,25 @@ Bool_t MySelector::Process(Long64_t entry)
     }
     if (badMuon > 0) return kTRUE;
     
-    //cout << "After removing bad muon: " << EventNumber << endl;
-
-    // debug
-    if (EventNumber == 26947196 ||
-        EventNumber == 31713873 ||
-        EventNumber == 32088982 ||
-        EventNumber == 33031718 ||
-        EventNumber == 33953001 ||
-        EventNumber == 34412629 ||
-        EventNumber == 34771199 ||
-        EventNumber == 37674347 ||
-        EventNumber == 42635182 ||
-        EventNumber == 48268871 ||
-        EventNumber == 51483861 ||
-        EventNumber == 56705745 ||
-        EventNumber == 65334743 ||
-        EventNumber == 93115665 ||
-        EventNumber == 95479365) {
-        for (auto & jet_itr : vec_jets) {
-            cout << EventNumber << ": (jets)"
-            << ", pt=" << jet_itr.get_pt()
-            << ", eta=" << jet_itr.get_eta()
-            << ", phi=" << jet_itr.get_phi()
-            << ", baseline=" << jet_itr.get_baseline()
-            << ", passOR=" << jet_itr.get_passOR()
-            << ", bad=" << jet_itr.get_quality()
-            << ", MV2c20=" << jet_itr.get_MV2c20()
-            << endl;
-        }
-        for (auto & el_itr : vec_elec) {
-            cout << EventNumber << ": (electrons)"
-            << ", pt=" << el_itr.get_pt()
-            << ", eta=" << el_itr.get_eta()
-            << ", phi=" << el_itr.get_phi()
-            << ", baseline=" << el_itr.get_baseline()
-            << ", passOR=" << el_itr.get_passOR()
-            << endl;
-        }
-    }
-    
-
-    
-    
-    
-    
-    
-    
     // Apply the overlap removal.
     OverlapRemoval(&vec_elec, &vec_muon, &vec_jets);
     
     int badJet = 0;
     for (auto & jet_itr : vec_jets) {
-        /*
-        if (jet_itr.get_passOR() == true &&
-            fabs(jet_itr.get_eta()) < 4.5 &&
-            jet_itr.get_quality() == true) { // quality==1 are BAD jets
-            jet_itr.set_baseline(0);
-            jet_itr.set_cleaning(0)
-            badJet++;
-        }
-         */
-        if ((jet_itr.get_passOR() == true) && (jet_itr.get_cleaning() == false)) {
+        if ((jet_itr.get_passOR() == true) &&
+            (jet_itr.get_cleaning() == false)) {
             badJet++;
         }
     }
     if (badJet > 0) return kTRUE;
     
+    // reject all jet with 2.8 < |eta| < 4.5
     for (auto & jet_itr : vec_jets) {
         if (fabs(jet_itr.get_eta()) > 2.8) {
             jet_itr.set_baseline(0);
         }
     }
     
-    
-    //cout << "After removing bad jet: " << EventNumber << endl;
-/*
     // JVT: reject jets with pT<50 GeV and |eta|<2.4 and JVT<0.64, after the overlap removal procedure and after jet cleaning
     for (auto & jet_itr : vec_jets) {
         if (jet_itr.get_passOR() == true &&
@@ -971,11 +910,9 @@ Bool_t MySelector::Process(Long64_t entry)
             }
         }
     }
-*/
+    
     fJetAndMuonCleaning++;
     hCutFlows->Fill(5); // Cut 5: Jet and muon cleaning
-
-    cout << "cut5: " << EventNumber << endl;
     
     fPrimaryVertex++;
     hCutFlows->Fill(6); // Cut 6: Primary Vertex
@@ -1006,7 +943,7 @@ Bool_t MySelector::Process(Long64_t entry)
     Fill_signal_jets(vec_jets);
     Fill_signal_leptons(vec_signal_elec, vec_signal_muon);
 
-/*
+
     Int_t Nel = 0, Nmu = 0, Nel_sig = 0, Nmu_sig = 0;
     Int_t Nel_pt20 = 0, Nmu_pt20 = 0, Nel_sig_pt20 = 0, Nmu_sig_pt20 = 0;
     TLorentzVector el_tlv, mu_tlv;
@@ -1015,9 +952,9 @@ Bool_t MySelector::Process(Long64_t entry)
     
     for (auto & el_itr : vec_OR_elec) {
         Nel++;
-        if (el_itr.get_pt() > 20000.) Nel_pt20++;
+        //if (el_itr.get_pt() > 20000.) Nel_pt20++;
         if (el_itr.get_isSignal()) {
-            Nel_sig++;
+            //Nel_sig++;
             if (el_itr.get_pt() > 20000.) {
                 Nel_sig_pt20++;
                 el_tlv = el_tlv + el_itr.get_TLV();
@@ -1027,9 +964,9 @@ Bool_t MySelector::Process(Long64_t entry)
     }
     for (auto & mu_itr : vec_OR_muon) {
         Nmu++;
-        if (mu_itr.get_pt() > 20000.) Nmu_pt20++;
+        //if (mu_itr.get_pt() > 20000.) Nmu_pt20++;
         if (mu_itr.get_isSignal()) {
-            Nmu_sig++;
+            //Nmu_sig++;
             if (mu_itr.get_pt() > 20000.) {
                 Nmu_sig_pt20++;
                 mu_tlv = mu_tlv + mu_itr.get_TLV();
@@ -1043,160 +980,97 @@ Bool_t MySelector::Process(Long64_t entry)
         if (jet_itr.get_pt() > 20000.) Njet_pt20++;
         if (jet_itr.get_pt() > 50000.) Njet_pt50++;
     }
-*/
+
     //----------------------------------//
-/*
+
     if ( (Nel + Nmu) >= 2) {
-        fAtLeastTwoLeptons++;
-        hCutFlows->Fill(3); // ≥ 2 leptons (10 GeV)
+        fAtLeastTwoBaselineLeptons++;
+        hCutFlows->Fill(8); // Cut 8: ≥ 2 baseline leptons (>10 GeV)
     }
+/*
     if ( (Nel_pt20 + Nmu_pt20) == 2) {
         fEqualTwoLeptons++;
-        hCutFlows->Fill(4); // == 2 leptons (20 GeV) (! l3 signal lepton 10 GeV)
-        
-        if (Nel_pt20 == 2 && Nmu_pt20 == 0) {
-            if (same_sign == 1) {
-                h_mll_baseline_SS_ee->Fill( el_tlv.M() / 1000. );
-            }
-            else { // Opposite sign
-                h_mll_baseline_OS_ee->Fill( el_tlv.M() / 1000. );
-            }
-        }
-        else if (Nel_pt20 == 1 && Nmu_pt20 == 1) {
-            if (same_sign == 1) {
-                h_mll_baseline_SS_ee->Fill( (el_tlv + mu_tlv).M() / 1000. );
-            }
-            else { // Opposite sign
-                h_mll_baseline_OS_ee->Fill( (el_tlv + mu_tlv).M() / 1000. );
-            }
-        }
-        else if (Nel_pt20 == 0 && Nmu_pt20 == 2) {
-            if (same_sign == 1) {
-                h_mll_baseline_SS_mumu->Fill( mu_tlv.M() / 1000. );
-            }
-            else { // Opposite sign
-                h_mll_baseline_OS_mumu->Fill( mu_tlv.M() / 1000. );
-            }
-        }
+        hCutFlows->Fill(9);
     }
+*/
     if ( (Nel_sig_pt20 + Nmu_sig_pt20) == 2) {
-        fEqualTwoSignalLeptons++;
-        hCutFlows->Fill(5); // == 2 signal leptons (20 GeV)
-        
-        if (Nel_sig_pt20 == 2 && Nmu_sig_pt20 == 0) {
-            if (same_sign == 1) {
-                h_mll_signal_SS_ee->Fill( el_tlv.M() / 1000. );
-            }
-            else { // Opposite sign
-                h_mll_signal_OS_ee->Fill( el_tlv.M() / 1000. );
-            }
-        }
-        else if (Nel_sig_pt20 == 1 && Nmu_sig_pt20 == 1) {
-            if (same_sign == 1) {
-                h_mll_signal_SS_ee->Fill( (el_tlv + mu_tlv).M() / 1000. );
-            }
-            else { // Opposite sign
-                h_mll_signal_OS_ee->Fill( (el_tlv + mu_tlv).M() / 1000. );
-            }
-        }
-        else if (Nel_sig_pt20 == 0 && Nmu_sig_pt20 == 2) {
-            if (same_sign == 1) {
-                h_mll_signal_SS_mumu->Fill( mu_tlv.M() / 1000. );
-            }
-            else { // Opposite sign
-                h_mll_signal_OS_mumu->Fill( mu_tlv.M() / 1000. );
-            }
-        }
+        fAtLeastTwoSignalLeptons++;
+        hCutFlows->Fill(9); // Cut 9: ≥ 2 signal leptons (>20 GeV)
     }
-
+    
+    
+/*
     if ( (Nel_sig_pt20 + Nmu_sig_pt20) == 2) {
         double ht = calculate_Ht(vec_signal_lept, vec_signal_jets);
-        double meff = calculate_Meff(ht, Etmiss_CST_Et);
+        double meff = calculate_Meff(ht, Etmiss_TST_Et);
     }
 */
     //----------------------------------//
-/*
+
     TLorentzVector ml1l2_tlv = el_tlv + mu_tlv;
     
     // Channel separation [20,20]: El-El channel
     if (Nel_sig_pt20 == 2 && Nmu_sig_pt20 == 0) {
         fChannelSelection_elel++;
-        hCutFlows->Fill(6); // Channel selection (20, 20 GeV)
+        hCutFlows->Fill(10); // Cut 10: Channel selection (20, 20 GeV): el-el
+        
+        cout << "cut 10: " << EventNumber << endl;
         
         fTrigger_elel++;
-        hCutFlows->Fill(7); // Trigger
-
-        if (same_sign == 1) {
-            h_jet_multiplicities_pt20_SS_ee->Fill(Njet_pt20);
-            h_jet_multiplicities_pt50_SS_ee->Fill(Njet_pt50);
-        }
-        else {
-            h_jet_multiplicities_pt20_OS_ee->Fill(Njet_pt20);
-            h_jet_multiplicities_pt50_OS_ee->Fill(Njet_pt50);
-        }
+        hCutFlows->Fill(11); // Cut 11: Trigger: el-el
         
         if (ml1l2_tlv.M() > 12000.) {
             fMl1l2_elel++;
-            hCutFlows->Fill(8); // ml1l2 > 12 GeV
+            hCutFlows->Fill(12); // Cut 12: ml1l2 > 12 GeV: el-el
             
             if (Nbjet_pt20 >= 1) {
                 fAtLeastOneBJet_elel++;
-                hCutFlows->Fill(9); // ≥ 1 b jet (20 GeV)
+                hCutFlows->Fill(13); // Cut 13: ≥ 1 b jet (>20 GeV): el-el
                 
                 if (Njet_pt50 >= 4) {
                     fAtLeastFourJets_elel++;
-                    hCutFlows->Fill(10); // ≥ 4 jets (50GeV)
+                    hCutFlows->Fill(14); // Cut 14: ≥ 4 jets (>50GeV): el-el
                     
                     if (same_sign == 1) {
                         fSameSign_elel++;
-                        hCutFlows->Fill(11); // Same sign
+                        hCutFlows->Fill(15); // Cut 15: Same sign leptons: el-el
 
-                        if (Etmiss_CST_Et > 150000.) {
+                        if (Etmiss_TST_Et > 150000.) {
                             fMET_elel++;
-                            hCutFlows->Fill(12); // MET > 150 GeV
+                            hCutFlows->Fill(16); // Cut 16: MET > 150 GeV: el-el
                         }
                     }
                 }
             }
         }
     }
-    
     // Channel separation [20,20]: El-MU channel
     if (Nel_sig_pt20 == 1 && Nmu_sig_pt20 == 1) {
         fChannelSelection_elmu++;
-        hCutFlows->Fill(13); // Channel selection (20, 20 GeV)
+        hCutFlows->Fill(17); // Cut 10: Channel selection (20, 20 GeV): el-mu
         
         fTrigger_elmu++;
-        hCutFlows->Fill(14); // Trigger
-        
-        if (same_sign == 1) {
-            h_jet_multiplicities_pt20_SS_emu->Fill(Njet_pt20);
-            h_jet_multiplicities_pt50_SS_emu->Fill(Njet_pt50);
-        }
-        else {
-            h_jet_multiplicities_pt20_OS_emu->Fill(Njet_pt20);
-            h_jet_multiplicities_pt50_OS_emu->Fill(Njet_pt50);
-        }
+        hCutFlows->Fill(18); // Cut 11: Trigger: el-mu
         
         if (ml1l2_tlv.M() > 12000.) {
             fMl1l2_elmu++;
-            hCutFlows->Fill(15); // ml1l2 > 12 GeV
+            hCutFlows->Fill(19); // Cut 12: ml1l2 > 12 GeV: el-mu
             
             if (Nbjet_pt20 >= 1) {
                 fAtLeastOneBJet_elmu++;
-                hCutFlows->Fill(16); // ≥ 1 b jet (20 GeV)
+                hCutFlows->Fill(20); // Cut 13: ≥ 1 b jet (>20 GeV): el-mu
                 
                 if (Njet_pt50 >= 4) {
                     fAtLeastFourJets_elmu++;
-                    hCutFlows->Fill(17); // ≥ 4 jets (50GeV)
+                    hCutFlows->Fill(21); // Cut 14: ≥ 4 jets (>50GeV): el-mu
                     
                     if (same_sign == 1) {
                         fSameSign_elmu++;
-                        hCutFlows->Fill(18); // Same sign
+                        hCutFlows->Fill(22); // Cut 15: Same sign leptons: el-mu
 
-                        if (Etmiss_CST_Et > 150000.) {
+                        if (Etmiss_TST_Et > 150000.) {
                             fMET_elmu++;
-                            hCutFlows->Fill(19); // MET > 150 GeV
+                            hCutFlows->Fill(23); // Cut 16: MET > 150 GeV: el-mu
                         }
                     }
                 }
@@ -1206,46 +1080,37 @@ Bool_t MySelector::Process(Long64_t entry)
     // Channel separation [20,20]: MU-MU channel
     if (Nel_sig_pt20 == 0 && Nmu_sig_pt20 == 2) {
         fChannelSelection_mumu++;
-        hCutFlows->Fill(20); // Channel selection (20, 20 GeV)
+        hCutFlows->Fill(24); // Cut 10: Channel selection (20, 20 GeV): mu-mu
         
         fTrigger_mumu++;
-        hCutFlows->Fill(21); // Trigger
-        
-        if (same_sign == 1) {
-            h_jet_multiplicities_pt20_SS_mumu->Fill(Njet_pt20);
-            h_jet_multiplicities_pt50_SS_mumu->Fill(Njet_pt50);
-        }
-        else {
-            h_jet_multiplicities_pt20_OS_mumu->Fill(Njet_pt20);
-            h_jet_multiplicities_pt50_OS_mumu->Fill(Njet_pt50);
-        }
+        hCutFlows->Fill(25); // Cut 11: Trigger: mu-mu
         
         if (ml1l2_tlv.M() > 12000.) {
             fMl1l2_mumu++;
-            hCutFlows->Fill(22); // ml1l2 > 12 GeV
+            hCutFlows->Fill(26); // Cut 12: ml1l2 > 12 GeV: mu-mu
             
             if (Nbjet_pt20 >= 1) {
                 fAtLeastOneBJet_mumu++;
-                hCutFlows->Fill(23); // ≥ 1 b jet (20 GeV)
+                hCutFlows->Fill(27); // Cut 13: ≥ 1 b jet (>20 GeV): mu-mu
                 
                 if (Njet_pt50 >= 4) {
                     fAtLeastFourJets_mumu++;
-                    hCutFlows->Fill(24); // ≥ 4 jets (50GeV)
+                    hCutFlows->Fill(28); // Cut 14: ≥ 4 jets (>50GeV): mu-mu
                     
                     if (same_sign == 1) {
                         fSameSign_mumu++;
-                        hCutFlows->Fill(25); // Same sign
+                        hCutFlows->Fill(29); // Cut 15: Same sign leptons: mu-mu
 
-                        if (Etmiss_CST_Et > 150000.) {
+                        if (Etmiss_TST_Et > 150000.) {
                             fMET_mumu++;
-                            hCutFlows->Fill(26); // MET > 150 GeV
+                            hCutFlows->Fill(30); // Cut 16: MET > 150 GeV: mu-mu
                         }
                     }
                 }
             }
         }
     }
-*/
+
     return kTRUE;
 }
 

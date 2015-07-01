@@ -13,3 +13,6 @@ v01:
 
 v02:
 After discussing with Ximo, I made lots of modifications. This version can get the same number of event for cut 1 to cut 7.
+
+v03:
+Add channel selections
