@@ -16,3 +16,6 @@ After discussing with Ximo, I made lots of modifications. This version can get t
 
 v03:
 Add channel selections
+
+v04:
+This version can get the correct results using data 266904.

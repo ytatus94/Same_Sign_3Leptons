@@ -229,8 +229,7 @@ void MySelector::Fill_jets(Int_t             NJet,
         je.set_pt( (*Jet_pT)[i] );
         je.set_E( (*Jet_E)[i] );
         je.set_quality( (*Jet_quality)[i] );
-        je.set_JVF( (*Jet_JVF)[i] );
-        je.set_JVF( (*Jet_JVT)[i] );
+        je.set_JVT( (*Jet_JVT)[i] );
         je.set_MV2c20( (*Jet_MV2c20)[i] );
         je.set_SFw( (*Jet_SFw)[i] );
         je.set_nTrk( (*Jet_nTrk)[i] );
@@ -831,6 +830,19 @@ Bool_t MySelector::Process(Long64_t entry)
             jet_itr.set_isBjet(1);
         }
     }
+
+    // debug
+    if (EventNumber ==47931239) {
+        for (auto & jet_itr : vec_jets) {
+            cout << EventNumber << ", jet_itr.get_isBjet()=" << jet_itr.get_isBjet()
+            << ", jet_itr.get_baseline()=" << jet_itr.get_baseline() << endl;
+            cout << ", jet_itr.get_pt()=" << jet_itr.get_pt()
+            << ", jet_itr.get_eta()=" << jet_itr.get_eta()
+            << ", jet_itr.get_phi()=" << jet_itr.get_phi() << endl;
+            cout << ", jet_itr.get_MV2c20()=" << jet_itr.get_MV2c20()
+            << ", jet_itr.get_JVT()=" << jet_itr.get_JVT() << endl;
+        }
+    }
     
     // Fill leptons into vector. Put the FillLeptons() function at here
     // then the lepton in the vector has correct baseline, flavor, and isSignal information.
@@ -936,7 +948,7 @@ Bool_t MySelector::Process(Long64_t entry)
     Fill_baseline_muons(vec_muon);
     Fill_baseline_jets(vec_jets);
     Fill_baseline_leptons(vec_elec, vec_muon);
-    
+
     // Fill signal electrons, signal muons, signal jets, and signal leptons into vectors.
     Fill_signal_electrons(vec_elec);
     Fill_signal_muons(vec_muon);
@@ -1013,8 +1025,6 @@ Bool_t MySelector::Process(Long64_t entry)
     if (Nel_sig_pt20 == 2 && Nmu_sig_pt20 == 0) {
         fChannelSelection_elel++;
         hCutFlows->Fill(10); // Cut 10: Channel selection (20, 20 GeV): el-el
-        
-        cout << "cut 10: " << EventNumber << endl;
         
         fTrigger_elel++;
         hCutFlows->Fill(11); // Cut 11: Trigger: el-el
