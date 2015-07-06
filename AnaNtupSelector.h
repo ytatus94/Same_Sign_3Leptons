@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Fri Jun 12 15:35:12 2015 by ROOT version 5.34/25
+// Mon Jul  6 14:30:16 2015 by ROOT version 6.02/05
 // from TTree AnaNtup/AnaNtup
 // found on file: user.jpoveda.5632900._000001.output.root
 //////////////////////////////////////////////////////////
@@ -14,15 +14,14 @@
 #include <TSelector.h>
 
 // Header file for the classes stored in the TTree if any.
-//#include "/var/build/72a/x86_64-slc6-gcc48-opt-build/projects/ROOT-5.34.25/src/ROOT/5.34.25/cint/cint/lib/prec_stl/vector"
-//#include "/var/build/72a/x86_64-slc6-gcc48-opt-build/projects/ROOT-5.34.25/src/ROOT/5.34.25/cint/cint/lib/prec_stl/vector"
-//#include "/var/build/72a/x86_64-slc6-gcc48-opt-build/projects/ROOT-5.34.25/src/ROOT/5.34.25/cint/cint/lib/prec_stl/vector"
-
-// Fixed size dimensions of array or collections stored in the TTree if any.
+#include <vector>
+using std::vector;
 
 class AnaNtupSelector : public TSelector {
 public :
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
+
+// Fixed size dimensions of array or collections stored in the TTree if any.
 
    // Declaration of leaf types
    Bool_t          HLT_noalg_L12EM15;

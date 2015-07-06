@@ -1,6 +1,6 @@
 #ifdef MYSELECTOR_CXX
-#ifndef OVERLAPREMOVAL_H
-#define OVERLAPREMOVAL_H
+#ifndef OVERLAPREMOVAL_CXX
+#define OVERLAPREMOVAL_CXX
 
 void OverlapRemoval(vector<Electron> *el_obj,
                     vector<Muon>     *mu_obj,
@@ -186,5 +186,5 @@ void OverlapRemoval(vector<Electron> *el_obj,
 */
 }
 
-#endif // #ifndef OVERLAPREMOVAL_H
+#endif // #ifndef OVERLAPREMOVAL_CXX
 #endif // #ifdef MYSELECTOR_CXX

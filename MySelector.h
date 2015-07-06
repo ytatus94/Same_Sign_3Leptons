@@ -9,11 +9,9 @@ using namespace std;
 
 #define Mu_Mass 105.6583715
 
-#include "AnaNtupSelector.h"
-#include "Leptons.h"
-#include "Jet.h"
-#include "useful_functions.h"
-#include "OverlapRemoval.h"
+#include "MyPackages/AnaNtupSelector.h"
+#include "MyPackages/Leptons.h"
+#include "MyPackages/Jet.h"
 
 class MySelector : public AnaNtupSelector {
 public:
@@ -345,14 +343,18 @@ public:
     void Fill_signal_jets(vector<Jet> jets);
     void Fill_signal_leptons(vector<Electron> signal_elec, vector<Muon> signal_muon);
 
+    void Set_baseline_and_signal_electrons();
+    void Set_baseline_and_signal_muons();
+    void Set_baseline_and_signal_jets();
+
     friend void OverlapRemoval(vector<Electron> *el_obj,
                                vector<Muon>     *mu_obj,
                                vector<Jet>      *jet_obj,
-                               double dRejet = 0.2,
-                               double dRjetmu = 0.2,
-                               double dRjete = 0.4,
-                               double dRemu = 0.01,
-                               double dRee = 0.05);
+                               double dRejet,
+                               double dRjetmu,
+                               double dRjete,
+                               double dRemu,
+                               double dRee);
 
    ClassDef(MySelector,0);
 };
@@ -405,7 +407,6 @@ void MySelector::Init(TTree *tree)
     fAtLeastFourJets_mumu = 0;
     fSameSign_mumu = 0;
     fMET_mumu = 0;
-
 }
 
 Bool_t MySelector::Notify()

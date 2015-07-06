@@ -1,7 +1,7 @@
 #ifndef LEPTONS_H
 #define LEPTONS_H
 
-#include "Particle.h"
+#include "MyPackages/Particle.h"
 
 class Lepton : public Particle {
     int	    flavor;

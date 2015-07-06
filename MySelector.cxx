@@ -23,7 +23,9 @@
 // Root > T->Process("AnaNtupSelector.C+")
 //
 
-#include "MySelector.h"
+#include "MyPackages/MySelector.h"
+#include "Root/useful_functions.cxx"
+#include "Root/OverlapRemoval.cxx"
 #include <TH2.h>
 #include <TStyle.h>
 
@@ -229,6 +231,7 @@ void MySelector::Fill_jets(Int_t             NJet,
         je.set_pt( (*Jet_pT)[i] );
         je.set_E( (*Jet_E)[i] );
         je.set_quality( (*Jet_quality)[i] );
+        je.set_JVF( (*Jet_JVF)[i] );
         je.set_JVT( (*Jet_JVT)[i] );
         je.set_MV2c20( (*Jet_MV2c20)[i] );
         je.set_SFw( (*Jet_SFw)[i] );
@@ -340,6 +343,72 @@ void MySelector::Fill_signal_leptons(vector<Electron> signal_elec, vector<Muon> 
     for (auto & mu_itr : signal_muon) {
         vec_signal_lept.push_back(mu_itr);
     }
+}
+
+void MySelector::Set_baseline_and_signal_electrons()
+{
+    for (auto & el_itr : vec_elec) {
+        if (el_itr.get_isLooseLH() == true &&
+            el_itr.get_pt() > 10000. &&
+            fabs(el_itr.get_eta()) < 2.47 &&
+            fabs(el_itr.get_sigd0()) < 5.) {
+            // Reject electrons in the crack region: 1.37<|eta|<1.52
+            if (fabs(el_itr.get_eta()) > 1.37 &&
+                fabs(el_itr.get_eta()) < 1.52) {
+                el_itr.set_baseline(0);
+            }
+            else {
+                el_itr.set_baseline(1);
+            }
+        }
+        else {
+            el_itr.set_baseline(0);
+        }
+        double theta = (el_itr.get_TLV()).Theta();
+        if (el_itr.get_isTightLH() == true &&
+            fabs(el_itr.get_eta()) <= 2. &&
+            el_itr.get_passIsoGradLoose() == true &&
+            fabs(el_itr.get_z0pvtx() * TMath::Sin(theta)) < 0.5) {
+            el_itr.set_isSignal(1);
+        }
+    }
+}
+
+void MySelector::Set_baseline_and_signal_muons()
+{
+    for (auto & mu_itr : vec_muon) {
+        if (mu_itr.get_pt() > 10000. &&
+            fabs(mu_itr.get_eta()) < 2.4) {
+            mu_itr.set_baseline(1);
+        }
+        else {
+            mu_itr.set_baseline(0);
+        }
+        double theta = (mu_itr.get_TLV()).Theta();
+        if (mu_itr.get_passIsoGradLoose() == true &&
+            fabs(mu_itr.get_sigd0()) < 3.0 &&
+            fabs(mu_itr.get_z0pvtx() * TMath::Sin(theta)) < 0.5) {
+            mu_itr.set_isSignal(1);
+        }
+    }
+}
+
+void MySelector::Set_baseline_and_signal_jets()
+{
+    for (auto & jet_itr : vec_jets) {
+        if (jet_itr.get_pt() > 20000. &&
+            fabs(jet_itr.get_eta()) < 4.5) { // baseline jet requires |eta| < 2.8 but we need |eta| < 4.5 for jet cleanning.
+            jet_itr.set_baseline(1);
+        }
+        else {
+            jet_itr.set_baseline(0);
+        }
+        if (jet_itr.get_pt() > 20000. &&
+            fabs(jet_itr.get_eta()) < 2.5 &&
+            jet_itr.get_MV2c20() > -0.0436) {
+            jet_itr.set_isBjet(1);
+        }
+    }    
 }
 
 void MySelector::Begin(TTree * /*tree*/)
@@ -776,74 +845,10 @@ Bool_t MySelector::Process(Long64_t entry)
     
     // Set the baseline for electrons, muons, and jets.
     // Set the isSignal electrons and muons and set the isBjet for jets.
-    for (auto & el_itr : vec_elec) {
-        if (el_itr.get_isLooseLH() == true &&
-            el_itr.get_pt() > 10000. &&
-            fabs(el_itr.get_eta()) < 2.47 &&
-            fabs(el_itr.get_sigd0()) < 5.) {
-            // Reject electrons in the crack region: 1.37<|eta|<1.52
-            if (fabs(el_itr.get_eta()) > 1.37 &&
-                fabs(el_itr.get_eta()) < 1.52) {
-                el_itr.set_baseline(0);
-            }
-            else {
-                el_itr.set_baseline(1);
-            }
-        }
-        else {
-            el_itr.set_baseline(0);
-        }
-        double theta = (el_itr.get_TLV()).Theta();
-        if (el_itr.get_isTightLH() == true &&
-            fabs(el_itr.get_eta()) <= 2. &&
-            el_itr.get_passIsoGradLoose() == true &&
-            fabs(el_itr.get_z0pvtx() * TMath::Sin(theta)) < 0.5) {
-            el_itr.set_isSignal(1);
-        }
-    }
-    for (auto & mu_itr : vec_muon) {
-        if (mu_itr.get_pt() > 10000. &&
-            fabs(mu_itr.get_eta()) < 2.4) {
-            mu_itr.set_baseline(1);
-        }
-        else {
-            mu_itr.set_baseline(0);
-        }
-        double theta = (mu_itr.get_TLV()).Theta();
-        if (mu_itr.get_passIsoGradLoose() == true &&
-            fabs(mu_itr.get_sigd0()) < 3.0 &&
-            fabs(mu_itr.get_z0pvtx() * TMath::Sin(theta)) < 0.5) {
-            mu_itr.set_isSignal(1);
-        }
-    }
-    for (auto & jet_itr : vec_jets) {
-        if (jet_itr.get_pt() > 20000. &&
-            fabs(jet_itr.get_eta()) < 4.5) { // baseline jet requires |eta| < 2.8 but we need |eta| < 4.5 for jet cleanning.
-            jet_itr.set_baseline(1);
-        }
-        else {
-            jet_itr.set_baseline(0);
-        }
-        if (jet_itr.get_pt() > 20000. &&
-            fabs(jet_itr.get_eta()) < 2.5 &&
-            jet_itr.get_MV2c20() > -0.0436) {
-            jet_itr.set_isBjet(1);
-        }
-    }
+    Set_baseline_and_signal_electrons();
+    Set_baseline_and_signal_muons();
+    Set_baseline_and_signal_jets();
 
-    // debug
-    if (EventNumber ==47931239) {
-        for (auto & jet_itr : vec_jets) {
-            cout << EventNumber << ", jet_itr.get_isBjet()=" << jet_itr.get_isBjet()
-            << ", jet_itr.get_baseline()=" << jet_itr.get_baseline() << endl;
-            cout << ", jet_itr.get_pt()=" << jet_itr.get_pt()
-            << ", jet_itr.get_eta()=" << jet_itr.get_eta()
-            << ", jet_itr.get_phi()=" << jet_itr.get_phi() << endl;
-            cout << ", jet_itr.get_MV2c20()=" << jet_itr.get_MV2c20()
-            << ", jet_itr.get_JVT()=" << jet_itr.get_JVT() << endl;
-        }
-    }
-    
     // Fill leptons into vector. Put the FillLeptons() function at here
     // then the lepton in the vector has correct baseline, flavor, and isSignal information.
     // And the passOR is 0.
@@ -893,7 +898,8 @@ Bool_t MySelector::Process(Long64_t entry)
     if (badMuon > 0) return kTRUE;
     
     // Apply the overlap removal.
-    OverlapRemoval(&vec_elec, &vec_muon, &vec_jets);
+    double dRejet = 0.2, dRjetmu = 0.2, dRjete = 0.4, dRemu = 0.01, dRee = 0.05;
+    OverlapRemoval(&vec_elec, &vec_muon, &vec_jets, dRejet, dRjetmu, dRjete, dRemu, dRee);
     
     int badJet = 0;
     for (auto & jet_itr : vec_jets) {
@@ -926,6 +932,7 @@ Bool_t MySelector::Process(Long64_t entry)
     fJetAndMuonCleaning++;
     hCutFlows->Fill(5); // Cut 5: Jet and muon cleaning
     
+    if (PV_z == -999) return kTRUE; // In common ntuples: PV_z>-999 (-999 is the default value if no PV is found in the event).
     fPrimaryVertex++;
     hCutFlows->Fill(6); // Cut 6: Primary Vertex
 

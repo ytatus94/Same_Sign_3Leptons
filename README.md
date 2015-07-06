@@ -5,17 +5,29 @@ Use data SUSY9 and MC SUSY5 on grid: user.jpoveda.t0609_v12.*_output.root/
 v01:
 1. Using MakeSelector in ROOT to generate AnaNtupSelector.{h,C}. And change .C to .cxx.
 2. MySelector are inherited from AnaNtupSelector.
-3. The particles classes are defined in
+3. The particles classes are defined in:
    - Particle.h: define a Particle class which contains basic properties of particles, such as pt, eta, phi, and E.
    - Leptons.h: basic properties of leptons are defined in Lepton class which inherits from Particle class. The Muon and Electron classes are inherit from Lepton class.
    - Jet.h: properties of Jets which inherits from Particle class.
 4. OverlapRemoval and the other useful functions are defined in separate files.
 
 v02:
-After discussing with Ximo, I made lots of modifications. This version can get the same number of event for cut 1 to cut 7.
+After discussing with Ximo, lots of modifications are made in order to fix the bugs. This version can get the same number of events as other peoples results from cut 1 to cut 7.
 
 v03:
-Add channel selections
+Add channel selections.
 
 v04:
 This version can get the correct results using data 266904.
+
+v05:
+Migrate to RootCore. 
+1. All of the files are slightly modified to fit the RootCore requirement.
+   - The included header files become #include "MyPackages/XXXX.h" and #include "Root/XXXX.cxx".
+   - Add #include <vector> and using std::vector in AnaNtupSelector.h.
+   - In MySelector.h, remove the default value in OverlapRemoval() method.
+2. Change OverlapRemoval.h to OverlapRemoval.cxx and change usefull_functions.h to usefull_functions.cxx.
+3. Add main function in ssv12_cutflow.cxx.
+4. Add LinkDef.h for generating dictionaries.
+   - Must include the headers which contain TSelector, then create dictionaries.
+5. Also add Ximo's Ana.cxx for reference.

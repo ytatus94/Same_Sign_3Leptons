@@ -1,7 +1,7 @@
 #ifndef JET_H
 #define JET_H
 
-#include "Particle.h"
+#include "MyPackages/Particle.h"
 
 class Jet : public Particle {
     bool    cleaning;
@@ -16,7 +16,7 @@ class Jet : public Particle {
     
 
 public:
-    Jet() : isBjet(0), quality(0), JVF(0), JVT(0), MV2c20(0), SFw(0), nTrk(0), cleaning(0) {}
+    Jet() : cleaning(0), isBjet(0), quality(0), JVF(0), JVT(0), MV2c20(0), SFw(0), nTrk(0) {}
     ~Jet() {}
     // get methods
     bool    get_cleaning()  { return cleaning; }

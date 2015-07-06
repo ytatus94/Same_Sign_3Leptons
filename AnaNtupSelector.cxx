@@ -18,12 +18,12 @@
 //
 // To use this file, try the following session on your Tree T:
 //
-// Root > T->Process("AnaNtupSelector.C")
-// Root > T->Process("AnaNtupSelector.C","some options")
-// Root > T->Process("AnaNtupSelector.C+")
+// root> T->Process("AnaNtupSelector.C")
+// root> T->Process("AnaNtupSelector.C","some options")
+// root> T->Process("AnaNtupSelector.C+")
 //
 
-#include "AnaNtupSelector.h"
+#include "MyPackages/AnaNtupSelector.h"
 #include <TH2.h>
 #include <TStyle.h>
 
@@ -69,7 +69,7 @@ Bool_t AnaNtupSelector::Process(Long64_t entry)
    // The return value is currently not used.
 
     fChain->GetTree()->GetEntry(entry);
-    
+
    return kTRUE;
 }
 
