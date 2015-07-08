@@ -1,8 +1,6 @@
-#ifndef MYSELECTOR_H
-#ifndef FILLANDSET_H
-#define FILLANDSET_H
-
-class MySelector;
+#ifdef MYSELECTOR_CXX
+#ifndef FILL_AND_SET_CXX
+#define FILL_AND_SET_CXX
 
 // Fill methods
 void MySelector::Fill_electrons(Int_t            NEl,
@@ -170,6 +168,7 @@ void MySelector::Fill_jets(Int_t             NJet,
         je.set_pt( (*Jet_pT)[i] );
         je.set_E( (*Jet_E)[i] );
         je.set_quality( (*Jet_quality)[i] );
+	je.set_JVT( (*Jet_JVF)[i] );
         je.set_JVT( (*Jet_JVT)[i] );
         je.set_MV2c20( (*Jet_MV2c20)[i] );
         je.set_SFw( (*Jet_SFw)[i] );
@@ -350,5 +349,5 @@ void MySelector::Set_baseline_and_signal_jets()
     }
 }
 
-#endif // #ifndef FILLANDSET_H
+#endif // #ifndef FILL_AND_SET_CXX
 #endif // #ifdef MYSELECTOR_CXX

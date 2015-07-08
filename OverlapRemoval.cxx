@@ -84,7 +84,7 @@ void OverlapRemoval(vector<Electron> *el_obj,
         jet_end = jet_obj->end();
         for (; jet_itr != jet_end; jet_itr++) {
             if (!jet_itr->get_passOR()) continue;
-            if (jet_itr->get_phi() > 2.8) continue; // Now the jet must use |eta| < 2.8 (baseline)
+            if (fabs(jet_itr->get_phi()) >= 2.8) continue; // Now the jet must use |eta| < 2.8 (baseline)
             TLorentzVector el4vec = el_itr->get_TLV();
             TLorentzVector jet4vec = jet_itr->get_TLV();
             if (el4vec.DeltaR(jet4vec) < dRjete) {
@@ -103,7 +103,7 @@ void OverlapRemoval(vector<Electron> *el_obj,
         for (; jet_itr != jet_end; jet_itr++) {
             if (!jet_itr->get_passOR()) continue;
             if (!jet_itr->get_cleaning()) continue;
-            if (jet_itr->get_phi() > 2.8) continue; // Now the jet must use |eta| < 2.8 (baseline)
+            if (fabs(jet_itr->get_phi()) >= 2.8) continue; // Now the jet must use |eta| < 2.8 (baseline)
             TLorentzVector mu4vec = mu_itr->get_TLV();
             TLorentzVector jet4vec = jet_itr->get_TLV();
             if (mu4vec.DeltaR(jet4vec) < dRjetmu) {

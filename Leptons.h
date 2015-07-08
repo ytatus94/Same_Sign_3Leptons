@@ -4,9 +4,10 @@
 #include "MyPackages/Particle.h"
 
 class Lepton : public Particle {
+    // user defined variables
     int	    flavor;
     bool    isSignal;
-
+    // ntuple variables
     int	    charge;
     double  d0pvtx;
     double  z0pvtx;
@@ -87,6 +88,7 @@ public:
 };
 
 class Electron : public Lepton {
+    // ntuple variables
     double  SFwMedium;
     double  SFwMediumLH;
     double  SFwTight;
@@ -129,6 +131,7 @@ public:
 };
 
 class Muon : public Lepton {
+    // ntuple variables
     double  SFw;
     bool    isBad;
     bool    isCosmic;

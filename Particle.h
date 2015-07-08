@@ -4,10 +4,11 @@
 #include <TLorentzVector.h>
 
 class Particle {
+    // user defined variables
     TLorentzVector tlv;
     bool    baseline;
     bool    passOR;
-
+    // ntuple variables
     int	    number;
     double  pT;
     double  eta;

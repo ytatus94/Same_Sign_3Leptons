@@ -31,3 +31,8 @@ Migrate to RootCore.
 4. Add LinkDef.h for generating dictionaries.
    - Must include the headers which contain TSelector, then create dictionaries.
 5. Also add Ximo's Ana.cxx for reference.
+
+v06:
+1. Change Fill.h to Fill_and_Set.cxx
+2. Remove Fill.h, OverlapRemoval.h, and useful_functions.h.
+3. Use GoodRunsList package in MySelector.cxx
