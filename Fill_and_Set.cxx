@@ -2,6 +2,8 @@
 #ifndef FILL_AND_SET_CXX
 #define FILL_AND_SET_CXX
 
+#include "MyPackages/sigd0_fixed.h"
+
 // Fill methods
 void MySelector::Fill_electrons(Int_t            NEl,
                                 int              flavor,
@@ -41,6 +43,15 @@ void MySelector::Fill_electrons(Int_t            NEl,
                                 vector<bool>     *El_passIsoGradLoose)
 {
     for (int i = 0; i < NEl; i++) {
+	// Fix d0 significance
+	double sigd0 = 0;
+	//if (isMC) {
+	    sigd0 = sigd0_fixed_mc(6633, (*El_d0pvtx)[i], (*El_sigd0)[i], (*El_phi)[i]);
+	//}
+	//else {
+	//    sigd0 = sigd0_fixed_data(RunNb, (*El_d0pvtx)[i], (*El_sigd0)[i], (*El_phi)[i]); 
+	//}
+
         Electron el;
         el.set_number(NEl);
         el.set_flavor(flavor);
@@ -49,7 +60,8 @@ void MySelector::Fill_electrons(Int_t            NEl,
         el.set_pt( (*El_pT)[i] );
         el.set_E( (*El_E)[i] );
         el.set_charge( (*El_charge)[i] );
-        el.set_sigd0( (*El_sigd0)[i] );
+        el.set_sigd0( sigd0 );
+        //el.set_sigd0( (*El_sigd0)[i] );
         el.set_z0pvtx( (*El_z0pvtx)[i] );
         el.set_d0pvtx( (*El_d0pvtx)[i] );
         el.set_SFwMedium( (*El_SFwMedium)[i] );
@@ -113,6 +125,16 @@ void MySelector::Fill_muons(Int_t            NMu,
                             vector<bool>     *Mu_passIsoGradLoose)
 {
     for (int i = 0; i < NMu; i++) {
+	// Fix d0 significance
+	double sigd0 = 0;
+	//if (isMC) {
+	    sigd0 = sigd0_fixed_mc(6633, (*Mu_d0pvtx)[i], (*Mu_sigd0)[i], (*Mu_phi)[i]);
+//cout << "mu sigd0=" << sigd0 << ", (*Mu_sigd0)[i]=" << (*Mu_sigd0)[i] << endl;
+	//}
+	//else {
+	//    sigd0 = sigd0_fixed_data(RunNb, (*Mu_d0pvtx)[i], (*Mu_sigd0)[i], (*Mu_phi)[i]);
+	//}
+
         Muon mu;
         mu.set_number(NMu);
         mu.set_flavor(flavor);
@@ -122,7 +144,8 @@ void MySelector::Fill_muons(Int_t            NMu,
         mu.set_SFw( (*Mu_SFw)[i] );
         mu.set_charge( (*Mu_charge)[i] );
         mu.set_d0pvtx( (*Mu_d0pvtx)[i] );
-        mu.set_sigd0( (*Mu_sigd0)[i] );
+        mu.set_sigd0( sigd0 );
+        //mu.set_sigd0( (*Mu_sigd0)[i] );
         mu.set_z0pvtx( (*Mu_z0pvtx)[i] );
         mu.set_isBad( (*Mu_isBad)[i] );
         mu.set_isCosmic( (*Mu_isCosmic)[i] );

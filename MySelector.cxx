@@ -28,7 +28,7 @@
 #include "Root/useful_functions.cxx"
 #include "Root/OverlapRemoval.cxx"
 #include "GoodRunsLists/GoodRunsListSelectionTool.h"
-#include "CPAnalysisExamples/errorcheck.h"
+//#include "CPAnalysisExamples/errorcheck.h"
 #include <TH2.h>
 #include <TStyle.h>
 #include <string>
@@ -75,9 +75,22 @@ void MySelector::Begin(TTree * /*tree*/)
     // The Begin() function is called at the start of the query.
     // When running with PROOF Begin() is only called on the client.
     // The tree argument is deprecated (on PROOF 0 is passed).
-    
+
     TString option = GetOption();
-    
+
+    // GRL
+    m_grl = new GoodRunsListSelectionTool("GoodRunsListSelectionTool");
+    std::vector<std::string> vecStringGRL;
+    vecStringGRL.push_back("/afs/cern.ch/work/y/yushen/private/Ximo/v12/cutflow_v12/MyPackages/data/data15_13TeV.periodA_DetStatus-v62-pro18_DQDefects-00-01-02_PHYS_StandardGRL_All_Good.xml");
+    //CHECK( m_grl->setProperty("GoodRunsListVec", vecStringGRL) );
+    //CHECK( m_grl->setProperty("PassThrough", false) );
+    m_grl->setProperty("GoodRunsListVec", vecStringGRL);
+    m_grl->setProperty("PassThrough", false);
+    if (!m_grl->initialize().isSuccess()) {
+        Error("In Begin()", "Fail to properly initialize the GRL. Exiting.");
+        //return kTRUE;
+    }
+
     hCutFlows = new TH1F("hCutFlows", "Cut Flows", 31, 0, 31);
     int number_of_bins = sizeof(cut_name) / sizeof( cut_name[0] );
     for (int i = 1; i <= number_of_bins; i++) {
@@ -369,9 +382,9 @@ void MySelector::SlaveBegin(TTree * /*tree*/)
     // The SlaveBegin() function is called after the Begin() function.
     // When running with PROOF SlaveBegin() is called on each slave server.
     // The tree argument is deprecated (on PROOF 0 is passed).
-    
+
     TString option = GetOption();
-    
+
 }
 
 Bool_t MySelector::Process(Long64_t entry)
@@ -394,30 +407,28 @@ Bool_t MySelector::Process(Long64_t entry)
     //
     // The return value is currently not used.
 
-    const char *APP_NAME = "Process()";
-
     // TH1F* h_w = (TH1F*)f->Get("DerivationStat_Weights");
     // SumW += h_w->GetBinContent(1);
     fAllEventsBeforeDerivations = 3651777;
     hCutFlows->Fill(0); // Cut 0: All events before derivations (DerivationStat_Weights)
-    
+
     AnaNtupSelector::Process(entry);
-    
+
     vec_elec.clear();
     vec_muon.clear();
     vec_jets.clear();
     vec_lept.clear();
-    
+
     vec_OR_elec.clear();
     vec_OR_muon.clear();
     vec_OR_jets.clear();
     vec_OR_lept.clear();
-    
+
     vec_signal_elec.clear();
     vec_signal_muon.clear();
     vec_signal_jets.clear();
     vec_signal_lept.clear();
-    
+
     Fill_electrons(NEl,
                    11, // particle id e- = 11
                    El_eta,
@@ -454,7 +465,7 @@ Bool_t MySelector::Process(Long64_t entry)
                    El_passIsoGrad,
                    El_passIsoGradCustom,
                    El_passIsoGradLoose);
-    
+
     Fill_muons(NMu,
                13, // particle id mu- = 13
                Mu_eta,
@@ -483,7 +494,7 @@ Bool_t MySelector::Process(Long64_t entry)
                Mu_passIsoGrad,
                Mu_passIsoGradCustom,
                Mu_passIsoGradLoose);
-    
+
     Fill_jets(NJet,
               Jet_eta,
               Jet_phi,
@@ -498,17 +509,33 @@ Bool_t MySelector::Process(Long64_t entry)
 
     fAllEventsInNtuple++;
     hCutFlows->Fill(1); // Cut 1: All events in derivation/ntuple
-    
+
     // sort by descending Pt
     sort(vec_elec.begin(), vec_elec.end(), sort_descending_Pt<Electron>);
     sort(vec_muon.begin(), vec_muon.end(), sort_descending_Pt<Muon>);
     sort(vec_jets.begin(), vec_jets.end(), sort_descending_Pt<Jet>);
-    
+
     // Set the baseline for electrons, muons, and jets.
     // Set the isSignal property for electrons and muons and set the isBjet property for jets.
     Set_baseline_and_signal_electrons();
     Set_baseline_and_signal_muons();
     Set_baseline_and_signal_jets();
+
+for(auto & el_itr : vec_elec) {
+if (EventNumber == 1561810) {
+cout << EventNumber 
+<< " elec: pt=" << el_itr.get_pt() 
+<< ", eta=" << el_itr.get_eta() 
+<< ", phi=" << el_itr.get_phi() 
+<< ", sigd0=" << el_itr.get_sigd0()
+<< ", z0=" << el_itr.get_z0pvtx()
+<< ", ptvarcone20/pt=" << el_itr.get_ptvarcone20() / el_itr.get_pt()
+<< ", topetcone20/pt=" << el_itr.get_topoetcone20() / el_itr.get_pt()
+<< ", tightLH=" << el_itr.get_isTightLH()
+<< ", baseline=" << el_itr.get_baseline()
+<< ", signal=" << el_itr.get_isSignal() << endl;
+}
+}
 
     // Fill leptons into vector. Put the FillLeptons() function at here then the lepton in the
     // vector has correct baseline, flavor, and isSignal information.
@@ -516,45 +543,24 @@ Bool_t MySelector::Process(Long64_t entry)
     Fill_leptons(vec_elec, vec_muon);
     // Now sort leptons by descending Pt
     sort(vec_lept.begin(), vec_lept.end(), sort_descending_Pt<Lepton>);
-    
+
     //----------------------------------//
     // Apply cuts
     //----------------------------------//
 
     // Using the information from http://atlasdqm.web.cern.ch/atlasdqm/grlgen/All_Good/data15_13TeV.periodA_DetStatus-v62-pro18_DQDefects-00-01-02_PHYS_StandardGRL_All_Good.xml#266904
-    // Run: 266904
-    // From: 423 to 531
-    // From: 537 to 612
-    GoodRunsListSelectionTool *m_grl = new GoodRunsListSelectionTool("GoodRunsListSelectionTool");
-    std::vector<std::string> vecStringGRL;
-    vecStringGRL.push_back("/afs/cern.ch/work/y/yushen/private/Ximo/v12/cutflow_v12/MyPackages/data/data15_13TeV.periodA_DetStatus-v62-pro18_DQDefects-00-01-02_PHYS_StandardGRL_All_Good.xml");
-    CHECK( m_grl->setProperty("GoodRunsListVec", vecStringGRL) );
-    CHECK( m_grl->setProperty("PassThrough", false) );
-    if (!m_grl->initialize().isSuccess()) {
-	Error("In Process()", "Fail to properly initialize the GRL. Exiting.");
-	return kTRUE;
-    }
-    if (!m_grl->passRunLB(RunNb, LB)) {
-	delete m_grl;
-	return kTRUE;
-    }
-    delete m_grl;
-/*
-    if (RunNb == 266904) {
-	if (LB < 423 || (LB > 531 && LB < 537) || LB > 612) return kTRUE;
-    }
-*/
+    //if (!m_grl->passRunLB(RunNb, LB)) return kTRUE;
     fGRL++;
     hCutFlows->Fill(2); // Cut 2: GRL (for data only)
 
     if (L1_EM15 == false && L1_MU10 == false) return kTRUE;
     fTrigger++;
     hCutFlows->Fill(3); // Cut 3: Trigger
-    
+
     if (DetError) return kTRUE; // DetError = 0 => pass
     fGlobalFlags++;
     hCutFlows->Fill(4); // Cut 4: Global flags (data only)
-    
+
     // Bad muon event veto cut: veto any event where a baseline muon BEFORE overlap removal
     int badMuon = 0;
     for (auto & mu_itr : vec_muon) {
@@ -564,11 +570,37 @@ Bool_t MySelector::Process(Long64_t entry)
         }
     }
     if (badMuon > 0) return kTRUE;
-    
+/*
+for (auto & jet_itr :vec_jets) {
+if (EventNumber == 1561810) {
+    cout << "Before OR " << EventNumber
+    << ", pt=" << jet_itr.get_pt()
+    << ", eta=" << jet_itr.get_eta()
+    << ", phi=" << jet_itr.get_phi()
+    << ", baseline=" << jet_itr.get_baseline()
+    << ", passOR=" << jet_itr.get_passOR()
+    << ", nTrk=" << jet_itr.get_nTrk() << endl;
+}
+}
+*/
+cout << "Call OR" << endl; 
     // Apply the overlap removal.
     double dRejet = 0.2, dRjetmu = 0.2, dRjete = 0.4, dRemu = 0.01, dRee = 0.05;
-    OverlapRemoval(&vec_elec, &vec_muon, &vec_jets, dRejet, dRjetmu, dRjete, dRemu, dRee);
-    
+    OverlapRemoval(EventNumber, &vec_elec, &vec_muon, &vec_jets, dRejet, dRjetmu, dRjete, dRemu, dRee);
+cout << "End call OR" << endl;
+/*
+for (auto & jet_itr :vec_jets) {
+if (EventNumber == 1561810) {
+    cout << "After OR " << EventNumber
+    << ", pt=" << jet_itr.get_pt()
+    << ", eta=" << jet_itr.get_eta()
+    << ", phi=" << jet_itr.get_phi()
+    << ", baseline=" << jet_itr.get_baseline()
+    << ", passOR=" << jet_itr.get_passOR()
+    << ", nTrk=" << jet_itr.get_nTrk() << endl;
+}
+}
+*/
     int badJet = 0;
     for (auto & jet_itr : vec_jets) {
         if ((jet_itr.get_passOR() == true) &&
@@ -607,25 +639,19 @@ Bool_t MySelector::Process(Long64_t entry)
     // Cosmics rejection cuts: these cuts should be applied AFTER overlap removal to avoid removing muons from heavy flavor decays.
     int cosmicMuon = 0;
     for (auto & mu_itr : vec_muon) {
-       if (EventNumber == 24038744 ||
-            EventNumber == 26339642 ||
-            EventNumber == 28045432 ||
-            EventNumber == 29462667 ||
-            EventNumber == 30328176 ||
-            EventNumber == 30622170 ||
-            EventNumber == 30630062 ||
-            EventNumber == 32008228 ||
-            EventNumber == 32412116 ||
-            EventNumber == 33606123) {
-            cout << EventNumber
-            << ", pt=" << mu_itr.get_pt()
-            << ", eta=" << mu_itr.get_eta()
-            << ", phi=" << mu_itr.get_phi()
-            << ", isCosmic=" << mu_itr.get_isCosmic()
-            << ", baseline=" << mu_itr.get_baseline()
-            << ", passOR=" << mu_itr.get_passOR() << endl;
-        }
 
+//debug
+if (EventNumber == 1561810) {
+    cout << EventNumber
+    << ", pt=" << mu_itr.get_pt()
+    << ", eta=" << mu_itr.get_eta()
+    << ", phi=" << mu_itr.get_phi()
+    << ", baseline=" << mu_itr.get_baseline()
+    << ", passOR=" << mu_itr.get_passOR()
+    << ", cosmic=" << mu_itr.get_isCosmic() << endl;
+    cout << "NMu=" << vec_muon.size() << endl;
+}
+	if (!mu_itr.get_passOR()) continue;	
         if (mu_itr.get_isCosmic() == true &&
             mu_itr.get_passOR() == true) {
             mu_itr.set_baseline(0);
@@ -635,8 +661,9 @@ Bool_t MySelector::Process(Long64_t entry)
     }
     if (cosmicMuon > 0) return kTRUE;
     fCosmicsVeto++;
+cout << EventNumber << ", fCosmicsVeto=" << fCosmicsVeto << endl;
     hCutFlows->Fill(7); // Cut 7: Cosmics veto
-cout << "CHECK7: " << EventNumber << endl;
+//cout << "CHECK7: " << EventNumber << endl;
 
     // Fill OR electrons, OR muons, OR jets, and OR leptons into vectors.
     Fill_baseline_electrons(vec_elec);
@@ -651,7 +678,7 @@ cout << "CHECK7: " << EventNumber << endl;
     Fill_signal_leptons(vec_signal_elec, vec_signal_muon);
 
 
-    Int_t Nel = 0, Nmu = 0, Nel_sig = 0, Nmu_sig = 0;
+    Int_t Nel = 0, Nmu = 0;//, Nel_sig = 0, Nmu_sig = 0;
     Int_t Nel_pt20 = 0, Nmu_pt20 = 0, Nel_sig_pt20 = 0, Nmu_sig_pt20 = 0;
     TLorentzVector el_tlv, mu_tlv;
     int Nbjet_pt20 = 0, Njet_pt20 = 0, Njet_pt50 = 0;
@@ -833,6 +860,8 @@ void MySelector::Terminate()
     // a query. It always runs on the client, it can be used to present
     // the results graphically or save the results to file.
     
+    delete m_grl;
+
     TFile *output_file = new TFile("results.root", "recreate");
     fOutput->Write();
     output_file->Close();

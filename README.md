@@ -36,3 +36,10 @@ v06:
 1. Change Fill.h to Fill_and_Set.cxx
 2. Remove Fill.h, OverlapRemoval.h, and useful_functions.h.
 3. Use GoodRunsList package in MySelector.cxx
+
+v07:
+1. Add sigd0_fixed.h to fix d0 significance in electrons and muons for data and MC.
+2. In Jet() constructor, initialize the cleaning to 0.
+3. Add EventNumber in OverlapRemoval(). It is easy for debugging.
+4. Correct the typo from get_phi() to get_eta() because |eta| < 2.8 for jet in overlap removal.
+5. Move the GRL to the Begin()

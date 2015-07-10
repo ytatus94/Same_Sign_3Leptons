@@ -2,7 +2,8 @@
 #ifndef OVERLAPREMOVAL_CXX
 #define OVERLAPREMOVAL_CXX
 
-void OverlapRemoval(vector<Electron> *el_obj,
+void OverlapRemoval(int	   EventNumber,
+		    vector<Electron> *el_obj,
                     vector<Muon>     *mu_obj,
                     vector<Jet>      *jet_obj,
                     double dRejet,
@@ -35,6 +36,9 @@ void OverlapRemoval(vector<Electron> *el_obj,
     // remove jets overlapping with (baseline/signal) electrons
     vector<Electron>::iterator el_itr = el_obj->begin();
     vector<Electron>::iterator el_end = el_obj->end();
+if (EventNumber == 1561810) {
+cout << "el_obj->size()=" << el_obj->size() << endl;
+}
     for (; el_itr != el_end; el_itr++) {
         bool el_sel = el_itr->get_baseline();
         if (el_sel)
@@ -43,13 +47,33 @@ void OverlapRemoval(vector<Electron> *el_obj,
             el_itr->set_passOR(0);
             continue;
         }
-        
+if (EventNumber == 1561810) {
+std::cout << EventNumber << " elec"
+<< ", pt=" << el_itr->get_pt()
+<< ", eta=" << el_itr->get_eta()
+<< ", phi=" << el_itr->get_phi()
+<< ", baseline=" << el_itr->get_baseline()
+<< ", passOR=" << el_itr->get_passOR() << endl;
+}
         jet_itr = jet_obj->begin();
         jet_end = jet_obj->end();
         for (; jet_itr != jet_end; jet_itr++) {
+if (EventNumber == 1561810) {
+    cout << EventNumber << " jet"
+    << ", pt=" << jet_itr->get_pt()
+    << ", eta=" << jet_itr->get_eta()
+    << ", phi=" << jet_itr->get_phi()
+    << ", baseline=" << jet_itr->get_baseline()
+    << ", passOR=" << jet_itr->get_passOR()
+    << ", cleaning=" << jet_itr->get_cleaning()
+    << ", nTrk=" << jet_itr->get_nTrk() << endl;
+}
             if (!jet_itr->get_passOR()) continue;
             TLorentzVector el4vec = el_itr->get_TLV();
             TLorentzVector jet4vec = jet_itr->get_TLV();
+if (EventNumber == 1561810) {
+std::cout << "DeltaR(e,jet)=" << el4vec.DeltaR(jet4vec) << endl;
+}
             if (el4vec.DeltaR(jet4vec) < dRejet) {
                 if (jet_itr->get_pt() > 20000. &&
                     fabs(jet_itr->get_eta()) < 2.5 &&
@@ -80,11 +104,12 @@ void OverlapRemoval(vector<Electron> *el_obj,
     el_end = el_obj->end();
     for (; el_itr != el_end; el_itr++) {
         if (!el_itr->get_passOR()) continue;
+
         jet_itr = jet_obj->begin();
         jet_end = jet_obj->end();
         for (; jet_itr != jet_end; jet_itr++) {
             if (!jet_itr->get_passOR()) continue;
-            if (fabs(jet_itr->get_phi()) >= 2.8) continue; // Now the jet must use |eta| < 2.8 (baseline)
+            if (fabs(jet_itr->get_eta()) >= 2.8) continue; // Now the jet must use |eta| < 2.8 (baseline)
             TLorentzVector el4vec = el_itr->get_TLV();
             TLorentzVector jet4vec = jet_itr->get_TLV();
             if (el4vec.DeltaR(jet4vec) < dRjete) {
@@ -97,15 +122,36 @@ void OverlapRemoval(vector<Electron> *el_obj,
     mu_end = mu_obj->end();
     for (; mu_itr != mu_end; mu_itr++) {
         if (!mu_itr->get_passOR()) continue;
-
+if (EventNumber == 1561810) {
+std::cout << EventNumber << " muon"
+<< ", pt=" << mu_itr->get_pt()
+<< ", eta=" << mu_itr->get_eta()
+<< ", phi=" << mu_itr->get_phi()
+<< ", baseline=" << mu_itr->get_baseline()
+<< ", passOR=" << mu_itr->get_passOR()
+<< ", cosmic=" << mu_itr->get_isCosmic() << endl;
+}
         jet_itr = jet_obj->begin();
         jet_end = jet_obj->end();
         for (; jet_itr != jet_end; jet_itr++) {
+if (EventNumber == 1561810) {
+    cout << EventNumber << " jet"
+    << ", pt=" << jet_itr->get_pt()
+    << ", eta=" << jet_itr->get_eta()
+    << ", phi=" << jet_itr->get_phi()
+    << ", baseline=" << jet_itr->get_baseline()
+    << ", passOR=" << jet_itr->get_passOR()
+    << ", cleaning=" << jet_itr->get_cleaning()
+    << ", nTrk=" << jet_itr->get_nTrk() << endl;
+}
             if (!jet_itr->get_passOR()) continue;
             if (!jet_itr->get_cleaning()) continue;
-            if (fabs(jet_itr->get_phi()) >= 2.8) continue; // Now the jet must use |eta| < 2.8 (baseline)
+            if (fabs(jet_itr->get_eta()) >= 2.8) continue; // Now the jet must use |eta| < 2.8 (baseline)
             TLorentzVector mu4vec = mu_itr->get_TLV();
             TLorentzVector jet4vec = jet_itr->get_TLV();
+if (EventNumber == 1561810) {
+std::cout << "DeltaR(jet,mu)=" << mu4vec.DeltaR(jet4vec) << endl;
+}
             if (mu4vec.DeltaR(jet4vec) < dRjetmu) {
                 if (jet_itr->get_nTrk() < 3) {
                     jet_itr->set_passOR(0);

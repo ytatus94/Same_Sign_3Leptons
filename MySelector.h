@@ -13,8 +13,13 @@ using namespace std;
 #include "MyPackages/Leptons.h"
 #include "MyPackages/Jet.h"
 
+class GoodRunsListSelectionTool;
+
 class MySelector : public AnaNtupSelector {
 public:
+    // GRL
+    GoodRunsListSelectionTool *m_grl;
+
     // Variables for counting number of events after cuts
     int fAllEventsBeforeDerivations;
     int fAllEventsInNtuple;
@@ -347,7 +352,8 @@ public:
     void Set_baseline_and_signal_muons();
     void Set_baseline_and_signal_jets();
 
-    friend void OverlapRemoval(vector<Electron> *el_obj,
+    friend void OverlapRemoval(int EventNumber,
+			       vector<Electron> *el_obj,
                                vector<Muon>     *mu_obj,
                                vector<Jet>      *jet_obj,
                                double dRejet,
