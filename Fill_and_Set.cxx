@@ -43,14 +43,14 @@ void MySelector::Fill_electrons(Int_t            NEl,
                                 vector<bool>     *El_passIsoGradLoose)
 {
     for (int i = 0; i < NEl; i++) {
-	// Fix d0 significance
-	double sigd0 = 0;
-	//if (isMC) {
-	    sigd0 = sigd0_fixed_mc(6633, (*El_d0pvtx)[i], (*El_sigd0)[i], (*El_phi)[i]);
-	//}
-	//else {
-	//    sigd0 = sigd0_fixed_data(RunNb, (*El_d0pvtx)[i], (*El_sigd0)[i], (*El_phi)[i]); 
-	//}
+		// Fix d0 significance
+		double sigd0 = 0;
+		//if (isMC) {
+	    	sigd0 = sigd0_fixed_mc(6633, (*El_d0pvtx)[i], (*El_sigd0)[i], (*El_phi)[i]);
+		//}
+		//else {
+		//    sigd0 = sigd0_fixed_data(RunNb, (*El_d0pvtx)[i], (*El_sigd0)[i], (*El_phi)[i]); 
+		//}
 
         Electron el;
         el.set_number(NEl);
@@ -125,15 +125,14 @@ void MySelector::Fill_muons(Int_t            NMu,
                             vector<bool>     *Mu_passIsoGradLoose)
 {
     for (int i = 0; i < NMu; i++) {
-	// Fix d0 significance
-	double sigd0 = 0;
-	//if (isMC) {
-	    sigd0 = sigd0_fixed_mc(6633, (*Mu_d0pvtx)[i], (*Mu_sigd0)[i], (*Mu_phi)[i]);
-//cout << "mu sigd0=" << sigd0 << ", (*Mu_sigd0)[i]=" << (*Mu_sigd0)[i] << endl;
-	//}
-	//else {
-	//    sigd0 = sigd0_fixed_data(RunNb, (*Mu_d0pvtx)[i], (*Mu_sigd0)[i], (*Mu_phi)[i]);
-	//}
+		// Fix d0 significance
+		double sigd0 = 0;
+		//if (isMC) {
+	    	sigd0 = sigd0_fixed_mc(6633, (*Mu_d0pvtx)[i], (*Mu_sigd0)[i], (*Mu_phi)[i]);
+		//}
+		//else {
+		//    sigd0 = sigd0_fixed_data(RunNb, (*Mu_d0pvtx)[i], (*Mu_sigd0)[i], (*Mu_phi)[i]);
+		//}
 
         Muon mu;
         mu.set_number(NMu);
@@ -191,7 +190,7 @@ void MySelector::Fill_jets(Int_t             NJet,
         je.set_pt( (*Jet_pT)[i] );
         je.set_E( (*Jet_E)[i] );
         je.set_quality( (*Jet_quality)[i] );
-	je.set_JVT( (*Jet_JVF)[i] );
+		je.set_JVT( (*Jet_JVF)[i] );
         je.set_JVT( (*Jet_JVT)[i] );
         je.set_MV2c20( (*Jet_MV2c20)[i] );
         je.set_SFw( (*Jet_SFw)[i] );

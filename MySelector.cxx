@@ -79,6 +79,7 @@ void MySelector::Begin(TTree * /*tree*/)
     TString option = GetOption();
 
     // GRL
+    // Using the information from http://atlasdqm.web.cern.ch/atlasdqm/grlgen/All_Good/data15_13TeV.periodA_DetStatus-v62-pro18_DQDefects-00-01-02_PHYS_StandardGRL_All_Good.xml#266904
     m_grl = new GoodRunsListSelectionTool("GoodRunsListSelectionTool");
     std::vector<std::string> vecStringGRL;
     vecStringGRL.push_back("/afs/cern.ch/work/y/yushen/private/Ximo/v12/cutflow_v12/MyPackages/data/data15_13TeV.periodA_DetStatus-v62-pro18_DQDefects-00-01-02_PHYS_StandardGRL_All_Good.xml");
@@ -86,7 +87,7 @@ void MySelector::Begin(TTree * /*tree*/)
     //CHECK( m_grl->setProperty("PassThrough", false) );
     m_grl->setProperty("GoodRunsListVec", vecStringGRL);
     m_grl->setProperty("PassThrough", false);
-    if (!m_grl->initialize().isSuccess()) {
+    if ( !m_grl->initialize().isSuccess() ) {
         Error("In Begin()", "Fail to properly initialize the GRL. Exiting.");
         //return kTRUE;
     }
@@ -97,6 +98,7 @@ void MySelector::Begin(TTree * /*tree*/)
         hCutFlows->GetXaxis()->SetBinLabel(i, cut_name[i - 1]);
     }
     fOutput->Add(hCutFlows);
+
 /*
     // For baseline leptons
     h_mll_baseline_OS_ee    = new TH1F("h_mll_baseline_OS_ee",   "OS M_{ee}",     200, 0, 200);
@@ -314,10 +316,10 @@ void MySelector::Begin(TTree * /*tree*/)
     h_pt_3rd_jets = new TH1F("h_pt_3rd_jets", "Jet pT 3rd", 20, 0, 200);
     h_pt_4th_jets = new TH1F("h_pt_4th_jets", "Jet pT 4th", 20, 0, 200);
 	
-	fOutput->Add(h_pt_1st_jets); 
-	fOutput->Add(h_pt_2nd_jets); 
-	fOutput->Add(h_pt_3rd_jets); 
-	fOutput->Add(h_pt_4th_jets); 
+    fOutput->Add(h_pt_1st_jets); 
+    fOutput->Add(h_pt_2nd_jets); 
+    fOutput->Add(h_pt_3rd_jets); 
+    fOutput->Add(h_pt_4th_jets); 
 
     // For Etmiss (baseline)
     h_MET_baseline_OS_ee   = new TH1F("h_MET_baseline_OS_ee",   "E_{T}^{miss} OS ee",     20, 0,200);
@@ -326,12 +328,12 @@ void MySelector::Begin(TTree * /*tree*/)
     h_MET_baseline_SS_ee   = new TH1F("h_MET_baseline_SS_ee",   "E_{T}^{miss} SS ee",     20, 0,200);
     h_MET_baseline_SS_emu  = new TH1F("h_MET_baseline_SS_emu",  "E_{T}^{miss} SS e#mu",   20, 0,200);
     h_MET_baseline_SS_mumu = new TH1F("h_MET_baseline_SS_mumu", "E_{T}^{miss} SS #mu#mu", 20, 0,200);
-	fOutput->Add(h_MET_baseline_OS_ee);
-	fOutput->Add(h_MET_baseline_OS_emu);
-	fOutput->Add(h_MET_baseline_OS_mumu);
-	fOutput->Add(h_MET_baseline_SS_ee);
-	fOutput->Add(h_MET_baseline_SS_emu);
-	fOutput->Add(h_MET_baseline_SS_mumu);
+    fOutput->Add(h_MET_baseline_OS_ee);
+    fOutput->Add(h_MET_baseline_OS_emu);
+    fOutput->Add(h_MET_baseline_OS_mumu);
+    fOutput->Add(h_MET_baseline_SS_ee);
+    fOutput->Add(h_MET_baseline_SS_emu);
+    fOutput->Add(h_MET_baseline_SS_mumu);
 
     // For Etmiss (signal)
     h_MET_signal_OS_ee   = new TH1F("h_MET_signal_OS_ee",   "E_{T}^{miss} OS ee",     20, 0,200);
@@ -340,40 +342,40 @@ void MySelector::Begin(TTree * /*tree*/)
     h_MET_signal_SS_ee   = new TH1F("h_MET_signal_SS_ee",   "E_{T}^{miss} SS ee",     20, 0,200);
     h_MET_signal_SS_emu  = new TH1F("h_MET_signal_SS_emu",  "E_{T}^{miss} SS e#mu",   20, 0,200);
     h_MET_signal_SS_mumu = new TH1F("h_MET_signal_SS_mumu", "E_{T}^{miss} SS #mu#mu", 20, 0,200);
-	fOutput->Add(h_MET_signal_OS_ee);
-	fOutput->Add(h_MET_signal_OS_emu);
-	fOutput->Add(h_MET_signal_OS_mumu);
-	fOutput->Add(h_MET_signal_SS_ee);
-	fOutput->Add(h_MET_signal_SS_emu);
-	fOutput->Add(h_MET_signal_SS_mumu);
+    fOutput->Add(h_MET_signal_OS_ee);
+    fOutput->Add(h_MET_signal_OS_emu);
+    fOutput->Add(h_MET_signal_OS_mumu);
+    fOutput->Add(h_MET_signal_SS_ee);
+    fOutput->Add(h_MET_signal_SS_emu);
+    fOutput->Add(h_MET_signal_SS_mumu);
 
-	// For meff (baseline)
+    // For meff (baseline)
     h_meff_baseline_OS_ee   = new TH1F("h_meff_baseline_OS_ee",   "Meff OS ee",   200,0, 1000);
     h_meff_baseline_OS_emu  = new TH1F("h_meff_baseline_OS_emu",  "Meff OS emu",  200,0, 1000);
     h_meff_baseline_OS_mumu = new TH1F("h_meff_baseline_OS_mumu", "Meff OS mumu", 200,0, 1000);
     h_meff_baseline_SS_ee   = new TH1F("h_meff_baseline_SS_ee",   "Meff OS ee",   200,0, 1000);
     h_meff_baseline_SS_emu  = new TH1F("h_meff_baseline_SS_emu",  "Meff OS emu",  200,0, 1000);
     h_meff_baseline_SS_mumu = new TH1F("h_meff_baseline_SS_mumu", "Meff OS mumu", 200,0, 1000);
-	fOutput->Add(h_meff_baseline_OS_ee);
-	fOutput->Add(h_meff_baseline_OS_emu);
-	fOutput->Add(h_meff_baseline_OS_mumu);
-	fOutput->Add(h_meff_baseline_SS_ee);
-	fOutput->Add(h_meff_baseline_SS_emu);
-	fOutput->Add(h_meff_baseline_SS_mumu);
+    fOutput->Add(h_meff_baseline_OS_ee);
+    fOutput->Add(h_meff_baseline_OS_emu);
+    fOutput->Add(h_meff_baseline_OS_mumu);
+    fOutput->Add(h_meff_baseline_SS_ee);
+    fOutput->Add(h_meff_baseline_SS_emu);
+    fOutput->Add(h_meff_baseline_SS_mumu);
     
-	// For meff (signal)
+    // For meff (signal)
     h_meff_signal_OS_ee   = new TH1F("h_meff_signal_OS_ee",   "Meff OS ee",   200,0, 1000);
     h_meff_signal_OS_emu  = new TH1F("h_meff_signal_OS_emu",  "Meff OS emu",  200,0, 1000);
     h_meff_signal_OS_mumu = new TH1F("h_meff_signal_OS_mumu", "Meff OS mumu", 200,0, 1000);
     h_meff_signal_SS_ee   = new TH1F("h_meff_signal_SS_ee",   "Meff OS ee",   200,0, 1000);
     h_meff_signal_SS_emu  = new TH1F("h_meff_signal_SS_emu",  "Meff OS emu",  200,0, 1000);
     h_meff_signal_SS_mumu = new TH1F("h_meff_signal_SS_mumu", "Meff OS mumu", 200,0, 1000);
-	fOutput->Add(h_meff_signal_OS_ee);
-	fOutput->Add(h_meff_signal_OS_emu);
-	fOutput->Add(h_meff_signal_OS_mumu);
-	fOutput->Add(h_meff_signal_SS_ee);
-	fOutput->Add(h_meff_signal_SS_emu);
-	fOutput->Add(h_meff_signal_SS_mumu);
+    fOutput->Add(h_meff_signal_OS_ee);
+    fOutput->Add(h_meff_signal_OS_emu);
+    fOutput->Add(h_meff_signal_OS_mumu);
+    fOutput->Add(h_meff_signal_SS_ee);
+    fOutput->Add(h_meff_signal_SS_emu);
+    fOutput->Add(h_meff_signal_SS_mumu);
 */    
 }
 
@@ -409,7 +411,8 @@ Bool_t MySelector::Process(Long64_t entry)
 
     // TH1F* h_w = (TH1F*)f->Get("DerivationStat_Weights");
     // SumW += h_w->GetBinContent(1);
-    fAllEventsBeforeDerivations = 3651777;
+    //fAllEventsBeforeDerivations = 3651777; // data 266904
+    fAllEventsBeforeDerivations = 1997000; // MC ttbar
     hCutFlows->Fill(0); // Cut 0: All events before derivations (DerivationStat_Weights)
 
     AnaNtupSelector::Process(entry);
@@ -521,22 +524,6 @@ Bool_t MySelector::Process(Long64_t entry)
     Set_baseline_and_signal_muons();
     Set_baseline_and_signal_jets();
 
-for(auto & el_itr : vec_elec) {
-if (EventNumber == 1561810) {
-cout << EventNumber 
-<< " elec: pt=" << el_itr.get_pt() 
-<< ", eta=" << el_itr.get_eta() 
-<< ", phi=" << el_itr.get_phi() 
-<< ", sigd0=" << el_itr.get_sigd0()
-<< ", z0=" << el_itr.get_z0pvtx()
-<< ", ptvarcone20/pt=" << el_itr.get_ptvarcone20() / el_itr.get_pt()
-<< ", topetcone20/pt=" << el_itr.get_topoetcone20() / el_itr.get_pt()
-<< ", tightLH=" << el_itr.get_isTightLH()
-<< ", baseline=" << el_itr.get_baseline()
-<< ", signal=" << el_itr.get_isSignal() << endl;
-}
-}
-
     // Fill leptons into vector. Put the FillLeptons() function at here then the lepton in the
     // vector has correct baseline, flavor, and isSignal information.
     // And the passOR is 0.
@@ -548,8 +535,7 @@ cout << EventNumber
     // Apply cuts
     //----------------------------------//
 
-    // Using the information from http://atlasdqm.web.cern.ch/atlasdqm/grlgen/All_Good/data15_13TeV.periodA_DetStatus-v62-pro18_DQDefects-00-01-02_PHYS_StandardGRL_All_Good.xml#266904
-    //if (!m_grl->passRunLB(RunNb, LB)) return kTRUE;
+    //if (!m_grl->passRunLB(RunNb, LB)) return kTRUE; // GRL for data only
     fGRL++;
     hCutFlows->Fill(2); // Cut 2: GRL (for data only)
 
@@ -570,37 +556,11 @@ cout << EventNumber
         }
     }
     if (badMuon > 0) return kTRUE;
-/*
-for (auto & jet_itr :vec_jets) {
-if (EventNumber == 1561810) {
-    cout << "Before OR " << EventNumber
-    << ", pt=" << jet_itr.get_pt()
-    << ", eta=" << jet_itr.get_eta()
-    << ", phi=" << jet_itr.get_phi()
-    << ", baseline=" << jet_itr.get_baseline()
-    << ", passOR=" << jet_itr.get_passOR()
-    << ", nTrk=" << jet_itr.get_nTrk() << endl;
-}
-}
-*/
-cout << "Call OR" << endl; 
+
     // Apply the overlap removal.
     double dRejet = 0.2, dRjetmu = 0.2, dRjete = 0.4, dRemu = 0.01, dRee = 0.05;
     OverlapRemoval(EventNumber, &vec_elec, &vec_muon, &vec_jets, dRejet, dRjetmu, dRjete, dRemu, dRee);
-cout << "End call OR" << endl;
-/*
-for (auto & jet_itr :vec_jets) {
-if (EventNumber == 1561810) {
-    cout << "After OR " << EventNumber
-    << ", pt=" << jet_itr.get_pt()
-    << ", eta=" << jet_itr.get_eta()
-    << ", phi=" << jet_itr.get_phi()
-    << ", baseline=" << jet_itr.get_baseline()
-    << ", passOR=" << jet_itr.get_passOR()
-    << ", nTrk=" << jet_itr.get_nTrk() << endl;
-}
-}
-*/
+
     int badJet = 0;
     for (auto & jet_itr : vec_jets) {
         if ((jet_itr.get_passOR() == true) &&
@@ -609,14 +569,14 @@ if (EventNumber == 1561810) {
         }
     }
     if (badJet > 0) return kTRUE;
-    
+
     // reject all jet with 2.8 < |eta| < 4.5
     for (auto & jet_itr : vec_jets) {
         if (fabs(jet_itr.get_eta()) > 2.8) {
             jet_itr.set_baseline(0);
         }
     }
-    
+
     // JVT: reject jets with pT<50 GeV and |eta|<2.4 and JVT<0.64, after the overlap removal procedure and after jet cleaning
     for (auto & jet_itr : vec_jets) {
         if (jet_itr.get_passOR() == true &&
@@ -628,10 +588,10 @@ if (EventNumber == 1561810) {
             }
         }
     }
-    
+
     fJetAndMuonCleaning++;
     hCutFlows->Fill(5); // Cut 5: Jet and muon cleaning
-    
+
     if (PV_z == -999) return kTRUE; // In common ntuples: PV_z>-999 (-999 is the default value if no PV is found in the event).
     fPrimaryVertex++;
     hCutFlows->Fill(6); // Cut 6: Primary Vertex
@@ -639,19 +599,7 @@ if (EventNumber == 1561810) {
     // Cosmics rejection cuts: these cuts should be applied AFTER overlap removal to avoid removing muons from heavy flavor decays.
     int cosmicMuon = 0;
     for (auto & mu_itr : vec_muon) {
-
-//debug
-if (EventNumber == 1561810) {
-    cout << EventNumber
-    << ", pt=" << mu_itr.get_pt()
-    << ", eta=" << mu_itr.get_eta()
-    << ", phi=" << mu_itr.get_phi()
-    << ", baseline=" << mu_itr.get_baseline()
-    << ", passOR=" << mu_itr.get_passOR()
-    << ", cosmic=" << mu_itr.get_isCosmic() << endl;
-    cout << "NMu=" << vec_muon.size() << endl;
-}
-	if (!mu_itr.get_passOR()) continue;	
+		if (!mu_itr.get_passOR()) continue;	
         if (mu_itr.get_isCosmic() == true &&
             mu_itr.get_passOR() == true) {
             mu_itr.set_baseline(0);
@@ -661,9 +609,7 @@ if (EventNumber == 1561810) {
     }
     if (cosmicMuon > 0) return kTRUE;
     fCosmicsVeto++;
-cout << EventNumber << ", fCosmicsVeto=" << fCosmicsVeto << endl;
     hCutFlows->Fill(7); // Cut 7: Cosmics veto
-//cout << "CHECK7: " << EventNumber << endl;
 
     // Fill OR electrons, OR muons, OR jets, and OR leptons into vectors.
     Fill_baseline_electrons(vec_elec);
@@ -677,37 +623,57 @@ cout << EventNumber << ", fCosmicsVeto=" << fCosmicsVeto << endl;
     Fill_signal_jets(vec_jets);
     Fill_signal_leptons(vec_signal_elec, vec_signal_muon);
 
-
-    Int_t Nel = 0, Nmu = 0;//, Nel_sig = 0, Nmu_sig = 0;
-    Int_t Nel_pt20 = 0, Nmu_pt20 = 0, Nel_sig_pt20 = 0, Nmu_sig_pt20 = 0;
-    TLorentzVector el_tlv, mu_tlv;
-    int Nbjet_pt20 = 0, Njet_pt20 = 0, Njet_pt50 = 0;
-    int same_sign = 1;
+    int Nlep = 0, Nel = 0, Nmu = 0;
+    int Nlep_sig = 0, Nel_sig = 0, Nmu_sig = 0;
+    int same_sign = 1, same_sign_e = 1, same_sign_mu = 1;
+    TLorentzVector lep_tlv, el_tlv, mu_tlv;
+    for (auto & lep_itr : vec_OR_lept) {
+        Nlep++;
+        if (lep_itr.get_flavor() == 11) Nel++;
+        if (lep_itr.get_flavor() == 13) Nmu++;
+    }
+    for (auto & lep_itr : vec_signal_lept) {
+        Nlep_sig++;
+        if (lep_itr.get_flavor() == 11) {
+            Nel_sig++;
+            same_sign_e = same_sign_e * lep_itr.get_charge();
+        }
+        if (lep_itr.get_flavor() == 13) {
+            Nmu_sig++;
+            same_sign_mu = same_sign_mu * lep_itr.get_charge();
+        }
+        same_sign = same_sign_e * same_sign_mu;
+    }
     
+/*
+    Int_t Nel = 0, Nmu = 0, Nel_sig_pt20 = 0, Nmu_sig_pt20 = 0;
+    TLorentzVector el_tlv, mu_tlv;
+*/
+    int Nbjet_pt20 = 0, Njet_pt20 = 0, Njet_pt50 = 0;
+/*
+    int same_sign = 1, same_sign_e = 1, same_sign_mu;
+
     for (auto & el_itr : vec_OR_elec) {
         Nel++;
-        //if (el_itr.get_pt() > 20000.) Nel_pt20++;
         if (el_itr.get_isSignal()) {
-            //Nel_sig++;
             if (el_itr.get_pt() > 20000.) {
                 Nel_sig_pt20++;
                 el_tlv = el_tlv + el_itr.get_TLV();
-                same_sign = same_sign * el_itr.get_charge();
+                same_sign_e = same_sign_e * el_itr.get_charge();
             }
         }
     }
     for (auto & mu_itr : vec_OR_muon) {
         Nmu++;
-        //if (mu_itr.get_pt() > 20000.) Nmu_pt20++;
         if (mu_itr.get_isSignal()) {
-            //Nmu_sig++;
             if (mu_itr.get_pt() > 20000.) {
                 Nmu_sig_pt20++;
                 mu_tlv = mu_tlv + mu_itr.get_TLV();
-                same_sign = same_sign * mu_itr.get_charge();
+                same_sign_mu = same_sign_mu * mu_itr.get_charge();
             }
         }
     }
+*/
     for (auto & jet_itr : vec_OR_jets) {
         if (jet_itr.get_quality() == 1) continue; // 1=bad jet from SUSYTools IsGoodJet
         if (jet_itr.get_isBjet()) Nbjet_pt20++;
@@ -717,22 +683,34 @@ cout << EventNumber << ", fCosmicsVeto=" << fCosmicsVeto << endl;
 
     //----------------------------------//
 
-    if ( (Nel + Nmu) >= 2) {
+    //if ((Nel + Nmu) >= 2) {
+    if (Nlep >= 2) {
         fAtLeastTwoBaselineLeptons++;
         hCutFlows->Fill(8); // Cut 8: ≥ 2 baseline leptons (>10 GeV)
     }
+    if (Nlep_sig >= 2) {
+        if (Nlep_sig == 2 && same_sign == 1) { // a same-sign pair within the signal leptons in the event
+            fAtLeastTwoSignalLeptons++;
+            hCutFlows->Fill(9); // Cut 9: ≥ 2 signal leptons (>20 GeV)
+        }
+        else {
+            fAtLeastTwoSignalLeptons++;
+            hCutFlows->Fill(9); // Cut 9: ≥ 2 signal leptons (>20 GeV)
+        }
+    }
 /*
-    if ( (Nel_pt20 + Nmu_pt20) == 2) {
-        fEqualTwoLeptons++;
-        hCutFlows->Fill(9);
+    if ((Nel_sig_pt20 + Nmu_sig_pt20) >= 2) {
+		if ((Nel_sig_pt20 + Nmu_sig_pt20) == 2 && same_sign == 1) { // a same-sign pair within the signal leptons in the event 
+	    	fAtLeastTwoSignalLeptons++;
+	    	hCutFlows->Fill(9); // Cut 9: ≥ 2 signal leptons (>20 GeV)
+		}
+		else {
+	    	fAtLeastTwoSignalLeptons++;
+	    	hCutFlows->Fill(9); // Cut 9: ≥ 2 signal leptons (>20 GeV)
+		}
     }
 */
-    if ( (Nel_sig_pt20 + Nmu_sig_pt20) == 2) {
-        fAtLeastTwoSignalLeptons++;
-        hCutFlows->Fill(9); // Cut 9: ≥ 2 signal leptons (>20 GeV)
-    }
-    
-    
+
 /*
     if ( (Nel_sig_pt20 + Nmu_sig_pt20) == 2) {
         double ht = calculate_Ht(vec_signal_lept, vec_signal_jets);
@@ -742,9 +720,23 @@ cout << EventNumber << ", fCosmicsVeto=" << fCosmicsVeto << endl;
     //----------------------------------//
 
     TLorentzVector ml1l2_tlv = el_tlv + mu_tlv;
-    
+
     // Channel separation [20,20]: El-El channel
-    if (Nel_sig_pt20 == 2 && Nmu_sig_pt20 == 0) {
+    if (Nlep_sig >=2) {
+        cout << "Nel_sig=" << Nel_sig << ", Nmu_sig=" << Nmu_sig << endl;
+        cout << "same_sign_e=" << same_sign_e << ", same_sign_mu=" << same_sign_mu << endl;
+		if (Nel_sig == 2 && same_sign_e == 1) {
+	    	fChannelSelection_elel++;
+	    	hCutFlows->Fill(10); // Cut 10: Channel selection (20, 20 GeV): el-el
+
+	    	fTrigger_elel++;
+	    	hCutFlows->Fill(11); // Cut 11: Trigger: el-el
+		}
+        
+    }
+
+/*
+    //if (Nel_sig_pt20 == 2 && Nmu_sig_pt20 == 0) {
         fChannelSelection_elel++;
         hCutFlows->Fill(10); // Cut 10: Channel selection (20, 20 GeV): el-el
         
@@ -776,6 +768,8 @@ cout << EventNumber << ", fCosmicsVeto=" << fCosmicsVeto << endl;
             }
         }
     }
+*/
+/*
     // Channel separation [20,20]: El-MU channel
     if (Nel_sig_pt20 == 1 && Nmu_sig_pt20 == 1) {
         fChannelSelection_elmu++;
@@ -842,7 +836,7 @@ cout << EventNumber << ", fCosmicsVeto=" << fCosmicsVeto << endl;
             }
         }
     }
-
+*/
     return kTRUE;
 }
 
