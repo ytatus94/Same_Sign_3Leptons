@@ -17,6 +17,10 @@ class GoodRunsListSelectionTool;
 
 class MySelector : public AnaNtupSelector {
 public:
+    // flag
+    int isMC;
+    int isData;
+    
     // GRL
     GoodRunsListSelectionTool *m_grl;
 
@@ -258,7 +262,8 @@ public:
     virtual void    SlaveTerminate();
     virtual void    Terminate();
 
-    void Fill_electrons(Int_t            NEl,
+    void Fill_electrons(int              RunNb,
+                        Int_t            NEl,
                         int              flavor,
                         vector<double>   *El_eta,
                         vector<double>   *El_phi,
@@ -295,7 +300,8 @@ public:
                         vector<bool>     *El_passIsoGradCustom,
                         vector<bool>     *El_passIsoGradLoose);
     
-    void Fill_muons(Int_t            NMu,
+    void Fill_muons(int              RunNb,
+                    Int_t            NMu,
                     int              flavor,
                     vector<double>   *Mu_eta,
                     vector<double>   *Mu_phi,

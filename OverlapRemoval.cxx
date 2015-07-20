@@ -57,10 +57,12 @@ void OverlapRemoval(int	   EventNumber,
             if (el4vec.DeltaR(jet4vec) < dRejet) {
                 if (jet_itr->get_pt() > 20000. &&
                     fabs(jet_itr->get_eta()) < 2.5 &&
-                    jet_itr->get_MV2c20() > -0.5911)
+                    jet_itr->get_MV2c20() > -0.5911) {
                     jet_itr->set_passOR(1);
-                else
+                }
+                else {
                     jet_itr->set_passOR(0);
+                }
             }
         }
     }
@@ -90,8 +92,9 @@ void OverlapRemoval(int	   EventNumber,
             if (fabs(jet_itr->get_eta()) >= 2.8) continue; // Now the jet must use |eta| < 2.8 (baseline)
             TLorentzVector el4vec = el_itr->get_TLV();
             TLorentzVector jet4vec = jet_itr->get_TLV();
-            if (el4vec.DeltaR(jet4vec) < dRjete)
+            if (el4vec.DeltaR(jet4vec) < dRjete) {
                 el_itr->set_passOR(0);
+            }
         }
     }
 
@@ -111,10 +114,12 @@ void OverlapRemoval(int	   EventNumber,
             TLorentzVector jet4vec = jet_itr->get_TLV();
 
             if (mu4vec.DeltaR(jet4vec) < dRjetmu) {
-                if (jet_itr->get_nTrk() < 3)
+                if (jet_itr->get_nTrk() < 3) {
                     jet_itr->set_passOR(0);
-                else
+                }
+                else {
                     mu_itr->set_passOR(0);
+                }
             }
         }
     }
@@ -152,10 +157,12 @@ void OverlapRemoval(int	   EventNumber,
         TLorentzVector el4vec = el_itr->get_TLV();
         TLorentzVector el24vec = el2_itr->get_TLV();
         if (el4vec.DeltaR(el24vec) < dRee) {
-            if ((el_itr->get_TLV()).Pt() < (el2_itr->get_TLV()).Pt())
+            if ((el_itr->get_TLV()).Pt() < (el2_itr->get_TLV()).Pt()) {
                 el_itr->set_passOR(0);
-            else
+            }
+            else {
                 el2_itr->set_passOR(0);
+            }
         }
     }
 /*

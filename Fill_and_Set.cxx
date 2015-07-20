@@ -5,7 +5,8 @@
 #include "MyPackages/sigd0_fixed.h"
 
 // Fill methods
-void MySelector::Fill_electrons(Int_t            NEl,
+void MySelector::Fill_electrons(int              RunNb,
+                                Int_t            NEl,
                                 int              flavor,
                                 vector<double>   *El_eta,
                                 vector<double>   *El_phi,
@@ -45,12 +46,12 @@ void MySelector::Fill_electrons(Int_t            NEl,
     for (int i = 0; i < NEl; i++) {
 		// Fix d0 significance
 		double sigd0 = 0;
-		//if (isMC) {
+		if (isMC)
 	    	sigd0 = sigd0_fixed_mc(6633, (*El_d0pvtx)[i], (*El_sigd0)[i], (*El_phi)[i]);
-		//}
-		//else {
-		//    sigd0 = sigd0_fixed_data(RunNb, (*El_d0pvtx)[i], (*El_sigd0)[i], (*El_phi)[i]); 
-		//}
+		else if (isData)
+		    sigd0 = sigd0_fixed_data(RunNb, (*El_d0pvtx)[i], (*El_sigd0)[i], (*El_phi)[i]);
+        else
+            sigd0 = (*El_sigd0)[i];
 
         Electron el;
         el.set_number(NEl);
@@ -95,7 +96,8 @@ void MySelector::Fill_electrons(Int_t            NEl,
     }
 }
 
-void MySelector::Fill_muons(Int_t            NMu,
+void MySelector::Fill_muons(int              RunNb,
+                            Int_t            NMu,
                             int              flavor,
                             vector<double>   *Mu_eta,
                             vector<double>   *Mu_phi,
@@ -127,12 +129,12 @@ void MySelector::Fill_muons(Int_t            NMu,
     for (int i = 0; i < NMu; i++) {
 		// Fix d0 significance
 		double sigd0 = 0;
-		//if (isMC) {
+		if (isMC)
 	    	sigd0 = sigd0_fixed_mc(6633, (*Mu_d0pvtx)[i], (*Mu_sigd0)[i], (*Mu_phi)[i]);
-		//}
-		//else {
-		//    sigd0 = sigd0_fixed_data(RunNb, (*Mu_d0pvtx)[i], (*Mu_sigd0)[i], (*Mu_phi)[i]);
-		//}
+		else if (isData)
+		    sigd0 = sigd0_fixed_data(RunNb, (*Mu_d0pvtx)[i], (*Mu_sigd0)[i], (*Mu_phi)[i]);
+		else
+            sigd0 = (*Mu_sigd0)[i];
 
         Muon mu;
         mu.set_number(NMu);
@@ -241,7 +243,7 @@ void MySelector::Fill_baseline_jets(vector<Jet> jets)
     }
 }
 
-void MySelector::Fill_baseline_leptons(vector<Electron> signal_elec, vector<Muon> signal_muon)
+void MySelector::Fill_baseline_leptons(vector<Electron> vec_elec, vector<Muon> vec_muon)
 {
     for (auto & el_itr : vec_elec) {
         if (el_itr.get_baseline() == true &&
@@ -262,8 +264,9 @@ void MySelector::Fill_signal_electrons(vector<Electron> vec_elec)
     for (auto & el_itr : vec_elec) {
         if (el_itr.get_baseline() == true &&
             el_itr.get_passOR() == true &&
-            el_itr.get_isSignal() &&
-            el_itr.get_pt() > 20000.) {
+            el_itr.get_isSignal()) {
+            //el_itr.get_isSignal() &&
+            //el_itr.get_pt() > 20000.) {
             vec_signal_elec.push_back(el_itr);
         }
     }
@@ -274,8 +277,9 @@ void MySelector::Fill_signal_muons(vector<Muon> vec_muon)
     for (auto & mu_itr : vec_muon) {
         if (mu_itr.get_baseline() == true &&
             mu_itr.get_passOR() == true &&
-            mu_itr.get_isSignal() &&
-            mu_itr.get_pt() > 20000.) {
+            mu_itr.get_isSignal()) {
+            //mu_itr.get_isSignal() &&
+            //mu_itr.get_pt() > 20000.) {
             vec_signal_muon.push_back(mu_itr);
         }
     }

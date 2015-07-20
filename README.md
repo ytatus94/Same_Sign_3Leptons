@@ -48,3 +48,13 @@ v08:
 1. Add d0 significance correction in Fill_and_Set.cxx to fix d0 when fill the value of d0 into electrons and muons.
 2. Rewrite the part of the number of electrons, muons, and leptons calculations.
 3. All the cuts from cut 10 are modified (on going).
+
+v09:
+This version can get the correct results using MC ttbar. But if run over all data, then the channel selection parts are all zeros.
+The 32 events are matched with Ximo's results but they are opposite sign not same sign. Why???
+ANS: in Data, we apply same-sign at cut 15 but we require same-sign when do channel selection.
+
+1. Add isMC and isData selections in ssv12_cutflow.cxx
+2. Add isMC and isData flag in MySelector.cxx
+3. Add RunNb in Fill methods to correct the d0 significance in Fill_and_Set.cxx
+4. Modify channel selection parts to selection el-el, el-mu,mu-mu channels in MC.
