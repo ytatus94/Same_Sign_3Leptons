@@ -52,7 +52,7 @@ v08:
 v09:
 This version can get the correct results using MC ttbar. But if run over all data, then the channel selection parts are all zeros.
 The 32 events are matched with Ximo's results but they are opposite sign not same sign. Why???
-ANS: in Data, we apply same-sign at cut 15 but we require same-sign when do channel selection.
+ANS: in Data, we apply same-sign at cut 15 but we require same-sign when do channel selection in MC.
 
 1. Add isMC and isData selections in ssv12_cutflow.cxx
 2. Add isMC and isData flag in MySelector.cxx
