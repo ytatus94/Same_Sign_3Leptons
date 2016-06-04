@@ -5,3 +5,6 @@ This cutflows codes are for SS/3L+jets v16 ntuple.
 3. Use the flat ntuple to make TSelector: AnaNtupSelector.h and AnaNtupSelector.cxx
 4. Copy the codes from SS_v12 and make some modification in order to run v16 ntuple.
 Such as adding some variables in Lepton.h and Jet.h and correct the Fill_and_Set.cxx and the FillXXXX functions in MySelector.h and MySelector.cxx
+
+v01:
+Copy everything  from Lxplus to local and then commit to GitHub.

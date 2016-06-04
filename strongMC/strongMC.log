@@ -1,0 +1,45 @@
+Info in <ssv12_cutflow>: isMC = 1, isData = 0
+Add MC files to TChain...
+--- TGRLCollection      : Now merging GRLs where possible. Metadata required to be identical.[0m
+--- RegularFormula      : Now parsing regular expression : 1[0m
+--- RegularFormula      : Number of interpreted input parameters : 0[0m
+--- RegularFormula      : Parsed regular expression : 1[0m
+Cut 0: All events before derivations (DerivationStat_Weights) = 1997000   
+Cut 1: All events in derivation/ntuple = 33068     
+Cut 2: GRL (for data only) = 33068     
+Cut 3: Trigger       = 26425     
+Cut 4: Global flags (data only) = 26425     
+Cut 5: Jet and muon cleaning = 25985     
+Cut 6: Primary Vertex = 25985     
+Cut 7: Cosmics veto  = 25277     
+Cut 8: ≥ 2 baseline leptons (>10 GeV) = 8001      
+Cut 9: ≥ 2 signal leptons (>20 GeV) = 3711      
+**********
+Cut 10: Channel selection (20, 20 GeV): el-el = 370       
+Cut 11: Trigger: el-el = 0         
+Cut 12: ml1l2 > 12 GeV: el-el = 0         
+Cut 13: ≥ 1 b jet (>20 GeV): el-el = 358       
+Cut 14: ≥ 4 jets (>50GeV): el-el = 335       
+Cut 15: Same sign leptons: el-el = 0         
+Cut 16: MET > 150 GeV: el-el = 289       
+**********
+Cut 10: Channel selection (20, 20 GeV): el-mu = 890       
+Cut 11: Trigger: el-mu = 0         
+Cut 12: ml1l2 > 12 GeV: el-mu = 0         
+Cut 13: ≥ 1 b jet (>20 GeV): el-mu = 863       
+Cut 14: ≥ 4 jets (>50GeV): el-mu = 820       
+Cut 15: Same sign leptons: el-mu = 0         
+Cut 16: MET > 150 GeV: el-mu = 706       
+**********
+Cut 10: Channel selection (20, 20 GeV): mu-mu = 559       
+Cut 11: Trigger: mu-mu = 0         
+Cut 12: ml1l2 > 12 GeV: mu-mu = 0         
+Cut 13: ≥ 1 b jet (>20 GeV): mu-mu = 546       
+Cut 14: ≥ 4 jets (>50GeV): mu-mu = 523       
+Cut 15: Same sign leptons: mu-mu = 0         
+Cut 16: MET > 150 GeV: mu-mu = 442       
+Warning in <StatusCode>:
+Warning in <StatusCode>: Unchecked status codes encountered during the job
+Warning in <StatusCode>: Number of unchecked successes: 2
+Warning in <StatusCode>: To fail on an unchecked code, call StatusCode::enableFailure() at the job's start
+Warning in <StatusCode>:
