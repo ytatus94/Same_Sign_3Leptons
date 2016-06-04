@@ -2,6 +2,9 @@
 This contains the codes for analysing Ximo's v12 ntuples.
 Use data SUSY9 and MC SUSY5 on grid: user.jpoveda.t0609_v12.*_output.root/
 
+v11:
+Adding Data.log and MC.log
+
 v10:
 Adding folders so the structure is the same as RootCore package. Then move the files to the corresponding folders.
 
