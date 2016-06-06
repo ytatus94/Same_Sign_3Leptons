@@ -25,6 +25,7 @@ public:
 	//GoodRunsListSelectionTool *m_GRL;
 	yt_cutflows			*m_cutflow;
 
+	vector<int>			vec_event_number;
 	//HLT					*HLT_object;
 	vector<Jet>			vec_jets;
 	vector<Lepton>		vec_lept;

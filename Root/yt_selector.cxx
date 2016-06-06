@@ -30,7 +30,6 @@
 #include <TH2.h>
 #include <TStyle.h>
 
-
 void yt_selector::Begin(TTree * /*tree*/)
 {
    // The Begin() function is called at the start of the query.
@@ -106,7 +105,7 @@ Bool_t yt_selector::Process(Long64_t entry)
 	vec_OR_muon.clear();
 	vec_OR_jets.clear();
 	vec_OR_lept.clear();
- 
+
 	vec_signal_elec.clear();
 	vec_signal_muon.clear();
 	vec_signal_jets.clear();
@@ -293,9 +292,8 @@ Bool_t yt_selector::Process(Long64_t entry)
 	set_baseline_and_signal_muons();
 	set_jets_and_bjets();
 
-	// Fill leptons into vector. Put the FillLeptons() function at here then the lepton in the
+	// Fill leptons into vector. Put the fill_leptons() function at here then the lepton in the
 	// vector has correct baseline, flavor, and isSignal information.
-	// And the passOR is 0.
 	fill_leptons(vec_elec, vec_muon);
 	// Now sort leptons by descending Pt
 	sort(vec_lept.begin(), vec_lept.end(), sort_descending_Pt<Lepton>);
@@ -305,28 +303,38 @@ Bool_t yt_selector::Process(Long64_t entry)
 	//----------------------------------//
 
 	// Apply cutflows
-	m_cutflow->events_pass_cutflow[DerivationStat_Weights] = 1.988000e+05;
+	m_cutflow->events_pass_cutflow[DerivationStat_Weights] = 1.988000e+05; // read the first bin from root file.
+
 	bool cut1  = m_cutflow->pass_all_events();
 	m_cutflow->update(All_events, cut1);
 	if (!cut1) return kTRUE;
+
 	bool cut2  = m_cutflow->pass_GRL(isData, RunNb, LB);
 	m_cutflow->update(GRL, cut2);
 	if (!cut2) return kTRUE;
+
 	bool cut3  = m_cutflow->pass_primary_vertex(PV_z);
 	m_cutflow->update(Primary_vertex, cut3);
 	if (!cut3) return kTRUE;
+
 	bool cut4  = m_cutflow->pass_trigger(HLT_2e12_lhloose_L12EM10VH, HLT_e17_lhloose_mu14, HLT_mu18_mu8noL1, HLT_xe70, Etmiss_TST_Et);
 	m_cutflow->update(Trigger, cut4);
 	if (!cut4) return kTRUE;
-	bool cut5  = m_cutflow->pass_global_flags(isData, isMC, DetError, Etmiss_TST_Et, Etmiss_TST_Etx, Etmiss_TST_Ety, Etmiss_TSTterm_Et, Etmiss_TSTterm_Etx, Etmiss_TSTterm_Ety);
+
+	bool cut5  = m_cutflow->pass_global_flags(isData, isMC, DetError, 
+											  Etmiss_TST_Et, Etmiss_TST_Etx, Etmiss_TST_Ety, 
+											  Etmiss_TSTterm_Et, Etmiss_TSTterm_Etx, Etmiss_TSTterm_Ety);
 	m_cutflow->update(Global_flags, cut5);
 	if (!cut5) return kTRUE;
+
 	bool cut6  = m_cutflow->pass_bad_muon(vec_muon);
 	m_cutflow->update(Bad_muon, cut6);
 	if (!cut6) return kTRUE;
+
 	bool cut7  = m_cutflow->pass_at_least_one_jet_passes_jet_OR(vec_jets);
 	m_cutflow->update(At_least_one_jet_passes_jet_OR, cut7);
 	if (!cut7) return kTRUE;
+
 	bool cut8  = m_cutflow->pass_bad_jet(vec_jets);
 	m_cutflow->update(Bad_jet, cut8);
 	if (!cut8) return kTRUE;
@@ -380,9 +388,11 @@ Bool_t yt_selector::Process(Long64_t entry)
 	bool cut9  = m_cutflow->pass_at_least_one_signal_jet(vec_signal_jets);
 	m_cutflow->update(At_least_one_signal_jet, cut9);
 	if (!cut9) return kTRUE;
+
 	bool cut10 = m_cutflow->pass_cosmic_muon_veto(vec_OR_muon);
 	m_cutflow->update(Cosmic_muons_veto, cut10);
 	if (!cut10) return kTRUE;
+
 	bool cut11 = m_cutflow->pass_at_least_two_baseline_leptons_greater_than_10GeV(vec_OR_lept);
 	m_cutflow->update(At_least_two_baseline_leptons_greater_than_10GeV, cut11);
 	if (!cut11) return kTRUE;
@@ -391,45 +401,71 @@ Bool_t yt_selector::Process(Long64_t entry)
 	bool cut12 = m_cutflow->pass_at_least_two_signal_leptons_greater_than_20GeV(vec_signal_lept);
 	m_cutflow->update(At_least_two_signal_leptons_greater_than_20GeV, cut12);
 	if (!cut12) return kTRUE;
+
 	bool cut13 = m_cutflow->pass_same_sign(vec_signal_lept);
 	m_cutflow->update(Same_sign, cut13);
 	if (!cut13) return kTRUE;
-	
-/*
+
+	// Save the event number of passed events (for debug)
+	vec_event_number.push_back(EventNumber);
+
 	// same-sign
 	// e-e
-	bool ee_cut1 = m_cutflow->pass_channel_separation();
-	m_cutflow->update(ee_channel_separation, ee_cut1);
+	int ee_cut1 = m_cutflow->pass_channel_separation(EventNumber, vec_event_number, vec_signal_lept);
+	if (ee_cut1 == 1)
+		m_cutflow->update(ee_channel_separation, true);
+/*
 	bool ee_cut2 = m_cutflow->pass_trigger_matching();
-	m_cutflow->update(ee_trigger_matching, ee_cut2);
-	bool ee_cut3 = m_cutflow->pass_at_least_one_bjet_greater_than_20GeV();
-	m_cutflow->update(ee_at_least_one_bjet_greater_than_20GeV, ee_cut3);
-	bool ee_cut4 = m_cutflow->pass_four_jets_greater_than_50GeV();
-	m_cutflow->update(ee_four_jets_greater_than_50GeV, ee_cut4);
-	bool ee_cut5 = m_cutflow->pass_MET_greater_than_125GeV();
-	m_cutflow->update(ee_MET_greater_than_125GeV, ee_cut5);
+	if (ee_cut1 == 1 && ee_cut2)
+		m_cutflow->update(ee_trigger_matching, ee_cut2);
+
+	bool ee_cut3 = m_cutflow->pass_at_least_one_bjet_greater_than_20GeV(vec_signal_jets);
+	if (ee_cut1 == 1 && ee_cut2 && ee_cut3)
+		m_cutflow->update(ee_at_least_one_bjet_greater_than_20GeV, ee_cut3);
+
+	bool ee_cut4 = m_cutflow->pass_four_jets_greater_than_50GeV(vec_signal_jets);
+	if (ee_cut1 == 1 && ee_cut2 && ee_cut3 && ee_cut4)
+		m_cutflow->update(ee_four_jets_greater_than_50GeV, ee_cut4);
+
+	bool ee_cut5 = m_cutflow->pass_MET_greater_than_125GeV(Etmiss_TST_Et);
+	if (ee_cut1 == 1 && ee_cut2 && ee_cut3 && ee_cut4 && ee_cut5)
+		m_cutflow->update(ee_MET_greater_than_125GeV, ee_cut5);
+*/
 	// e-mu
-	bool emu_cut1 = m_cutflow->pass_channel_separation();
-	m_cutflow->update(emu_channel_separation, emu_cut1);
+	int emu_cut1 = m_cutflow->pass_channel_separation(EventNumber, vec_event_number, vec_signal_lept);
+	if (emu_cut1 == 2)
+		m_cutflow->update(emu_channel_separation, emu_cut1);
+/*
 	bool emu_cut2 = m_cutflow->pass_trigger_matching();
-	m_cutflow->update(emu_trigger_matching, emu_cut2);
+	if (emu_cut1 == 2 && emu_cut2)
+		m_cutflow->update(emu_trigger_matching, emu_cut2);
 	bool emu_cut3 = m_cutflow->pass_at_least_one_bjet_greater_than_20GeV();
-	m_cutflow->update(emu_at_least_one_bjet_greater_than_20GeV, emu_cut3);
+	if (emu_cut1 == 2 && emu_cut2 && emu_cut3)
+		m_cutflow->update(emu_at_least_one_bjet_greater_than_20GeV, emu_cut3);
 	bool emu_cut4 = m_cutflow->pass_four_jets_greater_than_50GeV();
-	m_cutflow->update(emu_four_jets_greater_than_50GeV, emu_cut4);
+	if (emu_cut1 == 2 && emu_cut2 && emu_cut3 && emu_cut4)
+		m_cutflow->update(emu_four_jets_greater_than_50GeV, emu_cut4);
 	bool emu_cut5 = m_cutflow->pass_MET_greater_than_125GeV();
-	m_cutflow->update(emu_MET_greater_than_125GeV, emu_cut5);
+	if (emu_cut1 == 2 && emu_cut2 && emu_cut3 && emu_cut4 && emu_cut5)
+		m_cutflow->update(emu_MET_greater_than_125GeV, emu_cut5);
+*/
 	// mu-mu
-	bool mumu_cut1 = m_cutflow->pass_channel_separation();
-	m_cutflow->update(mumu_channel_separation, mumu_cut1);
+	int mumu_cut1 = m_cutflow->pass_channel_separation(EventNumber, vec_event_number, vec_signal_lept);
+	if (mumu_cut1 == 3)
+		m_cutflow->update(mumu_channel_separation, mumu_cut1);
+/*
 	bool mumu_cut2 = m_cutflow->pass_trigger_matching();
-	m_cutflow->update(mumu_trigger_matching, mumu_cut2);
+	if (mumu_cut1 == 3 && mumu_cut2)
+		m_cutflow->update(mumu_trigger_matching, mumu_cut2);
 	bool mumu_cut3 = m_cutflow->pass_at_least_one_bjet_greater_than_20GeV();
-	m_cutflow->update(mumu_at_least_one_bjet_greater_than_20GeV, mumu_cut3);
+	if (mumu_cut1 == 3 && mumu_cut2 && mumu_cut3)
+		m_cutflow->update(mumu_at_least_one_bjet_greater_than_20GeV, mumu_cut3);
 	bool mumu_cut4 = m_cutflow->pass_four_jets_greater_than_50GeV();
-	m_cutflow->update(mumu_four_jets_greater_than_50GeV, mumu_cut4);
+	if (mumu_cut1 == 3 && mumu_cut2 && mumu_cut3 && mumu_cut4)
+		m_cutflow->update(mumu_four_jets_greater_than_50GeV, mumu_cut4);
 	bool mumu_cut5 = m_cutflow->pass_MET_greater_than_125GeV();
-	m_cutflow->update(mumu_MET_greater_than_125GeV, mumu_cut5);
+	if (mumu_cut1 == 3 && mumu_cut2 && mumu_cut3 && mumu_cut4 && mumu_cut5)
+		m_cutflow->update(mumu_MET_greater_than_125GeV, mumu_cut5);
 */
 
    return kTRUE;

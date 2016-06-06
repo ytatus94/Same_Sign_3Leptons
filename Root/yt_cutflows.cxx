@@ -51,7 +51,7 @@ yt_cutflows::yt_cutflows()
 	}
 
 	// initialize events_pass_cutflow to zero
-	events_pass_cutflow = vector<int>(Ncuts, 0);
+	events_pass_cutflow = vector<int>(Ncuts, 0); // initialize Ncuts elements to zero.
 }
 
 yt_cutflows::~yt_cutflows()
@@ -69,15 +69,18 @@ void yt_cutflows::print()
 {
 	cout << "**************************************************" << endl;
 	for (int cuts = 0; cuts < Ncuts; cuts++) {
-		if (cuts == 14) {
+		//if (cuts == 14) {
+		if (cuts == ee_channel_separation) {
 			cout << "***** El-El channel *****" << endl;
 			cout << setw(20) << left << cut_name[cuts]  << " = " << setw(10) << events_pass_cutflow[cuts] << endl;
 		}
-		else if (cuts == 19) {
+		//else if (cuts == 19) {
+		else if (cuts == emu_channel_separation) {
 			cout << "***** El-Mu channel *****" << endl;
 			cout << setw(20) << left << cut_name[cuts]  << " = " << setw(10) << events_pass_cutflow[cuts] << endl;
 		}
-		else if (cuts == 24) {
+		//else if (cuts == 24) {
+		else if (cuts == mumu_channel_separation) {
 			cout << "***** Mu-Mu channel *****" << endl;
 			cout << setw(20) << left << cut_name[cuts]  << " = " << setw(10) << events_pass_cutflow[cuts] << endl;
 		}
@@ -225,7 +228,7 @@ bool yt_cutflows::pass_bad_jet(vector<Jet> vec_jets)
 	for (auto & jet_itr : vec_jets) {
 		// Any event which contains such a bad jet (no eta restriction) after the complete overlap removal procedure (e-jet, muon-jet) should be vetoed (Note: no JVT applied at this step!) 
 		if (jet_itr.get_passOR() && 
-			jet_itr.get_quality() > 0.5) //1=bad jet from SUSYTools IsGoodJet
+			jet_itr.get_quality() > 0.5) // 1=bad jet from SUSYTools IsGoodJet
 			return false; // Bad jet is found.
 	}
 	return pass;
@@ -280,7 +283,6 @@ bool yt_cutflows::pass_at_least_two_signal_leptons_greater_than_20GeV(vector<Lep
 bool yt_cutflows::pass_same_sign(vector<Lepton> vec_lept)
 {
 	bool pass = false;
-	int count = 0;
 	if (vec_lept.size() >= 3) {
 		pass = true;
 	}
@@ -292,10 +294,242 @@ bool yt_cutflows::pass_same_sign(vector<Lepton> vec_lept)
 	return pass;
 }
 
-bool yt_cutflows::pass_channel_separation()
+int yt_cutflows::pass_channel_separation(int event_number, vector<int> vec_event_number, vector<Lepton> vec_lept)
 {
-	bool pass = false;
-	return pass;
+	int channel = 0;
+	int number_of_lepton = vec_lept.size();
+	//cout << "number of lepton=" << number_of_lepton << endl;
+	// Because the signal lepton vector was filled earilier, we have to add a protection to make sure we don't use the rejected events.
+	if (find(vec_event_number.begin(), vec_event_number.end(), event_number) != vec_event_number.end()) {
+/*
+		cout << "number of lepton=" << number_of_lepton << endl;
+		cout << "*** EventNumber=" << event_number << endl;
+		for (unsigned int i = 0; i < vec_lept.size(); i++) {
+			cout << i << ": charge=" << vec_lept[i].get_charge() 
+					  << ", flavor=" << vec_lept[i].get_flavor() 
+					  << ", pt=" << vec_lept[i].get_pt() << endl;
+		}
+*/
+		if (number_of_lepton == 2) {
+			//cout << "number of lepton=" << number_of_lepton << endl;
+			int charge_1 = vec_lept[0].get_charge();
+			int charge_2 = vec_lept[1].get_charge();
+			int flavor_1 = vec_lept[0].get_flavor();
+			int flavor_2 = vec_lept[1].get_flavor();
+			double pt_1 = vec_lept[0].get_pt();
+			double pt_2 = vec_lept[1].get_pt();
+			//if (charge_1 * charge_2 == 1 && pt_1 > 20000. && pt_2 > 20000.) {
+			if (charge_1 * charge_2 == 1) {
+				if (flavor_1 * flavor_2 == 121) { // El-El channel
+					channel = 1;
+					//cout << "channel=" << channel << endl;
+					return channel;
+				}
+				else if (flavor_1 * flavor_2 == 143) { // El-Mu channel
+					channel = 2;
+					//cout << "channel=" << channel << endl;
+					return channel;
+				}
+				else if (flavor_1 * flavor_2 == 169) { // Mu-Mu channel
+					channel = 3;
+					//cout << "channel=" << channel << endl;
+					return channel;
+				}
+			}
+			else {
+				channel = 0;
+				//cout << "channel=" << channel << endl;
+				return channel;
+			}
+		}
+		else if (number_of_lepton == 3) {
+/*
+			//cout << "number of lepton=" << number_of_lepton << endl;
+			int charge_1 = vec_lept[0].get_charge();
+			int charge_2 = vec_lept[1].get_charge();
+			int charge_3 = vec_lept[2].get_charge();
+			int flavor_1 = vec_lept[0].get_flavor();
+			int flavor_2 = vec_lept[1].get_flavor();
+			int flavor_3 = vec_lept[2].get_flavor();
+			double pt_1 = vec_lept[0].get_pt();
+			double pt_2 = vec_lept[1].get_pt();
+			double pt_3 = vec_lept[2].get_pt();
+			if (charge_1 * charge_2 == 1 && pt_1 > 20000. && pt_2 > 20000.) {
+				//cout << "1: charge_1=" << charge_1 << ", flavor_1=" << flavor_1 << ", pt_1=" << pt_1 << endl;
+				//cout << "2: charge_2=" << charge_2 << ", flavor_2=" << flavor_2 << ", pt_2=" << pt_2 << endl;
+				if (flavor_1 * flavor_2 == 121) {
+					//cout << "This is 121" << endl;
+					channel = 1;
+					//cout << "channel=" << channel << endl;
+					return channel;
+				}
+				else if (flavor_1 * flavor_2 == 143) {
+					//cout << "This is 143" << endl;
+					channel = 2;
+					//cout << "channel=" << channel << endl;
+					return channel;
+				}
+				else if (flavor_1 * flavor_2 == 169) {
+					//cout << "This is 169" << endl;
+					channel = 3;
+					//cout << "channel=" << channel << endl;
+					return channel;
+				}
+			}
+			else if (charge_1 * charge_3 == 1 && pt_1 > 20000. && pt_3 > 20000.) {
+				//cout << "1: charge_1=" << charge_1 << ", flavor_1=" << flavor_1 << ", pt_1=" << pt_1 << endl;
+				//cout << "3: charge_3=" << charge_3 << ", flavor_3=" << flavor_3 << ", pt_3=" << pt_3 << endl;
+				if (flavor_1 * flavor_3 == 121) {
+					//cout << "This is 121" << endl;
+					channel = 1;
+					//cout << "channel=" << channel << endl;
+					return channel;
+				}
+				else if (flavor_1 * flavor_3 == 143) {
+					//cout << "This is 143" << endl;
+					channel = 2;
+					//cout << "channel=" << channel << endl;
+					return channel;
+				}
+				else if (flavor_1 * flavor_3 == 169) {
+					//cout << "This is 169" << endl;
+					channel = 3;
+					//cout << "channel=" << channel << endl;
+					return channel;
+				}
+			}
+			else if (charge_2 * charge_3 == 1 && pt_2 > 20000. && pt_3 > 20000.) {
+				//cout << "2: charge_2=" << charge_2 << ", flavor_2=" << flavor_2 << ", pt_2=" << pt_2 << endl;
+				//cout << "3: charge_3=" << charge_3 << ", flavor_3=" << flavor_3 << ", pt_3=" << pt_3 << endl;
+				if (flavor_2 * flavor_3 == 121) {
+					//cout << "This is 121" << endl;
+					channel = 1;
+					//cout << "channel=" << channel << endl;
+					return channel;
+				}
+				else if (flavor_2 * flavor_3 == 143) {
+					//cout << "This is 143" << endl;
+					channel = 2;
+					//cout << "channel=" << channel << endl;
+					return channel;
+				}
+				else if (flavor_2 * flavor_3 == 169) {
+					//cout << "This is 169" << endl;
+					channel = 3;
+					//cout << "channel=" << channel << endl;
+					return channel;
+				}
+			}
+			else {
+				channel = 4;
+				//cout << "channel=" << channel << endl;
+				return channel;
+			}
+*/
+			for (unsigned int i = 0; i < vec_lept.size(); i++) {
+				for (unsigned int j = i + 1; j < vec_lept.size(); j++) {
+					int charge_i = vec_lept[i].get_charge();
+					int charge_j = vec_lept[j].get_charge();
+					int flavor_i = vec_lept[i].get_flavor();
+					int flavor_j = vec_lept[j].get_flavor();
+					double pt_i = vec_lept[i].get_pt();
+					double pt_j = vec_lept[j].get_pt();
+					//cout << "i: charge_i=" << charge_i << ", flavor_i=" << flavor_i << ", pt_i=" << pt_i << endl;
+					//cout << "j: charge_j=" << charge_j << ", flavor_j=" << flavor_j << ", pt_j=" << pt_j << endl;
+					//if (charge_i * charge_j == 1 && pt_i > 20000. && pt_j > 20000.) {
+					if (charge_i * charge_j == 1) {
+						if (flavor_i * flavor_j == 121) {
+							//cout << "This is 121" << endl;
+							channel = 1;
+							//cout << "channel=" << channel << endl;
+							return channel;
+						}
+						else if (flavor_i * flavor_j == 143) {
+							//cout << "This is 143" << endl;
+							channel = 2;
+							//cout << "channel=" << channel << endl;
+							return channel;
+						}
+						else if (flavor_i * flavor_j == 169) {
+							//cout << "This is 169" << endl;
+							channel = 3;
+							//cout << "channel=" << channel << endl;
+							return channel;
+						}
+						else {
+							//cout << "The flavor_i * flavor_j=" << flavor_i * flavor_j << endl;
+							channel = 4; // Set a number for debuging
+							//cout << "channel=" << channel << endl;
+							return channel;
+						}
+					}
+					else {
+						channel = 5; // Set a number for debuging
+						//cout << "The charge_i * charge_j=" << charge_i * charge_j << endl;
+						//cout << "The pt_i * pt_j=" << pt_i * pt_j << endl;
+						//cout << "channel=" << channel << endl;
+						//return channel; // Don't return here. Otherwise this causes errors.
+					}
+				}
+			}
+		}
+		else if (number_of_lepton > 3) {
+			//cout << "number of lepton=" << number_of_lepton << endl;
+			cout << "number of lepton>3, it is " << number_of_lepton << endl;
+			for (unsigned int i = 0; i < vec_lept.size(); i++) {
+				for (unsigned int j = i + 1; j < vec_lept.size(); j++) {
+					int charge_i = vec_lept[i].get_charge();
+					int charge_j = vec_lept[j].get_charge();
+					int flavor_i = vec_lept[i].get_flavor();
+					int flavor_j = vec_lept[j].get_flavor();
+					double pt_i = vec_lept[i].get_pt();
+					double pt_j = vec_lept[j].get_pt();
+					//cout << "i: charge_i=" << charge_i << ", flavor_i=" << flavor_i << ", pt_i=" << pt_i << endl;
+					//cout << "j: charge_j=" << charge_j << ", flavor_j=" << flavor_j << ", pt_j=" << pt_j << endl;
+					//if (charge_i * charge_j == 1 && pt_i > 20000. && pt_j > 20000.) {
+					if (charge_i * charge_j == 1) {
+						if (flavor_i * flavor_j == 121) {
+							//cout << "This is 121" << endl;
+							channel = 1;
+							//cout << "channel=" << channel << endl;
+							return channel;
+						}
+						else if (flavor_i * flavor_j == 143) {
+							//cout << "This is 143" << endl;
+							channel = 2;
+							//cout << "channel=" << channel << endl;
+							return channel;
+						}
+						else if (flavor_i * flavor_j == 169) {
+							//cout << "This is 169" << endl;
+							channel = 3;
+							//cout << "channel=" << channel << endl;
+							return channel;
+						}
+						else {
+							//cout << "The flavor_i * flavor_j=" << flavor_i * flavor_j << endl;
+							channel = 4; // Set a number for debuging
+							//cout << "channel=" << channel << endl;
+							return channel;
+						}
+					}
+					else {
+						channel = 5; // Set a number for debuging
+						//cout << "The charge_i * charge_j=" << charge_i * charge_j << endl;
+						//cout << "The pt_i * pt_j=" << pt_i * pt_j << endl;
+						//cout << "channel=" << channel << endl;
+						//return channel; // Don't return here. Otherwise this causes errors.
+					}
+				}
+			}
+		}
+	}
+	else {
+		cout << "Something wrong... Event Number=" << event_number << " has been rejected before this channel selection cut." << endl;
+		return 0;
+	}
+
+	return 0; // Don't need this line. Adding this line to avoid compiler to complain.
 }
 
 bool yt_cutflows::pass_trigger_matching()
@@ -304,20 +538,31 @@ bool yt_cutflows::pass_trigger_matching()
 	return pass;
 }
 
-bool yt_cutflows::pass_at_least_one_bjet_greater_than_20GeV()
+bool yt_cutflows::pass_at_least_one_bjet_greater_than_20GeV(vector<Jet> vec_jets)
 {
 	bool pass = false;
+	for (auto & jet_itr : vec_jets) {
+		if (jet_itr.get_isBjet() && jet_itr.get_pt() > 20000.)
+			pass = true;
+	}
 	return pass;
 }
 
-bool yt_cutflows::pass_four_jets_greater_than_50GeV()
+bool yt_cutflows::pass_four_jets_greater_than_50GeV(vector<Jet> vec_jets)
 {
 	bool pass = false;
+	int count = 0;
+	for (auto & jet_itr : vec_jets) {
+		if (jet_itr.get_pt() > 50000.)
+			count++;
+	}
+	if (count >= 4) pass = true;
 	return pass;
 }
 
-bool yt_cutflows::pass_MET_greater_than_125GeV()
+bool yt_cutflows::pass_MET_greater_than_125GeV(float MET)
 {
 	bool pass = false;
+	if (MET > 125000.) pass = true;
 	return pass;
 }

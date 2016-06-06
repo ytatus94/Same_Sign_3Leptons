@@ -385,7 +385,7 @@ void yt_selector::fill_baseline_muons(vector<Muon> vec_muon)
 	}
 }
 
-void yt_selector::fill_baseline_jets(vector<Jet> jets)
+void yt_selector::fill_baseline_jets(vector<Jet> vec_jets)
 {
 	for (auto & jet_itr : vec_jets) {
 		if (jet_itr.get_baseline() == true &&
@@ -393,8 +393,10 @@ void yt_selector::fill_baseline_jets(vector<Jet> jets)
 			// reject jets with pT<60 GeV and |eta|<2.4 and JVT<0.59 (new values, see JVTCalibration twiki), after the overlap removal procedure
 			if (jet_itr.get_pt() < 60000. &&
 				fabs(jet_itr.get_phi()) < 2.4 &&
-				jet_itr.get_JVT() < 0.59)
+				jet_itr.get_JVT() < 0.59) {
+				jet_itr.set_baseline(0);
 				continue;
+			}
 			else
 				vec_OR_jets.push_back(jet_itr);
 		}
@@ -443,12 +445,12 @@ void yt_selector::fill_signal_muons(vector<Muon> vec_muon)
 	}
 }
 
-void yt_selector::fill_signal_jets(vector<Jet> jets)
+void yt_selector::fill_signal_jets(vector<Jet> vec_jets)
 {
 	for (auto & jet_itr : vec_jets) {
 		if (!jet_itr.get_baseline()) continue;
 		if (!jet_itr.get_passOR()) continue;
-		//if (jet_itr.get_quality() == 1) continue; // 1=bad jet from SUSYToo ls IsGoodJet
+		if (jet_itr.get_quality() > 0.5) continue; // 1=bad jet from SUSYToo ls IsGoodJet
 		//if (jet_itr.get_isBjet()) continue;
 		//if (jet_itr.get_pt() > 20000. &&
 		//	fabs(jet_itr.get_eta()) < 2.8) {
