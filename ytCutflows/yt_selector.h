@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <iterator>
+#include <typeinfo>
 using namespace std;
 
 #define Mu_Mass 105.6583715
@@ -31,12 +32,12 @@ public:
 	vector<Lepton>		vec_lept;
 	vector<Electron>	vec_elec;
 	vector<Muon>		vec_muon;
-
+/*
 	vector<Electron> 	vec_OR_elec;
 	vector<Muon>     	vec_OR_muon;
 	vector<Jet>      	vec_OR_jets;
 	vector<Lepton>   	vec_OR_lept;
-
+*/
 	vector<Electron> 	vec_signal_elec;
 	vector<Muon>     	vec_signal_muon;
 	vector<Jet>      	vec_signal_jets;
@@ -245,6 +246,13 @@ public:
 	void set_baseline_and_signal_muons();
 	void set_jets_and_bjets();
 
+	template<typename T>
+	void debug_print(vector<T> vec);
+	void debug_lept_print(vector<Lepton> vec_lept);
+	void debug_elec_print(vector<Electron> vec_elec);
+	void debug_muon_print(vector<Muon> vec_muon);
+	void debug_jets_print(vector<Jet> vec_jets);
+
 	ClassDef(yt_selector, 0);
 };
 
@@ -273,6 +281,122 @@ Bool_t yt_selector::Notify()
 	// user if needed. The return value is currently not used.
 
 	return kTRUE;
+}
+
+/*
+// This template doesn't work...
+template<typename T>
+void yt_selector::debug_print(vector<T> vec)
+{
+	cout << "*** Event Number=" << EventNumber << endl;
+	string type = typeid(T).name();
+	cout << type << endl;
+	if (type.compare("Lepton") == 0) {
+		cout << "This is Lepton" << endl;
+		debug_lept_print(vec);
+	}
+	else if (type.compare("Electron") == 0) {
+		cout << "This is Electron" << endl;
+		debug_elec_print(vec);
+	}
+	else if (type.compare("Muon") == 0) {
+		cout << "This is Muon" << endl;
+		debug_muon_print(vec);
+	}
+	else if (type.compare("Jet") == 0) {
+		cout << "This is Jet" << endl;
+		debug_jets_print(vec);
+	}
+	else {	
+		cout << "Type " << type << " doesn't match" << endl;
+	}
+}
+*/
+
+void yt_selector::debug_lept_print(vector<Lepton> vec_lept)
+{
+	cout << "*** Event Number=" << EventNumber << endl;
+	cout << "NEl+NMu=" << vec_lept.size() << endl;
+	int i = 0;
+	for (auto & lep_itr : vec_lept) {
+		//cout << "NEl+NMu=" << lep_itr.get_number() << endl;
+		cout << i + 1
+			<< ": pt=" << lep_itr.get_pt() 
+			<< ", eta=" << lep_itr.get_eta()
+			<< ", phi=" << lep_itr.get_phi() 
+			<< ", baseline=" << lep_itr.get_baseline() 
+			<< ", passOR=" << lep_itr.get_passOR() 
+			<< ", isSignal=" << lep_itr.get_isSignal()
+			<< ", flavor=" << lep_itr.get_flavor() 
+			<< ", charge=" << lep_itr.get_charge()
+			<< endl;
+		i++;
+	}
+}
+
+void yt_selector::debug_elec_print(vector<Electron> vec_elec)
+{
+	cout << "*** Event Number=" << EventNumber << endl;
+	cout << "NEl=" << vec_elec.size() << endl;
+	int i = 0;
+	for (auto & el_itr : vec_elec) {
+		//cout << "NEl=" << el_itr.get_number() << endl;
+		cout << i + 1
+			<< ": pt=" << el_itr.get_pt() 
+			<< ", eta=" << el_itr.get_eta() << ", etaclus=" << el_itr.get_etaclus() 
+			<< ", phi=" << el_itr.get_phi() 
+			<< ", baseline=" << el_itr.get_baseline() 
+			<< ", passOR=" << el_itr.get_passOR() 
+			<< ", isSignal=" << el_itr.get_isSignal()
+			<< ", flavor=" << el_itr.get_flavor() 
+			<< ", charge=" << el_itr.get_charge()
+			<< endl;
+		i++;
+	}
+}
+
+void yt_selector::debug_muon_print(vector<Muon> vec_muon)
+{
+	cout << "*** Event Number=" << EventNumber << endl;
+	cout << "NMu=" << vec_muon.size() << endl;
+	int i = 0;
+	for (auto & mu_itr : vec_muon) {
+		//cout << "NMu=" << mu_itr.get_number() << endl;
+		cout << i + 1
+			<< ": pt=" << mu_itr.get_pt()
+			<< ", eta=" << mu_itr.get_eta()
+			<< ", phi=" << mu_itr.get_phi()
+			<< ", baseline=" << mu_itr.get_baseline()
+			<< ", passOR=" << mu_itr.get_passOR()
+			<< ", isSignal=" << mu_itr.get_isSignal()
+			<< ", flavor=" << mu_itr.get_flavor()
+			<< ", charge=" << mu_itr.get_charge()
+			<< ", isBad=" << mu_itr.get_isBad()
+			<< ", isCosmic=" << mu_itr.get_isCosmic()
+			<< endl;
+		i++;
+	}
+}
+
+void yt_selector::debug_jets_print(vector<Jet> vec_jets)
+{
+	cout << "*** Event Number=" << EventNumber << endl;
+	cout << "NJet=" << vec_jets.size() << endl;
+	int i = 0;
+	for (auto & jet_itr : vec_jets) {
+		//cout << "NJet=" << jet_itr.get_number() << endl;
+		cout << i + 1
+			<< ": pt=" << jet_itr.get_pt()
+			<< ", eta=" << jet_itr.get_eta()
+			<< ", phi=" << jet_itr.get_phi()
+			<< ", baseline=" << jet_itr.get_baseline()
+			<< ", passOR=" << jet_itr.get_passOR()
+			<< ", idBjet=" << jet_itr.get_isBjet()
+			<< ", quality=" << jet_itr.get_quality()
+			<< ", JVT=" << jet_itr.get_JVT()
+			<< endl;
+		i++;
+	}
 }
 
 #endif // #ifdef YT_SELECTOR_CXX

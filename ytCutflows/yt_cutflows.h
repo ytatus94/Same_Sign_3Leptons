@@ -79,8 +79,8 @@ public:
 	// same-sign
 	int  pass_channel_separation(int event_number, vector<int> vec_event_number, vector<Lepton> vec_lept);
 	bool pass_trigger_matching();
-	bool pass_at_least_one_bjet_greater_than_20GeV(vector<Jet> vec_jets);
-	bool pass_four_jets_greater_than_50GeV(vector<Jet> vec_jets);
+	bool pass_at_least_one_bjet_greater_than_20GeV(int event_number, vector<int> vec_event_number, vector<Jet> vec_jets);
+	bool pass_four_jets_greater_than_50GeV(int event_number, vector<int> vec_event_number, vector<Jet> vec_jets);
 	bool pass_MET_greater_than_125GeV(float MET);
 
 	ClassDef(yt_cutflows, 0);

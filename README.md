@@ -2,6 +2,11 @@
 This is SS/3L+jet cutflows study.
 Sample:  user.jpoveda.t0756_v37.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.DAOD_SUSY2.s2608_r7725_p2613_output.root
 
+v06: Modify the yt_cutflows.h and yt_selector.h
+1. Add degug_print functions.
+2. Correct the prototypes of pass_at_least_one_bjet_greater_than_20GeV() and pass_four_jets_greater_than_50GeV() functions.
+
+
 v05: comment out some output.
 
 v04: Add EventNumber protection.
