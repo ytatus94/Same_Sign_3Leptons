@@ -2,6 +2,8 @@
 This is SS/3L+jet cutflows study.
 Sample:  user.jpoveda.t0756_v37.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.DAOD_SUSY2.s2608_r7725_p2613_output.root
 
+v05: comment out some output.
+
 v04: Add EventNumber protection.
 1. Using the passOR vectors to fill the signal vectors.
 2. Adding vec_event_number to save EventNumber. Use this mechanism to protect the channel selection part. All the events used in channel selection must be the events pass same-sign cut.
