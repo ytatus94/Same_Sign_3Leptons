@@ -534,29 +534,35 @@ int yt_cutflows::pass_channel_separation(int event_number, vector<int> vec_event
 
 bool yt_cutflows::pass_trigger_matching()
 {
-	bool pass = false;
+	bool pass = true; // we are not applying trigger matching for the cutflow because it is broken from the moment
 	return pass;
 }
 
-bool yt_cutflows::pass_at_least_one_bjet_greater_than_20GeV(vector<Jet> vec_jets)
-{
-	bool pass = false;
-	for (auto & jet_itr : vec_jets) {
-		if (jet_itr.get_isBjet() && jet_itr.get_pt() > 20000.)
-			pass = true;
-	}
-	return pass;
-}
-
-bool yt_cutflows::pass_four_jets_greater_than_50GeV(vector<Jet> vec_jets)
+bool yt_cutflows::pass_at_least_one_bjet_greater_than_20GeV(int event_number, vector<int> vec_event_number, vector<Jet> vec_jets)
 {
 	bool pass = false;
 	int count = 0;
-	for (auto & jet_itr : vec_jets) {
-		if (jet_itr.get_pt() > 50000.)
-			count++;
+	if (find(vec_event_number.begin(), vec_event_number.end(), event_number) != vec_event_number.end()) {
+		for (auto & jet_itr : vec_jets) {
+			if (jet_itr.get_isBjet() && jet_itr.get_pt() > 20000.)
+				count++;
+		}
+		if (count >= 1) pass = true;
 	}
-	if (count >= 4) pass = true;
+	return pass;
+}
+
+bool yt_cutflows::pass_four_jets_greater_than_50GeV(int event_number, vector<int> vec_event_number, vector<Jet> vec_jets)
+{
+	bool pass = false;
+	int count = 0;
+	if (find(vec_event_number.begin(), vec_event_number.end(), event_number) != vec_event_number.end()) {
+		for (auto & jet_itr : vec_jets) {
+			if (jet_itr.get_pt() > 50000.)
+				count++;
+		}
+		if (count >= 4) pass = true;
+	}
 	return pass;
 }
 
