@@ -32,12 +32,12 @@ public:
 	vector<Lepton>		vec_lept;
 	vector<Electron>	vec_elec;
 	vector<Muon>		vec_muon;
-/*
+
 	vector<Electron> 	vec_OR_elec;
 	vector<Muon>     	vec_OR_muon;
 	vector<Jet>      	vec_OR_jets;
 	vector<Lepton>   	vec_OR_lept;
-*/
+
 	vector<Electron> 	vec_signal_elec;
 	vector<Muon>     	vec_signal_muon;
 	vector<Jet>      	vec_signal_jets;

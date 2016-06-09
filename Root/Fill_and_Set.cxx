@@ -391,6 +391,7 @@ void yt_selector::fill_baseline_jets(vector<Jet> vec_jets)
 		if (jet_itr.get_baseline() == true &&
 			jet_itr.get_passOR() == true) {
 			// reject jets with pT<60 GeV and |eta|<2.4 and JVT<0.59 (new values, see JVTCalibration twiki), after the overlap removal procedure
+//
 			if (jet_itr.get_pt() < 60000. &&
 				fabs(jet_itr.get_phi()) < 2.4 &&
 				jet_itr.get_JVT() < 0.59) {
@@ -398,6 +399,7 @@ void yt_selector::fill_baseline_jets(vector<Jet> vec_jets)
 				continue;
 			}
 			else
+//
 				vec_OR_jets.push_back(jet_itr);
 		}
 	}
@@ -493,11 +495,14 @@ void yt_selector::set_baseline_and_signal_electrons()
 		}
 		// signal electrons
 		if (el_itr.get_isMediumLH() == true &&
-			fabs(el_itr.get_eta()) <= 2. &&
+			fabs(el_itr.get_eta()) <= 2. && // Use track eta this time
 			el_itr.get_ptvarcone20() / el_itr.get_pt() < 0.06 &&
 			el_itr.get_topoetcone20() / el_itr.get_pt() < 0.06 &&
 			fabs(el_itr.get_z0sinTheta()) < 0.5) {
 			el_itr.set_isSignal(1);
+		}
+		else {
+			el_itr.set_isSignal(0);
 		}
 	}
 }
@@ -521,16 +526,29 @@ void yt_selector::set_baseline_and_signal_muons()
 			fabs(mu_itr.get_z0sinTheta() < 0.5)) {
 			mu_itr.set_isSignal(1);
 		}
+		else {
+			mu_itr.set_isSignal(0);
+		}
 	}
 }
 
 void yt_selector::set_jets_and_bjets()
 {
+	// Default jets are AntiKt4EMTopo
 	for (auto & jet_itr : vec_jets) {
 		// Jets
 		if (jet_itr.get_pt() > 20000. &&
-			fabs(jet_itr.get_eta()) < 2.8) {
-			jet_itr.set_baseline(1);
+			fabs(jet_itr.get_eta()) < 2.8) { // for jets, there is no cluster eta (there are more than 1 cluster per jet)
+			// reject jets with pT<60 GeV and |eta|<2.4 and JVT<0.59 after the overlap removal procedure 
+			//if (jet_itr.get_passOR() == true &&
+			//	jet_itr.get_pt() < 60000. &&
+			//	fabs(jet_itr.get_eta()) < 2.4 &&
+			//	jet_itr.get_JVT() < 0.59) {
+			//	jet_itr.set_baseline(0);
+			//}
+			//else {
+				jet_itr.set_baseline(1);
+			//}
 		}
 		else {
 			jet_itr.set_baseline(0);
@@ -539,7 +557,15 @@ void yt_selector::set_jets_and_bjets()
 		if (jet_itr.get_pt() > 20000. &&
 			fabs(jet_itr.get_eta()) < 2.5 &&
 			jet_itr.get_MV2c10() > 0.8244) {
-			jet_itr.set_isBjet(1);
+			// reject jets with pT<60 GeV and |eta|<2.4 and JVT<0.59 are not considered as b-jets for overlap removal or for the analysis 
+			//if (jet_itr.get_pt() < 60000. &&
+			//	fabs(jet_itr.get_eta()) < 2.4 &&
+			//	jet_itr.get_JVT() < 0.59) {
+			//	jet_itr.set_isBjet(0);
+			//}
+			//else {
+				jet_itr.set_isBjet(1);
+			//}
 		}
 	}
 }

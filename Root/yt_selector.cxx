@@ -354,6 +354,7 @@ Bool_t yt_selector::Process(Long64_t entry)
 		}
 	}
 */
+
 	// Fill OR electrons, OR muons, OR jets, and OR leptons into vectors.
 	fill_baseline_electrons(vec_elec);
 	fill_baseline_muons(vec_muon);
@@ -361,6 +362,7 @@ Bool_t yt_selector::Process(Long64_t entry)
 	fill_baseline_leptons(vec_elec, vec_muon);
 	// Now sort leptons by descending Pt
 	sort(vec_OR_lept.begin(), vec_OR_lept.end(), sort_descending_Pt<Lepton>);
+
 /*
 	if (EventNumber== 7068 || EventNumber== 14462 || EventNumber== 44226 || EventNumber== 46709) {
 		cout << "*** After OR ***" << endl;
@@ -377,6 +379,7 @@ Bool_t yt_selector::Process(Long64_t entry)
 		}
 	}
 */
+
 	// Fill signal electrons, signal muons, signal jets, and signal leptons into vectors.
 	fill_signal_electrons(vec_OR_elec);
 	fill_signal_muons(vec_OR_muon);
@@ -386,28 +389,41 @@ Bool_t yt_selector::Process(Long64_t entry)
 	sort(vec_signal_lept.begin(), vec_signal_lept.end(), sort_descending_Pt<Lepton>);
 
 	bool cut9  = m_cutflow->pass_at_least_one_signal_jet(vec_signal_jets);
+	//bool cut9  = m_cutflow->pass_at_least_one_signal_jet(vec_jets);
 	m_cutflow->update(At_least_one_signal_jet, cut9);
 	if (!cut9) return kTRUE;
 
 	bool cut10 = m_cutflow->pass_cosmic_muon_veto(vec_OR_muon);
+	//bool cut10 = m_cutflow->pass_cosmic_muon_veto(vec_muon);
 	m_cutflow->update(Cosmic_muons_veto, cut10);
 	if (!cut10) return kTRUE;
 
 	bool cut11 = m_cutflow->pass_at_least_two_baseline_leptons_greater_than_10GeV(vec_OR_lept);
+	//bool cut11 = m_cutflow->pass_at_least_two_baseline_leptons_greater_than_10GeV(vec_lept);
 	m_cutflow->update(At_least_two_baseline_leptons_greater_than_10GeV, cut11);
 	if (!cut11) return kTRUE;
 
 	bool cut12 = m_cutflow->pass_at_least_two_signal_leptons_greater_than_20GeV(vec_signal_lept);
+	//bool cut12 = m_cutflow->pass_at_least_two_signal_leptons_greater_than_20GeV(vec_lept);
 	m_cutflow->update(At_least_two_signal_leptons_greater_than_20GeV, cut12);
 	if (!cut12) return kTRUE;
 
 	bool cut13 = m_cutflow->pass_same_sign(vec_signal_lept);
+	//bool cut13 = m_cutflow->pass_same_sign(vec_lept);
 	m_cutflow->update(Same_sign, cut13);
 	if (!cut13) return kTRUE;
 
 	// Save the event number of passed events (for debug)
 	vec_event_number.push_back(EventNumber);
-
+/*
+	// Fill signal electrons, signal muons, signal jets, and signal leptons into vectors.
+	fill_signal_electrons(vec_elec);
+	fill_signal_muons(vec_muon);
+	fill_signal_jets(vec_jets);
+	fill_signal_leptons(vec_signal_elec, vec_signal_muon);
+	// Now sort leptons by descending Pt
+	sort(vec_signal_lept.begin(), vec_signal_lept.end(), sort_descending_Pt<Lepton>);
+*/
 	// same-sign
 	// e-e
 	int ee_cut1 = m_cutflow->pass_channel_separation(EventNumber, vec_event_number, vec_signal_lept);
@@ -429,7 +445,10 @@ Bool_t yt_selector::Process(Long64_t entry)
 	bool ee_cut5 = m_cutflow->pass_MET_greater_than_125GeV(Etmiss_TST_Et);
 	if (ee_cut1 == 1 && ee_cut2 && ee_cut3 && ee_cut4 && ee_cut5)
 		m_cutflow->update(ee_MET_greater_than_125GeV, ee_cut5);
-
+/*
+	cout << "el-el channel" << endl;
+	debug_lept_print(vec_signal_lept);
+*/
 	// e-mu
 	int emu_cut1 = m_cutflow->pass_channel_separation(EventNumber, vec_event_number, vec_signal_lept);
 	if (emu_cut1 == 2)
@@ -450,7 +469,10 @@ Bool_t yt_selector::Process(Long64_t entry)
 	bool emu_cut5 = m_cutflow->pass_MET_greater_than_125GeV(Etmiss_TST_Et);
 	if (emu_cut1 == 2 && emu_cut2 && emu_cut3 && emu_cut4 && emu_cut5)
 		m_cutflow->update(emu_MET_greater_than_125GeV, emu_cut5);
-
+/*
+	cout << "el-mu channel" << endl;
+	debug_lept_print(vec_signal_lept);
+*/
 	// mu-mu
 	int mumu_cut1 = m_cutflow->pass_channel_separation(EventNumber, vec_event_number, vec_signal_lept);
 	if (mumu_cut1 == 3)
@@ -471,7 +493,10 @@ Bool_t yt_selector::Process(Long64_t entry)
 	bool mumu_cut5 = m_cutflow->pass_MET_greater_than_125GeV(Etmiss_TST_Et);
 	if (mumu_cut1 == 3 && mumu_cut2 && mumu_cut3 && mumu_cut4 && mumu_cut5)
 		m_cutflow->update(mumu_MET_greater_than_125GeV, mumu_cut5);
-
+/*
+	cout << "mu-mu channel" << endl;
+	debug_lept_print(vec_signal_lept);
+*/
    return kTRUE;
 }
 

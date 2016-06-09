@@ -203,6 +203,7 @@ bool yt_cutflows::pass_bad_muon(vector<Muon> vec_muon)
     for (auto & mu_itr : vec_muon) {
         if (mu_itr.get_isBad()) {
             mu_itr.set_baseline(0);
+			//mu_itr.set_isSignal(0);
 			//pass = false; // Bad muon is found.
 			return false; // Bad muon is found.
         }
@@ -218,6 +219,10 @@ bool yt_cutflows::pass_at_least_one_jet_passes_jet_OR(vector<Jet> vec_jets)
 		if (jet_itr.get_passOR())
 			pass = true;
 	}
+	// If no jet passOR, then we don't want to keep this event
+	//if (pass == false && vec_jets.size() > 0) {
+	//	vec_jets[0].set_baseline(0);
+	//}
 	return pass;
 }
 
@@ -228,8 +233,10 @@ bool yt_cutflows::pass_bad_jet(vector<Jet> vec_jets)
 	for (auto & jet_itr : vec_jets) {
 		// Any event which contains such a bad jet (no eta restriction) after the complete overlap removal procedure (e-jet, muon-jet) should be vetoed (Note: no JVT applied at this step!) 
 		if (jet_itr.get_passOR() && 
-			jet_itr.get_quality() > 0.5) // 1=bad jet from SUSYTools IsGoodJet
+			jet_itr.get_quality() > 0.5) {// 1=bad jet from SUSYTools IsGoodJet
+			//jet_itr.set_baseline(0);
 			return false; // Bad jet is found.
+		}
 	}
 	return pass;
 }
@@ -237,8 +244,27 @@ bool yt_cutflows::pass_bad_jet(vector<Jet> vec_jets)
 bool yt_cutflows::pass_at_least_one_signal_jet(vector<Jet> vec_jets)
 {
 	bool pass = false;
+
 	if (vec_jets.size() >= 1)
 		pass = true;
+/*
+	int count = 0;
+	for (auto & jet_itr : vec_jets) {
+		if (jet_itr.get_baseline() &&
+			jet_itr.get_passOR() &&
+			jet_itr.get_quality() < 0.5) {
+			count++;
+		}
+	}
+	if (count >= 1)
+		pass = true;
+	//else {
+	//	pass = false;
+	//	if (vec_jets.size() > 0) {
+	//		vec_jets[0].set_baseline(0);
+	//	}
+	//}
+*/
 	return pass;
 }
 
@@ -246,7 +272,10 @@ bool yt_cutflows::pass_cosmic_muon_veto(vector<Muon> vec_muon)
 {
 	bool pass = true; // Assume all of the muons are not cosmic muons
 	for (auto & mu_itr : vec_muon) {
-		if (mu_itr.get_isCosmic()) {
+		if (mu_itr.get_baseline() &&
+			mu_itr.get_passOR() &&
+			mu_itr.get_isCosmic()) {
+			//mu_itr.set_baseline(0);
 			mu_itr.set_isSignal(0);
 			return false; // Cosmic muon is found.
 		}
@@ -259,11 +288,24 @@ bool yt_cutflows::pass_at_least_two_baseline_leptons_greater_than_10GeV(vector<L
 	bool pass = false;
 	int count = 0;
 	for (auto & lep_itr : vec_lept) {
-		if (lep_itr.get_pt() > 10000)
+		if (lep_itr.get_baseline() &&
+			lep_itr.get_passOR() &&
+			lep_itr.get_pt() > 10000)
 			count++;
 	}
-	if (count >= 2)
+	if (count >= 2) {
 		pass = true;
+	}
+	//else {
+		//pass = false;
+		// We don't want to keep this kind of event
+		// so we can set the baseline of first lepton to 0.
+		// Then the event will be rejected when looping leptons
+		//if (vec_lept.size() > 0) {
+			//vec_lept[0].set_baseline(0);
+			//vec_lept[0].set_isSignal(0);
+		//}
+	//}
 	return pass;
 }
 
@@ -272,17 +314,32 @@ bool yt_cutflows::pass_at_least_two_signal_leptons_greater_than_20GeV(vector<Lep
 	bool pass = false;
 	int count = 0;
 	for (auto & lep_itr : vec_lept) {
-		if (lep_itr.get_pt() > 20000)
+		if (lep_itr.get_baseline() &&
+			lep_itr.get_passOR() &&
+			lep_itr.get_isSignal() &&
+			lep_itr.get_pt() > 20000)
 			count++;
 	}
-	if (count >= 2)
+	if (count >= 2) {
 		pass = true;
+	}
+	//else {
+		//pass = false;
+		// We don't want to keep this kind of event
+		// so we can set the baseline and isSignal of first lepton to 0.
+		// Then the event will be rejected when looping leptons
+		//if (vec_lept.size() > 0) {
+		//	vec_lept[0].set_baseline(0);
+		//	vec_lept[0].set_isSignal(0);
+		//}
+	//}
 	return pass;
 }
 
 bool yt_cutflows::pass_same_sign(vector<Lepton> vec_lept)
 {
 	bool pass = false;
+
 	if (vec_lept.size() >= 3) {
 		pass = true;
 	}
@@ -291,6 +348,24 @@ bool yt_cutflows::pass_same_sign(vector<Lepton> vec_lept)
 		if (sign == 1)
 			pass = true;
 	}
+/*
+	vector<Lepton> signal_lepton; 
+	for (auto & lep_itr : vec_lept) {
+		if (lep_itr.get_baseline() &&
+			lep_itr.get_passOR() &&
+			lep_itr.get_isSignal()) { // all the leptons must satisfy these requirements.
+			signal_lepton.push_back(lep_itr);
+		}
+	}
+	if (signal_lepton.size() >= 3) {
+		pass = true;
+	}
+	else if (signal_lepton.size() == 2) {
+		int sign = signal_lepton[0].get_charge() * signal_lepton[1].get_charge();
+		if (sign == 1)
+			pass = true;
+	}
+*/
 	return pass;
 }
 
