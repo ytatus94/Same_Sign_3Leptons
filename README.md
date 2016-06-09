@@ -1,6 +1,9 @@
 # SS_v37
 This is SS/3L+jet cutflows study.
-Sample:  user.jpoveda.t0756_v37.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.DAOD_SUSY2.s2608_r7725_p2613_output.root
+4topSM v37 Sample: user.jpoveda.t0756_v37.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.DAOD_SUSY2.s2608_r7725_p2613_output.root
+ttbar v37 Sample: user.jpoveda.t0756_v37.410000.PowhegPythiaEvtGen_P2012_ttbar_hdamp17    2p5_nonallhad.DAOD_SUSY2.s2608_r7725_p2613_output.root
+
+v07: Add ttbar samples into util/cutflow.cxx
 
 v06: Modify the yt_cutflows.h and yt_selector.h
 1. Add degug_print functions.
