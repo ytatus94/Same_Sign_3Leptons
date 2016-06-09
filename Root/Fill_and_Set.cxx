@@ -364,7 +364,7 @@ void yt_selector::fill_leptons(vector<Electron> vec_elec, vector<Muon> vec_muon)
 		vec_lept.push_back(mu_itr);
 	}
 }
-
+/*
 void yt_selector::fill_baseline_electrons(vector<Electron> vec_elec)
 {
 	for (auto & el_itr : vec_elec) {
@@ -388,19 +388,15 @@ void yt_selector::fill_baseline_muons(vector<Muon> vec_muon)
 void yt_selector::fill_baseline_jets(vector<Jet> vec_jets)
 {
 	for (auto & jet_itr : vec_jets) {
+		// reject jets with pT<60 GeV and |eta|<2.4 and JVT<0.59 (new values, see JVTCalibration twiki), after the overlap removal procedure
+		if (jet_itr.get_pt() < 60000. &&
+			fabs(jet_itr.get_phi()) < 2.4 &&
+			jet_itr.get_JVT() < 0.59) {
+			jet_itr.set_baseline(0);
+		}
 		if (jet_itr.get_baseline() == true &&
 			jet_itr.get_passOR() == true) {
-			// reject jets with pT<60 GeV and |eta|<2.4 and JVT<0.59 (new values, see JVTCalibration twiki), after the overlap removal procedure
-//
-			if (jet_itr.get_pt() < 60000. &&
-				fabs(jet_itr.get_phi()) < 2.4 &&
-				jet_itr.get_JVT() < 0.59) {
-				jet_itr.set_baseline(0);
-				continue;
-			}
-			else
-//
-				vec_OR_jets.push_back(jet_itr);
+			vec_OR_jets.push_back(jet_itr);
 		}
 	}
 }
@@ -420,13 +416,13 @@ void yt_selector::fill_baseline_leptons(vector<Electron> vec_elec, vector<Muon> 
 		}
 	}
 }
-
+*/
 void yt_selector::fill_signal_electrons(vector<Electron> vec_elec)
 {
 	for (auto & el_itr : vec_elec) {
 		if (el_itr.get_baseline() == true &&
 			el_itr.get_passOR() == true &&
-			el_itr.get_isSignal()) {
+			el_itr.get_isSignal() == true) {
 			//el_itr.get_isSignal() &&
 			//el_itr.get_pt() > 20000.) {
 			vec_signal_elec.push_back(el_itr);
@@ -439,7 +435,7 @@ void yt_selector::fill_signal_muons(vector<Muon> vec_muon)
 	for (auto & mu_itr : vec_muon) {
 		if (mu_itr.get_baseline() == true &&
 			mu_itr.get_passOR() == true &&
-			mu_itr.get_isSignal()) {
+			mu_itr.get_isSignal() == true) {
 			//mu_itr.get_isSignal() &&
 			//mu_itr.get_pt() > 20000.) {
 			vec_signal_muon.push_back(mu_itr);
@@ -449,6 +445,7 @@ void yt_selector::fill_signal_muons(vector<Muon> vec_muon)
 
 void yt_selector::fill_signal_jets(vector<Jet> vec_jets)
 {
+/*
 	for (auto & jet_itr : vec_jets) {
 		if (!jet_itr.get_baseline()) continue;
 		if (!jet_itr.get_passOR()) continue;
@@ -458,6 +455,14 @@ void yt_selector::fill_signal_jets(vector<Jet> vec_jets)
 		//	fabs(jet_itr.get_eta()) < 2.8) {
 			vec_signal_jets.push_back(jet_itr);
 		//}
+	}
+*/
+	for (auto & jet_itr : vec_jets) {
+		if (jet_itr.get_baseline() == true &&
+			jet_itr.get_passOR() == true &&
+			jet_itr.get_quality() < 0.5) { // 1=bad jet from SUSYToo ls IsGoodJet
+			vec_signal_jets.push_back(jet_itr);
+		}
 	}
 }
 
@@ -540,15 +545,15 @@ void yt_selector::set_jets_and_bjets()
 		if (jet_itr.get_pt() > 20000. &&
 			fabs(jet_itr.get_eta()) < 2.8) { // for jets, there is no cluster eta (there are more than 1 cluster per jet)
 			// reject jets with pT<60 GeV and |eta|<2.4 and JVT<0.59 after the overlap removal procedure 
-			//if (jet_itr.get_passOR() == true &&
-			//	jet_itr.get_pt() < 60000. &&
-			//	fabs(jet_itr.get_eta()) < 2.4 &&
-			//	jet_itr.get_JVT() < 0.59) {
-			//	jet_itr.set_baseline(0);
-			//}
-			//else {
+			if (jet_itr.get_passOR() == true &&
+				jet_itr.get_pt() < 60000. &&
+				fabs(jet_itr.get_eta()) < 2.4 &&
+				jet_itr.get_JVT() < 0.59) {
+				jet_itr.set_baseline(0);
+			}
+			else {
 				jet_itr.set_baseline(1);
-			//}
+			}
 		}
 		else {
 			jet_itr.set_baseline(0);
@@ -558,14 +563,14 @@ void yt_selector::set_jets_and_bjets()
 			fabs(jet_itr.get_eta()) < 2.5 &&
 			jet_itr.get_MV2c10() > 0.8244) {
 			// reject jets with pT<60 GeV and |eta|<2.4 and JVT<0.59 are not considered as b-jets for overlap removal or for the analysis 
-			//if (jet_itr.get_pt() < 60000. &&
-			//	fabs(jet_itr.get_eta()) < 2.4 &&
-			//	jet_itr.get_JVT() < 0.59) {
-			//	jet_itr.set_isBjet(0);
-			//}
-			//else {
+			if (jet_itr.get_pt() < 60000. &&
+				fabs(jet_itr.get_eta()) < 2.4 &&
+				jet_itr.get_JVT() < 0.59) {
+				jet_itr.set_isBjet(0);
+			}
+			else {
 				jet_itr.set_isBjet(1);
-			//}
+			}
 		}
 	}
 }

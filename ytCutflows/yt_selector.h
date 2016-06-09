@@ -32,12 +32,12 @@ public:
 	vector<Lepton>		vec_lept;
 	vector<Electron>	vec_elec;
 	vector<Muon>		vec_muon;
-
+/*
 	vector<Electron> 	vec_OR_elec;
 	vector<Muon>     	vec_OR_muon;
 	vector<Jet>      	vec_OR_jets;
 	vector<Lepton>   	vec_OR_lept;
-
+*/
 	vector<Electron> 	vec_signal_elec;
 	vector<Muon>     	vec_signal_muon;
 	vector<Jet>      	vec_signal_jets;
@@ -283,14 +283,15 @@ Bool_t yt_selector::Notify()
 	return kTRUE;
 }
 
-/*
-// This template doesn't work...
+
 template<typename T>
 void yt_selector::debug_print(vector<T> vec)
 {
 	cout << "*** Event Number=" << EventNumber << endl;
 	string type = typeid(T).name();
 	cout << type << endl;
+// This template doesn't work...
+/*
 	if (type.compare("Lepton") == 0) {
 		cout << "This is Lepton" << endl;
 		debug_lept_print(vec);
@@ -310,8 +311,8 @@ void yt_selector::debug_print(vector<T> vec)
 	else {	
 		cout << "Type " << type << " doesn't match" << endl;
 	}
-}
 */
+}
 
 void yt_selector::debug_lept_print(vector<Lepton> vec_lept)
 {

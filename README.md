@@ -2,6 +2,14 @@
 This is SS/3L+jet cutflows study.
 Sample:  user.jpoveda.t0756_v37.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.DAOD_SUSY2.s2608_r7725_p2613_output.root
 
+v09:(debug branch) This version get 4top sample agree to cut13
+1. Root/Fill_and_Set.cxx: comment out fill_baseline_xxx()
+2. Root/yt_cutflows.cxx: change pass_same_sign()
+3. Root/yt_selector.cxx: comment out vec_OR_xxx related lines.
+4. util/cutflow.cxx: Add ttbar sample
+5. ytCutflows/yt_selector.h: comment out the vec_OR_xxx and debug_print()
+
+
 v08:(debug branch) Modify 4 files in branch debug
 1. ytCutflows/yt_selector.h: uncomment vec_OR_xxx
 2. Root/yt_selector.cxx:

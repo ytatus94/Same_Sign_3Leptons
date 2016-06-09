@@ -339,7 +339,7 @@ bool yt_cutflows::pass_at_least_two_signal_leptons_greater_than_20GeV(vector<Lep
 bool yt_cutflows::pass_same_sign(vector<Lepton> vec_lept)
 {
 	bool pass = false;
-
+/*
 	if (vec_lept.size() >= 3) {
 		pass = true;
 	}
@@ -348,7 +348,7 @@ bool yt_cutflows::pass_same_sign(vector<Lepton> vec_lept)
 		if (sign == 1)
 			pass = true;
 	}
-/*
+*/
 	vector<Lepton> signal_lepton; 
 	for (auto & lep_itr : vec_lept) {
 		if (lep_itr.get_baseline() &&
@@ -365,7 +365,7 @@ bool yt_cutflows::pass_same_sign(vector<Lepton> vec_lept)
 		if (sign == 1)
 			pass = true;
 	}
-*/
+
 	return pass;
 }
 
