@@ -2,6 +2,9 @@
 This is SS/3L+jet cutflows study.
 Sample:  user.jpoveda.t0756_v37.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.DAOD_SUSY2.s2608_r7725_p2613_output.root
 
+v10:(debug branch) Fix the isBjet problem in Jet.h
+Initialize isBjet to 0 in the constructor to avoid memory leak.
+
 v09:(debug branch) This version get 4top sample agree to cut13
 1. Root/Fill_and_Set.cxx: comment out fill_baseline_xxx()
 2. Root/yt_cutflows.cxx: change pass_same_sign()

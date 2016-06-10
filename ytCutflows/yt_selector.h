@@ -283,7 +283,6 @@ Bool_t yt_selector::Notify()
 	return kTRUE;
 }
 
-
 template<typename T>
 void yt_selector::debug_print(vector<T> vec)
 {
@@ -392,7 +391,7 @@ void yt_selector::debug_jets_print(vector<Jet> vec_jets)
 			<< ", phi=" << jet_itr.get_phi()
 			<< ", baseline=" << jet_itr.get_baseline()
 			<< ", passOR=" << jet_itr.get_passOR()
-			<< ", idBjet=" << jet_itr.get_isBjet()
+			<< ", isBjet=" << jet_itr.get_isBjet()
 			<< ", quality=" << jet_itr.get_quality()
 			<< ", JVT=" << jet_itr.get_JVT()
 			<< endl;

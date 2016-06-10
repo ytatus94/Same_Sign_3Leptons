@@ -23,7 +23,7 @@ class Jet : public Particle {
 	bool	passOR;
 
 public:
-    Jet() : quality(0), JVT(0), JVTsf(0), MV2c20(0), MV2c10(0), SFw(0), ConeTruthLabel(0), PartonTruthLabel(0), HadronConeExclTruthLabel(0),  deltaR(0), nTrk(0), passOR(0) {}
+    Jet() : isBjet(0), quality(0), JVT(0), JVTsf(0), MV2c20(0), MV2c10(0), SFw(0), ConeTruthLabel(0), PartonTruthLabel(0), HadronConeExclTruthLabel(0),  deltaR(0), nTrk(0), passOR(0) {}
     ~Jet() {}
     // get methods
     //bool    get_cleaning()  				{ return cleaning; }
@@ -43,7 +43,7 @@ public:
 	bool	get_passOR()					{ return passOR; }
     // set methods
     //void    set_cleaning(bool b)				{ cleaning = b; }
-    void    set_isBjet(bool b)				{ isBjet = b; }
+    void    set_isBjet(bool b)					{ isBjet = b; }
     void    set_quality(double d)				{ quality = d; }
     //void    set_JVF(double d)					{ JVF = d; }
     void    set_JVT(double d)					{ JVT = d; }

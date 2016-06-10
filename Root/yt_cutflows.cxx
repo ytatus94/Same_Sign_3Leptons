@@ -501,7 +501,7 @@ int yt_cutflows::pass_channel_separation(int event_number, vector<int> vec_event
 				return channel;
 			}
 */
-			for (unsigned int i = 0; i < vec_lept.size(); i++) {
+			for (unsigned int i = 0; i < vec_lept.size()-1; i++) {
 				for (unsigned int j = i + 1; j < vec_lept.size(); j++) {
 					int charge_i = vec_lept[i].get_charge();
 					int charge_j = vec_lept[j].get_charge();
@@ -551,7 +551,7 @@ int yt_cutflows::pass_channel_separation(int event_number, vector<int> vec_event
 		else if (number_of_lepton > 3) {
 			//cout << "number of lepton=" << number_of_lepton << endl;
 			//cout << "number of lepton>3, it is " << number_of_lepton << endl;
-			for (unsigned int i = 0; i < vec_lept.size(); i++) {
+			for (unsigned int i = 0; i < vec_lept.size()-1; i++) {
 				for (unsigned int j = i + 1; j < vec_lept.size(); j++) {
 					int charge_i = vec_lept[i].get_charge();
 					int charge_j = vec_lept[j].get_charge();
