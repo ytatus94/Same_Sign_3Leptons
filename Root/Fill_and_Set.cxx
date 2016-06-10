@@ -544,6 +544,8 @@ void yt_selector::set_jets_and_bjets()
 		// Jets
 		if (jet_itr.get_pt() > 20000. &&
 			fabs(jet_itr.get_eta()) < 2.8) { // for jets, there is no cluster eta (there are more than 1 cluster per jet)
+			jet_itr.set_baseline(1);
+/*
 			// reject jets with pT<60 GeV and |eta|<2.4 and JVT<0.59 after the overlap removal procedure 
 			if (jet_itr.get_passOR() == true &&
 				jet_itr.get_pt() < 60000. &&
@@ -554,6 +556,7 @@ void yt_selector::set_jets_and_bjets()
 			else {
 				jet_itr.set_baseline(1);
 			}
+*/
 		}
 		else {
 			jet_itr.set_baseline(0);

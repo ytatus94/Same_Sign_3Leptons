@@ -336,6 +336,16 @@ Bool_t yt_selector::Process(Long64_t entry)
 	m_cutflow->update(At_least_one_jet_passes_jet_OR, cut7);
 	if (!cut7) return kTRUE;
 
+	// reject jets with pT<60 GeV and |eta|<2.4 and JVT<0.59 after the overlap removal procedure 
+	for (auto & jet_itr : vec_jets) {
+		if (jet_itr.get_passOR() == true &&
+			jet_itr.get_pt() < 60000. &&
+			fabs(jet_itr.get_eta()) < 2.4 &&
+			jet_itr.get_JVT() < 0.59) {
+			jet_itr.set_baseline(0);
+		}
+	}
+
 	bool cut8  = m_cutflow->pass_bad_jet(vec_jets);
 	m_cutflow->update(Bad_jet, cut8);
 	if (!cut8) return kTRUE;
@@ -408,6 +418,28 @@ Bool_t yt_selector::Process(Long64_t entry)
 	bool cut12 = m_cutflow->pass_at_least_two_signal_leptons_greater_than_20GeV(vec_lept);
 	m_cutflow->update(At_least_two_signal_leptons_greater_than_20GeV, cut12);
 	if (!cut12) return kTRUE;
+
+if (EventNumber == 706673 ||
+	EventNumber == 3941209 ||
+	EventNumber == 5029949 ||
+	EventNumber == 5323628 ||
+	EventNumber == 5567841 ||
+	EventNumber == 8446955 ||
+	EventNumber == 10600710 ||
+	EventNumber == 11267277 ||
+	EventNumber == 11315971 ||
+	EventNumber == 11507280) {
+cout << "********************" << endl;
+debug_lept_print(vec_lept);
+debug_elec_print(vec_elec);
+debug_muon_print(vec_muon);
+debug_jets_print(vec_jets);
+cout << "********************" << endl;
+}
+
+
+
+
 
 	//bool cut13 = m_cutflow->pass_same_sign(vec_signal_lept);
 	bool cut13 = m_cutflow->pass_same_sign(vec_lept);

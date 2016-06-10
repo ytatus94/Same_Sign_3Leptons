@@ -244,10 +244,10 @@ bool yt_cutflows::pass_bad_jet(vector<Jet> vec_jets)
 bool yt_cutflows::pass_at_least_one_signal_jet(vector<Jet> vec_jets)
 {
 	bool pass = false;
-
+/*
 	if (vec_jets.size() >= 1)
 		pass = true;
-/*
+*/
 	int count = 0;
 	for (auto & jet_itr : vec_jets) {
 		if (jet_itr.get_baseline() &&
@@ -258,13 +258,13 @@ bool yt_cutflows::pass_at_least_one_signal_jet(vector<Jet> vec_jets)
 	}
 	if (count >= 1)
 		pass = true;
-	//else {
-	//	pass = false;
-	//	if (vec_jets.size() > 0) {
-	//		vec_jets[0].set_baseline(0);
-	//	}
-	//}
-*/
+	else {
+		pass = false;
+		if (vec_jets.size() > 0) {
+			vec_jets[0].set_baseline(0);
+		}
+	}
+
 	return pass;
 }
 
