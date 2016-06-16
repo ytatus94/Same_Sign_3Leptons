@@ -99,14 +99,21 @@ Bool_t yt_selector::Process(Long64_t entry)
 	// Reset vectors
 	vec_elec.clear();
 	vec_muon.clear();
-	vec_jets.clear();
 	vec_lept.clear();
-/*
+	vec_jets.clear();
+
+	vec_baseline_elec.clear();
+	vec_baseline_muon.clear();
+	vec_baseline_lept.clear();
+	vec_baseline_jets.clear();
+
 	vec_OR_elec.clear();
 	vec_OR_muon.clear();
-	vec_OR_jets.clear();
 	vec_OR_lept.clear();
-*/
+	vec_OR_jets.clear();
+
+	vec_JVT_jets.clear();
+
 	vec_signal_elec.clear();
 	vec_signal_muon.clear();
 	vec_signal_jets.clear();
@@ -299,6 +306,14 @@ Bool_t yt_selector::Process(Long64_t entry)
 	// Now sort leptons by descending Pt
 	sort(vec_lept.begin(), vec_lept.end(), sort_descending_Pt<Lepton>);
 
+	// Fill baseline electrons, baseline muons, baseline jets, and baseline leptons into vectors.
+	fill_baseline_electrons(vec_elec);
+	fill_baseline_muons(vec_muon);
+	fill_baseline_leptons(vec_elec, vec_muon);
+	fill_baseline_jets(vec_jets);
+	// Now sort leptons by descending Pt
+	sort(vec_baseline_lept.begin(), vec_baseline_lept.end(), sort_descending_Pt<Lepton>);
+
 	//----------------------------------//
 	// Apply cuts
 	//----------------------------------//
@@ -328,121 +343,61 @@ Bool_t yt_selector::Process(Long64_t entry)
 	m_cutflow->update(Global_flags, cut5);
 	if (!cut5) return kTRUE;
 
-	bool cut6  = m_cutflow->pass_bad_muon(vec_muon);
+	bool cut6  = m_cutflow->pass_bad_muon(vec_baseline_muon);
 	m_cutflow->update(Bad_muon, cut6);
 	if (!cut6) return kTRUE;
 
-	bool cut7  = m_cutflow->pass_at_least_one_jet_passes_jet_OR(vec_jets);
+	bool cut7  = m_cutflow->pass_at_least_one_jet_passes_jet_OR(vec_baseline_jets);
+	//bool cut7  = m_cutflow->pass_at_least_one_jet_passes_jet_OR(vec_jets);
 	m_cutflow->update(At_least_one_jet_passes_jet_OR, cut7);
 	if (!cut7) return kTRUE;
 
-	// reject jets with pT<60 GeV and |eta|<2.4 and JVT<0.59 after the overlap removal procedure 
-	for (auto & jet_itr : vec_jets) {
-		if (jet_itr.get_passOR() == true &&
-			jet_itr.get_pt() < 60000. &&
-			fabs(jet_itr.get_eta()) < 2.4 &&
-			jet_itr.get_JVT() < 0.59) {
-			jet_itr.set_baseline(0);
-		}
-	}
-
-	bool cut8  = m_cutflow->pass_bad_jet(vec_jets);
-	m_cutflow->update(Bad_jet, cut8);
-	if (!cut8) return kTRUE;
-/*
-	if (EventNumber== 7068 || EventNumber== 14462 || EventNumber== 44226 || EventNumber== 46709) {
-		cout << "*** Before OR ***" << endl;
-		cout << "EvtNumber=" << EventNumber<< endl;
-		for (auto & lep_itr : vec_lept) {
-			cout << "flavor=" << lep_itr.get_flavor() << endl;
-			cout << "pt=" << lep_itr.get_pt() << endl;
-			cout << "eta=" << lep_itr.get_eta() << endl;
-			cout << "phi=" << lep_itr.get_phi() << endl;
-			cout << "baseline=" << lep_itr.get_baseline() << endl;
-			cout << "isSignal=" << lep_itr.get_isSignal() << endl;
-			cout << "passOR=" << lep_itr.get_passOR() << endl;
-			cout << " " << endl;
-		}
-	}
-*/
-/*
 	// Fill OR electrons, OR muons, OR jets, and OR leptons into vectors.
-	fill_baseline_electrons(vec_elec);
-	fill_baseline_muons(vec_muon);
-	fill_baseline_jets(vec_jets);
-	fill_baseline_leptons(vec_elec, vec_muon);
+	fill_OR_electrons(vec_baseline_elec);
+	fill_OR_muons(vec_baseline_muon);
+	fill_OR_leptons(vec_baseline_elec, vec_baseline_muon);
+	fill_OR_jets(vec_baseline_jets); // Apply jet OR before jet quality
 	// Now sort leptons by descending Pt
 	sort(vec_OR_lept.begin(), vec_OR_lept.end(), sort_descending_Pt<Lepton>);
-*/
-/*
-	if (EventNumber== 7068 || EventNumber== 14462 || EventNumber== 44226 || EventNumber== 46709) {
-		cout << "*** After OR ***" << endl;
-		cout << "EvtNumber=" << EventNumber<< endl;
-		for (auto & lep_itr : vec_OR_lept) {
-			cout << "flavor=" << lep_itr.get_flavor() << endl;
-			cout << "pt=" << lep_itr.get_pt() << endl;
-			cout << "eta=" << lep_itr.get_eta() << endl;
-			cout << "phi=" << lep_itr.get_phi() << endl;
-			cout << "baseline=" << lep_itr.get_baseline() << endl;
-			cout << "isSignal=" << lep_itr.get_isSignal() << endl;
-			cout << "passOR=" << lep_itr.get_passOR() << endl;
-			cout << " " << endl;
-		}
-	}
-*/
-/*
-	// Fill signal electrons, signal muons, signal jets, and signal leptons into vectors.
-	fill_signal_electrons(vec_OR_elec);
-	fill_signal_muons(vec_OR_muon);
-	fill_signal_jets(vec_OR_jets);
-	fill_signal_leptons(vec_signal_elec, vec_signal_muon);
-	// Now sort leptons by descending Pt
-	sort(vec_signal_lept.begin(), vec_signal_lept.end(), sort_descending_Pt<Lepton>);
-*/
-	//bool cut9  = m_cutflow->pass_at_least_one_signal_jet(vec_signal_jets);
-	bool cut9  = m_cutflow->pass_at_least_one_signal_jet(vec_jets);
+
+	bool cut8  = m_cutflow->pass_bad_jet(vec_OR_jets);
+	//bool cut8  = m_cutflow->pass_bad_jet(vec_jets);
+	m_cutflow->update(Bad_jet, cut8);
+	if (!cut8) return kTRUE;
+
+	// JVT cut applied after OR and jet quality
+	fill_JVT_jets(vec_OR_jets);
+
+	bool cut9  = m_cutflow->pass_at_least_one_signal_jet(vec_JVT_jets);
+	//bool cut9  = m_cutflow->pass_at_least_one_signal_jet(vec_jets);
 	m_cutflow->update(At_least_one_signal_jet, cut9);
 	if (!cut9) return kTRUE;
 
-	//bool cut10 = m_cutflow->pass_cosmic_muon_veto(vec_OR_muon);
-	bool cut10 = m_cutflow->pass_cosmic_muon_veto(vec_muon);
+	bool cut10 = m_cutflow->pass_cosmic_muon_veto(vec_OR_muon);
+	//bool cut10 = m_cutflow->pass_cosmic_muon_veto(vec_muon);
 	m_cutflow->update(Cosmic_muons_veto, cut10);
 	if (!cut10) return kTRUE;
 
-	//bool cut11 = m_cutflow->pass_at_least_two_baseline_leptons_greater_than_10GeV(vec_OR_lept);
-	bool cut11 = m_cutflow->pass_at_least_two_baseline_leptons_greater_than_10GeV(vec_lept);
+	bool cut11 = m_cutflow->pass_at_least_two_baseline_leptons_greater_than_10GeV(vec_OR_lept);
+	//bool cut11 = m_cutflow->pass_at_least_two_baseline_leptons_greater_than_10GeV(vec_lept);
 	m_cutflow->update(At_least_two_baseline_leptons_greater_than_10GeV, cut11);
 	if (!cut11) return kTRUE;
 
-	//bool cut12 = m_cutflow->pass_at_least_two_signal_leptons_greater_than_20GeV(vec_signal_lept);
-	bool cut12 = m_cutflow->pass_at_least_two_signal_leptons_greater_than_20GeV(vec_lept);
+	// Fill signal electrons, signal muons, signal jets, and signal leptons into vectors.
+	fill_signal_electrons(vec_OR_elec);
+	fill_signal_muons(vec_OR_muon);
+	fill_signal_leptons(vec_signal_elec, vec_signal_muon);
+	fill_signal_jets(vec_JVT_jets);
+	// Now sort leptons by descending Pt
+	sort(vec_signal_lept.begin(), vec_signal_lept.end(), sort_descending_Pt<Lepton>);
+
+	bool cut12 = m_cutflow->pass_at_least_two_signal_leptons_greater_than_20GeV(vec_signal_lept);
+	//bool cut12 = m_cutflow->pass_at_least_two_signal_leptons_greater_than_20GeV(vec_lept);
 	m_cutflow->update(At_least_two_signal_leptons_greater_than_20GeV, cut12);
 	if (!cut12) return kTRUE;
 
-if (EventNumber == 706673 ||
-	EventNumber == 3941209 ||
-	EventNumber == 5029949 ||
-	EventNumber == 5323628 ||
-	EventNumber == 5567841 ||
-	EventNumber == 8446955 ||
-	EventNumber == 10600710 ||
-	EventNumber == 11267277 ||
-	EventNumber == 11315971 ||
-	EventNumber == 11507280) {
-cout << "********************" << endl;
-debug_lept_print(vec_lept);
-debug_elec_print(vec_elec);
-debug_muon_print(vec_muon);
-debug_jets_print(vec_jets);
-cout << "********************" << endl;
-}
-
-
-
-
-
-	//bool cut13 = m_cutflow->pass_same_sign(vec_signal_lept);
-	bool cut13 = m_cutflow->pass_same_sign(vec_lept);
+	bool cut13 = m_cutflow->pass_same_sign(vec_signal_lept);
+	//bool cut13 = m_cutflow->pass_same_sign(vec_lept);
 	m_cutflow->update(Same_sign, cut13);
 	if (!cut13) return kTRUE;
 

@@ -15,4 +15,3 @@
 #pragma link C++ class yt_selector+;
 #pragma link C++ class yt_cutflows+;
 #endif
-

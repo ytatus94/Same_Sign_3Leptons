@@ -193,20 +193,18 @@ bool yt_cutflows::pass_global_flags(int isData, int isMC, int DetError,
 
 	if (pass_DetError && pass_MET_cleaning)
 		pass = true;
+
 	return pass;
 }
 
 bool yt_cutflows::pass_bad_muon(vector<Muon> vec_muon)
 {
+	// veto any event where a baseline muon BEFORE overlap removal
 	bool pass = true; // Assume all of the muons are good.
 	// Try to find bad muon. If there is a bad muon, then we don't want to keep this event.
     for (auto & mu_itr : vec_muon) {
-        if (mu_itr.get_isBad()) {
-            mu_itr.set_baseline(0);
-			//mu_itr.set_isSignal(0);
-			//pass = false; // Bad muon is found.
+        if (mu_itr.get_isBad())
 			return false; // Bad muon is found.
-        }
     }
 	return pass;
 }
@@ -214,15 +212,14 @@ bool yt_cutflows::pass_bad_muon(vector<Muon> vec_muon)
 bool yt_cutflows::pass_at_least_one_jet_passes_jet_OR(vector<Jet> vec_jets)
 {
 	bool pass = false; // Assume all of the jets don't pass OR.
+	int count = 0;
 	// Is there at least one jet pass OR? If yes, then we want to keep this event.
 	for (auto & jet_itr : vec_jets) {
 		if (jet_itr.get_passOR())
-			pass = true;
+			count++;
 	}
-	// If no jet passOR, then we don't want to keep this event
-	//if (pass == false && vec_jets.size() > 0) {
-	//	vec_jets[0].set_baseline(0);
-	//}
+	if (count >= 1)
+		pass = true;
 	return pass;
 }
 
@@ -244,10 +241,6 @@ bool yt_cutflows::pass_bad_jet(vector<Jet> vec_jets)
 bool yt_cutflows::pass_at_least_one_signal_jet(vector<Jet> vec_jets)
 {
 	bool pass = false;
-/*
-	if (vec_jets.size() >= 1)
-		pass = true;
-*/
 	int count = 0;
 	for (auto & jet_itr : vec_jets) {
 		if (jet_itr.get_baseline() &&
@@ -258,25 +251,18 @@ bool yt_cutflows::pass_at_least_one_signal_jet(vector<Jet> vec_jets)
 	}
 	if (count >= 1)
 		pass = true;
-	else {
-		pass = false;
-		if (vec_jets.size() > 0) {
-			vec_jets[0].set_baseline(0);
-		}
-	}
 
 	return pass;
 }
 
 bool yt_cutflows::pass_cosmic_muon_veto(vector<Muon> vec_muon)
 {
+	// these cuts should be applied AFTER overlap removal
 	bool pass = true; // Assume all of the muons are not cosmic muons
 	for (auto & mu_itr : vec_muon) {
 		if (mu_itr.get_baseline() &&
 			mu_itr.get_passOR() &&
 			mu_itr.get_isCosmic()) {
-			//mu_itr.set_baseline(0);
-			mu_itr.set_isSignal(0);
 			return false; // Cosmic muon is found.
 		}
 	}
@@ -293,19 +279,9 @@ bool yt_cutflows::pass_at_least_two_baseline_leptons_greater_than_10GeV(vector<L
 			lep_itr.get_pt() > 10000)
 			count++;
 	}
-	if (count >= 2) {
+	if (count >= 2)
 		pass = true;
-	}
-	//else {
-		//pass = false;
-		// We don't want to keep this kind of event
-		// so we can set the baseline of first lepton to 0.
-		// Then the event will be rejected when looping leptons
-		//if (vec_lept.size() > 0) {
-			//vec_lept[0].set_baseline(0);
-			//vec_lept[0].set_isSignal(0);
-		//}
-	//}
+
 	return pass;
 }
 
@@ -320,19 +296,9 @@ bool yt_cutflows::pass_at_least_two_signal_leptons_greater_than_20GeV(vector<Lep
 			lep_itr.get_pt() > 20000)
 			count++;
 	}
-	if (count >= 2) {
+	if (count >= 2)
 		pass = true;
-	}
-	//else {
-		//pass = false;
-		// We don't want to keep this kind of event
-		// so we can set the baseline and isSignal of first lepton to 0.
-		// Then the event will be rejected when looping leptons
-		//if (vec_lept.size() > 0) {
-		//	vec_lept[0].set_baseline(0);
-		//	vec_lept[0].set_isSignal(0);
-		//}
-	//}
+
 	return pass;
 }
 

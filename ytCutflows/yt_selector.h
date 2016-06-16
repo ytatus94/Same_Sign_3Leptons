@@ -28,20 +28,27 @@ public:
 
 	vector<int>			vec_event_number;
 	//HLT					*HLT_object;
-	vector<Jet>			vec_jets;
-	vector<Lepton>		vec_lept;
 	vector<Electron>	vec_elec;
 	vector<Muon>		vec_muon;
-/*
+	vector<Lepton>		vec_lept;
+	vector<Jet>			vec_jets;
+
+	vector<Electron>	vec_baseline_elec;
+	vector<Muon>		vec_baseline_muon;
+	vector<Lepton>		vec_baseline_lept;
+	vector<Jet>			vec_baseline_jets;
+
 	vector<Electron> 	vec_OR_elec;
 	vector<Muon>     	vec_OR_muon;
-	vector<Jet>      	vec_OR_jets;
 	vector<Lepton>   	vec_OR_lept;
-*/
+	vector<Jet>      	vec_OR_jets;
+
+	vector<Jet>			vec_JVT_jets;
+
 	vector<Electron> 	vec_signal_elec;
 	vector<Muon>     	vec_signal_muon;
-	vector<Jet>      	vec_signal_jets;
 	vector<Lepton>   	vec_signal_lept;
+	vector<Jet>      	vec_signal_jets;
 
 	TH1 *hCutFlows;
 public:
@@ -230,17 +237,24 @@ public:
 				   vector<int>     *Jet_nTrk,
 				   vector<bool>    *Jet_passOR);
 
-	void fill_leptons(vector<Electron> vec_elec, vector<Muon> vec_muon);
+	void fill_leptons(vector<Electron> elec, vector<Muon> muon);
 
-	void fill_baseline_electrons(vector<Electron> vec_elec);
-	void fill_baseline_muons(vector<Muon> vec_muon);
+	void fill_baseline_electrons(vector<Electron> elec);
+	void fill_baseline_muons(vector<Muon> muon);
+	void fill_baseline_leptons(vector<Electron> elec, vector<Muon> muon);
 	void fill_baseline_jets(vector<Jet> jets);
-	void fill_baseline_leptons(vector<Electron> signal_elec, vector<Muon> signal_muon);
 
-	void fill_signal_electrons(vector<Electron> vec_elec);
-	void fill_signal_muons(vector<Muon> vec_muon);
+	void fill_OR_electrons(vector<Electron> elec);
+	void fill_OR_muons(vector<Muon> muon);
+	void fill_OR_leptons(vector<Electron> elec, vector<Muon> muon);
+	void fill_OR_jets(vector<Jet> jets);
+
+	void fill_JVT_jets(vector<Jet> jets);
+
+	void fill_signal_electrons(vector<Electron> elec);
+	void fill_signal_muons(vector<Muon> muon);
+	void fill_signal_leptons(vector<Electron> elec, vector<Muon> muon);
 	void fill_signal_jets(vector<Jet> jets);
-	void fill_signal_leptons(vector<Electron> signal_elec, vector<Muon> signal_muon);
 
 	void set_baseline_and_signal_electrons();
 	void set_baseline_and_signal_muons();
@@ -248,10 +262,10 @@ public:
 
 	template<typename T>
 	void debug_print(vector<T> vec);
-	void debug_lept_print(vector<Lepton> vec_lept);
-	void debug_elec_print(vector<Electron> vec_elec);
-	void debug_muon_print(vector<Muon> vec_muon);
-	void debug_jets_print(vector<Jet> vec_jets);
+	void debug_elec_print(vector<Electron> elec);
+	void debug_muon_print(vector<Muon> muon);
+	void debug_lept_print(vector<Lepton> lept);
+	void debug_jets_print(vector<Jet> jets);
 
 	ClassDef(yt_selector, 0);
 };

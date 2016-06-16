@@ -68,19 +68,19 @@ public:
 	bool pass_global_flags(int isData, int isMC, int DetError, 
 						   float Etmiss_TST_Et, float Etmiss_TST_Etx, float Etmiss_TST_Ety, 
 						   float Etmiss_TSTterm_Et, float Etmiss_TSTterm_Etx, float Etmiss_TSTterm_Ety);
-	bool pass_bad_muon(vector<Muon> vec_muon);
-	bool pass_at_least_one_jet_passes_jet_OR(vector<Jet> vec_jets);
-	bool pass_bad_jet(vector<Jet> vec_jets);
-	bool pass_at_least_one_signal_jet(vector<Jet> vec_jets);
-	bool pass_cosmic_muon_veto(vector<Muon> vec_muons);
-	bool pass_at_least_two_baseline_leptons_greater_than_10GeV(vector<Lepton> vec_lept);
-	bool pass_at_least_two_signal_leptons_greater_than_20GeV(vector<Lepton> vec_lept);
-	bool pass_same_sign(vector<Lepton> vec_lept);
+	bool pass_bad_muon(vector<Muon> muon);
+	bool pass_at_least_one_jet_passes_jet_OR(vector<Jet> jets);
+	bool pass_bad_jet(vector<Jet> jets);
+	bool pass_at_least_one_signal_jet(vector<Jet> jets);
+	bool pass_cosmic_muon_veto(vector<Muon> muons);
+	bool pass_at_least_two_baseline_leptons_greater_than_10GeV(vector<Lepton> lept);
+	bool pass_at_least_two_signal_leptons_greater_than_20GeV(vector<Lepton> lept);
+	bool pass_same_sign(vector<Lepton> lept);
 	// same-sign
-	int  pass_channel_separation(int event_number, vector<int> vec_event_number, vector<Lepton> vec_lept);
+	int  pass_channel_separation(int event_number, vector<int> vec_event_number, vector<Lepton> lept);
 	bool pass_trigger_matching();
-	bool pass_at_least_one_bjet_greater_than_20GeV(int event_number, vector<int> vec_event_number, vector<Jet> vec_jets);
-	bool pass_four_jets_greater_than_50GeV(int event_number, vector<int> vec_event_number, vector<Jet> vec_jets);
+	bool pass_at_least_one_bjet_greater_than_20GeV(int event_number, vector<int> vec_event_number, vector<Jet> jets);
+	bool pass_four_jets_greater_than_50GeV(int event_number, vector<int> vec_event_number, vector<Jet> jets);
 	bool pass_MET_greater_than_125GeV(float MET);
 
 	ClassDef(yt_cutflows, 0);

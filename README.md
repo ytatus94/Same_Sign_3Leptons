@@ -2,6 +2,14 @@
 This is SS/3L+jet cutflows study.
 Sample:  user.jpoveda.t0756_v37.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.DAOD_SUSY2.s2608_r7725_p2613_output.root
 
+v12:(debug branch) Modify 6 files and add .gitignore
+1. ytCutflows/yt_selector.h
+2. ytCutflows/yt_cutflows.h
+3. Root/yt_selector.cxx
+4. Root/yt_cutflows.cxx
+5. Root/Fill_and_Set.cxx
+6. Root/LinkDef.h
+
 v11:(debug branch) Modify 3 files
 1. Root/Fill_and_Set.cxx
 2. Root/yt_cutflows.cxx
