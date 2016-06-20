@@ -343,14 +343,19 @@ Bool_t yt_selector::Process(Long64_t entry)
 	m_cutflow->update(Global_flags, cut5);
 	if (!cut5) return kTRUE;
 
-	bool cut6  = m_cutflow->pass_bad_muon(vec_baseline_muon);
+	bool cut6  = m_cutflow->pass_bad_muon(vec_baseline_muon); // use baseline muons
+	//bool cut6  = m_cutflow->pass_bad_muon(vec_muon);
 	m_cutflow->update(Bad_muon, cut6);
 	if (!cut6) return kTRUE;
 
-	bool cut7  = m_cutflow->pass_at_least_one_jet_passes_jet_OR(vec_baseline_jets);
+	bool cut7  = m_cutflow->pass_at_least_one_jet_passes_jet_OR(vec_baseline_jets); // use baseline jets
 	//bool cut7  = m_cutflow->pass_at_least_one_jet_passes_jet_OR(vec_jets);
 	m_cutflow->update(At_least_one_jet_passes_jet_OR, cut7);
 	if (!cut7) return kTRUE;
+
+	bool cut8  = m_cutflow->pass_bad_jet(vec_jets); // we have to use the raw jet objects (vec_jets) at this step.
+	m_cutflow->update(Bad_jet, cut8);
+	if (!cut8) return kTRUE;
 
 	// Fill OR electrons, OR muons, OR jets, and OR leptons into vectors.
 	fill_OR_electrons(vec_baseline_elec);
@@ -359,11 +364,6 @@ Bool_t yt_selector::Process(Long64_t entry)
 	fill_OR_jets(vec_baseline_jets); // Apply jet OR before jet quality
 	// Now sort leptons by descending Pt
 	sort(vec_OR_lept.begin(), vec_OR_lept.end(), sort_descending_Pt<Lepton>);
-
-	bool cut8  = m_cutflow->pass_bad_jet(vec_OR_jets);
-	//bool cut8  = m_cutflow->pass_bad_jet(vec_jets);
-	m_cutflow->update(Bad_jet, cut8);
-	if (!cut8) return kTRUE;
 
 	// JVT cut applied after OR and jet quality
 	fill_JVT_jets(vec_OR_jets);
@@ -403,14 +403,6 @@ Bool_t yt_selector::Process(Long64_t entry)
 
 	// Save the event number of passed events (for debug)
 	vec_event_number.push_back(EventNumber);
-
-	// Fill signal electrons, signal muons, signal jets, and signal leptons into vectors.
-	fill_signal_electrons(vec_elec);
-	fill_signal_muons(vec_muon);
-	fill_signal_jets(vec_jets);
-	fill_signal_leptons(vec_signal_elec, vec_signal_muon);
-	// Now sort leptons by descending Pt
-	sort(vec_signal_lept.begin(), vec_signal_lept.end(), sort_descending_Pt<Lepton>);
 
 	// same-sign
 	// e-e

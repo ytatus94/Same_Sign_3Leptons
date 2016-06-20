@@ -229,7 +229,8 @@ bool yt_cutflows::pass_bad_jet(vector<Jet> vec_jets)
 	// Try to find bad jets. If there is a bad jet, then we don't want this event.
 	for (auto & jet_itr : vec_jets) {
 		// Any event which contains such a bad jet (no eta restriction) after the complete overlap removal procedure (e-jet, muon-jet) should be vetoed (Note: no JVT applied at this step!) 
-		if (jet_itr.get_passOR() && 
+		if (jet_itr.get_pt() > 20000. && // we use vec_jets at this step, so we have to apply pt cut on the jet objects but we don't apply eta cut.
+			jet_itr.get_passOR() && 
 			jet_itr.get_quality() > 0.5) {// 1=bad jet from SUSYTools IsGoodJet
 			//jet_itr.set_baseline(0);
 			return false; // Bad jet is found.
