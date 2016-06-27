@@ -411,6 +411,14 @@ Bool_t yt_selector::Process(Long64_t entry)
 		m_cutflow->update(ee_channel_separation, true);
 
 	bool ee_cut2 = m_cutflow->pass_trigger_matching();
+/*
+	bool ee_cut2 = m_cutflow->pass_trigger_matching(vec_signal_elec, vec_signal_muon,
+													HLT_2e12_lhloose_L12EM10VH, 
+													HLT_e17_lhloose_mu14, 
+													HLT_mu18_mu8noL1,
+													HLT_xe70,
+													Etmiss_TST_Et);
+*/
 	if (ee_cut1 == 1 && ee_cut2)
 		m_cutflow->update(ee_trigger_matching, ee_cut2);
 
@@ -435,6 +443,14 @@ Bool_t yt_selector::Process(Long64_t entry)
 		m_cutflow->update(emu_channel_separation, emu_cut1);
 
 	bool emu_cut2 = m_cutflow->pass_trigger_matching();
+/*
+	bool emu_cut2 = m_cutflow->pass_trigger_matching(vec_signal_elec, vec_signal_muon,
+													 HLT_2e12_lhloose_L12EM10VH, 
+													 HLT_e17_lhloose_mu14, 
+													 HLT_mu18_mu8noL1,
+													 HLT_xe70,
+													 Etmiss_TST_Et);
+*/
 	if (emu_cut1 == 2 && emu_cut2)
 		m_cutflow->update(emu_trigger_matching, emu_cut2);
 
@@ -459,6 +475,14 @@ Bool_t yt_selector::Process(Long64_t entry)
 		m_cutflow->update(mumu_channel_separation, mumu_cut1);
 
 	bool mumu_cut2 = m_cutflow->pass_trigger_matching();
+/*
+	bool mumu_cut2 = m_cutflow->pass_trigger_matching(vec_signal_elec, vec_signal_muon,
+													  HLT_2e12_lhloose_L12EM10VH, 
+													  HLT_e17_lhloose_mu14, 
+													  HLT_mu18_mu8noL1,
+													  HLT_xe70,
+													  Etmiss_TST_Et);
+*/
 	if (mumu_cut1 == 3 && mumu_cut2)
 		m_cutflow->update(mumu_trigger_matching, mumu_cut2);
 

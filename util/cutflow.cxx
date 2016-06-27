@@ -43,10 +43,12 @@ int main( int argc, char* argv[] )
 	// for MC
 	if (isMC) {
 		cout << "Add MC files to TChain..." << endl;
-		TString path = "/afs/cern.ch/work/y/yushen/private/Ximo/v37/ytCutflows/data/user.jpoveda.t0756_v37.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.DAOD_SUSY2.s2608_r7725_p2613_output.root";
+		//TString path = "/afs/cern.ch/work/y/yushen/private/Ximo/v37/ytCutflows/data/user.jpoveda.t0756_v37.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.DAOD_SUSY2.s2608_r7725_p2613_output.root";
+		TString path = "root://eosatlas.cern.ch//eos/atlas/user/y/yushen/Ximo_ntuples/v37/MC/user.jpoveda.t0756_v37.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.DAOD_SUSY2.s2608_r7725_p2613_output.root";
 		fChain->Add(path + "/user.jpoveda.8482167._000001.output.root");
 /*
-		TString path = "/afs/cern.ch/work/y/yushen/private/Ximo/v37/ytCutflows/data/user.jpoveda.t0756_v37.410000.PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad.DAOD_SUSY2.s2608_r7725_p2613_output.root";
+		//TString path = "/afs/cern.ch/work/y/yushen/private/Ximo/v37/ytCutflows/data/user.jpoveda.t0756_v37.410000.PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad.DAOD_SUSY2.s2608_r7725_p2613_output.root";
+		TString path = "root://eosatlas.cern.ch//eos/atlas/user/y/yushen/Ximo_ntuples/v37/MC/user.jpoveda.t0756_v37.410000.PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad.DAOD_SUSY2.s2608_r7725_p2613_output.root";
 		fChain->Add(path + "/user.jpoveda.8481848._000001.output.root");
 		fChain->Add(path + "/user.jpoveda.8481848._000002.output.root");
 		fChain->Add(path + "/user.jpoveda.8481848._000003.output.root");

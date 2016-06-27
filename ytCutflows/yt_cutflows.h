@@ -79,6 +79,14 @@ public:
 	// same-sign
 	int  pass_channel_separation(int event_number, vector<int> vec_event_number, vector<Lepton> lept);
 	bool pass_trigger_matching();
+/*
+	bool pass_trigger_matching(vector<Electron> vec_elec, vector<Muon> vec_muon,
+							   bool HLT_2e12_lhloose_L12EM10VH, 
+							   bool HLT_e17_lhloose_mu14, 
+							   bool HLT_mu18_mu8noL1,
+							   bool HLT_xe70,
+							   double Etmiss_TST_Et);
+*/
 	bool pass_at_least_one_bjet_greater_than_20GeV(int event_number, vector<int> vec_event_number, vector<Jet> jets);
 	bool pass_four_jets_greater_than_50GeV(int event_number, vector<int> vec_event_number, vector<Jet> jets);
 	bool pass_MET_greater_than_125GeV(float MET);

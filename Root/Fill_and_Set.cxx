@@ -576,7 +576,7 @@ void yt_selector::set_baseline_and_signal_muons()
 		// signal muons
 		if (mu_itr.get_ptvarcone30() / mu_itr.get_pt() < 0.06 &&
 			fabs(mu_itr.get_sigd0()) < 3.0 &&
-			fabs(mu_itr.get_z0sinTheta() < 0.5)) {
+			fabs(mu_itr.get_z0sinTheta()) < 0.5) {
 			mu_itr.set_isSignal(1);
 		}
 		else {

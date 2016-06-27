@@ -575,8 +575,74 @@ int yt_cutflows::pass_channel_separation(int event_number, vector<int> vec_event
 }
 
 bool yt_cutflows::pass_trigger_matching()
+/*
+bool yt_cutflows::pass_trigger_matching(vector<Electron> vec_elec, vector<Muon> vec_muon,
+										bool HLT_2e12_lhloose_L12EM10VH, 
+										bool HLT_e17_lhloose_mu14, 
+										bool HLT_mu18_mu8noL1,
+										bool HLT_xe70,
+										double Etmiss_TST_Et)
+*/
 {
 	bool pass = true; // we are not applying trigger matching for the cutflow because it is broken from the moment
+/*
+	bool pass = false;
+	if (HLT_xe70 == true &&
+		Etmiss_TST_Et > 250000.) {  // not needed if MET trigger is fired
+		pass = true;
+		return pass;
+	}
+	if (HLT_2e12_lhloose_L12EM10VH) {
+		int e_match = 0;
+		for (auto & el_itr : vec_elec) {
+			if (el_itr.get_flavor() == 11 &&
+				el_itr.get_pt() > 20000. &&
+				el_itr.get_trigMatch_e12_lhloose_L1EM10VH() == true) {
+				e_match++;
+			}
+		}
+		if (e_match >= 2) {
+			pass = true;
+			//return pass;
+		}
+	}
+	if (HLT_e17_lhloose_mu14) {
+		int e_match = 0;
+		int mu_match = 0;
+		for (auto & el_itr : vec_elec) {
+			if (el_itr.get_flavor() == 11 &&
+				el_itr.get_pt() > 20000. &&
+				el_itr.get_trigMatch_e17_lhloose() == true) {
+				e_match++;
+			}
+		}
+		for (auto & mu_itr : vec_muon) {
+			if (mu_itr.get_flavor() == 13 &&
+				mu_itr.get_pt() > 20000. &&
+				mu_itr.get_trigMatch_mu14() == true) {
+				mu_match++;
+			}	
+		}
+		if (e_match >= 1 && mu_match >= 1) {
+			pass = true;
+			//return pass;
+		}
+	}
+	if (HLT_mu18_mu8noL1) {
+		int mu_match = 0;
+		for (auto & mu_itr : vec_muon) {
+			if (mu_itr.get_flavor() == 13 &&
+				mu_itr.get_pt() > 20000. &&
+				mu_itr.get_trigMatch_mu18_mu8noL1() == true) {
+				mu_match++;
+			}
+		}
+		if (mu_match >= 2) {
+			pass = true;
+			//return pass;
+		}
+	}
+*/
 	return pass;
 }
 

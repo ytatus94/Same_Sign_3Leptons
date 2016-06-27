@@ -2,6 +2,20 @@
 This is SS/3L+jet cutflows study.
 Sample:  user.jpoveda.t0756_v37.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.DAOD_SUSY2.s2608_r7725_p2613_output.root
 
+v14:(debug branch) This version cat correct number of events using 4topSM sample without applying Trigger matching.
+But also get the same ttbar results as Simon's results except cut 5 and cut 6.
+1. Correct the Fill_and_Set.cxx: the fabs(mu_itr.get_z0sinTheta()) < 0.5
+2. Add pass_trigger_matching(), but still comment this part.
+3. Read data on EOS.
+4. README.md
+5. ytCutflows/yt_cutflows.h
+6. util/cutflow.cxx
+7. Root/Fill_and_Set.cxx
+8. Root/yt_cutflows.cxx
+9. Root/yt_selector.cxx
+10. Add 4topSM and ttbar results.
+11. Add Juilien's results for cut11 using 4topSM.
+
 v13:(debug branch) This version can get correct number of events using 4topSM sample.
 1. README.md
 2. Root/yt_cutflows.cxx
