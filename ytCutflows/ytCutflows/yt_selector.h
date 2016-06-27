@@ -10,12 +10,9 @@ using namespace std;
 #define Mu_Mass 105.6583715
 
 #include "ytCutflows/AnaNtup.h"
-//#include "ytCutflows/HLT.h"
 #include "ytCutflows/Leptons.h"
 #include "ytCutflows/Jet.h"
 #include "ytCutflows/yt_cutflows.h"
-
-//#include "GoodRunsLists/GoodRunsListSelectionTool.h"
 
 class yt_selector : public AnaNtup {
 public:
@@ -23,12 +20,10 @@ public:
 	int isMC;
 	int isData;
 	// user defined variables
-	//GoodRunsListSelectionTool *m_GRL;
-
 	yt_cutflows			*m_cutflow;
 
 	vector<int>			vec_event_number;
-	//HLT					*HLT_object;
+
 	vector<Electron>	vec_elec;
 	vector<Muon>		vec_muon;
 	vector<Lepton>		vec_lept;
@@ -319,6 +314,10 @@ void yt_selector::debug_elec_print(vector<Electron> vec_elec)
 			<< ", isSignal=" << el_itr.get_isSignal()
 			<< ", flavor=" << el_itr.get_flavor() 
 			<< ", charge=" << el_itr.get_charge()
+			<< ", |d0sig|=" << fabs(el_itr.get_sigd0())
+			<< ", |z0sinTheta|=" << fabs(el_itr.get_z0sinTheta())
+			<< ", ptvarcone20/pt=" << el_itr.get_ptvarcone20() / el_itr.get_pt()
+			<< ", topoetcone20/pt=" << el_itr.get_topoetcone20() / el_itr.get_pt()
 			<< endl;
 		i++;
 	}
@@ -342,6 +341,9 @@ void yt_selector::debug_muon_print(vector<Muon> vec_muon)
 			<< ", charge=" << mu_itr.get_charge()
 			<< ", isBad=" << mu_itr.get_isBad()
 			<< ", isCosmic=" << mu_itr.get_isCosmic()
+			<< ", |d0sig|=" << fabs(mu_itr.get_sigd0())
+			<< ", |z0sinTheta|=" << fabs(mu_itr.get_z0sinTheta())
+			<< ", ptvarcone30/pt=" << mu_itr.get_ptvarcone30() / mu_itr.get_pt()
 			<< endl;
 		i++;
 	}
@@ -363,6 +365,7 @@ void yt_selector::debug_jets_print(vector<Jet> vec_jets)
 			<< ", isBjet=" << jet_itr.get_isBjet()
 			<< ", quality=" << jet_itr.get_quality()
 			<< ", JVT=" << jet_itr.get_JVT()
+			<< ", MV2c10=" << jet_itr.get_MV2c10()
 			<< endl;
 		i++;
 	}

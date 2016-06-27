@@ -326,7 +326,8 @@ void yt_selector::fill_muons(Int_t           NMu,
 		mu.set_trigMatch_mu14( (*Mu_trigMatch_mu14)[i] );
 		mu.set_trigMatch_mu18( (*Mu_trigMatch_mu18)[i] );
 		mu.set_trigMatch_mu18_mu8noL1( (*Mu_trigMatch_mu18_mu8noL1)[i] );
-		mu.set_trigMatch_e17_lhloose_mu14( (*Mu_trigMatch_e17_lhloose_mu14)[i] );
+		//mu.set_trigMatch_e17_lhloose_mu14( (*Mu_trigMatch_e17_lhloose_mu14)[i] );
+		mu.set_trigMatch_e17_lhloose_mu14( (*Mu_trigMatch_e17_lhloose_mu14)[2*i] );
 		mu.set_trigMatch_e17_lhloose_nod0_mu14( (*Mu_trigMatch_e17_lhloose_nod0_mu14)[i] );
 		mu.set_trigMatch_mu20_mu8noL1( (*Mu_trigMatch_mu20_mu8noL1)[i] );
 		mu.set_trigMatch_mu22_mu8noL1( (*Mu_trigMatch_mu22_mu8noL1)[i] );	
@@ -598,7 +599,7 @@ void yt_selector::set_baseline_and_signal_muons()
 		// signal muons
 		if (mu_itr.get_ptvarcone30() / mu_itr.get_pt() < 0.06 &&
 			fabs(mu_itr.get_sigd0()) < 3.0 &&
-			fabs(mu_itr.get_z0sinTheta() < 0.5)) {
+			fabs(mu_itr.get_z0sinTheta()) < 0.5) {
 			mu_itr.set_isSignal(1);
 		}
 		else {

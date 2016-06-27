@@ -39,7 +39,7 @@ const char* cut_name[] = {
 yt_cutflows::yt_cutflows()
 {
 	// GRL
-	// Using the information from  http://atlasdqm.web.cern.ch/atlasdqm/grlgen/All_Good/data15_13TeV.periodAllYear_DetStatus-v63-pro18-01_DQDefects-00-01-02_PHYS_StandardGRL_All_Good.xml
+	// Using the information from  http://atlasdqm.web.cern.ch/atlasdqm/grlgen/All_Good/
 	m_GRL = new GoodRunsListSelectionTool("GoodRunsListSelectionTool");
 	std::vector<std::string> vecStringGRL;
 	vecStringGRL.push_back("/afs/cern.ch/work/y/yushen/private/Ximo/v39/ytCutflows/GRL/data15_13TeV.periodAllYear_DetStatus-v79-repro20-02_DQDefects-00-02-02_PHYS_StandardGRL_All_Good_25ns.xml");
@@ -118,42 +118,6 @@ void yt_cutflows::print()
 			cout << setw(20) << left << cut_name[cuts]  << " = " << setw(10) << events_pass_cutflow[cuts] << endl;
 		}
 	}
-/*
-	cout << setw(20) << left << cut_name[0]  << " = " << setw(10) << events_pass_cutflow[0] << endl;
-	cout << setw(20) << left << cut_name[1]  << " = " << setw(10) << events_pass_cutflow[1] << endl;
-	cout << setw(20) << left << cut_name[2]  << " = " << setw(10) << events_pass_cutflow[2] << endl;
-	cout << setw(20) << left << cut_name[3]  << " = " << setw(10) << events_pass_cutflow[3] << endl;
-	cout << setw(20) << left << cut_name[4]  << " = " << setw(10) << events_pass_cutflow[4] << endl;
-	cout << setw(20) << left << cut_name[5]  << " = " << setw(10) << events_pass_cutflow[5] << endl;
-	cout << setw(20) << left << cut_name[6]  << " = " << setw(10) << events_pass_cutflow[6] << endl;
-	cout << setw(20) << left << cut_name[7]  << " = " << setw(10) << events_pass_cutflow[7] << endl;
-	cout << setw(20) << left << cut_name[8]  << " = " << setw(10) << events_pass_cutflow[8] << endl;
-	cout << setw(20) << left << cut_name[9]  << " = " << setw(10) << events_pass_cutflow[9] << endl;
-	cout << setw(20) << left << cut_name[10] << " = " << setw(10) << events_pass_cutflow[10] << endl;
-	cout << setw(20) << left << cut_name[11] << " = " << setw(10) << events_pass_cutflow[11] << endl;
-	cout << setw(20) << left << cut_name[12] << " = " << setw(10) << events_pass_cutflow[12] << endl;
-	// El-El channel
-	cout << "***** El-El channel *****" << endl;
-	cout << setw(20) << left << cut_name[13] << " = " << setw(10) << events_pass_cutflow[13] << endl;
-	cout << setw(20) << left << cut_name[14] << " = " << setw(10) << events_pass_cutflow[14] << endl;
-	cout << setw(20) << left << cut_name[15] << " = " << setw(10) << events_pass_cutflow[15] << endl;
-	cout << setw(20) << left << cut_name[16] << " = " << setw(10) << events_pass_cutflow[16] << endl;
-	cout << setw(20) << left << cut_name[17] << " = " << setw(10) << events_pass_cutflow[17] << endl;
-	// El-Mu channel
-	cout << "***** El-Mu channel *****" << endl;
-	cout << setw(20) << left << cut_name[18] << " = " << setw(10) << events_pass_cutflow[18] << endl;
-	cout << setw(20) << left << cut_name[19] << " = " << setw(10) << events_pass_cutflow[19] << endl;
-	cout << setw(20) << left << cut_name[20] << " = " << setw(10) << events_pass_cutflow[20] << endl;
-	cout << setw(20) << left << cut_name[21] << " = " << setw(10) << events_pass_cutflow[21] << endl;
-	cout << setw(20) << left << cut_name[22] << " = " << setw(10) << events_pass_cutflow[22] << endl;
-	// Mu-Mu channel
-	cout << "***** Mu-Mu channel *****" << endl;
-	cout << setw(20) << left << cut_name[23] << " = " << setw(10) << events_pass_cutflow[23] << endl;
-	cout << setw(20) << left << cut_name[24] << " = " << setw(10) << events_pass_cutflow[24] << endl;
-	cout << setw(20) << left << cut_name[25] << " = " << setw(10) << events_pass_cutflow[25] << endl;
-	cout << setw(20) << left << cut_name[26] << " = " << setw(10) << events_pass_cutflow[26] << endl;
-	cout << setw(20) << left << cut_name[27] << " = " << setw(10) << events_pass_cutflow[27] << endl;
-*/
 	cout << "**************************************************" << endl;
 }
 
@@ -209,7 +173,6 @@ int yt_cutflows::get_mc_random_event_number(int isData, int isMC,
 	double pileupwghUP = eventInfo->auxdata<double>("PileupWeight");
 */
 	unsigned int random_run_number = eventInfo->auxdata<unsigned int>("RandomRunNumber");
-	//cout << "random_run_number=" << random_run_number << endl;
 
 	return static_cast<int>(random_run_number);
 }
@@ -280,16 +243,10 @@ bool yt_cutflows::pass_trigger(int isData, int isMC, int run_number, int random_
 	}
 	return pass;
 }
-/*
-bool yt_cutflows::pass_global_flags(int isData, int isMC, int DetError, 
-									float Etmiss_TST_Et, float Etmiss_TST_Etx, float Etmiss_TST_Ety,
-									float Etmiss_TSTterm_Et, float Etmiss_TSTterm_Etx, float Etmiss_TSTterm_Ety)
-*/
+
 bool yt_cutflows::pass_global_flags(int isData, int isMC, int DetError)
 {
-	//bool pass = false;
 	bool pass_DetError = false;
-	//bool pass_MET_cleaning = true;
 	if (isData == 1) {
 		if (DetError > 0) // global flags apply on data only
 			pass_DetError = true;
@@ -299,24 +256,6 @@ bool yt_cutflows::pass_global_flags(int isData, int isMC, int DetError)
 	}
 
 	return pass_DetError;
-/*
-	// atan(): Returns the principal value of the arc tangent of x, expressed in radians.
-	// atan2(): Returns the principal value of the arc tangent of y/x, expressed in radians.
-	double phi_TSTterm = atan2(Etmiss_TSTterm_Ety, Etmiss_TSTterm_Etx);
-	double phi_TST = atan2(Etmiss_TST_Ety, Etmiss_TST_Etx);
-	double delta_phi = fabs(phi_TSTterm - phi_TST);
-	if(delta_phi > TMath::Pi()) delta_phi = fabs(2*TMath::Pi() - delta_phi);
-	// Cleaning for MET TST bug (veto this kind of events)
-	if (Etmiss_TSTterm_Et > 100000. && 
-		Etmiss_TSTterm_Et / Etmiss_TST_Et > 0.4 &&
-		delta_phi < 0.8)
-		pass_MET_cleaning = false;
-
-	if (pass_DetError && pass_MET_cleaning)
-		pass = true;
-
-	return pass;
-*/
 }
 
 bool yt_cutflows::pass_bad_muon(vector<Muon> vec_muon)
@@ -696,81 +635,266 @@ int yt_cutflows::pass_channel_separation(int event_number, vector<int> vec_event
 	return 0; // Don't need this line. Adding this line to avoid compiler to complain.
 }
 
-bool yt_cutflows::pass_ee_2015_trigger_matching()
+bool yt_cutflows::pass_ee_2015_trigger_matching(vector<Electron> vec_elec,
+												bool HLT_2e12_lhloose_L12EM10VH, bool HLT_xe70, double Etmiss_TST_Et)
 {
 	bool pass = false;
-	cout << "pass_ee_2015_trigger_matching" << endl;	
+	// not needed if MET trigger is fired)
+	if (HLT_xe70 && Etmiss_TST_Et > 250000.) {
+		pass = true;
+		return pass;
+	}
+	if (HLT_2e12_lhloose_L12EM10VH) {
+		int e_match = 0;
+		for (auto & el_itr : vec_elec) {
+			if (el_itr.get_flavor() == 11 &&
+				el_itr.get_pt() > 20000. &&
+				el_itr.get_trigMatch_2e12_lhloose_L12EM10VH() == true) {
+				e_match++;	
+			}
+		}
+		if (e_match >= 2)
+			pass = true;
+	}
 	return pass;
 }
 
-bool yt_cutflows::pass_ee_2016_trigger_matching()
+bool yt_cutflows::pass_ee_2016_trigger_matching(vector<Electron> vec_elec,
+												int isData, int isMC,
+												bool HLT_2e17_lhvloose_nod0, bool HLT_xe80_tc_lcw_L1XE50, double Etmiss_TST_Et)
 {
 	bool pass = false;
-	cout << "pass_ee_2016_trigger_matching" << endl;	
+	// not needed if MET trigger is fired)
+	if (HLT_xe80_tc_lcw_L1XE50 && Etmiss_TST_Et > 250000.) {
+		pass = true;
+		return pass;
+	}
+	if (HLT_2e17_lhvloose_nod0) {
+		int e_match = 0;
+		for (auto & el_itr : vec_elec) {
+			if (el_itr.get_flavor() == 11 &&
+				el_itr.get_pt() > 20000.) {
+				if (isData == 1 &&
+					el_itr.get_trigMatch_2e15_lhvloose_nod0_L12EM13VH() == true) {
+					e_match++;
+				}
+				if (isMC == 1 &&
+					el_itr.get_trigMatch_e17_lhloose() == true) {
+					e_match++;
+				}
+			}
+		}
+		if (e_match >= 2)
+			pass = true;
+	}
 	return pass;
 }
 
-bool yt_cutflows::pass_emu_2015_trigger_matching()
+bool yt_cutflows::pass_emu_2015_trigger_matching(vector<Electron> vec_elec, vector<Muon> vec_muon,
+												 bool HLT_e17_lhloose_mu14, bool HLT_xe70, double Etmiss_TST_Et)
 {
 	bool pass = false;
-	cout << "pass_emu_2015_trigger_matching" << endl;
+	// not needed if MET trigger is fired)
+	if (HLT_xe70 && Etmiss_TST_Et > 250000.) {
+		pass = true;
+		return pass;
+	}
+	if (HLT_e17_lhloose_mu14) {
+		bool e_match = false;
+		bool mu_match = false;
+		for (auto & el_itr : vec_elec) {
+			if (el_itr.get_flavor() == 11 &&
+				el_itr.get_pt() > 20000. &&
+				el_itr.get_trigMatch_e17_lhloose_mu14() == true) {
+				e_match = true;
+			}
+		}
+		for (auto & mu_itr : vec_muon) {
+			if (mu_itr.get_flavor() == 13 &&
+				mu_itr.get_pt() > 20000. &&
+				mu_itr.get_trigMatch_e17_lhloose_mu14() == true) {
+				mu_match = true;
+			}
+		}
+		if (e_match == true && mu_match == true) {
+			pass = true;
+		}
+	}
 	return pass;
 }
 
-bool yt_cutflows::pass_emu_2016_trigger_matching()
+bool yt_cutflows::pass_emu_2016_trigger_matching(vector<Electron> vec_elec, vector<Muon> vec_muon,
+												 int isData, int isMC,
+												 bool HLT_e17_lhloose_nod0_mu14, bool HLT_xe80_tc_lcw_L1XE50, double Etmiss_TST_Et)
 {
 	bool pass = false;
-	cout << "pass_emu_2016_trigger_matching" << endl;
+	// not needed if MET trigger is fired)
+	if (HLT_xe80_tc_lcw_L1XE50 && Etmiss_TST_Et > 250000.) {
+		pass = true;
+		return pass;
+	}
+	if (HLT_e17_lhloose_nod0_mu14) {
+		bool e_match = false;
+		bool mu_match = false;
+		for (auto & el_itr : vec_elec) {
+			if (el_itr.get_flavor() == 11 &&
+				el_itr.get_pt() > 20000.) {
+				if (isData == 1 &&
+					el_itr.get_trigMatch_e17_lhloose_nod0_mu14() == true) {
+					e_match = true;
+				}
+				if (isMC == 1 &&
+					el_itr.get_trigMatch_e17_lhloose_mu14() == true) {
+					e_match = true;
+				}
+			}
+		}
+		for (auto & mu_itr : vec_muon) {
+			if (mu_itr.get_flavor() == 13 &&
+				mu_itr.get_pt() > 20000.) {
+				if (isData == 1 &&
+					mu_itr.get_trigMatch_e17_lhloose_nod0_mu14() == true) {
+					mu_match = true;
+				}
+				if (isMC == 1 &&
+					mu_itr.get_trigMatch_e17_lhloose_mu14() == true) {
+					mu_match = true;
+				}
+			}
+		}
+		if (e_match == true && mu_match == true) {
+			pass = true;
+		}
+	}
 	return pass;
 }
 
-bool yt_cutflows::pass_mumu_2015_trigger_matching()
+bool yt_cutflows::pass_mumu_2015_trigger_matching(vector<Muon> vec_muon,
+												  bool HLT_mu18_mu8noL1, bool HLT_xe70, double Etmiss_TST_Et)
 {
 	bool pass = false;
-	cout << "pass_mumu_2015_trigger_matching" << endl;
+	// not needed if MET trigger is fired)
+	if (HLT_xe70 && Etmiss_TST_Et > 250000.) {
+		pass = true;
+		return pass;
+	}
+	if (HLT_mu18_mu8noL1) {
+		int mu_match20 = 0;
+		int mu_match = 0;
+		for (auto & mu_itr : vec_muon) {
+			if (mu_itr.get_flavor() == 13 &&
+				mu_itr.get_trigMatch_mu18_mu8noL1() == true) {
+				if (mu_itr.get_pt() > 20000.)
+					mu_match20++;
+				if (mu_itr.get_pt() > 10000.)
+					mu_match++;
+			}
+		}
+		if (mu_match20 >= 1 && mu_match >= 2)
+			pass = true;
+	}
 	return pass;
 }
 
-bool yt_cutflows::pass_mumu_2016_trigger_matching()
+bool yt_cutflows::pass_mumu_2016_trigger_matching(vector<Muon> vec_muon,
+												  bool HLT_mu20_mu8noL1, bool HLT_xe80_tc_lcw_L1XE50, double Etmiss_TST_Et)
 {
 	bool pass = false;
-	cout << "pass_mumu_2016_trigger_matching" << endl;
+	// not needed if MET trigger is fired)
+	if (HLT_xe80_tc_lcw_L1XE50 && Etmiss_TST_Et > 250000.) {
+		pass = true;
+		return pass;
+	}
+	if (HLT_mu20_mu8noL1) {
+		int mu_match = 0;
+		int mu_match21 = 0;
+		for (auto & mu_itr : vec_muon) {
+			if (mu_itr.get_flavor() == 13 &&
+				mu_itr.get_trigMatch_mu20_mu8noL1() == true) {
+				if (mu_itr.get_pt() > 21000.)
+					mu_match21++;
+				if (mu_itr.get_pt() > 10000.)
+					mu_match++;
+			}
+		}
+		if (mu_match >= 2 && mu_match21 >= 1)
+			pass = true;
+	}
 	return pass;
 }
 
-bool yt_cutflows::pass_trigger_matching(string channel, int isData, int isMC, int run_number, int random_run_number)
+bool yt_cutflows::pass_trigger_matching(string channel,
+										int isData, int isMC,
+										int run_number, int random_run_number,
+										vector<Electron> vec_elec, vector<Muon> vec_muon,
+					  					bool HLT_2e12_lhloose_L12EM10VH, bool HLT_e17_lhloose_mu14, bool HLT_mu18_mu8noL1, bool HLT_xe70,
+					  					bool HLT_2e17_lhvloose_nod0, bool HLT_e17_lhloose_nod0_mu14, bool HLT_mu20_mu8noL1, bool HLT_xe80_tc_lcw_L1XE50,
+										float Etmiss_TST_Et)
 {
+/*
 	bool pass = false;
 	if (channel == "ee") {
 		if (isData == 1) {
-			if (run_number < 290000) pass = pass_ee_2015_trigger_matching();
-			if (run_number > 290000) pass = pass_ee_2016_trigger_matching();
+			if (run_number < 290000) pass = pass_ee_2015_trigger_matching(vec_elec, HLT_2e12_lhloose_L12EM10VH, HLT_xe70, Etmiss_TST_Et);
+			if (run_number > 290000) pass = pass_ee_2016_trigger_matching(vec_elec, isData, isMC, HLT_2e17_lhvloose_nod0, HLT_xe80_tc_lcw_L1XE50, Etmiss_TST_Et);
 		}
 		else if (isMC == 1) {
-			if (random_run_number < 290000) pass = pass_ee_2015_trigger_matching();
-			if (random_run_number > 290000) pass = pass_ee_2016_trigger_matching();
+			if (random_run_number < 290000) pass = pass_ee_2015_trigger_matching(vec_elec, HLT_2e12_lhloose_L12EM10VH, HLT_xe70, Etmiss_TST_Et);
+			if (random_run_number > 290000) pass = pass_ee_2016_trigger_matching(vec_elec, isData, isMC, HLT_2e17_lhvloose_nod0, HLT_xe80_tc_lcw_L1XE50, Etmiss_TST_Et);
 		}
 	}
-	else if (channel = "emu") {
+	else if (channel == "emu") {
 		if (isData == 1) {
-			if (run_number < 290000) pass = pass_emu_2015_trigger_matching();
-			if (run_number > 290000) pass = pass_emu_2016_trigger_matching();
+			if (run_number < 290000) pass = pass_emu_2015_trigger_matching(vec_elec, vec_muon, HLT_e17_lhloose_mu14, HLT_xe70, Etmiss_TST_Et);
+			if (run_number > 290000) pass = pass_emu_2016_trigger_matching(vec_elec, vec_muon, isData, isMC, HLT_e17_lhloose_nod0_mu14, HLT_xe80_tc_lcw_L1XE50, Etmiss_TST_Et);
 		}
 		else if (isMC == 1) {
-			if (random_run_number < 290000) pass = pass_emu_2015_trigger_matching();
-			if (random_run_number > 290000) pass = pass_emu_2016_trigger_matching();
+			if (random_run_number < 290000) pass = pass_emu_2015_trigger_matching(vec_elec, vec_muon, HLT_e17_lhloose_mu14, HLT_xe70, Etmiss_TST_Et);
+			if (random_run_number > 290000) pass = pass_emu_2016_trigger_matching(vec_elec, vec_muon, isData, isMC, HLT_e17_lhloose_nod0_mu14, HLT_xe80_tc_lcw_L1XE50, Etmiss_TST_Et);
 		}
 	}
-	else if (channel = "mumu") {
+	else if (channel == "mumu") {
 		if (isData == 1) {
-			if (run_number < 290000) pass = pass_mumu_2015_trigger_matching();
-			if (run_number > 290000) pass = pass_mumu_2016_trigger_matching();
+			if (run_number < 290000) pass = pass_mumu_2015_trigger_matching(vec_muon, HLT_mu18_mu8noL1, HLT_xe70, Etmiss_TST_Et);
+			if (run_number > 290000) pass = pass_mumu_2016_trigger_matching(vec_muon, HLT_mu20_mu8noL1, HLT_xe80_tc_lcw_L1XE50, Etmiss_TST_Et);
 		}
 		else if (isMC == 1) {
-			if (random_run_number < 290000) pass = pass_mumu_2015_trigger_matching();
-			if (random_run_number > 290000) pass = pass_mumu_2016_trigger_matching();
+			if (random_run_number < 290000) pass = pass_mumu_2015_trigger_matching(vec_muon, HLT_mu18_mu8noL1, HLT_xe70, Etmiss_TST_Et);
+			if (random_run_number > 290000) pass = pass_mumu_2016_trigger_matching(vec_muon, HLT_mu20_mu8noL1, HLT_xe80_tc_lcw_L1XE50, Etmiss_TST_Et);
 		}
 	}
+	return pass;
+*/
+	bool pass = false;
+	bool pass_ee_trigger = false;
+	bool pass_emu_trigger = false;
+	bool pass_mumu_trigger = false;
+	if (isData == 1) {
+		if (run_number < 290000) { // 2015 data
+			pass_ee_trigger = pass_ee_2015_trigger_matching(vec_elec, HLT_2e12_lhloose_L12EM10VH, HLT_xe70, Etmiss_TST_Et);
+			pass_emu_trigger = pass_emu_2015_trigger_matching(vec_elec, vec_muon, HLT_e17_lhloose_mu14, HLT_xe70, Etmiss_TST_Et);
+			pass_mumu_trigger = pass_mumu_2015_trigger_matching(vec_muon, HLT_mu18_mu8noL1, HLT_xe70, Etmiss_TST_Et);
+		}
+		else if (run_number > 290000) { // 2016 data
+			pass_ee_trigger = pass_ee_2016_trigger_matching(vec_elec, isData, isMC, HLT_2e17_lhvloose_nod0, HLT_xe80_tc_lcw_L1XE50, Etmiss_TST_Et);
+			pass_emu_trigger = pass_emu_2016_trigger_matching(vec_elec, vec_muon, isData, isMC, HLT_e17_lhloose_nod0_mu14, HLT_xe80_tc_lcw_L1XE50, Etmiss_TST_Et);
+			pass_mumu_trigger = pass_mumu_2016_trigger_matching(vec_muon, HLT_mu20_mu8noL1, HLT_xe80_tc_lcw_L1XE50, Etmiss_TST_Et);
+		}
+	}
+	else if (isMC == 1) {
+		if (random_run_number < 290000) { // 2015
+			pass_ee_trigger = pass_ee_2015_trigger_matching(vec_elec, HLT_2e12_lhloose_L12EM10VH, HLT_xe70, Etmiss_TST_Et);
+			pass_emu_trigger = pass_emu_2015_trigger_matching(vec_elec, vec_muon, HLT_e17_lhloose_mu14, HLT_xe70, Etmiss_TST_Et);
+			pass_mumu_trigger = pass_mumu_2015_trigger_matching(vec_muon, HLT_mu18_mu8noL1, HLT_xe70, Etmiss_TST_Et);
+		}
+		else if (random_run_number > 290000) { // 2016
+			pass_ee_trigger = pass_ee_2016_trigger_matching(vec_elec, isData, isMC, HLT_2e17_lhvloose_nod0, HLT_xe80_tc_lcw_L1XE50, Etmiss_TST_Et);
+			pass_emu_trigger = pass_emu_2016_trigger_matching(vec_elec, vec_muon, isData, isMC, HLT_e17_lhloose_nod0_mu14, HLT_xe80_tc_lcw_L1XE50, Etmiss_TST_Et);
+			pass_mumu_trigger = pass_mumu_2016_trigger_matching(vec_muon, HLT_mu20_mu8noL1, HLT_xe80_tc_lcw_L1XE50, Etmiss_TST_Et);
+		}
+	}
+	if (pass_ee_trigger || pass_emu_trigger || pass_mumu_trigger)
+		pass = true;
 	return pass;
 }
 

@@ -39,19 +39,6 @@ void yt_selector::Begin(TTree * /*tree*/)
    TString option = GetOption();
 
 	m_cutflow = new yt_cutflows;
-
-/*
-	// GRL
-	// Using the information from  http://atlasdqm.web.cern.ch/atlasdqm/grlgen/All_Good/data15_13TeV.periodAllYear_DetStatus-v63-pro18-01_DQDefects-00-01-02_PHYS_StandardGRL_All_Good.xml
-	m_GRL = new GoodRunsListSelectionTool("GoodRunsListSelectionTool");
-	std::vector<std::string> vecStringGRL;
-	vecStringGRL.push_back("/afs/cern.ch/work/y/yushen/private/Ximo/v37/ytCutflows/GRL/data15_13TeV.periodAllYear_DetStatus-v63-pro18-01_DQDefects-00-01-02_PHYS_StandardGRL_All_Good.xml");
-	m_GRL->setProperty("GoodRunsListVec", vecStringGRL);
-	m_GRL->setProperty("PassThrough", false);
-	if ( !m_GRL->initialize().isSuccess() ) {
-		Error("In Begin()", "Fail to properly initialize the GRL. Exiting.");
-	}
-*/
 }
 
 void yt_selector::SlaveBegin(TTree * /*tree*/)
@@ -94,8 +81,6 @@ Bool_t yt_selector::Process(Long64_t entry)
 	// Need to call the Process() method of the Parent class
 	AnaNtup::Process(entry);
 
-	//HLT_object = new HLT();
-
 	// Reset vectors
 	vec_elec.clear();
 	vec_muon.clear();
@@ -118,64 +103,6 @@ Bool_t yt_selector::Process(Long64_t entry)
 	vec_signal_muon.clear();
 	vec_signal_jets.clear();
 	vec_signal_lept.clear();
-
-/*
-	fill_HLT(HLT_e24_lhmedium_nod0_ivarloose,
-			 HLT_e24_lhtight_nod0_ivarloose,
-			 HLT_e26_lhtight_iloose,
-			 HLT_e26_lhtight_ivarloose,
-			 HLT_e26_lhtight_nod0_iloose,
-			 HLT_e26_lhtight_nod0_ivarloose,
-			 HLT_e60_lhmedium,
-			 HLT_e60_lhmedium_nod0,
-			 HLT_e120_lhloose_nod0,
-			 HLT_e140_lhloose_nod0,
-			 HLT_2e17_lhvloose_nod0,
-			 HLT_2e15_lhvloose_nod0_L12EM13VH,
-			 HLT_e24_lhmedium_e9_lhmedium,
-			 HLT_e24_lhmedium_L1EM20VH,
-			 HLT_e12_lhvloose_L12EM10VH,
-			 HLT_e17_lhloose_2e9_lhloose,
-			 HLT_mu24_ivarmedium,
-			 HLT_mu24_imedium,
-			 HLT_mu24_ivarloose,
-			 HLT_mu24_iloose,
-			 HLT_mu26_ivarmedium,
-			 HLT_mu26_imedium,
-			 HLT_mu20_ivarmedium_L1MU15,
-			 HLT_mu20_imedium_L1MU15,
-			 HLT_mu20_ivarloose_L1MU15,
-			 HLT_mu20_iloose_L1MU15,
-			 HLT_mu20_L1MU15,
-			 HLT_mu20_mu8noL1,
-			 HLT_mu22_mu8noL1,
-			 HLT_mu22_2mu4noL1,
-			 HLT_mu40,
-			 HLT_mu50,
-			 HLT_2mu10,
-			 HLT_2mu10_nomucomb,
-			 HLT_2mu14,
-			 HLT_2mu14_nomucomb,
-			 HLT_3mu6,
-			 HLT_3mu6_msonly,
-			 HLT_xe100_L1XE50,
-			 HLT_xe80_mht_L1XE50,
-			 HLT_xe90_mht_L1XE50,
-			 HLT_xe110_pueta_L1XE50,
-			 HLT_xe110_pufit_L1XE50,
-			 HLT_xe100_tc_em_L1XE50,
-			 HLT_xe80_tc_lcw_L1XE50,
-			 HLT_xe90_tc_lcw_L1XE50,
-			 HLT_xe80_tc_lcw_wEFMu_L1XE50,
-			 HLT_e7_lhmedium_mu24,
-			 HLT_e17_lhloose_nod0_mu14,
-			 HLT_e26_lhmedium_nod0_L1EM22VHI_mu8noL1,
-			 HLT_e24_lhmedium_nod0_L1EM22VHI_mu8noL1,
-			 HLT_2e12_lhloose_L12EM10VH,
-			 HLT_e17_lhloose_mu14,
-			 HLT_mu18_mu8noL1,
-			 HLT_xe70);
-*/
 
 	fill_electrons(
 				NEl,
@@ -356,22 +283,16 @@ Bool_t yt_selector::Process(Long64_t entry)
 										 Etmiss_TST_Et);
 	m_cutflow->update(Trigger, cut4);
 	if (!cut4) return kTRUE;
-/*
-	bool cut5  = m_cutflow->pass_global_flags(isData, isMC, DetError, 
-											  Etmiss_TST_Et, Etmiss_TST_Etx, Etmiss_TST_Ety, 
-											  Etmiss_TSTterm_Et, Etmiss_TSTterm_Etx, Etmiss_TSTterm_Ety);
-*/
+
 	bool cut5  = m_cutflow->pass_global_flags(isData, isMC, DetError);
 	m_cutflow->update(Global_flags, cut5);
 	if (!cut5) return kTRUE;
 
 	bool cut6  = m_cutflow->pass_bad_muon(vec_baseline_muon); // use baseline muons
-	//bool cut6  = m_cutflow->pass_bad_muon(vec_muon);
 	m_cutflow->update(Bad_muon, cut6);
 	if (!cut6) return kTRUE;
 
 	bool cut7  = m_cutflow->pass_at_least_one_jet_passes_jet_OR(vec_baseline_jets); // use baseline jets
-	//bool cut7  = m_cutflow->pass_at_least_one_jet_passes_jet_OR(vec_jets);
 	m_cutflow->update(At_least_one_jet_passes_jet_OR, cut7);
 	if (!cut7) return kTRUE;
 
@@ -391,17 +312,14 @@ Bool_t yt_selector::Process(Long64_t entry)
 	fill_JVT_jets(vec_OR_jets);
 
 	bool cut9  = m_cutflow->pass_at_least_one_signal_jet(vec_JVT_jets);
-	//bool cut9  = m_cutflow->pass_at_least_one_signal_jet(vec_jets);
 	m_cutflow->update(At_least_one_signal_jet, cut9);
 	if (!cut9) return kTRUE;
 
 	bool cut10 = m_cutflow->pass_cosmic_muon_veto(vec_OR_muon);
-	//bool cut10 = m_cutflow->pass_cosmic_muon_veto(vec_muon);
 	m_cutflow->update(Cosmic_muons_veto, cut10);
 	if (!cut10) return kTRUE;
 
 	bool cut11 = m_cutflow->pass_at_least_two_baseline_leptons_greater_than_10GeV(vec_OR_lept);
-	//bool cut11 = m_cutflow->pass_at_least_two_baseline_leptons_greater_than_10GeV(vec_lept);
 	m_cutflow->update(At_least_two_baseline_leptons_greater_than_10GeV, cut11);
 	if (!cut11) return kTRUE;
 
@@ -414,12 +332,10 @@ Bool_t yt_selector::Process(Long64_t entry)
 	sort(vec_signal_lept.begin(), vec_signal_lept.end(), sort_descending_Pt<Lepton>);
 
 	bool cut12 = m_cutflow->pass_at_least_two_signal_leptons_greater_than_20GeV(vec_signal_lept);
-	//bool cut12 = m_cutflow->pass_at_least_two_signal_leptons_greater_than_20GeV(vec_lept);
 	m_cutflow->update(At_least_two_signal_leptons_greater_than_20GeV, cut12);
 	if (!cut12) return kTRUE;
 
 	bool cut13 = m_cutflow->pass_same_sign(vec_signal_lept);
-	//bool cut13 = m_cutflow->pass_same_sign(vec_lept);
 	m_cutflow->update(Same_sign, cut13);
 	if (!cut13) return kTRUE;
 
@@ -431,8 +347,49 @@ Bool_t yt_selector::Process(Long64_t entry)
 	int ee_cut1 = m_cutflow->pass_channel_separation(EventNumber, vec_event_number, vec_signal_lept);
 	if (ee_cut1 == 1)
 		m_cutflow->update(ee_channel_separation, true);
-
-	bool ee_cut2 = m_cutflow->pass_trigger_matching("ee", isData, isMC, RunNb, random_run_number);
+/*
+	if (ee_cut1 == 1 && (EventNumber == 12351 || EventNumber == 99842 || EventNumber == 172012 || EventNumber == 155031)) {
+		cout << "******EventNumber=" << EventNumber << endl;
+		cout << "isData=" << isData << endl;
+		cout << "isMC=" << isMC << endl;
+		cout << "run_number=" << RunNb << endl;
+		cout << "random_run_number=" << random_run_number << endl;
+		cout << "HLT_2e12_lhloose_L12EM10VH=" << HLT_2e12_lhloose_L12EM10VH << endl; 
+		cout << "HLT_e17_lhloose_mu14=" << HLT_e17_lhloose_mu14 << endl; 
+		cout << "HLT_mu18_mu8noL1=" << HLT_mu18_mu8noL1 << endl;
+		cout << "HLT_xe70=" << HLT_xe70 << endl;
+		cout << "Etmiss_TST_Et=" << Etmiss_TST_Et << endl;
+		cout << "HLT_2e17_lhvloose_nod0=" << HLT_2e17_lhvloose_nod0 << endl; 
+		cout << "HLT_e17_lhloose_nod0_mu14=" << HLT_e17_lhloose_nod0_mu14 << endl;
+		cout << "HLT_mu20_mu8noL1=" << HLT_mu20_mu8noL1 << endl;
+		cout << "HLT_xe80_tc_lcw_L1XE50=" << HLT_xe80_tc_lcw_L1XE50 << endl;
+		cout << "vec_signal_elec.size()=" << vec_signal_elec.size() << endl;
+		for (auto & el_itr : vec_signal_elec) {
+			cout << "el_itr.get_flavor()=" << el_itr.get_flavor() << endl;
+			cout << "el_itr.get_pt()=" << el_itr.get_pt() << endl;
+			cout << "el_itr.get_trigMatch_2e12_lhloose_L12EM10VH()=" << el_itr.get_trigMatch_2e12_lhloose_L12EM10VH() << endl;
+			cout << "el_itr.get_trigMatch_2e15_lhvloose_nod0_L12EM13VH()=" << el_itr.get_trigMatch_2e15_lhvloose_nod0_L12EM13VH() << endl;
+			cout << "el_itr.get_trigMatch_e17_lhloose()=" << el_itr.get_trigMatch_e17_lhloose() << endl;
+			cout << "el_itr.get_trigMatch_e17_lhloose_mu14()=" << el_itr.get_trigMatch_e17_lhloose_mu14() << endl;
+			cout << "el_itr.get_trigMatch_e17_lhloose_nod0_mu14()=" << el_itr.get_trigMatch_e17_lhloose_nod0_mu14() << endl;
+			cout << "el_itr.get_trigMatch_e17_lhloose_mu14()=" << el_itr.get_trigMatch_e17_lhloose_mu14() << endl;
+		}
+		cout << "vec_signal_muon.size()=" << vec_signal_muon.size() << endl;
+		for (auto & mu_itr : vec_signal_muon) {
+			cout << "mu_itr.get_flavor()=" << mu_itr.get_flavor() << endl;
+			cout << "mu_itr.get_pt()=" << mu_itr.get_pt() << endl;
+			cout << "mu_itr.get_trigMatch_e17_lhloose_mu14()=" << mu_itr.get_trigMatch_e17_lhloose_mu14() << endl;
+			cout << "mu_itr.get_trigMatch_e17_lhloose_nod0_mu14()=" << mu_itr.get_trigMatch_e17_lhloose_nod0_mu14() << endl;
+			cout << "mu_itr.get_trigMatch_e17_lhloose_mu14()=" << mu_itr.get_trigMatch_e17_lhloose_mu14() << endl;
+			cout << "mu_itr.get_trigMatch_mu18_mu8noL1()=" << mu_itr.get_trigMatch_mu18_mu8noL1() << endl;
+			cout << "mu_itr.get_trigMatch_mu20_mu8noL1()=" << mu_itr.get_trigMatch_mu20_mu8noL1() << endl;
+		}
+	}
+*/
+	bool ee_cut2 = m_cutflow->pass_trigger_matching("ee", isData, isMC, RunNb, random_run_number, vec_signal_elec, vec_signal_muon,
+													HLT_2e12_lhloose_L12EM10VH, HLT_e17_lhloose_mu14, HLT_mu18_mu8noL1, HLT_xe70,
+													HLT_2e17_lhvloose_nod0, HLT_e17_lhloose_nod0_mu14, HLT_mu20_mu8noL1, HLT_xe80_tc_lcw_L1XE50,
+													Etmiss_TST_Et);
 	if (ee_cut1 == 1 && ee_cut2)
 		m_cutflow->update(ee_trigger_matching, ee_cut2);
 
@@ -456,7 +413,11 @@ Bool_t yt_selector::Process(Long64_t entry)
 	if (emu_cut1 == 2)
 		m_cutflow->update(emu_channel_separation, emu_cut1);
 
-	bool emu_cut2 = m_cutflow->pass_trigger_matching("emu", isData, isMC, RunNb, random_run_number);
+	//bool emu_cut2 = m_cutflow->pass_trigger_matching("emu", isData, isMC, RunNb, random_run_number,  vec_signal_elec, vec_signal_muon);
+	bool emu_cut2 = m_cutflow->pass_trigger_matching("emu", isData, isMC, RunNb, random_run_number, vec_signal_elec, vec_signal_muon,
+													 HLT_2e12_lhloose_L12EM10VH, HLT_e17_lhloose_mu14, HLT_mu18_mu8noL1, HLT_xe70,
+													 HLT_2e17_lhvloose_nod0, HLT_e17_lhloose_nod0_mu14, HLT_mu20_mu8noL1, HLT_xe80_tc_lcw_L1XE50,
+													 Etmiss_TST_Et);
 	if (emu_cut1 == 2 && emu_cut2)
 		m_cutflow->update(emu_trigger_matching, emu_cut2);
 
@@ -480,7 +441,11 @@ Bool_t yt_selector::Process(Long64_t entry)
 	if (mumu_cut1 == 3)
 		m_cutflow->update(mumu_channel_separation, mumu_cut1);
 
-	bool mumu_cut2 = m_cutflow->pass_trigger_matching("mumu", isData, isMC, RunNb, random_run_number);
+	//bool mumu_cut2 = m_cutflow->pass_trigger_matching("mumu", isData, isMC, RunNb, random_run_number, vec_signal_elec, vec_signal_muon);
+	bool mumu_cut2 = m_cutflow->pass_trigger_matching("mumu", isData, isMC, RunNb, random_run_number, vec_signal_elec, vec_signal_muon,
+													  HLT_2e12_lhloose_L12EM10VH, HLT_e17_lhloose_mu14, HLT_mu18_mu8noL1, HLT_xe70,
+													  HLT_2e17_lhvloose_nod0, HLT_e17_lhloose_nod0_mu14, HLT_mu20_mu8noL1, HLT_xe80_tc_lcw_L1XE50,
+													  Etmiss_TST_Et);
 	if (mumu_cut1 == 3 && mumu_cut2)
 		m_cutflow->update(mumu_trigger_matching, mumu_cut2);
 

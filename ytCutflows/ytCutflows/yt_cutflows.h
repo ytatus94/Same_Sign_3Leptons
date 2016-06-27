@@ -16,8 +16,6 @@ using namespace std;
 #include "ytCutflows/Leptons.h"
 #include "ytCutflows/Jet.h"
 
-//class GoodRunsListSelectionTool;
-
 enum cuts {
 	DerivationStat_Weights,
 	All_events,
@@ -84,11 +82,6 @@ public:
 					  bool HLT_2e12_lhloose_L12EM10VH, bool HLT_e17_lhloose_mu14, bool HLT_mu18_mu8noL1, bool HLT_xe70,
 					  bool HLT_2e17_lhvloose_nod0, bool HLT_e17_lhloose_nod0_mu14, bool HLT_mu20_mu8noL1, bool HLT_xe80_tc_lcw_L1XE50,
 					  float Etmiss_TST_Et);
-/*
-	bool pass_global_flags(int isData, int isMC, int DetError, 
-						   float Etmiss_TST_Et, float Etmiss_TST_Etx, float Etmiss_TST_Ety, 
-						   float Etmiss_TSTterm_Et, float Etmiss_TSTterm_Etx, float Etmiss_TSTterm_Ety);
-*/
 	bool pass_global_flags(int isData, int isMC, int DetError);
 	bool pass_bad_muon(vector<Muon> muon);
 	bool pass_at_least_one_jet_passes_jet_OR(vector<Jet> jets);
@@ -100,13 +93,16 @@ public:
 	bool pass_same_sign(vector<Lepton> lept);
 	// same-sign
 	int  pass_channel_separation(int event_number, vector<int> vec_event_number, vector<Lepton> lept);
-	bool pass_ee_2015_trigger_matching();
-	bool pass_ee_2016_trigger_matching();
-	bool pass_emu_2015_trigger_matching();
-	bool pass_emu_2016_trigger_matching();
-	bool pass_mumu_2015_trigger_matching();
-	bool pass_mumu_2016_trigger_matching();
-	bool pass_trigger_matching(string channel, int isData, int isMC, int run_number, int random_run_number);
+	bool pass_ee_2015_trigger_matching(vector<Electron> elec, bool HLT_2e12_lhloose_L12EM10VH, bool HLT_xe70, double Etmiss_TST_Et);
+	bool pass_ee_2016_trigger_matching(vector<Electron> elec, int isData, int isMC, bool HLT_2e17_lhvloose_nod0, bool HLT_xe80_tc_lcw_L1XE50, double Etmiss_TST_Et);
+	bool pass_emu_2015_trigger_matching(vector<Electron> elec, vector<Muon> muon, bool HLT_e17_lhloose_mu14, bool HLT_xe70, double Etmiss_TST_Et);
+	bool pass_emu_2016_trigger_matching(vector<Electron> elec, vector<Muon> muon, int isData, int isMC, bool HLT_e17_lhloose_nod0_mu14, bool HLT_xe80_tc_lcw_L1XE50, double Etmiss_TST_Et);
+	bool pass_mumu_2015_trigger_matching(vector<Muon> muon, bool HLT_mu18_mu8noL1, bool HLT_xe70, double Etmiss_TST_Et);
+	bool pass_mumu_2016_trigger_matching(vector<Muon> muon, bool HLT_mu20_mu8noL1, bool HLT_xe80_tc_lcw_L1XE50, double Etmiss_TST_Et);
+	bool pass_trigger_matching(string channel, int isData, int isMC, int run_number, int random_run_number, vector<Electron> elec, vector<Muon> muon,
+					  		   bool HLT_2e12_lhloose_L12EM10VH, bool HLT_e17_lhloose_mu14, bool HLT_mu18_mu8noL1, bool HLT_xe70,
+					  		   bool HLT_2e17_lhvloose_nod0, bool HLT_e17_lhloose_nod0_mu14, bool HLT_mu20_mu8noL1, bool HLT_xe80_tc_lcw_L1XE50,
+					  		   float Etmiss_TST_Et);
 	bool pass_at_least_one_bjet_greater_than_20GeV(int event_number, vector<int> vec_event_number, vector<Jet> jets);
 	bool pass_four_jets_greater_than_50GeV(int event_number, vector<int> vec_event_number, vector<Jet> jets);
 	bool pass_MET_greater_than_125GeV(float MET);
