@@ -105,12 +105,12 @@ public:
 	void execute(vector<Electron> elec, vector<Muon> muon, vector<Lepton> lept, vector<Jet> jets,
 				 vector<Electron> baseline_elec, vector<Muon> baseline_muon, vector<Lepton> baseline_lept, vector<Jet> baseline_jets,
 				 vector<Electron> signal_elec, vector<Muon> signal_muon, vector<Lepton> signal_lept, vector<Jet> signal_jets,
-				 double Etmiss_TST_Et);
+				 double Etmiss_TST_Et, int run_number);
 	void finalize();	
 
 	void reset_vectors();
 	void calculate_new_variables(double Etmiss_TST_Et);
-	void tag_and_probe_Zee();
+	void tag_and_probe_Zee(int run_number);
 	void tag_and_probe_ttbar(double Etmiss_TST_Et);
 
 	ClassDef(yt_skim_data, 0);

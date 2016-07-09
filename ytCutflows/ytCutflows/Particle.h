@@ -8,6 +8,7 @@ class Particle {
     TLorentzVector tlv;
     bool	baseline;
     bool	passOR;
+	int		index;
     // ntuple variables
     int	    number;
     double  pT;
@@ -23,6 +24,7 @@ public:
     TLorentzVector get_TLV()	{ return tlv; }
     bool	get_baseline()		{ return baseline; }
     bool	get_passOR()		{ return passOR; }
+	int		get_index()			{ return index; }
     int	    get_number()		{ return number; }
     double  get_pt()			{ return pT; }
     double  get_eta()			{ return eta; }
@@ -34,6 +36,7 @@ public:
     virtual void set_TLV_M(double Pt, double Eta, double Phi, double Mass)   { tlv.SetPtEtaPhiM(Pt, Eta, Phi, Mass); }
     void	set_baseline(bool b)	{ baseline = b; }
     void	set_passOR(bool b)		{ passOR = b; }
+	void	set_index(int i)		{ index = i; }
     void    set_number(int i)		{ number = i; }
     void    set_pt(double d)		{ pT = d; }
     void    set_eta(double d)		{ eta = d; }

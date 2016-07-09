@@ -14,8 +14,8 @@ class Lepton : public Particle {
     double	z0sinTheta;
 	bool	passOR;
     double  sigd0;
-	int		type;
-	int 	origin;
+	int		type; // MC only
+	int 	origin; // MC only
     double  ptcone20;
     double  ptcone30;
     double  ptcone40;
@@ -130,9 +130,9 @@ class Electron : public Lepton {
 	double	SFwTrigLooseAndBLayerLH_e12_lhloose_L1EM10VH;
     int		nBLayerHits;
 	int		expectBLayerHit;
-	int		bkgMotherPdgId;
-	int		bkgOrigin;
-	int		chFlip;
+	int		bkgMotherPdgId; // MC only
+	int		bkgOrigin; // MC only
+	int		chFlip; // MC only
 	bool	trigMatch_e12_lhloose_L1EM10VH;
 	bool	trigMatch_e17_lhloose;
 	bool	trigMatch_e17_lhloose_mu14;
@@ -143,7 +143,8 @@ class Electron : public Lepton {
 	bool	trigMatch_2e15_lhloose_L12EM10VH;
 	bool	trigMatch_2e15_lhvloose_L12EM13VH;
 	bool	trigMatch_2e15_lhvloose_nod0_L12EM13VH;
-	bool	trigMatch_2e17_lhvloose_nod0_L12EM15VH;
+	bool	trigMatch_2e17_lhvloose_nod0_L12EM15VH; // MC only
+	bool	trigMatch_2e17_lhvloose_nod0; // Data only
 
 public:
     Electron() : etaclus(0),
@@ -163,7 +164,8 @@ public:
 				 trigMatch_e60_lhmedium(0),
 				 trigMatch_2e12_lhloose_L12EM10VH(0),
 				 trigMatch_2e15_lhloose_L12EM10VH(0), trigMatch_2e15_lhvloose_L12EM13VH(0), trigMatch_2e15_lhvloose_nod0_L12EM13VH(0),
-				 trigMatch_2e17_lhvloose_nod0_L12EM15VH(0) {}
+				 trigMatch_2e17_lhvloose_nod0_L12EM15VH(0),
+				 trigMatch_2e17_lhvloose_nod0(0) {}
 
     ~Electron() {}
     // get methods
@@ -204,6 +206,7 @@ public:
 	bool	get_trigMatch_2e15_lhvloose_L12EM13VH()				{ return trigMatch_2e15_lhvloose_L12EM13VH; }
 	bool	get_trigMatch_2e15_lhvloose_nod0_L12EM13VH()		{ return trigMatch_2e15_lhvloose_nod0_L12EM13VH; }
 	bool	get_trigMatch_2e17_lhvloose_nod0_L12EM15VH()		{ return trigMatch_2e17_lhvloose_nod0_L12EM15VH; }
+	bool	get_trigMatch_2e17_lhvloose_nod0()					{ return trigMatch_2e17_lhvloose_nod0; }
     // set methods
     void	set_etaclus(double d)										{ etaclus = d; }
     //void    set_isTight(bool b)         								{ isTight = b; }
@@ -242,6 +245,7 @@ public:
 	void	set_trigMatch_2e15_lhvloose_L12EM13VH(bool b)				{ trigMatch_2e15_lhvloose_L12EM13VH = b; }
 	void	set_trigMatch_2e15_lhvloose_nod0_L12EM13VH(bool b)			{ trigMatch_2e15_lhvloose_nod0_L12EM13VH = b; }
 	void	set_trigMatch_2e17_lhvloose_nod0_L12EM15VH(bool b)			{ trigMatch_2e17_lhvloose_nod0_L12EM15VH = b; }
+	void	set_trigMatch_2e17_lhvloose_nod0(bool b)					{ trigMatch_2e17_lhvloose_nod0 = b; }
 };
 
 class Muon : public Lepton {

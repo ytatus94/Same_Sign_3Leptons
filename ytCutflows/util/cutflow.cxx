@@ -37,14 +37,27 @@ int main( int argc, char* argv[] )
 	// for data
 	if (isData) {
 		cout << "Add data files to TChain..." << endl;
-		cout << "Currently, no data." << endl;
-		//fChain->Add("../user.jpoveda.t0609_v12.00266904.physics_Main.DAOD_SUSY9.f594_m1435_p2361_output.root/user.jpoveda.5632900._000001.output.root");
+		//cout << "Currently, no data." << endl;
+/*
+		TString path = "/afs/cern.ch/work/y/yushen/private/Ximo/v39/ytCutflows/data/user.jpoveda.t0769_v40retry.00278912.physics_Main.DAOD_SUSY2.r7562_p2521_p2667_output.root";
+		fChain->Add(path + "/user.jpoveda.8791764._000001.output.root");
+		fChain->Add(path + "/user.jpoveda.8791764._000002.output.root");
+*/
+		TString path = "/UserDisk2/yushen/Ximo/v40/Data";
+		fChain->Add(path + "/merged_all_data.root");
 	}
 	// for MC
 	if (isMC) {
+/*
 		cout << "Add MC files to TChain..." << endl;
 		TString path = "root://eosatlas.cern.ch//eos/atlas/user/y/yushen/Ximo_ntuples/v39/MC/user.jpoveda.t0769_v39.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.DAOD_SUSY2.s2608_r7725_p2613_output.root";
 		fChain->Add(path + "/user.jpoveda.8707424._000001.output.root");
+*/
+		TString path = "/UserDisk2/yushen/Ximo/v39/MC";
+		fChain->Add(path + "/Zee_merged.root");
+		//fChain->Add(path + "/Zmumu_merged.root");
+		//fChain->Add(path + "/ttbar_merged.root");
+		//fChain->Add(path + "/GG_ttn1_merged.root");
 	}
 
 	yt_selector *foo = new yt_selector;

@@ -9,20 +9,26 @@ using namespace std;
 
 #define Mu_Mass 105.6583715
 
-#include "ytCutflows/AnaNtup.h"
+//#include "ytCutflows/AnaNtup.h"
+#include "ytCutflows/AnaNtup_MC.h"
+#include "ytCutflows/AnaNtup_Data.h"
 #include "ytCutflows/Leptons.h"
 #include "ytCutflows/Jet.h"
 #include "ytCutflows/yt_cutflows.h"
+#include "ytCutflows/yt_skim.h"
+#include "ytCutflows/yt_skim_MC.h"
+#include "ytCutflows/yt_skim_data.h"
 
-class yt_selector : public AnaNtup {
+class yt_selector : public AnaNtup_MC {
+//class yt_selector : public AnaNtup_Data {
 public:
 	// flag
 	int isMC;
 	int isData;
 	// user defined variables
 	yt_cutflows			*m_cutflow;
-
-	vector<int>			vec_event_number;
+	yt_skim_MC			*m_skim_mc;
+	yt_skim_data		*m_skim_data;
 
 	vector<Electron>	vec_elec;
 	vector<Muon>		vec_muon;
@@ -47,6 +53,9 @@ public:
 	vector<Jet>      	vec_signal_jets;
 
 	TH1 *hCutFlows;
+
+	double sum; // sum of EventWeight
+
 public:
 	TTree   *fChain; //!pointer to the analyzed TTree or TChain
 
@@ -91,11 +100,13 @@ public:
 						vector<bool>    *El_isTightLH,
 						vector<int>     *El_nBLayerHits,
 						vector<int>     *El_expectBLayerHit,
-						vector<int>     *El_type,
-						vector<int>     *El_origin,
-						vector<int>     *El_bkgMotherPdgId,
-						vector<int>     *El_bkgOrigin,
-						vector<int>     *El_chFlip,
+//
+						vector<int>     *El_type, // MC only
+						vector<int>     *El_origin, // MC only
+						vector<int>     *El_bkgMotherPdgId, // MC only
+						vector<int>     *El_bkgOrigin, // MC only
+						vector<int>     *El_chFlip, // MC only
+//
 						vector<double>  *El_ptcone20,
 						vector<double>  *El_ptcone30,
 						vector<double>  *El_ptcone40,
@@ -139,8 +150,10 @@ public:
 					vector<bool>    *Mu_passOR,
 					vector<bool>    *Mu_isTight,
 					vector<bool>    *Mu_isCosmic,
-					vector<int>     *Mu_type,
-					vector<int>     *Mu_origin,
+//
+					vector<int>     *Mu_type, // MC only
+					vector<int>     *Mu_origin, // MC only
+//
 					vector<double>  *Mu_ptcone20,
 					vector<double>  *Mu_ptcone30,
 					vector<double>  *Mu_ptcone40,
@@ -180,10 +193,12 @@ public:
 				   vector<double>  *Jet_MV2c20,
 				   vector<double>  *Jet_MV2c10,
 				   vector<double>  *Jet_SFw,
-				   vector<int>     *Jet_ConeTruthLabel,
-				   vector<int>     *Jet_PartonTruthLabel,
-				   vector<int>     *Jet_HadronConeExclTruthLabel,
-				   vector<double>  *Jet_deltaR,
+//
+				   vector<int>     *Jet_ConeTruthLabel, // MC only
+				   vector<int>     *Jet_PartonTruthLabel, // MC only
+				   vector<int>     *Jet_HadronConeExclTruthLabel, // MC only
+				   vector<double>  *Jet_deltaR, // MC only
+//
 				   vector<int>     *Jet_nTrk,
 				   vector<bool>    *Jet_passOR);
 
@@ -217,6 +232,8 @@ public:
 	void debug_lept_print(vector<Lepton> lept);
 	void debug_jets_print(vector<Jet> jets);
 
+	double sum_event_weight();
+
 	ClassDef(yt_selector, 0);
 };
 
@@ -233,7 +250,17 @@ void yt_selector::Init(TTree *tree)
 	// Init() will be called many times when running on PROOF
 	// (once per file to be processed).
 
-	AnaNtup::Init(tree);
+	//AnaNtup_MC::Init(tree);
+	
+	// Create output files for skimming results
+//
+	AnaNtup_MC::Init(tree);
+	sum = sum_event_weight();
+	m_skim_mc->initialize(AnaNtup_MC::fChain);
+/*
+	AnaNtup_Data::Init(tree);
+	m_skim_data->initialize(AnaNtup_Data::fChain);
+*/
 }
 
 Bool_t yt_selector::Notify()

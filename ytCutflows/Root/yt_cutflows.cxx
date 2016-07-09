@@ -7,7 +7,7 @@ const char* cut_name[] = {
 	"Cut 2: GRL (for data only)",
 	"Cut 3: Primary vertex",
 	"Cut 4: Trigger",
-	"Cut 5: Global flags (data only) (+ MET cleaning in data & MC)",
+	"Cut 5: Global flags (data only)",
 	"Cut 6: Bad muon",
 	"Cut 7: >= 1 jet passes jet OR",
 	"Cut 8: Bad jet",
@@ -79,6 +79,9 @@ yt_cutflows::yt_cutflows()
 
 	// initialize events_pass_cutflow to zero
 	events_pass_cutflow = vector<int>(Ncuts, 0); // initialize Ncuts elements to zero.
+
+	// initialize pileup_weight to zero
+	pileupwgh = 0.;
 }
 
 yt_cutflows::~yt_cutflows()
@@ -153,7 +156,8 @@ int yt_cutflows::get_mc_random_event_number(int isData, int isMC,
 	bool mu_dependent = true;
 	m_Pileup->apply(*eventInfo, mu_dependent);
 	// example to retrieve decoration:
-	float pileupwgh = eventInfo->auxdata<float>("PileupWeight");
+	//float pileupwgh = eventInfo->auxdata<float>("PileupWeight");
+	pileupwgh = eventInfo->auxdata<float>("PileupWeight");
 /*
 	// NEW: Systematic Variations
 	// DOWN
@@ -248,7 +252,7 @@ bool yt_cutflows::pass_global_flags(int isData, int isMC, int DetError)
 {
 	bool pass_DetError = false;
 	if (isData == 1) {
-		if (DetError > 0) // global flags apply on data only
+		if (DetError != 1) // global flags apply on data only
 			pass_DetError = true;
 	}
 	else if (isMC == 1) {
@@ -293,7 +297,6 @@ bool yt_cutflows::pass_bad_jet(vector<Jet> vec_jets)
 		if (jet_itr.get_pt() > 20000. && // we use vec_jets at this step, so we have to apply pt cut on the jet objects but we don't apply eta cut.
 			jet_itr.get_passOR() && 
 			jet_itr.get_quality() > 0.5) {// 1=bad jet from SUSYTools IsGoodJet
-			//jet_itr.set_baseline(0);
 			return false; // Bad jet is found.
 		}
 	}
@@ -397,13 +400,14 @@ bool yt_cutflows::pass_same_sign(vector<Lepton> vec_lept)
 	return pass;
 }
 
-int yt_cutflows::pass_channel_separation(int event_number, vector<int> vec_event_number, vector<Lepton> vec_lept)
+//int yt_cutflows::pass_channel_separation(int event_number, vector<int> vec_event_number, vector<Lepton> vec_lept)
+int yt_cutflows::pass_channel_separation(vector<Lepton> vec_lept)
 {
 	int channel = 0;
 	int number_of_lepton = vec_lept.size();
 	//cout << "number of lepton=" << number_of_lepton << endl;
 	// Because the signal lepton vector was filled earilier, we have to add a protection to make sure we don't use the rejected events.
-	if (find(vec_event_number.begin(), vec_event_number.end(), event_number) != vec_event_number.end()) {
+	//if (find(vec_event_number.begin(), vec_event_number.end(), event_number) != vec_event_number.end()) {
 /*
 		cout << "number of lepton=" << number_of_lepton << endl;
 		cout << "*** EventNumber=" << event_number << endl;
@@ -626,11 +630,11 @@ int yt_cutflows::pass_channel_separation(int event_number, vector<int> vec_event
 				}
 			}
 		}
-	}
-	else {
-		cout << "Something wrong... Event Number=" << event_number << " has been rejected before this channel selection cut." << endl;
-		return 0;
-	}
+	//}
+	//else {
+	//	cout << "Something wrong... Event Number=" << event_number << " has been rejected before this channel selection cut." << endl;
+	//	return 0;
+	//}
 
 	return 0; // Don't need this line. Adding this line to avoid compiler to complain.
 }
@@ -898,31 +902,27 @@ bool yt_cutflows::pass_trigger_matching(string channel,
 	return pass;
 }
 
-bool yt_cutflows::pass_at_least_one_bjet_greater_than_20GeV(int event_number, vector<int> vec_event_number, vector<Jet> vec_jets)
+bool yt_cutflows::pass_at_least_one_bjet_greater_than_20GeV(vector<Jet> vec_jets)
 {
 	bool pass = false;
 	int count = 0;
-	if (find(vec_event_number.begin(), vec_event_number.end(), event_number) != vec_event_number.end()) {
-		for (auto & jet_itr : vec_jets) {
-			if (jet_itr.get_isBjet() && jet_itr.get_pt() > 20000.)
-				count++;
-		}
-		if (count >= 1) pass = true;
+	for (auto & jet_itr : vec_jets) {
+		if (jet_itr.get_isBjet() && jet_itr.get_pt() > 20000.)
+			count++;
 	}
+	if (count >= 1) pass = true;
 	return pass;
 }
 
-bool yt_cutflows::pass_four_jets_greater_than_50GeV(int event_number, vector<int> vec_event_number, vector<Jet> vec_jets)
+bool yt_cutflows::pass_four_jets_greater_than_50GeV(vector<Jet> vec_jets)
 {
 	bool pass = false;
 	int count = 0;
-	if (find(vec_event_number.begin(), vec_event_number.end(), event_number) != vec_event_number.end()) {
-		for (auto & jet_itr : vec_jets) {
-			if (jet_itr.get_pt() > 50000.)
-				count++;
-		}
-		if (count >= 4) pass = true;
+	for (auto & jet_itr : vec_jets) {
+		if (jet_itr.get_pt() > 50000.)
+			count++;
 	}
+	if (count >= 4) pass = true;
 	return pass;
 }
 

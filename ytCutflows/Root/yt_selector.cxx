@@ -37,8 +37,11 @@ void yt_selector::Begin(TTree * /*tree*/)
    // The tree argument is deprecated (on PROOF 0 is passed).
 
    TString option = GetOption();
-
-	m_cutflow = new yt_cutflows;
+	m_cutflow	= new yt_cutflows;
+	if (isMC == 1)
+		m_skim_mc	= new yt_skim_MC;
+	if (isData == 1)
+		m_skim_data	= new yt_skim_data;
 }
 
 void yt_selector::SlaveBegin(TTree * /*tree*/)
@@ -71,15 +74,15 @@ Bool_t yt_selector::Process(Long64_t entry)
    //
    // The return value is currently not used.
 
-	if (isData) {
-		cout << "This is data." << endl;
-	}
-	if (isMC) {
-		//cout << "This is MC." << endl;
-	}
-
 	// Need to call the Process() method of the Parent class
-	AnaNtup::Process(entry);
+	if (isData == 1) {
+		//cout << "This is data." << endl;
+		//AnaNtup_Data::Process(entry);
+	}
+	if (isMC == 1) {
+		//cout << "This is MC." << endl;
+		AnaNtup_MC::Process(entry);
+	}
 
 	// Reset vectors
 	vec_elec.clear();
@@ -130,11 +133,13 @@ Bool_t yt_selector::Process(Long64_t entry)
 				El_isTightLH,
 				El_nBLayerHits,
 				El_expectBLayerHit,
-				El_type,
-				El_origin,
-				El_bkgMotherPdgId,
-				El_bkgOrigin,
-				El_chFlip,
+//
+				El_type, // MC only
+				El_origin, // MC only
+				El_bkgMotherPdgId, // MC only
+				El_bkgOrigin, // MC only
+				El_chFlip, // MC only
+//
 				El_ptcone20,
 				El_ptcone30,
 				El_ptcone40,
@@ -159,7 +164,8 @@ Bool_t yt_selector::Process(Long64_t entry)
 				El_trigMatch_2e15_lhloose_L12EM10VH,
 				El_trigMatch_2e15_lhvloose_L12EM13VH,
 				El_trigMatch_2e15_lhvloose_nod0_L12EM13VH,
-				El_trigMatch_2e17_lhvloose_nod0_L12EM15VH,
+				El_trigMatch_2e17_lhvloose_nod0_L12EM15VH, // MC only
+				//El_trigMatch_2e17_lhvloose_nod0, // Data only
 				El_trigMatch_e17_lhloose_mu14,
 				El_trigMatch_e17_lhloose_nod0_mu14);
 
@@ -179,8 +185,10 @@ Bool_t yt_selector::Process(Long64_t entry)
 			Mu_passOR,
 			Mu_isTight,
 			Mu_isCosmic,
-			Mu_type,
-			Mu_origin,
+//
+			Mu_type, // MC only
+			Mu_origin, // MC only
+//
 			Mu_ptcone20,
 			Mu_ptcone30,
 			Mu_ptcone40,
@@ -220,10 +228,12 @@ Bool_t yt_selector::Process(Long64_t entry)
 			  Jet_MV2c20,
 			  Jet_MV2c10,
 			  Jet_SFw,
-			  Jet_ConeTruthLabel,
-			  Jet_PartonTruthLabel,
-			  Jet_HadronConeExclTruthLabel,
-			  Jet_deltaR,
+//
+			  Jet_ConeTruthLabel, // MC only
+			  Jet_PartonTruthLabel, // MC only
+			  Jet_HadronConeExclTruthLabel, // MC only
+			  Jet_deltaR, // MC only
+//
 			  Jet_nTrk,
 			  Jet_passOR);
 
@@ -331,6 +341,22 @@ Bool_t yt_selector::Process(Long64_t entry)
 	// Now sort leptons by descending Pt
 	sort(vec_signal_lept.begin(), vec_signal_lept.end(), sort_descending_Pt<Lepton>);
 
+	// Skimming data and MC for real lepton efficiency study 
+	if (isMC == 1) {
+		float pileup_weight = m_cutflow->pileupwgh;
+		m_skim_mc->set_event_weight_sum(sum);
+		m_skim_mc->execute(vec_elec, vec_muon, vec_lept, vec_jets,
+						   vec_baseline_elec, vec_baseline_muon, vec_baseline_lept, vec_baseline_jets,
+						   vec_signal_elec, vec_signal_muon, vec_signal_lept, vec_signal_jets,
+						   Etmiss_TST_Et, EventWeight, random_run_number, pileup_weight);
+	}
+	if (isData == 1) {
+		m_skim_data->execute(vec_elec, vec_muon, vec_lept, vec_jets,
+							 vec_baseline_elec, vec_baseline_muon, vec_baseline_lept, vec_baseline_jets,
+							 vec_signal_elec, vec_signal_muon, vec_signal_lept, vec_signal_jets,
+							 Etmiss_TST_Et, RunNb);
+	}
+
 	bool cut12 = m_cutflow->pass_at_least_two_signal_leptons_greater_than_20GeV(vec_signal_lept);
 	m_cutflow->update(At_least_two_signal_leptons_greater_than_20GeV, cut12);
 	if (!cut12) return kTRUE;
@@ -339,53 +365,13 @@ Bool_t yt_selector::Process(Long64_t entry)
 	m_cutflow->update(Same_sign, cut13);
 	if (!cut13) return kTRUE;
 
-	// Save the event number of passed events (for debug)
-	vec_event_number.push_back(EventNumber);
-
 	// same-sign
 	// e-e
-	int ee_cut1 = m_cutflow->pass_channel_separation(EventNumber, vec_event_number, vec_signal_lept);
+	int ee_cut1 = m_cutflow->pass_channel_separation(vec_signal_lept);
 	if (ee_cut1 == 1)
 		m_cutflow->update(ee_channel_separation, true);
-/*
-	if (ee_cut1 == 1 && (EventNumber == 12351 || EventNumber == 99842 || EventNumber == 172012 || EventNumber == 155031)) {
-		cout << "******EventNumber=" << EventNumber << endl;
-		cout << "isData=" << isData << endl;
-		cout << "isMC=" << isMC << endl;
-		cout << "run_number=" << RunNb << endl;
-		cout << "random_run_number=" << random_run_number << endl;
-		cout << "HLT_2e12_lhloose_L12EM10VH=" << HLT_2e12_lhloose_L12EM10VH << endl; 
-		cout << "HLT_e17_lhloose_mu14=" << HLT_e17_lhloose_mu14 << endl; 
-		cout << "HLT_mu18_mu8noL1=" << HLT_mu18_mu8noL1 << endl;
-		cout << "HLT_xe70=" << HLT_xe70 << endl;
-		cout << "Etmiss_TST_Et=" << Etmiss_TST_Et << endl;
-		cout << "HLT_2e17_lhvloose_nod0=" << HLT_2e17_lhvloose_nod0 << endl; 
-		cout << "HLT_e17_lhloose_nod0_mu14=" << HLT_e17_lhloose_nod0_mu14 << endl;
-		cout << "HLT_mu20_mu8noL1=" << HLT_mu20_mu8noL1 << endl;
-		cout << "HLT_xe80_tc_lcw_L1XE50=" << HLT_xe80_tc_lcw_L1XE50 << endl;
-		cout << "vec_signal_elec.size()=" << vec_signal_elec.size() << endl;
-		for (auto & el_itr : vec_signal_elec) {
-			cout << "el_itr.get_flavor()=" << el_itr.get_flavor() << endl;
-			cout << "el_itr.get_pt()=" << el_itr.get_pt() << endl;
-			cout << "el_itr.get_trigMatch_2e12_lhloose_L12EM10VH()=" << el_itr.get_trigMatch_2e12_lhloose_L12EM10VH() << endl;
-			cout << "el_itr.get_trigMatch_2e15_lhvloose_nod0_L12EM13VH()=" << el_itr.get_trigMatch_2e15_lhvloose_nod0_L12EM13VH() << endl;
-			cout << "el_itr.get_trigMatch_e17_lhloose()=" << el_itr.get_trigMatch_e17_lhloose() << endl;
-			cout << "el_itr.get_trigMatch_e17_lhloose_mu14()=" << el_itr.get_trigMatch_e17_lhloose_mu14() << endl;
-			cout << "el_itr.get_trigMatch_e17_lhloose_nod0_mu14()=" << el_itr.get_trigMatch_e17_lhloose_nod0_mu14() << endl;
-			cout << "el_itr.get_trigMatch_e17_lhloose_mu14()=" << el_itr.get_trigMatch_e17_lhloose_mu14() << endl;
-		}
-		cout << "vec_signal_muon.size()=" << vec_signal_muon.size() << endl;
-		for (auto & mu_itr : vec_signal_muon) {
-			cout << "mu_itr.get_flavor()=" << mu_itr.get_flavor() << endl;
-			cout << "mu_itr.get_pt()=" << mu_itr.get_pt() << endl;
-			cout << "mu_itr.get_trigMatch_e17_lhloose_mu14()=" << mu_itr.get_trigMatch_e17_lhloose_mu14() << endl;
-			cout << "mu_itr.get_trigMatch_e17_lhloose_nod0_mu14()=" << mu_itr.get_trigMatch_e17_lhloose_nod0_mu14() << endl;
-			cout << "mu_itr.get_trigMatch_e17_lhloose_mu14()=" << mu_itr.get_trigMatch_e17_lhloose_mu14() << endl;
-			cout << "mu_itr.get_trigMatch_mu18_mu8noL1()=" << mu_itr.get_trigMatch_mu18_mu8noL1() << endl;
-			cout << "mu_itr.get_trigMatch_mu20_mu8noL1()=" << mu_itr.get_trigMatch_mu20_mu8noL1() << endl;
-		}
-	}
-*/
+		//m_cutflow->update(ee_channel_separation, ee_cut1);
+
 	bool ee_cut2 = m_cutflow->pass_trigger_matching("ee", isData, isMC, RunNb, random_run_number, vec_signal_elec, vec_signal_muon,
 													HLT_2e12_lhloose_L12EM10VH, HLT_e17_lhloose_mu14, HLT_mu18_mu8noL1, HLT_xe70,
 													HLT_2e17_lhvloose_nod0, HLT_e17_lhloose_nod0_mu14, HLT_mu20_mu8noL1, HLT_xe80_tc_lcw_L1XE50,
@@ -393,27 +379,24 @@ Bool_t yt_selector::Process(Long64_t entry)
 	if (ee_cut1 == 1 && ee_cut2)
 		m_cutflow->update(ee_trigger_matching, ee_cut2);
 
-	bool ee_cut3 = m_cutflow->pass_at_least_one_bjet_greater_than_20GeV(EventNumber, vec_event_number, vec_signal_jets);
+	bool ee_cut3 = m_cutflow->pass_at_least_one_bjet_greater_than_20GeV(vec_signal_jets);
 	if (ee_cut1 == 1 && ee_cut2 && ee_cut3)
 		m_cutflow->update(ee_at_least_one_bjet_greater_than_20GeV, ee_cut3);
 
-	bool ee_cut4 = m_cutflow->pass_four_jets_greater_than_50GeV(EventNumber, vec_event_number, vec_signal_jets);
+	bool ee_cut4 = m_cutflow->pass_four_jets_greater_than_50GeV(vec_signal_jets);
 	if (ee_cut1 == 1 && ee_cut2 && ee_cut3 && ee_cut4)
 		m_cutflow->update(ee_four_jets_greater_than_50GeV, ee_cut4);
 
 	bool ee_cut5 = m_cutflow->pass_MET_greater_than_125GeV(Etmiss_TST_Et);
 	if (ee_cut1 == 1 && ee_cut2 && ee_cut3 && ee_cut4 && ee_cut5)
 		m_cutflow->update(ee_MET_greater_than_125GeV, ee_cut5);
-/*
-	cout << "el-el channel" << endl;
-	debug_lept_print(vec_signal_lept);
-*/
-	// e-mu
-	int emu_cut1 = m_cutflow->pass_channel_separation(EventNumber, vec_event_number, vec_signal_lept);
-	if (emu_cut1 == 2)
-		m_cutflow->update(emu_channel_separation, emu_cut1);
 
-	//bool emu_cut2 = m_cutflow->pass_trigger_matching("emu", isData, isMC, RunNb, random_run_number,  vec_signal_elec, vec_signal_muon);
+	// e-mu
+	int emu_cut1 = m_cutflow->pass_channel_separation(vec_signal_lept);
+	if (emu_cut1 == 2)
+		m_cutflow->update(emu_channel_separation, true);
+		//m_cutflow->update(emu_channel_separation, emu_cut1);
+
 	bool emu_cut2 = m_cutflow->pass_trigger_matching("emu", isData, isMC, RunNb, random_run_number, vec_signal_elec, vec_signal_muon,
 													 HLT_2e12_lhloose_L12EM10VH, HLT_e17_lhloose_mu14, HLT_mu18_mu8noL1, HLT_xe70,
 													 HLT_2e17_lhvloose_nod0, HLT_e17_lhloose_nod0_mu14, HLT_mu20_mu8noL1, HLT_xe80_tc_lcw_L1XE50,
@@ -421,27 +404,24 @@ Bool_t yt_selector::Process(Long64_t entry)
 	if (emu_cut1 == 2 && emu_cut2)
 		m_cutflow->update(emu_trigger_matching, emu_cut2);
 
-	bool emu_cut3 = m_cutflow->pass_at_least_one_bjet_greater_than_20GeV(EventNumber, vec_event_number, vec_signal_jets);
+	bool emu_cut3 = m_cutflow->pass_at_least_one_bjet_greater_than_20GeV(vec_signal_jets);
 	if (emu_cut1 == 2 && emu_cut2 && emu_cut3)
 		m_cutflow->update(emu_at_least_one_bjet_greater_than_20GeV, emu_cut3);
 
-	bool emu_cut4 = m_cutflow->pass_four_jets_greater_than_50GeV(EventNumber, vec_event_number, vec_signal_jets);
+	bool emu_cut4 = m_cutflow->pass_four_jets_greater_than_50GeV(vec_signal_jets);
 	if (emu_cut1 == 2 && emu_cut2 && emu_cut3 && emu_cut4)
 		m_cutflow->update(emu_four_jets_greater_than_50GeV, emu_cut4);
 
 	bool emu_cut5 = m_cutflow->pass_MET_greater_than_125GeV(Etmiss_TST_Et);
 	if (emu_cut1 == 2 && emu_cut2 && emu_cut3 && emu_cut4 && emu_cut5)
 		m_cutflow->update(emu_MET_greater_than_125GeV, emu_cut5);
-/*
-	cout << "el-mu channel" << endl;
-	debug_lept_print(vec_signal_lept);
-*/
-	// mu-mu
-	int mumu_cut1 = m_cutflow->pass_channel_separation(EventNumber, vec_event_number, vec_signal_lept);
-	if (mumu_cut1 == 3)
-		m_cutflow->update(mumu_channel_separation, mumu_cut1);
 
-	//bool mumu_cut2 = m_cutflow->pass_trigger_matching("mumu", isData, isMC, RunNb, random_run_number, vec_signal_elec, vec_signal_muon);
+	// mu-mu
+	int mumu_cut1 = m_cutflow->pass_channel_separation(vec_signal_lept);
+	if (mumu_cut1 == 3)
+		m_cutflow->update(mumu_channel_separation, true);
+		//m_cutflow->update(mumu_channel_separation, mumu_cut1);
+
 	bool mumu_cut2 = m_cutflow->pass_trigger_matching("mumu", isData, isMC, RunNb, random_run_number, vec_signal_elec, vec_signal_muon,
 													  HLT_2e12_lhloose_L12EM10VH, HLT_e17_lhloose_mu14, HLT_mu18_mu8noL1, HLT_xe70,
 													  HLT_2e17_lhvloose_nod0, HLT_e17_lhloose_nod0_mu14, HLT_mu20_mu8noL1, HLT_xe80_tc_lcw_L1XE50,
@@ -449,21 +429,18 @@ Bool_t yt_selector::Process(Long64_t entry)
 	if (mumu_cut1 == 3 && mumu_cut2)
 		m_cutflow->update(mumu_trigger_matching, mumu_cut2);
 
-	bool mumu_cut3 = m_cutflow->pass_at_least_one_bjet_greater_than_20GeV(EventNumber, vec_event_number, vec_signal_jets);
+	bool mumu_cut3 = m_cutflow->pass_at_least_one_bjet_greater_than_20GeV(vec_signal_jets);
 	if (mumu_cut1 == 3 && mumu_cut2 && mumu_cut3)
 		m_cutflow->update(mumu_at_least_one_bjet_greater_than_20GeV, mumu_cut3);
 
-	bool mumu_cut4 = m_cutflow->pass_four_jets_greater_than_50GeV(EventNumber, vec_event_number, vec_signal_jets);
+	bool mumu_cut4 = m_cutflow->pass_four_jets_greater_than_50GeV(vec_signal_jets);
 	if (mumu_cut1 == 3 && mumu_cut2 && mumu_cut3 && mumu_cut4)
 		m_cutflow->update(mumu_four_jets_greater_than_50GeV, mumu_cut4);
 
 	bool mumu_cut5 = m_cutflow->pass_MET_greater_than_125GeV(Etmiss_TST_Et);
 	if (mumu_cut1 == 3 && mumu_cut2 && mumu_cut3 && mumu_cut4 && mumu_cut5)
 		m_cutflow->update(mumu_MET_greater_than_125GeV, mumu_cut5);
-/*
-	cout << "mu-mu channel" << endl;
-	debug_lept_print(vec_signal_lept);
-*/
+
    return kTRUE;
 }
 
@@ -483,5 +460,33 @@ void yt_selector::Terminate()
 	//delete HLT_object;
 	//delete m_GRL;
 	m_cutflow->print();
+	if (isMC == 1)
+		m_skim_mc->finalize();
+	if (isData == 1)
+		m_skim_data->finalize();
+	// release memories
 	delete m_cutflow;
+	if (isMC == 1)
+		delete m_skim_mc;
+	if (isData == 1)
+		delete m_skim_data;
+}
+
+double yt_selector::sum_event_weight()
+{
+	double sum = 0;
+
+	Long64_t n_events = AnaNtup_MC::fChain->GetEntries();
+	Long64_t nbytes = 0, nb = 0; 
+
+	for (Long64_t j_event = 0; j_event < n_events; j_event++) {
+		Long64_t i_event = AnaNtup_MC::fChain->LoadTree(j_event); 
+		if (i_event < 0) break;   nbytes += nb;
+		nb = AnaNtup_MC::fChain->GetEntry(j_event);
+		if (i_event % 100000 == 0)
+			cout << "event : "<< i_event << endl;
+		sum += EventWeight;
+	}
+
+	return sum;
 }

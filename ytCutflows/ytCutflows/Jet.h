@@ -15,10 +15,10 @@ class Jet : public Particle {
     double  MV2c20;
 	double	MV2c10;
     double  SFw;
-	int		ConeTruthLabel;
-	int		PartonTruthLabel;
-	int		HadronConeExclTruthLabel;
-	double	deltaR;
+	int		ConeTruthLabel; // MC only
+	int		PartonTruthLabel; // MC only
+	int		HadronConeExclTruthLabel; // MC only
+	double	deltaR; // MC only
     int	    nTrk;
 	bool	passOR;
 

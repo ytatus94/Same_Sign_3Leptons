@@ -2,6 +2,9 @@
 Sample: user.jpoveda.t0769_v39.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.DAOD_SUSY2.s2608_r7725_p2613
 Use rcSetup Base,2.4.12 and check out this package.
 
+v05. Add the final version for skim MC and data.
+This final version is used to skim data and MC for the real lepton efficiency study.
+
 v04. Add skim MC and Data codes for real lepton efficiency study.
 1. Add ytCutflows/yt_skim.h, ytCutflows/yt_skim_MC.h, and ytCutflows/yt_skim_data.h
 2. Add Root/yt_skim.cxx, Root/yt_skim_MC.cxx, and Root/yt_skim_data.cxx

@@ -145,7 +145,7 @@ void yt_skim_data::initialize(TTree *tree)
 void yt_skim_data::execute(vector<Electron> elec, vector<Muon> muon, vector<Lepton> lept, vector<Jet> jets,
 						   vector<Electron> baseline_elec, vector<Muon> baseline_muon, vector<Lepton> baseline_lept, vector<Jet> baseline_jets,
 						   vector<Electron> signal_elec, vector<Muon> signal_muon, vector<Lepton> signal_lept, vector<Jet> signal_jets,
-						   double Etmiss_TST_Et)
+						   double Etmiss_TST_Et, int run_number)
 {
 	// clear all the vector members
 	this->yt_skim::initialize();
@@ -170,7 +170,7 @@ void yt_skim_data::execute(vector<Electron> elec, vector<Muon> muon, vector<Lept
 
 	calculate_new_variables(Etmiss_TST_Et);
 
-	tag_and_probe_Zee();
+	tag_and_probe_Zee(run_number);
 	tag_and_probe_ttbar(Etmiss_TST_Et);
 	// fill all new branches
 	output_tree->Fill();
@@ -213,6 +213,7 @@ void yt_skim_data::finalize()
 	cout << "  n baseline muons  = " << n_tot_baseline_muons << endl;
 	cout << "  n Z T&P muons     = " << n_tot_ZTandP_muons << endl;
 	cout << "  n ttbar T&P muons = " << n_tot_TTbarTandP_muons << endl;
+	cout << endl;
 	cout << "debug" << endl;
 	cout << "******************************************" << endl;
   cout << " ee channel   : " << n_CutFlow_ee_ChanSep << endl;
@@ -435,7 +436,7 @@ void yt_skim_data::calculate_new_variables(double Etmiss_TST_Et)
 	}
 }
 
-void yt_skim_data::tag_and_probe_Zee()
+void yt_skim_data::tag_and_probe_Zee(int run_number)
 {
 	// Z T&P method
 
@@ -448,7 +449,16 @@ void yt_skim_data::tag_and_probe_Zee()
 		bool isTriggerMatched = false;
 		//if (is_v23) { if ( El_trigMatch_e24_lhmedium_L1EM20VH->at(tag_electron.index) ) isTriggerMatched = true; }
 		//else if ( "Data_v22" != process ) { if ( El_trigMatch_e24_lhmedium_iloose_L1EM20VH->at(tag_electron.index) ) isTriggerMatched = true; }
-		if (tag_elec_itr.get_trigMatch_2e12_lhloose_L12EM10VH()) isTriggerMatched = true;
+		if (run_number < 290000) {
+			// use 2015 data trigger
+			if (tag_elec_itr.get_trigMatch_2e12_lhloose_L12EM10VH())
+				isTriggerMatched = true;
+		}
+		else if (run_number > 290000) {
+			// use 2016 data trigger
+			if (tag_elec_itr.get_trigMatch_2e17_lhvloose_nod0())
+				isTriggerMatched = true;
+		}
 
 		// Set the tag TLorentzVector ( to compute mll )
 		TLorentzVector tlv_tag;
@@ -481,8 +491,16 @@ void yt_skim_data::tag_and_probe_Zee()
 		bool isTriggerMatched = false;
 		//if (is_v23) { if ( Mu_trigMatch_MU15 ->at(tag_muon.index) ) isTriggerMatched = true; }
 		//else if ( "Data_v22" != process ) { if ( Mu_trigMatch_mu26_imedium->at(tag_muon.index) ) isTriggerMatched = true; }
-		if (tag_muon_itr.get_trigMatch_mu18_mu8noL1()) isTriggerMatched = true;
-
+		if (run_number < 290000) {
+			// use 2015 data trigger
+			if (tag_muon_itr.get_trigMatch_mu18_mu8noL1())
+				isTriggerMatched = true;
+		}
+		else if (run_number > 290000) {
+			// use 2016 data trigger
+			if (tag_muon_itr.get_trigMatch_mu20_mu8noL1())
+				isTriggerMatched = true;
+		}
 		// Set the tag TLorentzVector ( to compute mll )
 		TLorentzVector tlv_tag;
 		TLorentzVector tlv_probe;
@@ -519,8 +537,16 @@ void yt_skim_data::tag_and_probe_Zee()
 				continue;
 			if (fabs(tag_elec_itr.get_eta()) > 2.)
 				continue;
-			if (tag_elec_itr.get_trigMatch_2e12_lhloose_L12EM10VH() == false)
-				continue; 
+			if (run_number < 290000) {
+				// use 2015 data trigger
+				if (tag_elec_itr.get_trigMatch_2e12_lhloose_L12EM10VH() == false)
+					continue; 
+			}
+			else if (run_number > 290000) {
+				// use 2016 data trigger
+				if (tag_elec_itr.get_trigMatch_2e17_lhvloose_nod0() == false)
+					continue; 
+			}
 			// Opposite Charge requirement
 			if (tag_elec_itr.get_charge() == probe_elec_itr.get_charge())
 				continue;
@@ -544,8 +570,16 @@ void yt_skim_data::tag_and_probe_Zee()
 				continue;
 			if (tag_muon_itr.get_pt() < 25000)
 				continue;
-			if (tag_muon_itr.get_trigMatch_mu18_mu8noL1() == false)
-				continue;
+			if (run_number < 290000) {
+				// use 2015 data trigger
+				if (tag_muon_itr.get_trigMatch_mu18_mu8noL1() == false)
+					continue;
+			}
+			else if (run_number > 290000) {
+				// use 2016 data trigger
+				if (tag_muon_itr.get_trigMatch_mu20_mu8noL1() == false)
+					continue;
+			}
 			// Opposite Charge requirement
 			if (tag_muon_itr.get_charge() == probe_muon_itr.get_charge())
 				continue;

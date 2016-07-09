@@ -63,6 +63,8 @@ public:
 
 	vector<int> events_pass_cutflow;
 
+	float pileupwgh;
+
 public:
 	yt_cutflows();
 	virtual ~yt_cutflows();
@@ -92,7 +94,7 @@ public:
 	bool pass_at_least_two_signal_leptons_greater_than_20GeV(vector<Lepton> lept);
 	bool pass_same_sign(vector<Lepton> lept);
 	// same-sign
-	int  pass_channel_separation(int event_number, vector<int> vec_event_number, vector<Lepton> lept);
+	int  pass_channel_separation(vector<Lepton> lept);
 	bool pass_ee_2015_trigger_matching(vector<Electron> elec, bool HLT_2e12_lhloose_L12EM10VH, bool HLT_xe70, double Etmiss_TST_Et);
 	bool pass_ee_2016_trigger_matching(vector<Electron> elec, int isData, int isMC, bool HLT_2e17_lhvloose_nod0, bool HLT_xe80_tc_lcw_L1XE50, double Etmiss_TST_Et);
 	bool pass_emu_2015_trigger_matching(vector<Electron> elec, vector<Muon> muon, bool HLT_e17_lhloose_mu14, bool HLT_xe70, double Etmiss_TST_Et);
@@ -103,8 +105,8 @@ public:
 					  		   bool HLT_2e12_lhloose_L12EM10VH, bool HLT_e17_lhloose_mu14, bool HLT_mu18_mu8noL1, bool HLT_xe70,
 					  		   bool HLT_2e17_lhvloose_nod0, bool HLT_e17_lhloose_nod0_mu14, bool HLT_mu20_mu8noL1, bool HLT_xe80_tc_lcw_L1XE50,
 					  		   float Etmiss_TST_Et);
-	bool pass_at_least_one_bjet_greater_than_20GeV(int event_number, vector<int> vec_event_number, vector<Jet> jets);
-	bool pass_four_jets_greater_than_50GeV(int event_number, vector<int> vec_event_number, vector<Jet> jets);
+	bool pass_at_least_one_bjet_greater_than_20GeV(vector<Jet> jets);
+	bool pass_four_jets_greater_than_50GeV(vector<Jet> jets);
 	bool pass_MET_greater_than_125GeV(float MET);
 
 	ClassDef(yt_cutflows, 0);

@@ -3,120 +3,6 @@
 #define FILL_AND_SET_CXX
 
 // Fill methods
-/*
-void yt_selector::fill_HLT(Bool_t	HLT_e24_lhmedium_nod0_ivarloose,
-						   Bool_t	HLT_e24_lhtight_nod0_ivarloose,
-						   Bool_t	HLT_e26_lhtight_iloose,
-						   Bool_t	HLT_e26_lhtight_ivarloose,
-						   Bool_t	HLT_e26_lhtight_nod0_iloose,
-						   Bool_t	HLT_e26_lhtight_nod0_ivarloose,
-						   Bool_t	HLT_e60_lhmedium,
-						   Bool_t	HLT_e60_lhmedium_nod0,
-						   Bool_t	HLT_e120_lhloose_nod0,
-						   Bool_t	HLT_e140_lhloose_nod0,
-						   Bool_t	HLT_2e17_lhvloose_nod0,
-						   Bool_t	HLT_2e15_lhvloose_nod0_L12EM13VH,
-						   Bool_t	HLT_e24_lhmedium_e9_lhmedium,
-						   Bool_t	HLT_e24_lhmedium_L1EM20VH,
-						   Bool_t	HLT_e12_lhvloose_L12EM10VH,
-						   Bool_t	HLT_e17_lhloose_2e9_lhloose,
-						   Bool_t	HLT_mu24_ivarmedium,
-						   Bool_t	HLT_mu24_imedium,
-						   Bool_t	HLT_mu24_ivarloose,
-						   Bool_t	HLT_mu24_iloose,
-						   Bool_t	HLT_mu26_ivarmedium,
-						   Bool_t	HLT_mu26_imedium,
-						   Bool_t	HLT_mu20_ivarmedium_L1MU15,
-						   Bool_t	HLT_mu20_imedium_L1MU15,
-						   Bool_t	HLT_mu20_ivarloose_L1MU15,
-						   Bool_t	HLT_mu20_iloose_L1MU15,
-						   Bool_t	HLT_mu20_L1MU15,
-						   Bool_t	HLT_mu20_mu8noL1,
-						   Bool_t	HLT_mu22_mu8noL1,
-						   Bool_t	HLT_mu22_2mu4noL1,
-						   Bool_t	HLT_mu40,
-						   Bool_t	HLT_mu50,
-						   Bool_t	HLT_2mu10,
-						   Bool_t	HLT_2mu10_nomucomb,
-						   Bool_t	HLT_2mu14,
-						   Bool_t	HLT_2mu14_nomucomb,
-						   Bool_t	HLT_3mu6,
-						   Bool_t	HLT_3mu6_msonly,
-						   Bool_t	HLT_xe100_L1XE50,
-						   Bool_t	HLT_xe80_mht_L1XE50,
-						   Bool_t	HLT_xe90_mht_L1XE50,
-						   Bool_t	HLT_xe110_pueta_L1XE50,
-						   Bool_t	HLT_xe110_pufit_L1XE50,
-						   Bool_t	HLT_xe100_tc_em_L1XE50,
-						   Bool_t	HLT_xe80_tc_lcw_L1XE50,
-						   Bool_t	HLT_xe90_tc_lcw_L1XE50,
-						   Bool_t	HLT_xe80_tc_lcw_wEFMu_L1XE50,
-						   Bool_t	HLT_e7_lhmedium_mu24,
-						   Bool_t	HLT_e17_lhloose_nod0_mu14,
-						   Bool_t	HLT_e26_lhmedium_nod0_L1EM22VHI_mu8noL1,
-						   Bool_t	HLT_e24_lhmedium_nod0_L1EM22VHI_mu8noL1,
-						   Bool_t	HLT_2e12_lhloose_L12EM10VH,
-						   Bool_t	HLT_e17_lhloose_mu14,
-						   Bool_t	HLT_mu18_mu8noL1,
-						   Bool_t	HLT_xe70)
-{
-	HLT_object->set_HLT_e24_lhmedium_nod0_ivarloose(HLT_e24_lhmedium_nod0_ivarloose);
-	HLT_object->set_HLT_e24_lhtight_nod0_ivarloose(HLT_e24_lhtight_nod0_ivarloose);
-	HLT_object->set_HLT_e26_lhtight_iloose(HLT_e26_lhtight_iloose);
-	HLT_object->set_HLT_e26_lhtight_ivarloose(HLT_e26_lhtight_ivarloose);
-	HLT_object->set_HLT_e26_lhtight_nod0_iloose(HLT_e26_lhtight_nod0_iloose);
-	HLT_object->set_HLT_e26_lhtight_nod0_ivarloose(HLT_e26_lhtight_nod0_ivarloose);
-	HLT_object->set_HLT_e60_lhmedium(HLT_e60_lhmedium);
-	HLT_object->set_HLT_e60_lhmedium_nod0(HLT_e60_lhmedium_nod0);
-	HLT_object->set_HLT_e120_lhloose_nod0(HLT_e120_lhloose_nod0);
-	HLT_object->set_HLT_e140_lhloose_nod0(HLT_e140_lhloose_nod0);
-	HLT_object->set_HLT_2e17_lhvloose_nod0(HLT_2e17_lhvloose_nod0);
-	HLT_object->set_HLT_2e15_lhvloose_nod0_L12EM13VH(HLT_2e15_lhvloose_nod0_L12EM13VH);
-	HLT_object->set_HLT_e24_lhmedium_e9_lhmedium(HLT_e24_lhmedium_e9_lhmedium);
-	HLT_object->set_HLT_e24_lhmedium_L1EM20VH(HLT_e24_lhmedium_L1EM20VH);
-	HLT_object->set_HLT_e12_lhvloose_L12EM10VH(HLT_e12_lhvloose_L12EM10VH);
-	HLT_object->set_HLT_e17_lhloose_2e9_lhloose(HLT_e17_lhloose_2e9_lhloose);
-	HLT_object->set_HLT_mu24_ivarmedium(HLT_mu24_ivarmedium);
-	HLT_object->set_HLT_mu24_imedium(HLT_mu24_imedium);
-	HLT_object->set_HLT_mu24_ivarloose(HLT_mu24_ivarloose);
-	HLT_object->set_HLT_mu24_iloose(HLT_mu24_iloose);
-	HLT_object->set_HLT_mu26_ivarmedium(HLT_mu26_ivarmedium);
-	HLT_object->set_HLT_mu26_imedium(HLT_mu26_imedium);
-	HLT_object->set_HLT_mu20_ivarmedium_L1MU15(HLT_mu20_ivarmedium_L1MU15);
-	HLT_object->set_HLT_mu20_imedium_L1MU15(HLT_mu20_imedium_L1MU15);
-	HLT_object->set_HLT_mu20_ivarloose_L1MU15(HLT_mu20_ivarloose_L1MU15);
-	HLT_object->set_HLT_mu20_iloose_L1MU15(HLT_mu20_iloose_L1MU15);
-	HLT_object->set_HLT_mu20_L1MU15(HLT_mu20_L1MU15);
-	HLT_object->set_HLT_mu20_mu8noL1(HLT_mu20_mu8noL1);
-	HLT_object->set_HLT_mu22_mu8noL1(HLT_mu22_mu8noL1);
-	HLT_object->set_HLT_mu22_2mu4noL1(HLT_mu22_2mu4noL1);
-	HLT_object->set_HLT_mu40(HLT_mu40);
-	HLT_object->set_HLT_mu50(HLT_mu50);
-	HLT_object->set_HLT_2mu10(HLT_2mu10);
-	HLT_object->set_HLT_2mu10_nomucomb(HLT_2mu10_nomucomb);
-	HLT_object->set_HLT_2mu14(HLT_2mu14);
-	HLT_object->set_HLT_2mu14_nomucomb(HLT_2mu14_nomucomb);
-	HLT_object->set_HLT_3mu6(HLT_3mu6);
-	HLT_object->set_HLT_3mu6_msonly(HLT_3mu6_msonly);
-	HLT_object->set_HLT_xe100_L1XE50(HLT_xe100_L1XE50);
-	HLT_object->set_HLT_xe80_mht_L1XE50(HLT_xe80_mht_L1XE50);
-	HLT_object->set_HLT_xe90_mht_L1XE50(HLT_xe90_mht_L1XE50);
-	HLT_object->set_HLT_xe110_pueta_L1XE50(HLT_xe110_pueta_L1XE50);
-	HLT_object->set_HLT_xe110_pufit_L1XE50(HLT_xe110_pufit_L1XE50);
-	HLT_object->set_HLT_xe100_tc_em_L1XE50(HLT_xe100_tc_em_L1XE50);
-	HLT_object->set_HLT_xe80_tc_lcw_L1XE50(HLT_xe80_tc_lcw_L1XE50);
-	HLT_object->set_HLT_xe90_tc_lcw_L1XE50(HLT_xe90_tc_lcw_L1XE50);
-	HLT_object->set_HLT_xe80_tc_lcw_wEFMu_L1XE50(HLT_xe80_tc_lcw_wEFMu_L1XE50);
-	HLT_object->set_HLT_e7_lhmedium_mu24(HLT_e7_lhmedium_mu24);
-	HLT_object->set_HLT_e17_lhloose_nod0_mu14(HLT_e17_lhloose_nod0_mu14);
-	HLT_object->set_HLT_e26_lhmedium_nod0_L1EM22VHI_mu8noL1(HLT_e26_lhmedium_nod0_L1EM22VHI_mu8noL1);
-	HLT_object->set_HLT_e24_lhmedium_nod0_L1EM22VHI_mu8noL1(HLT_e24_lhmedium_nod0_L1EM22VHI_mu8noL1);
-	HLT_object->set_HLT_2e12_lhloose_L12EM10VH(HLT_2e12_lhloose_L12EM10VH);
-	HLT_object->set_HLT_e17_lhloose_mu14(HLT_e17_lhloose_mu14);
-	HLT_object->set_HLT_mu18_mu8noL1(HLT_mu18_mu8noL1);
-	HLT_object->set_HLT_xe70(HLT_xe70);
-}
-*/
 void yt_selector::fill_electrons(Int_t           NEl,
 								 int             flavor,
 								 vector<double>  *El_eta,
@@ -142,11 +28,13 @@ void yt_selector::fill_electrons(Int_t           NEl,
 								 vector<bool>    *El_isTightLH,
 								 vector<int>     *El_nBLayerHits,
 								 vector<int>     *El_expectBLayerHit,
-								 vector<int>     *El_type,
-								 vector<int>     *El_origin,
-								 vector<int>     *El_bkgMotherPdgId,
-								 vector<int>     *El_bkgOrigin,
-								 vector<int>     *El_chFlip,
+//
+								 vector<int>     *El_type, // MC only
+								 vector<int>     *El_origin, // MC only
+								 vector<int>     *El_bkgMotherPdgId, // MC only
+								 vector<int>     *El_bkgOrigin, // MC only
+								 vector<int>     *El_chFlip, // MC only
+//
 								 vector<double>  *El_ptcone20,
 								 vector<double>  *El_ptcone30,
 								 vector<double>  *El_ptcone40,
@@ -177,6 +65,7 @@ void yt_selector::fill_electrons(Int_t           NEl,
 {
 	for (int i = 0; i < NEl; i++) {
 		Electron el;
+		el.set_index(i);
 		el.set_number(NEl);
 		el.set_flavor(flavor);
 		el.set_eta( (*El_eta)[i] );
@@ -202,11 +91,13 @@ void yt_selector::fill_electrons(Int_t           NEl,
 		el.set_isTightLH( (*El_isTightLH)[i] );
 		el.set_nBLayerHits( (*El_nBLayerHits)[i] );
 		el.set_expectBLayerHit( (*El_expectBLayerHit)[i] );
-		el.set_type( (*El_type)[i] );
-		el.set_origin( (*El_origin)[i] );
-		el.set_bkgMotherPdgId( (*El_bkgMotherPdgId)[i] );
-		el.set_bkgOrigin( (*El_bkgOrigin)[i] );
-		el.set_chFlip( (*El_chFlip)[i] );
+//
+		el.set_type( (*El_type)[i] ); // MC only
+		el.set_origin( (*El_origin)[i] ); // MC only
+		el.set_bkgMotherPdgId( (*El_bkgMotherPdgId)[i] ); // MC only
+		el.set_bkgOrigin( (*El_bkgOrigin)[i] ); // MC only
+		el.set_chFlip( (*El_chFlip)[i] ); // MC only
+//
 		el.set_ptcone20( (*El_ptcone20)[i] );
 		el.set_ptcone30( (*El_ptcone30)[i] );
 		el.set_ptcone40( (*El_ptcone40)[i] );
@@ -231,7 +122,10 @@ void yt_selector::fill_electrons(Int_t           NEl,
 		el.set_trigMatch_2e15_lhloose_L12EM10VH( (*El_trigMatch_2e15_lhloose_L12EM10VH)[i] );
 		el.set_trigMatch_2e15_lhvloose_L12EM13VH( (*El_trigMatch_2e15_lhvloose_L12EM13VH)[i] );
 		el.set_trigMatch_2e15_lhvloose_nod0_L12EM13VH( (*El_trigMatch_2e15_lhvloose_nod0_L12EM13VH)[i] );
-		el.set_trigMatch_2e17_lhvloose_nod0_L12EM15VH( (*El_trigMatch_2e17_lhvloose_nod0_L12EM15VH)[i] );
+		if (isMC == 1) 
+			el.set_trigMatch_2e17_lhvloose_nod0_L12EM15VH( (*El_trigMatch_2e17_lhvloose_nod0_L12EM15VH)[i] );
+		if (isData == 1)
+			el.set_trigMatch_2e17_lhvloose_nod0( (*El_trigMatch_2e17_lhvloose_nod0_L12EM15VH)[i] );
 		el.set_trigMatch_e17_lhloose_mu14( (*El_trigMatch_e17_lhloose_mu14)[i] );
 		el.set_trigMatch_e17_lhloose_nod0_mu14( (*El_trigMatch_e17_lhloose_nod0_mu14)[i] );
 		el.set_TLV_E(el.get_pt(), el.get_eta(), el.get_phi(), el.get_E());
@@ -254,8 +148,10 @@ void yt_selector::fill_muons(Int_t           NMu,
 							 vector<bool>    *Mu_passOR,
 							 vector<bool>    *Mu_isTight,
 							 vector<bool>    *Mu_isCosmic,
-							 vector<int>     *Mu_type,
-							 vector<int>     *Mu_origin,
+//
+							 vector<int>     *Mu_type, // MC only
+							 vector<int>     *Mu_origin, // MC only
+//
 							 vector<double>  *Mu_ptcone20,
 							 vector<double>  *Mu_ptcone30,
 							 vector<double>  *Mu_ptcone40,
@@ -286,6 +182,7 @@ void yt_selector::fill_muons(Int_t           NMu,
 {
 	for (int i = 0; i < NMu; i++) {
 		Muon mu;
+		mu.set_index(i);
 		mu.set_number(NMu);
 		mu.set_flavor(flavor);
 		mu.set_eta( (*Mu_eta)[i] );
@@ -301,8 +198,10 @@ void yt_selector::fill_muons(Int_t           NMu,
 		mu.set_passOR( (*Mu_passOR)[i] );
 		mu.set_isTight( (*Mu_isTight)[i] );
 		mu.set_isCosmic( (*Mu_isCosmic)[i] );
-		mu.set_type( (*Mu_type)[i] );
-		mu.set_origin( (*Mu_origin)[i] );
+//
+		mu.set_type( (*Mu_type)[i] ); // MC only
+		mu.set_origin( (*Mu_origin)[i] ); // MC only
+//
 		mu.set_ptcone20( (*Mu_ptcone20)[i] );
 		mu.set_ptcone30( (*Mu_ptcone30)[i] );
 		mu.set_ptcone40( (*Mu_ptcone40)[i] );
@@ -347,15 +246,18 @@ void yt_selector::fill_jets(Int_t           NJet,
 							vector<double>  *Jet_MV2c20,
 							vector<double>  *Jet_MV2c10,
 							vector<double>  *Jet_SFw,
-							vector<int>     *Jet_ConeTruthLabel,
-							vector<int>     *Jet_PartonTruthLabel,
-							vector<int>     *Jet_HadronConeExclTruthLabel,
-							vector<double>  *Jet_deltaR,
+//
+							vector<int>     *Jet_ConeTruthLabel, // MC only
+							vector<int>     *Jet_PartonTruthLabel, // MC only
+							vector<int>     *Jet_HadronConeExclTruthLabel, // MC only
+							vector<double>  *Jet_deltaR, // MC only
+//
 							vector<int>     *Jet_nTrk,
 							vector<bool>    *Jet_passOR)
 {
 	for (int i = 0; i < NJet; i++) {
 		Jet je;
+		je.set_index(i);
 		je.set_number(NJet);
 		je.set_eta( (*Jet_eta)[i] );
 		je.set_phi( (*Jet_phi)[i] );
@@ -367,10 +269,12 @@ void yt_selector::fill_jets(Int_t           NJet,
 		je.set_MV2c20( (*Jet_MV2c20)[i] );
 		je.set_MV2c10( (*Jet_MV2c10)[i] );
 		je.set_SFw( (*Jet_SFw)[i] );
-		je.set_ConeTruthLabel( (*Jet_ConeTruthLabel)[i] );
-		je.set_PartonTruthLabel( (*Jet_PartonTruthLabel)[i] );
-		je.set_HadronConeExclTruthLabel( (*Jet_HadronConeExclTruthLabel)[i] );
-		je.set_deltaR( (*Jet_deltaR)[i] );
+//
+		je.set_ConeTruthLabel( (*Jet_ConeTruthLabel)[i] ); // MC only
+		je.set_PartonTruthLabel( (*Jet_PartonTruthLabel)[i] ); // MC only
+		je.set_HadronConeExclTruthLabel( (*Jet_HadronConeExclTruthLabel)[i] ); // MC only
+		je.set_deltaR( (*Jet_deltaR)[i] ); // MC only
+//
 		je.set_nTrk( (*Jet_nTrk)[i] );
 		je.set_passOR( (*Jet_passOR)[i]);
 		je.set_TLV_E(je.get_pt(), je.get_eta(), je.get_phi(), je.get_E());
@@ -526,18 +430,6 @@ void yt_selector::fill_signal_leptons(vector<Electron> signal_elec, vector<Muon>
 
 void yt_selector::fill_signal_jets(vector<Jet> vec_jets)
 {
-/*
-	for (auto & jet_itr : vec_jets) {
-		if (!jet_itr.get_baseline()) continue;
-		if (!jet_itr.get_passOR()) continue;
-		if (jet_itr.get_quality() > 0.5) continue; // 1=bad jet from SUSYToo ls IsGoodJet
-		//if (jet_itr.get_isBjet()) continue;
-		//if (jet_itr.get_pt() > 20000. &&
-		//	fabs(jet_itr.get_eta()) < 2.8) {
-			vec_signal_jets.push_back(jet_itr);
-		//}
-	}
-*/
 	for (auto & jet_itr : vec_jets) {
 		if (jet_itr.get_baseline() == true &&
 			jet_itr.get_passOR() == true &&
@@ -587,8 +479,7 @@ void yt_selector::set_baseline_and_signal_muons()
 {
 	for (auto & mu_itr : vec_muon) {
 		// baseline muons
-		//if (mu_itr.get_isMediumLH() == true && // Medium is already applied at the ntuple, you can assume all the muon have it applied
-		//	mu_itr.get_pt() > 10000. &&
+		// Medium is already applied at the ntuple, you can assume all the muon have it applied
 		if (mu_itr.get_pt() > 10000. &&
 			fabs(mu_itr.get_eta()) < 2.5) {
 			mu_itr.set_baseline(1);
@@ -624,17 +515,7 @@ void yt_selector::set_jets_and_bjets()
 		if (jet_itr.get_pt() > 20000. &&
 			fabs(jet_itr.get_eta()) < 2.5 &&
 			jet_itr.get_MV2c10() > 0.8244) {
-/*
-			// reject jets with pT<60 GeV and |eta|<2.4 and JVT<0.59 are not considered as b-jets for overlap removal or for the analysis 
-			if (jet_itr.get_pt() < 60000. &&
-				fabs(jet_itr.get_eta()) < 2.4 &&
-				jet_itr.get_JVT() < 0.59) {
-				jet_itr.set_isBjet(0);
-			}
-			else {
-*/
-				jet_itr.set_isBjet(1);
-//			}
+			jet_itr.set_isBjet(1);
 		}
 		else {
 			jet_itr.set_isBjet(0);
