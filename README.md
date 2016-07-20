@@ -1,7 +1,11 @@
 # SS_v37
 This is SS/3L+jet cutflows study.
+
 4topSM v37 Sample: user.jpoveda.t0756_v37.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.DAOD_SUSY2.s2608_r7725_p2613_output.root
+
 ttbar v37 Sample: user.jpoveda.t0756_v37.410000.PowhegPythiaEvtGen_P2012_ttbar_hdamp17    2p5_nonallhad.DAOD_SUSY2.s2608_r7725_p2613_output.root
+
+v08: Change the descriptions in README.md
 
 v07: Add ttbar samples into util/cutflow.cxx
 
