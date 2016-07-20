@@ -6,3 +6,7 @@ Sample: user.jpoveda.t0784_v43.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.DA
 
 Use rcSetup Base,2.4.15
 
+v02. Commit all the codes
+The cutflows are agreed with others' results from cut 1 to cut 13 (channel selection.)
+
+v01. Create project
