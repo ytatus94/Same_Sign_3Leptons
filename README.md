@@ -1,6 +1,13 @@
 # SS_v39This is SS/3L+jet cutflows study v39.
+
 Sample: user.jpoveda.t0769_v39.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.DAOD_SUSY2.s2608_r7725_p2613
+
 Use rcSetup Base,2.4.12 and check out this package.
+
+v06. Modify the event weight sum and provide process selection
+The event weight sum is using the DerivationStat_Weight histogram.
+Can specify process when start to run the job
+Modify the for loop in Z T&P method.
 
 v05. Add the final version for skim MC and data.
 This final version is used to skim data and MC for the real lepton efficiency study.

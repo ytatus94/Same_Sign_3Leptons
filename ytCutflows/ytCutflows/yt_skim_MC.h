@@ -90,33 +90,30 @@ public:
     vector<double>  PVzList;
 */
     // Counters
-    int n_duplicated_EventNumber;
+    //int n_duplicated_EventNumber; // not use
     int n_tot_baseline_electrons;
     int n_tot_baseline_muons;
     int n_tot_2baseline_leptons;
     int n_tot_baseline_leptons_in_TTbarTandP_Events;
     int n_2Baseline_leptons_Events;
     int n_2Baseline_Bjets_Events;
-    int n_TTbarEtmiss_Events;
     int n_tot_2baseline_leptons_pt30;
+    int n_TTbarEtmiss_Events;
     int n_TTbarMll_Events;
     int n_tot_ZTandP_electrons;
     int n_tot_ZTandP_muons;
     int n_tot_TTbarTandP_electrons;
     int n_tot_TTbarTandP_muons;
 
-    int n_baseline_electrons;
-    int n_baseline_muons;
-
-    double sum_event_weight;
+    //double sum_event_weight; // not use
     double n_normalized_events;
     double n_normalized_tot_baseline_electrons;
     double n_normalized_tot_baseline_muons;
     double n_normalized_tot_2baseline_leptons;
     double n_normalized_2Baseline_leptons_Events;
     double n_normalized_2Baseline_Bjets_Events;
-    double n_normalized_TTbarEtmiss_Events;
     double n_normalized_2Baseline_leptons_Events_pt30;
+    double n_normalized_TTbarEtmiss_Events;
     double n_normalized_TTbarMll_Events;
     double n_normalized_tot_ZTandP_electrons;
     double n_normalized_tot_ZTandP_muons;
@@ -127,12 +124,12 @@ public:
 	double event_weight_sum;
 
     // Normalisation scale factor
-    const double lumi = 3.2; // 1/fb
+    const double lumi = 5.8; // unit: 1/fb, 3.2/fb (2015) + 2.6/fb (2016)
 
     // Cross section
-    double crossSection = 1; // Inclusive crossSection * factor 1 * factor 2 * factor 3
-    double kFactor = 1;
-    double filterEfficiency = 1;
+    double crossSection; // Inclusive crossSection * factor 1 * factor 2 * factor 3
+    double kFactor;
+    double filterEfficiency;
 
     // Derivation efficiency
     double analysis1LeptonFilter;  // ttbar (non all had)
@@ -141,12 +138,12 @@ public:
 	yt_skim_MC();
 	virtual ~yt_skim_MC();
 
-	void initialize(TTree *tree);
+	void initialize(TTree *tree, TString process);
 	void execute(vector<Electron> elec, vector<Muon> muon, vector<Lepton> lept, vector<Jet> jets,
 				 vector<Electron> baseline_elec, vector<Muon> baseline_muon, vector<Lepton> baseline_lept, vector<Jet> baseline_jets,
 				 vector<Electron> signal_elec, vector<Muon> signal_muon, vector<Lepton> signal_lept, vector<Jet> signal_jets,
-                 double Etmiss_TST_Et, double event_weight, int run_number, float pileup_weight);
-	void finalize();
+                 double Etmiss_TST_Et, double event_weight, int run_number, float pileup_weight, TString process);
+	void finalize(TString process);
 
     void reset_vectors();
     void calculate_new_variables(double Etmiss_TST_Et);

@@ -63,38 +63,35 @@ yt_skim_MC::yt_skim_MC()
     jet3Pt = 0.;
     isSS2l = false;
     baseline_channel = 0;
-    channel = -1;        // -1 for less than 2 leptons,  1 for ee,  2 for em ,  3 for mm
+    channel = -1; // -1 for less than 2 leptons,  1 for ee,  2 for em ,  3 for mm
 
 	run_number = 0;
 
     // Counters
-    n_duplicated_EventNumber = 0;
+    //n_duplicated_EventNumber = 0;
     n_tot_baseline_electrons = 0;
     n_tot_baseline_muons = 0;
     n_tot_2baseline_leptons = 0;
     n_tot_baseline_leptons_in_TTbarTandP_Events = 0;
     n_2Baseline_leptons_Events = 0;
     n_2Baseline_Bjets_Events = 0;
-    n_TTbarEtmiss_Events = 0;
     n_tot_2baseline_leptons_pt30 = 0;
+    n_TTbarEtmiss_Events = 0;
     n_TTbarMll_Events = 0;
     n_tot_ZTandP_electrons = 0;
     n_tot_ZTandP_muons = 0;
     n_tot_TTbarTandP_electrons = 0;
     n_tot_TTbarTandP_muons = 0;
 
-    n_baseline_electrons = 0;
-    n_baseline_muons = 0;
-
-    sum_event_weight = 0;
+    //sum_event_weight = 0;
     n_normalized_events = 0;
     n_normalized_tot_baseline_electrons = 0;
     n_normalized_tot_baseline_muons = 0;
     n_normalized_tot_2baseline_leptons = 0;
     n_normalized_2Baseline_leptons_Events = 0;
     n_normalized_2Baseline_Bjets_Events = 0;
-    n_normalized_TTbarEtmiss_Events = 0;
     n_normalized_2Baseline_leptons_Events_pt30 = 0;
+    n_normalized_TTbarEtmiss_Events = 0;
     n_normalized_TTbarMll_Events = 0;
     n_normalized_tot_ZTandP_electrons = 0;
     n_normalized_tot_ZTandP_muons = 0;
@@ -119,11 +116,11 @@ yt_skim_MC::~yt_skim_MC()
 	//delete output_file;
 }
 
-void yt_skim_MC::initialize(TTree *tree)
+void yt_skim_MC::initialize(TTree *tree, TString process)
 {
 	// Declare the output
 	TString output_path("/afs/cern.ch/user/y/yushen/afsWorkingArea/private/Ximo/v39/Skimmed/");
-	output_file = TFile::Open(output_path + "/MC_probes_" + ".root", "RECREATE");
+	output_file = TFile::Open(output_path + "/MC_probes_" + process + ".root", "RECREATE");
 	output_tree = (TTree*)tree->CloneTree(0);
 
     // Building the new branches
@@ -193,7 +190,7 @@ void yt_skim_MC::initialize(TTree *tree)
 void yt_skim_MC::execute(vector<Electron> elec, vector<Muon> muon, vector<Lepton> lept, vector<Jet> jets,
 						 vector<Electron> baseline_elec, vector<Muon> baseline_muon, vector<Lepton> baseline_lept, vector<Jet> baseline_jets,
 						 vector<Electron> signal_elec, vector<Muon> signal_muon, vector<Lepton> signal_lept, vector<Jet> signal_jets,
-						 double Etmiss_TST_Et, double event_weight, int run_number, float pileup_weight)
+						 double Etmiss_TST_Et, double event_weight, int run_number, float pileup_weight, TString process)
 {
 	// clear all the vector members
 	this->yt_skim::initialize();
@@ -203,74 +200,84 @@ void yt_skim_MC::execute(vector<Electron> elec, vector<Muon> muon, vector<Lepton
                            signal_elec, signal_muon, signal_lept, signal_jets);
 
     // Event normalization
+    this->set_cross_section_by_process(process);
+    this->set_derivation_efficiency("25ns", process);
     normalization = lumi * (crossSection * kFactor) * (filterEfficiency * analysis1LeptonFilter) * (event_weight / event_weight_sum);
     n_normalized_events += normalization;
 
     // Counts some numbers ...
-    n_2Baseline_leptons_Events++;
-    n_normalized_2Baseline_leptons_Events += normalization;
-    n_baseline_electrons = vec_baseline_elec.size();
-    n_baseline_muons = vec_baseline_muon.size();
-    n_tot_baseline_electrons += n_baseline_electrons;
-    n_normalized_tot_baseline_electrons += n_baseline_electrons * normalization;
-    n_tot_baseline_muons += n_baseline_muons;
-    n_normalized_tot_baseline_muons += n_baseline_muons * normalization;
+    if (baseline_lept.size() >= 2) {
+        n_2Baseline_leptons_Events++;
+        n_normalized_2Baseline_leptons_Events += normalization;
+/*
+        int n_baseline_electrons = vec_baseline_elec.size();
+        int n_baseline_muons = vec_baseline_muon.size();
 
-    reset_vectors();
-    
-    calculate_new_variables(Etmiss_TST_Et);
-	set_run_number(run_number); 
-	set_pileup_weight(pileup_weight);
-    tag_and_probe_Zee(run_number);
-    tag_and_probe_ttbar(Etmiss_TST_Et);
-    // fill all new branches
-    output_tree->Fill();
+        int n_signal_electrons = vec_signal_elec.size();
+        int n_signal_muons = vec_signal_muon.size();
+*/
+        n_tot_baseline_electrons += vec_baseline_elec.size();
+        n_tot_baseline_muons += vec_baseline_muon.size();
+
+        n_normalized_tot_baseline_electrons += vec_baseline_elec.size() * normalization;
+        n_normalized_tot_baseline_muons += vec_baseline_muon.size() * normalization;
+
+        reset_vectors();
+
+        calculate_new_variables(Etmiss_TST_Et);
+        set_run_number(run_number); 
+        set_pileup_weight(pileup_weight);
+        tag_and_probe_Zee(run_number);
+        tag_and_probe_ttbar(Etmiss_TST_Et);
+
+        // fill all new branches
+        output_tree->Fill();
+    }
 }
 
-void yt_skim_MC::finalize()
+void yt_skim_MC::finalize(TString process)
 {
 	cout << "Write into file" << endl;
 	output_file->cd();
 	output_tree->Write();
 	output_file->Close();
 
-  cout << endl;
-  cout << "SUM OF THE EVENTS WEIGHTS = " << sum_event_weight << endl;
-  cout << endl;
-  //cout << " SAMPLE : " << process << endl; 
-  cout << "*******************************" << endl;
-  cout << "*       EVENT NUMBER INFO     *" << endl;
-  cout << "*******************************" << endl;
-  //cout << "  Total number of events = " << n_events << " at 3 fb = " << n_normalized_events << endl;
-  cout << "  n events with 2 baseline leptons = " << n_2Baseline_leptons_Events << " at 3 fb = " << n_normalized_2Baseline_leptons_Events << endl;
-  cout << "  number of 2 baseline lepton duplicated events = " << n_duplicated_EventNumber << endl;
-  cout << "-------------------" << endl;
-  cout << "-------------------" << endl;
-  cout << "  TTbar T&P cuts" << endl;
-  cout << "  exactly 2 baseline leptons             = " << n_tot_2baseline_leptons  << " at 3 fb = " << n_normalized_tot_2baseline_leptons << endl;  
-  cout << "  exactly 2 signal BJets                 = " << n_2Baseline_Bjets_Events << " at 3 fb = " << n_normalized_2Baseline_Bjets_Events << endl;
-  cout << "  ttbar Etmiss                           = " << n_TTbarEtmiss_Events     << " at 3 fb = " << n_normalized_TTbarEtmiss_Events << endl;
-  cout << "  exactly 2 baseline leptons pt > 30 GeV = " << n_tot_2baseline_leptons_pt30 << " at 3 fb = " << n_normalized_2Baseline_leptons_Events_pt30 << endl;
-  cout << "  ttbar mll                              = " << n_TTbarMll_Events        << " at 3 fb = " << n_normalized_TTbarMll_Events << endl;
-  cout << endl;
-  cout << "*******************************" << endl;
-  cout << "*     OBJECT NUMBER INFO      *" << endl;
-  cout << "*******************************" << endl;
-  cout << "LEPTONS" << endl;
-  cout << "  n baseline leptons          = " << n_tot_baseline_electrons+n_tot_baseline_muons << endl;  
-  cout << "  n baseline leptons in TTbar = " << n_tot_baseline_leptons_in_TTbarTandP_Events << endl;
-  cout << endl;
-  cout << "ELECTRONS" << endl;
-  cout << "  n baseline electrons  = " << n_tot_baseline_electrons << endl;
-  cout << "  n Z T&P electrons     = " << n_tot_ZTandP_electrons << endl; 
-  cout << "  n ttbar T&P electrons = " << n_tot_TTbarTandP_electrons << " at 3 fb-1  = " << n_normalized_tot_TTbarTandP_electrons << endl;
-  cout << endl;
-  cout << "MUONS" << endl;
-  cout << "  n baseline muons  = " << n_tot_baseline_muons << endl;
-  cout << "  n Z T&P muons     = " << n_tot_ZTandP_muons << endl;
-  cout << "  n ttbar T&P muons = " << n_tot_TTbarTandP_muons << " at 3 fb-1  = " << n_normalized_tot_TTbarTandP_muons << endl;
-  cout << endl;
-
+    cout << endl;
+    cout << "SUM OF THE EVENTS WEIGHTS = " << event_weight_sum << endl;
+    cout << endl;
+    cout << " SAMPLE : " << process << endl; 
+    cout << "*******************************" << endl;
+    cout << "*       EVENT NUMBER INFO     *" << endl;
+    cout << "*******************************" << endl;
+    //cout << "  Total number of events = " << n_events << " at 3 fb = " << n_normalized_events << endl;
+    cout << "  n events with 2 baseline leptons = " << n_2Baseline_leptons_Events << " at " << lumi << "fb^{-1} = " << n_normalized_2Baseline_leptons_Events << endl;
+    //cout << "  number of 2 baseline lepton duplicated events = " << n_duplicated_EventNumber << endl;
+    cout << "-------------------" << endl;
+    cout << "-------------------" << endl;
+    cout << "  TTbar T&P cuts" << endl;
+    cout << "  exactly 2 baseline leptons             = " << n_tot_2baseline_leptons        << " at " << lumi << "fb^{-1} = " << n_normalized_tot_2baseline_leptons << endl;  
+    cout << "  exactly 2 signal BJets                 = " << n_2Baseline_Bjets_Events       << " at " << lumi << "fb^{-1} = " << n_normalized_2Baseline_Bjets_Events << endl;
+    cout << "  ttbar Etmiss                           = " << n_TTbarEtmiss_Events           << " at " << lumi << "fb^{-1} = " << n_normalized_TTbarEtmiss_Events << endl;
+    cout << "  exactly 2 baseline leptons pt > 30 GeV = " << n_tot_2baseline_leptons_pt30   << " at " << lumi << "fb^{-1} = " << n_normalized_2Baseline_leptons_Events_pt30 << endl;
+    cout << "  ttbar mll                              = " << n_TTbarMll_Events              << " at " << lumi << "fb^{-1} = " << n_normalized_TTbarMll_Events << endl;
+    cout << endl;
+    cout << "*******************************" << endl;
+    cout << "*     OBJECT NUMBER INFO      *" << endl;
+    cout << "*******************************" << endl;
+    cout << "LEPTONS" << endl;
+    cout << "  n baseline leptons          = " << n_tot_baseline_electrons + n_tot_baseline_muons << endl;  
+    cout << "  n baseline leptons in TTbar = " << n_tot_baseline_leptons_in_TTbarTandP_Events << endl;
+    cout << endl;
+    cout << "ELECTRONS" << endl;
+    cout << "  n baseline electrons  = " << n_tot_baseline_electrons << endl;
+    cout << "  n Z T&P electrons     = " << n_tot_ZTandP_electrons << endl; 
+    cout << "  n ttbar T&P electrons = " << n_tot_TTbarTandP_electrons << " at " << lumi << "fb^{-1} = " << n_normalized_tot_TTbarTandP_electrons << endl;
+    cout << endl;
+    cout << "MUONS" << endl;
+    cout << "  n baseline muons  = " << n_tot_baseline_muons << endl;
+    cout << "  n Z T&P muons     = " << n_tot_ZTandP_muons << endl;
+    cout << "  n ttbar T&P muons = " << n_tot_TTbarTandP_muons << " at " << lumi << "fb^{-1} = " << n_normalized_tot_TTbarTandP_muons << endl;
+    cout << endl;
 }
 
 void yt_skim_MC::reset_vectors()
@@ -464,15 +471,91 @@ void yt_skim_MC::calculate_new_variables(double Etmiss_TST_Et)
 void yt_skim_MC::tag_and_probe_Zee(int run_number)
 {
     // Z T&P method
-    
+
+    // Electron
+    for (auto & probe_elec_itr : vec_baseline_elec) {
+        double best_match_mll = 1000000.;
+        for (auto & tag_elec_itr : vec_signal_elec) {
+            if (tag_elec_itr.get_index() == probe_elec_itr.get_index())
+                continue;
+            if (tag_elec_itr.get_pt() < 25000.)
+                continue;
+            if (fabs(tag_elec_itr.get_eta()) > 2.)
+                continue;
+            // Opposite Charge requirement
+            if (tag_elec_itr.get_charge() == probe_elec_itr.get_charge())
+                continue;
+            // Check does the tag trigger matched
+            bool isTriggerMatched = false;
+            // Ximo said let all lepton trigger matching
+            isTriggerMatched = true;
+
+            TLorentzVector tlv_tag;
+            TLorentzVector tlv_probe;
+            tlv_tag.SetPtEtaPhiM(tag_elec_itr.get_pt(), tag_elec_itr.get_eta(), tag_elec_itr.get_phi(), tag_elec_itr.get_M());
+            tlv_probe.SetPtEtaPhiM(probe_elec_itr.get_pt(), probe_elec_itr.get_eta(), probe_elec_itr.get_phi(), probe_elec_itr.get_M());
+            double current_mll = (tlv_tag + tlv_probe).M();
+            if (fabs(current_mll - 91.1876 * 1000.) < fabs(best_match_mll - 91.1876 * 1000.))
+                best_match_mll = current_mll;
+            // mll window cut
+            if (current_mll > 80000. && current_mll < 100000.) {
+                El_isZProbe->at(probe_elec_itr.get_index()) = true;
+                if (isTriggerMatched)
+                    El_isZProbe_TriggMatched->at(probe_elec_itr.get_index()) = true;
+                n_tot_ZTandP_electrons++;
+                n_normalized_tot_ZTandP_electrons += normalization;
+            }
+        }
+        El_ZTandP_mll->at(probe_elec_itr.get_index()) = best_match_mll;
+    }
+
+    // Muons
+    for (auto & probe_muon_itr : vec_baseline_muon) {
+        double best_match_mll = 1000000.;
+        for (auto & tag_muon_itr : vec_signal_muon) {
+            if (tag_muon_itr.get_index() == probe_muon_itr.get_index())
+                continue;
+            if (tag_muon_itr.get_pt() < 25000)
+                continue;
+            // Opposite Charge requirement
+            if (tag_muon_itr.get_charge() == probe_muon_itr.get_charge())
+                continue;
+            // Check does the tag tragger matched
+            bool isTriggerMatched = false;
+            // Ximo said let all lepton trigger matching
+            isTriggerMatched = true;
+
+            TLorentzVector tlv_tag;
+            TLorentzVector tlv_probe;
+            tlv_tag.SetPtEtaPhiM(tag_muon_itr.get_pt(), tag_muon_itr.get_eta(), tag_muon_itr.get_phi(), tag_muon_itr.get_M());
+            tlv_probe.SetPtEtaPhiM(probe_muon_itr.get_pt(), probe_muon_itr.get_eta(), probe_muon_itr.get_phi(), probe_muon_itr.get_M());
+            double current_mll = (tlv_tag + tlv_probe).M();
+            if (fabs(current_mll - 91.1876 * 1000.) < fabs(best_match_mll - 91.1876 * 1000.))
+                best_match_mll = current_mll;
+            // mll window cut
+            if (current_mll > 80000. && current_mll < 100000.) {
+                Mu_isZProbe->at(probe_muon_itr.get_index()) = true;
+                if (isTriggerMatched)
+                    Mu_isZProbe_TriggMatched->at(probe_muon_itr.get_index()) = true;
+                n_tot_ZTandP_muons++;
+                n_normalized_tot_ZTandP_muons += normalization;
+            }
+        }
+        Mu_ZTandP_mll->at(probe_muon_itr.get_index()) = best_match_mll;
+    }
+
+
+/*
     // Electrons:
     for (auto & tag_elec_itr : vec_signal_elec) {
-        if (tag_elec_itr.get_pt() < 25000.)	continue;
-        if (fabs(tag_elec_itr.get_eta()) > 2.0) continue;
+        if (tag_elec_itr.get_pt() < 25000.)
+            continue;
+        if (fabs(tag_elec_itr.get_eta()) > 2.0)
+            continue;
         
         // Check does the tag trigger matched
         bool isTriggerMatched = false;
-/*
+//
         if ("Zee_v22" != process && "Zmumu_v22" != process) {
             if ("Zmumu_v23" == process || "ttbar_v23" == process) {
                 if (El_trigMatch_e24_lhmedium_L1EM20VH->at(tag_elec_itr.get_index()))
@@ -483,7 +566,8 @@ void yt_skim_MC::tag_and_probe_Zee(int run_number)
                     isTriggerMatched = true;
             }
         }
-*/
+//
+//
 		if (run_number < 290000) {
 			// use 2015 data trigger
         	if (tag_elec_itr.get_trigMatch_2e12_lhloose_L12EM10VH())
@@ -494,38 +578,53 @@ void yt_skim_MC::tag_and_probe_Zee(int run_number)
         	if (tag_elec_itr.get_trigMatch_2e17_lhvloose_nod0())
 				isTriggerMatched = true;
 		}
-        
+//
+		// Ximo said let all lepton trigger matching
+		isTriggerMatched = true;
+
         // Set the tag TLorentzVector ( to compute mll )
         TLorentzVector tlv_tag;
         TLorentzVector tlv_probe;
-        tlv_tag.SetPtEtaPhiM(tag_elec_itr.get_pt(), tag_elec_itr.get_eta(), tag_elec_itr.get_phi(), tag_elec_itr.get_M());
-        
+
+        double best_match_mll = 1000000.;
+        int best_match_index = -9999;
+
         // Probe loop
         for (auto & probe_elec_itr : vec_baseline_elec) {
             if (tag_elec_itr.get_index() == probe_elec_itr.get_index())
                 continue;
-            tlv_probe.SetPtEtaPhiM(probe_elec_itr.get_pt(), probe_elec_itr.get_eta(), probe_elec_itr.get_phi(), probe_elec_itr.get_M());
-
             // Store the tag trigger SF associated to the probe
             El_tag_trigger_SF->at(probe_elec_itr.get_index()) = tag_elec_itr.get_SFwTrigMediumLH_single();
-/*
+//
             if ("Zee_v22" != process && "Zee_v23" != process && "Zmumu_v22" != process && "Zmumu_v23" != process && "ttbar_v23" != process)
                 El_tag_trigger_SF->at(probe_elec_itr.get_index()) = El_SFwTrigTightLH_single->at(tag_elec_itr.get_index());
             else El_tag_trigger_SF->at(probe_elec_itr.get_index()) = 1;
-*/
-            // mll window cut
-            double probe_mll = (tlv_tag + tlv_probe).M();
+//
+            // Opposite Charge requirement
             if (probe_elec_itr.get_charge() == tag_elec_itr.get_charge())
                 continue;
+            tlv_tag.SetPtEtaPhiM(tag_elec_itr.get_pt(), tag_elec_itr.get_eta(), tag_elec_itr.get_phi(), tag_elec_itr.get_M());
+            tlv_probe.SetPtEtaPhiM(probe_elec_itr.get_pt(), probe_elec_itr.get_eta(), probe_elec_itr.get_phi(), probe_elec_itr.get_M());
+            double current_mll = (tlv_tag + tlv_probe).M();
+            if (fabs(current_mll - 91.1876 * 1000.) < fabs(best_match_mll - 91.1876 * 1000.)) {
+                best_match_mll = current_mll;
+                best_match_index = probe_elec_itr.get_index();
+            }
+            // mll window cut
+//
+            //double probe_mll = (tlv_tag + tlv_probe).M();
             if (probe_mll < 80000. || probe_mll > 100000.)
                 continue;
-            
-            El_isZProbe->at(probe_elec_itr.get_index()) = true;
-            if (isTriggerMatched)
-                El_isZProbe_TriggMatched->at(probe_elec_itr.get_index()) = true;
-            n_tot_ZTandP_electrons++;
-            n_normalized_tot_ZTandP_electrons += normalization;
+//
+            if (current_mll > 80000. && current_mll < 100000.) {
+                El_isZProbe->at(probe_elec_itr.get_index()) = true;
+                if (isTriggerMatched)
+                    El_isZProbe_TriggMatched->at(probe_elec_itr.get_index()) = true;
+                n_tot_ZTandP_electrons++;
+                n_normalized_tot_ZTandP_electrons += normalization;
+            }
         }
+        El_ZTandP_mll->at(best_match_index) = best_match_mll;
     }
     
     // Muons
@@ -534,7 +633,7 @@ void yt_skim_MC::tag_and_probe_Zee(int run_number)
         
         // Check does the tag tragger matched
         bool isTriggerMatched = false;
-/*
+//
         if ("Zee_v22" != process && "Zmumu_v22" != process) {
             if ("Zee_v23" == process || "Zmumu_v23" == process || "ttbar_v23" == process) {
                 if (Mu_trigMatch_MU15->at(tag_muon_itr.get_index()))
@@ -545,7 +644,8 @@ void yt_skim_MC::tag_and_probe_Zee(int run_number)
                     isTriggerMatched = true;
             }
         }
-*/
+//
+//
 		if (run_number < 290000) {
 			// use 2015 data trigger
         	if (tag_muon_itr.get_trigMatch_mu18_mu8noL1())
@@ -556,39 +656,55 @@ void yt_skim_MC::tag_and_probe_Zee(int run_number)
         	if (tag_muon_itr.get_trigMatch_mu20_mu8noL1())
 				isTriggerMatched = true;
 		}
-        
+//        
+		// Ximo said let all lepton trigger matching
+		isTriggerMatched = true;      
+
         // Set the tag TLorentzVector ( to compute mll )
         TLorentzVector tlv_tag;
         TLorentzVector tlv_probe;
-        tlv_tag.SetPtEtaPhiM(tag_muon_itr.get_pt(), tag_muon_itr.get_eta(), tag_muon_itr.get_phi(), tag_muon_itr.get_M());
-        
+
+        double best_match_mll = 1000000.;
+        int best_match_index = -9999;
+
         // Probe loop
         for (auto & probe_muon_itr : vec_baseline_muon) {
             if (tag_muon_itr.get_index() == probe_muon_itr.get_index())
                 continue;
-            tlv_probe.SetPtEtaPhiM(probe_muon_itr.get_pt(), probe_muon_itr.get_eta(), probe_muon_itr.get_phi(), probe_muon_itr.get_M());
-
             // Store the tag trigger SF associated to the probe
             Mu_tag_trigger_SF->at(probe_muon_itr.get_index()) = probe_muon_itr.get_MuTrigSF_HLT_mu20_iloose_L1MU15_OR_HLT_mu50();
-/*
+//
             if ("Zee_v22" != process && "Zee_v23" != process && "Zmumu_v22" != process && "Zmumu_v23" != process && "ttbar_v23" != process)
                 Mu_tag_trigger_SF->at(probe_muon_itr.get_index()) = MuTrigSF_HLT_mu20_iloose_L1MU15_OR_HLT_mu50;
             else Mu_tag_trigger_SF->at(probe_muon_itr.get_index()) = 1;
-*/
-            // mll window cut
-            double probe_mll = (tlv_tag + tlv_probe).M();
+//
+            // Opposite Charge requirement
             if (probe_muon_itr.get_charge() == tag_muon_itr.get_charge())
                 continue;
+            tlv_tag.SetPtEtaPhiM(tag_muon_itr.get_pt(), tag_muon_itr.get_eta(), tag_muon_itr.get_phi(), tag_muon_itr.get_M());
+            tlv_probe.SetPtEtaPhiM(probe_muon_itr.get_pt(), probe_muon_itr.get_eta(), probe_muon_itr.get_phi(), probe_muon_itr.get_M());
+            double current_mll = (tlv_tag + tlv_probe).M();
+            if (fabs(current_mll - 91.1876 * 1000.) < fabs(best_match_mll - 91.1876 * 1000.)) {
+                best_match_mll = current_mll;
+                best_match_index = probe_muon_itr.get_index();
+            }
+            // mll window cut
+//
+            //double probe_mll = (tlv_tag + tlv_probe).M();
             if (probe_mll < 80000. || probe_mll > 100000. )
                 continue;
-            
-            Mu_isZProbe->at(probe_muon_itr.get_index()) = true;
-            if (isTriggerMatched) Mu_isZProbe_TriggMatched->at(probe_muon_itr.get_index()) = true;
-            n_tot_ZTandP_muons++;
-            n_normalized_tot_ZTandP_muons += normalization;
+//
+            if (current_mll > 80000. && current_mll < 100000.) {
+                Mu_isZProbe->at(probe_muon_itr.get_index()) = true;
+                if (isTriggerMatched)
+                    Mu_isZProbe_TriggMatched->at(probe_muon_itr.get_index()) = true;
+                n_tot_ZTandP_muons++;
+                n_normalized_tot_ZTandP_muons += normalization;
+            }
         }
+        Mu_ZTandP_mll->at(best_match_index) = best_match_mll;
     }
-
+//
     // find the best Z mass match, baseline letpon loop (probes)
     // Electron
     for (auto & probe_elec_itr : vec_baseline_elec) {
@@ -602,7 +718,7 @@ void yt_skim_MC::tag_and_probe_Zee(int run_number)
                 continue;
             if (fabs(tag_elec_itr.get_eta()) > 2.)
                 continue;
-/*
+//
             if ("Zee_v22" != process && "Zmumu_v22" != process) { // Trigger matching
                 if ("Zmumu_v23" == process || "ttbar_v23" == process) {
                     if (!El_trigMatch_e24_lhmedium_L1EM20VH->at(tag_elec_itr.get_index()))
@@ -613,7 +729,8 @@ void yt_skim_MC::tag_and_probe_Zee(int run_number)
                         continue;
                 }
             }
-*/
+//
+//
 			if (run_number < 290000) {
 				// use 2015 data trigger
         		if (tag_elec_itr.get_trigMatch_2e12_lhloose_L12EM10VH() == false)
@@ -624,6 +741,7 @@ void yt_skim_MC::tag_and_probe_Zee(int run_number)
         		if (tag_elec_itr.get_trigMatch_2e17_lhvloose_nod0() == false)
 					continue;
 			}
+//
             // Opposite Charge requirement
             if (tag_elec_itr.get_charge() == probe_elec_itr.get_charge())
                 continue;
@@ -642,12 +760,12 @@ void yt_skim_MC::tag_and_probe_Zee(int run_number)
         TLorentzVector tlv_probe;
         tlv_probe.SetPtEtaPhiM(probe_muon_itr.get_pt(), probe_muon_itr.get_eta(), probe_muon_itr.get_phi(), probe_muon_itr.get_M());
         double best_match_mll = 1000000.;
-        for (auto & tag_muon_itr : vec_baseline_muon) {
+        for (auto & tag_muon_itr : vec_signal_muon) {
             if (tag_muon_itr.get_index() == probe_muon_itr.get_index())
                 continue;
             if (tag_muon_itr.get_pt() < 25000)
                 continue;
-/*
+//
             if ("Zee_v22" != process && "Zmumu_v22" != process) {
                 if ("Zee_v23" == process || "Zmumu_v23" == process || "ttbar_v23" == process) {
                     if (!Mu_trigMatch_MU15->at(tag_muon_itr.get_index()))
@@ -658,7 +776,8 @@ void yt_skim_MC::tag_and_probe_Zee(int run_number)
                         continue;
                 }
             }
-*/
+//
+//
 			if (run_number < 290000) {
 				// use 2015 data trigger
         		if (tag_muon_itr.get_trigMatch_mu18_mu8noL1() == false)
@@ -669,6 +788,7 @@ void yt_skim_MC::tag_and_probe_Zee(int run_number)
         		if (tag_muon_itr.get_trigMatch_mu20_mu8noL1() == false)
 					continue;
 			}
+//
             // Opposite Charge requirement
             if (tag_muon_itr.get_charge() == probe_muon_itr.get_charge())
                 continue;
@@ -680,6 +800,7 @@ void yt_skim_MC::tag_and_probe_Zee(int run_number)
         }
         Mu_ZTandP_mll->at(probe_muon_itr.get_index()) = best_match_mll;
     }
+*/
 }
 
 void yt_skim_MC::tag_and_probe_ttbar(double Etmiss_TST_Et)
@@ -776,8 +897,8 @@ void yt_skim_MC::set_cross_section_by_process(TString process)
 {
     // ttbar
     if (process == "ttbar") {
-        crossSection = 831760;       // in fb
-        kFactor = 1;
+        crossSection = 696110; // in fb
+        kFactor = 1.1949;
         filterEfficiency = 0.543;
     }
 

@@ -348,7 +348,7 @@ Bool_t yt_selector::Process(Long64_t entry)
 		m_skim_mc->execute(vec_elec, vec_muon, vec_lept, vec_jets,
 						   vec_baseline_elec, vec_baseline_muon, vec_baseline_lept, vec_baseline_jets,
 						   vec_signal_elec, vec_signal_muon, vec_signal_lept, vec_signal_jets,
-						   Etmiss_TST_Et, EventWeight, random_run_number, pileup_weight);
+						   Etmiss_TST_Et, EventWeight, random_run_number, pileup_weight, process);
 	}
 	if (isData == 1) {
 		m_skim_data->execute(vec_elec, vec_muon, vec_lept, vec_jets,
@@ -461,7 +461,7 @@ void yt_selector::Terminate()
 	//delete m_GRL;
 	m_cutflow->print();
 	if (isMC == 1)
-		m_skim_mc->finalize();
+		m_skim_mc->finalize(process);
 	if (isData == 1)
 		m_skim_data->finalize();
 	// release memories
@@ -475,7 +475,7 @@ void yt_selector::Terminate()
 double yt_selector::sum_event_weight()
 {
 	double sum = 0;
-
+//
 	Long64_t n_events = AnaNtup_MC::fChain->GetEntries();
 	Long64_t nbytes = 0, nb = 0; 
 
@@ -487,6 +487,6 @@ double yt_selector::sum_event_weight()
 			cout << "event : "<< i_event << endl;
 		sum += EventWeight;
 	}
-
+//
 	return sum;
 }

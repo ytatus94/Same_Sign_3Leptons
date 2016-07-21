@@ -26,6 +26,8 @@ public:
 	int isMC;
 	int isData;
 	// user defined variables
+	TString				process;
+
 	yt_cutflows			*m_cutflow;
 	yt_skim_MC			*m_skim_mc;
 	yt_skim_data		*m_skim_data;
@@ -255,8 +257,20 @@ void yt_selector::Init(TTree *tree)
 	// Create output files for skimming results
 //
 	AnaNtup_MC::Init(tree);
-	sum = sum_event_weight();
-	m_skim_mc->initialize(AnaNtup_MC::fChain);
+	//sum = sum_event_weight();
+	if (process == "Zee")
+		sum = 3.78689e+10;
+	else if (process == "Zmumu")
+		sum = 3.07287e+10;
+	else if (process == "ttbar")
+		sum = 4.90066e+07;
+	else
+		sum = 1;
+	cout << "sum=" << sum << endl;
+	//Zee: 3.78689e+10
+	//Zmm: 3.07287e+10
+	//ttbar: 4.90066e+07
+	m_skim_mc->initialize(AnaNtup_MC::fChain, process);
 /*
 	AnaNtup_Data::Init(tree);
 	m_skim_data->initialize(AnaNtup_Data::fChain);

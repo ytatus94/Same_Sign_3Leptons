@@ -65,15 +65,15 @@ public:
 	double	jet1Pt;
 	double	jet2Pt;
 	double	jet3Pt;
-	bool	is3l;
+	bool	is3l; // not use
 	bool	isSS2l;
 	int		baseline_channel;
-	int		channel;	// -1 for less than 2 leptons,  1 for ee,  2 for em ,  3 for mm
+	int		channel; // -1 for less than 2 leptons,  1 for ee,  2 for em ,  3 for mm
 
 	// ----------------------------
 
 	// Counters
-	int n_duplicated_EventNumber;
+	//int n_duplicated_EventNumber; // not use
 	int n_tot_baseline_electrons;
 	int n_tot_baseline_muons;
 	int n_tot_2baseline_leptons;
