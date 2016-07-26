@@ -490,6 +490,9 @@ void yt_skim_MC::tag_and_probe_Zee(int run_number)
             // Ximo said let all lepton trigger matching
             isTriggerMatched = true;
 
+            // Store the tag trigger SF associated to the probe
+            El_tag_trigger_SF->at(probe_elec_itr.get_index()) = tag_elec_itr.get_SFwTrigMediumLH_single();
+
             TLorentzVector tlv_tag;
             TLorentzVector tlv_probe;
             tlv_tag.SetPtEtaPhiM(tag_elec_itr.get_pt(), tag_elec_itr.get_eta(), tag_elec_itr.get_phi(), tag_elec_itr.get_M());
@@ -524,6 +527,9 @@ void yt_skim_MC::tag_and_probe_Zee(int run_number)
             bool isTriggerMatched = false;
             // Ximo said let all lepton trigger matching
             isTriggerMatched = true;
+
+            // Store the tag trigger SF associated to the probe
+            Mu_tag_trigger_SF->at(probe_muon_itr.get_index()) = tag_muon_itr.get_MuTrigSF_HLT_mu20_iloose_L1MU15_OR_HLT_mu50();
 
             TLorentzVector tlv_tag;
             TLorentzVector tlv_probe;
@@ -895,6 +901,8 @@ void yt_skim_MC::tag_and_probe_ttbar(double Etmiss_TST_Et)
 
 void yt_skim_MC::set_cross_section_by_process(TString process)
 {
+    // Get the values from SUSYTools
+
     // ttbar
     if (process == "ttbar") {
         crossSection = 696110; // in fb

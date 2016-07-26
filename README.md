@@ -4,6 +4,8 @@ Sample: user.jpoveda.t0769_v39.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.DA
 
 Use rcSetup Base,2.4.12 and check out this package.
 
+v07. Correct El_tag_trigger_SF and Mu_tag_trigger_SF in yt_skim_MC.cxx
+
 v06. Modify the event weight sum and provide process selection
 The event weight sum is using the DerivationStat_Weight histogram.
 Can specify process when start to run the job
