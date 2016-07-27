@@ -226,8 +226,7 @@ void yt_selector::fill_muons(Int_t           NMu,
 		mu.set_trigMatch_mu14( (*Mu_trigMatch_mu14)[i] );
 		mu.set_trigMatch_mu18( (*Mu_trigMatch_mu18)[i] );
 		mu.set_trigMatch_mu18_mu8noL1( (*Mu_trigMatch_mu18_mu8noL1)[i] );
-		//mu.set_trigMatch_e17_lhloose_mu14( (*Mu_trigMatch_e17_lhloose_mu14)[i] );
-		mu.set_trigMatch_e17_lhloose_mu14( (*Mu_trigMatch_e17_lhloose_mu14)[2*i] );
+		mu.set_trigMatch_e17_lhloose_mu14( (*Mu_trigMatch_e17_lhloose_mu14)[i] );
 		mu.set_trigMatch_e17_lhloose_nod0_mu14( (*Mu_trigMatch_e17_lhloose_nod0_mu14)[i] );
 		mu.set_trigMatch_mu20_mu8noL1( (*Mu_trigMatch_mu20_mu8noL1)[i] );
 		mu.set_trigMatch_mu22_mu8noL1( (*Mu_trigMatch_mu22_mu8noL1)[i] );

@@ -328,6 +328,10 @@ void yt_selector::debug_elec_print(vector<Electron> vec_elec)
 			<< ", |z0sinTheta|=" << fabs(el_itr.get_z0sinTheta())
 			<< ", ptvarcone20/pt=" << el_itr.get_ptvarcone20() / el_itr.get_pt()
 			<< ", topoetcone20/pt=" << el_itr.get_topoetcone20() / el_itr.get_pt()
+			<< ", trigMatch_2e12_lhloose_L12EM10VH=" << el_itr.get_trigMatch_2e12_lhloose_L12EM10VH()
+			<< ", trigMatch_e17_lhloose_mu14=" << el_itr.get_trigMatch_e17_lhloose_mu14()
+			<< ", trigMatch_2e17_lhvloose_nod0=" << el_itr.get_trigMatch_2e17_lhvloose_nod0()
+			<< ", trigMatch_e17_lhloose_nod0_mu14=" << el_itr.get_trigMatch_e17_lhloose_nod0_mu14()
 			<< endl;
 		i++;
 	}
@@ -354,6 +358,7 @@ void yt_selector::debug_muon_print(vector<Muon> vec_muon)
 			<< ", |d0sig|=" << fabs(mu_itr.get_sigd0())
 			<< ", |z0sinTheta|=" << fabs(mu_itr.get_z0sinTheta())
 			<< ", ptvarcone30/pt=" << mu_itr.get_ptvarcone30() / mu_itr.get_pt()
+			<< ", trigMatch_e17_lhloose_mu14=" << mu_itr.get_trigMatch_e17_lhloose_mu14()
 			<< endl;
 		i++;
 	}

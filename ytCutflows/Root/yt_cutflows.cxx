@@ -42,8 +42,8 @@ yt_cutflows::yt_cutflows()
 	// Using the information from  http://atlasdqm.web.cern.ch/atlasdqm/grlgen/All_Good/
 	m_GRL = new GoodRunsListSelectionTool("GoodRunsListSelectionTool");
 	std::vector<std::string> vecStringGRL;
-	vecStringGRL.push_back("/UserDisk2/yushen/Ximo/v43/Cutflow/ytCutflows/GRL/data15_13TeV.periodAllYear_DetStatus-v79-repro20-02_DQDefects-00-02-02_PHYS_StandardGRL_All_Good_25ns.xml");
-	vecStringGRL.push_back("/UserDisk2/yushen/Ximo/v43/Cutflow/ytCutflows/GRL/data16_13TeV.periodAllYear_DetStatus-v79-pro20-06_DQDefects-00-02-02_PHYS_StandardGRL_All_Good_25ns.xml");
+	vecStringGRL.push_back("/UserDisk2/yushen/Ximo_ntuples/v43/Cutflow/ytCutflows/GRL/data15_13TeV.periodAllYear_DetStatus-v79-repro20-02_DQDefects-00-02-02_PHYS_StandardGRL_All_Good_25ns.xml");
+	vecStringGRL.push_back("/UserDisk2/yushen/Ximo_ntuples/v43/Cutflow/ytCutflows/GRL/data16_13TeV.periodAllYear_DetStatus-v79-pro20-06_DQDefects-00-02-02_PHYS_StandardGRL_All_Good_25ns.xml");
 	m_GRL->setProperty("GoodRunsListVec", vecStringGRL);
 	m_GRL->setProperty("PassThrough", false);
 	if ( !m_GRL->initialize().isSuccess() ) {
@@ -54,8 +54,8 @@ yt_cutflows::yt_cutflows()
 	m_Pileup  = new CP::PileupReweightingTool("Pileup");
 	confFiles.push_back("/cvmfs/atlas.cern.ch/repo/sw/database/GroupData/dev/SUSYTools/merged_prw_mc15c.root");
 	// iLumiCalc file can be obtained with the lates GRL in https://atlas-lumicalc.cern.ch/
-	lcalcFiles.push_back("/UserDisk2/yushen/Ximo/v43/Cutflow/ytCutflows/PRW/ilumicalc_histograms_None_276262-284484.root");
-	lcalcFiles.push_back("/UserDisk2/yushen/Ximo/v43/Cutflow/ytCutflows/PRW/ilumicalc_histograms_None_297730-302956.root");
+	lcalcFiles.push_back("/UserDisk2/yushen/Ximo_ntuples/v43/Cutflow/ytCutflows/PRW/ilumicalc_histograms_None_276262-284484.root");
+	lcalcFiles.push_back("/UserDisk2/yushen/Ximo_ntuples/v43/Cutflow/ytCutflows/PRW/ilumicalc_histograms_None_297730-302956.root");
 	m_Pileup->setProperty("ConfigFiles", confFiles);
 	m_Pileup->setProperty("DefaultChannel", 410000);
 	m_Pileup->setProperty("LumiCalcFiles", lcalcFiles);
@@ -378,7 +378,6 @@ bool yt_cutflows::pass_same_sign(vector<Lepton> vec_lept)
 	return pass;
 }
 
-//int yt_cutflows::pass_channel_separation(int event_number, vector<int> vec_event_number, vector<Lepton> vec_lept)
 int yt_cutflows::pass_channel_separation(vector<Lepton> vec_lept)
 {
 	int channel = 0;
@@ -566,8 +565,8 @@ bool yt_cutflows::pass_ee_2016_trigger_matching(vector<Electron> vec_elec,
 		int e_match = 0;
 		for (auto & el_itr : vec_elec) {
 			if (el_itr.get_flavor() == 11 &&
-				el_itr.get_pt() > 20000.) {
-				el_itr.get_trigMatch_2e17_lhvloose_nod0() == true;
+				el_itr.get_pt() > 20000. &&
+				el_itr.get_trigMatch_2e17_lhvloose_nod0() == true) {
 				e_match++;
 			}
 		}
@@ -699,8 +698,7 @@ bool yt_cutflows::pass_mumu_2016_trigger_matching(vector<Muon> vec_muon,
 	return pass;
 }
 
-bool yt_cutflows::pass_trigger_matching(string channel,
-										bool isData, bool isMC,
+bool yt_cutflows::pass_trigger_matching(bool isData, bool isMC,
 										int run_number, int random_run_number,
 										vector<Electron> vec_elec, vector<Muon> vec_muon,
 					  					bool HLT_2e12_lhloose_L12EM10VH, bool HLT_e17_lhloose_mu14, bool HLT_mu18_mu8noL1, bool HLT_xe70,

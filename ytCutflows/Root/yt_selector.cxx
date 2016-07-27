@@ -353,24 +353,13 @@ Bool_t yt_selector::Process(Long64_t entry)
 	int ee_cut1 = m_cutflow->pass_channel_separation(vec_signal_lept);
 	if (ee_cut1 == 1)
 		m_cutflow->update(ee_channel_separation, true);
-		//m_cutflow->update(ee_channel_separation, ee_cut1);
 
-	bool ee_cut2 = m_cutflow->pass_trigger_matching("ee", isData, isMC, RunNb, random_run_number, vec_signal_elec, vec_signal_muon,
+	bool ee_cut2 = m_cutflow->pass_trigger_matching(isData, isMC, RunNb, random_run_number, vec_signal_elec, vec_signal_muon,
 													HLT_2e12_lhloose_L12EM10VH, HLT_e17_lhloose_mu14, HLT_mu18_mu8noL1, HLT_xe70,
 													HLT_2e17_lhvloose_nod0, HLT_e17_lhloose_nod0_mu14, HLT_mu20_mu8noL1, HLT_xe100_mht_L1XE50,
 													Etmiss_TST_Et);
-	if (ee_cut1 == 1 && ee_cut2) {
+	if (ee_cut1 == 1 && ee_cut2)
 		m_cutflow->update(ee_trigger_matching, ee_cut2);
-		if (EventNumber == 10040 || //otilia
-			EventNumber == 163272 ||
-			EventNumber == 74048 ||
-			EventNumber == 81750 ||
-			EventNumber == 83398 ||
-			EventNumber == 125893 ||
-			EventNumber == 113651) {
-			debug_elec_print(vec_signal_elec);
-		}
-	}
 
 	bool ee_cut3 = m_cutflow->pass_at_least_one_bjet_greater_than_20GeV(vec_signal_jets);
 	if (ee_cut1 == 1 && ee_cut2 && ee_cut3)
@@ -388,9 +377,8 @@ Bool_t yt_selector::Process(Long64_t entry)
 	int emu_cut1 = m_cutflow->pass_channel_separation(vec_signal_lept);
 	if (emu_cut1 == 2)
 		m_cutflow->update(emu_channel_separation, true);
-		//m_cutflow->update(emu_channel_separation, emu_cut1);
 
-	bool emu_cut2 = m_cutflow->pass_trigger_matching("emu", isData, isMC, RunNb, random_run_number, vec_signal_elec, vec_signal_muon,
+	bool emu_cut2 = m_cutflow->pass_trigger_matching(isData, isMC, RunNb, random_run_number, vec_signal_elec, vec_signal_muon,
 													 HLT_2e12_lhloose_L12EM10VH, HLT_e17_lhloose_mu14, HLT_mu18_mu8noL1, HLT_xe70,
 													 HLT_2e17_lhvloose_nod0, HLT_e17_lhloose_nod0_mu14, HLT_mu20_mu8noL1, HLT_xe100_mht_L1XE50,
 													 Etmiss_TST_Et);
@@ -413,9 +401,8 @@ Bool_t yt_selector::Process(Long64_t entry)
 	int mumu_cut1 = m_cutflow->pass_channel_separation(vec_signal_lept);
 	if (mumu_cut1 == 3)
 		m_cutflow->update(mumu_channel_separation, true);
-		//m_cutflow->update(mumu_channel_separation, mumu_cut1);
 
-	bool mumu_cut2 = m_cutflow->pass_trigger_matching("mumu", isData, isMC, RunNb, random_run_number, vec_signal_elec, vec_signal_muon,
+	bool mumu_cut2 = m_cutflow->pass_trigger_matching(isData, isMC, RunNb, random_run_number, vec_signal_elec, vec_signal_muon,
 													  HLT_2e12_lhloose_L12EM10VH, HLT_e17_lhloose_mu14, HLT_mu18_mu8noL1, HLT_xe70,
 													  HLT_2e17_lhvloose_nod0, HLT_e17_lhloose_nod0_mu14, HLT_mu20_mu8noL1, HLT_xe100_mht_L1XE50,
 													  Etmiss_TST_Et);

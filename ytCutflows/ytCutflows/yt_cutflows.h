@@ -101,7 +101,7 @@ public:
 	bool pass_emu_2016_trigger_matching(vector<Electron> elec, vector<Muon> muon, bool HLT_e17_lhloose_nod0_mu14, bool HLT_xe100_mht_L1XE50, double Etmiss_TST_Et);
 	bool pass_mumu_2015_trigger_matching(vector<Muon> muon, bool HLT_mu18_mu8noL1, bool HLT_xe70, double Etmiss_TST_Et);
 	bool pass_mumu_2016_trigger_matching(vector<Muon> muon, bool HLT_mu20_mu8noL1, bool HLT_xe100_mht_L1XE50, double Etmiss_TST_Et);
-	bool pass_trigger_matching(string channel, bool isData, bool isMC, int run_number, int random_run_number, vector<Electron> elec, vector<Muon> muon,
+	bool pass_trigger_matching(bool isData, bool isMC, int run_number, int random_run_number, vector<Electron> elec, vector<Muon> muon,
 					  		   bool HLT_2e12_lhloose_L12EM10VH, bool HLT_e17_lhloose_mu14, bool HLT_mu18_mu8noL1, bool HLT_xe70,
 					  		   bool HLT_2e17_lhvloose_nod0, bool HLT_e17_lhloose_nod0_mu14, bool HLT_mu20_mu8noL1, bool HLT_xe100_mht_L1XE50,
 					  		   float Etmiss_TST_Et);

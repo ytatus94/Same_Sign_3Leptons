@@ -47,7 +47,7 @@ int main( int argc, char* argv[] )
 	// for MC
 	if (isMC) {
 		cout << "Add MC files to TChain..." << endl;
-		path = "/UserDisk2/yushen/Ximo/v43/MC/user.jpoveda.t0784_v43.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.DAOD_SUSY2.s2608_r7725_p2666_output.root";
+		path = "/UserDisk2/yushen/Ximo_ntuples/v43/MC/user.jpoveda.t0784_v43.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.DAOD_SUSY2.s2608_r7725_p2666_output.root";
 		fChain->Add(path + "/user.jpoveda.8956711._000001.output.root");
 	}
 
