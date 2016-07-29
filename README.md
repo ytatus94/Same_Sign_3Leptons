@@ -5,6 +5,8 @@ Sample: user.jpoveda.t0789_v44.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.DA
 
 Use rcSetup Base,2.4.16
 
+v04. Add skimming codes.
+
 v03. This version gets correct cutflow results
 
 v02. Add rcSetup version in README.md

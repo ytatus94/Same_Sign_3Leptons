@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Sun Jul 24 16:30:30 2016 by ROOT version 6.04/16
+// Fri Jul 29 16:08:47 2016 by ROOT version 6.04/16
 // from TTree AnaNtup/AnaNtup
-// found on file: merged_all_data.root
+// found on file: user.jpoveda.9048778._000001.output.root
 //////////////////////////////////////////////////////////
 
 #ifndef AnaNtup_Data_h
@@ -139,6 +139,7 @@ public :
    vector<bool>    *Mu_TrigMatch_mu24_ivarloose_L1MU15;
    vector<vector<bool> > *Mu_trigMatchPair_mu18_mu8noL1;
    vector<vector<bool> > *Mu_trigMatchPair_mu20_mu8noL1;
+   vector<vector<bool> > *Mu_trigMatchPair_mu22_mu8noL1;
    Int_t           NEl;
    vector<double>  *El_eta;
    vector<double>  *El_etaclus;
@@ -343,6 +344,7 @@ public :
    TBranch        *b_Mu_TrigMatch_mu24_ivarloose_L1MU15;   //!
    TBranch        *b_Mu_trigMatchPair_mu18_mu8noL1;   //!
    TBranch        *b_Mu_trigMatchPair_mu20_mu8noL1;   //!
+   TBranch        *b_Mu_trigMatchPair_mu22_mu8noL1;   //!
    TBranch        *b_NEl;   //!
    TBranch        *b_El_eta;   //!
    TBranch        *b_El_etaclus;   //!
@@ -509,6 +511,7 @@ void AnaNtup_Data::Init(TTree *tree)
    Mu_TrigMatch_mu24_ivarloose_L1MU15 = 0;
    Mu_trigMatchPair_mu18_mu8noL1 = 0;
    Mu_trigMatchPair_mu20_mu8noL1 = 0;
+   Mu_trigMatchPair_mu22_mu8noL1 = 0;
    El_eta = 0;
    El_etaclus = 0;
    El_phi = 0;
@@ -694,6 +697,7 @@ void AnaNtup_Data::Init(TTree *tree)
    fChain->SetBranchAddress("Mu_TrigMatch_mu24_ivarloose_L1MU15", &Mu_TrigMatch_mu24_ivarloose_L1MU15, &b_Mu_TrigMatch_mu24_ivarloose_L1MU15);
    fChain->SetBranchAddress("Mu_trigMatchPair_mu18_mu8noL1", &Mu_trigMatchPair_mu18_mu8noL1, &b_Mu_trigMatchPair_mu18_mu8noL1);
    fChain->SetBranchAddress("Mu_trigMatchPair_mu20_mu8noL1", &Mu_trigMatchPair_mu20_mu8noL1, &b_Mu_trigMatchPair_mu20_mu8noL1);
+   fChain->SetBranchAddress("Mu_trigMatchPair_mu22_mu8noL1", &Mu_trigMatchPair_mu22_mu8noL1, &b_Mu_trigMatchPair_mu22_mu8noL1);
    fChain->SetBranchAddress("NEl", &NEl, &b_NEl);
    fChain->SetBranchAddress("El_eta", &El_eta, &b_El_eta);
    fChain->SetBranchAddress("El_etaclus", &El_etaclus, &b_El_etaclus);

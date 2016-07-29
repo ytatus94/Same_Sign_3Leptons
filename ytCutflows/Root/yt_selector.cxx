@@ -38,6 +38,10 @@ void yt_selector::Begin(TTree * /*tree*/)
 
    TString option = GetOption();
 	m_cutflow	= new yt_cutflows;
+	if (isMC == 1)
+		m_skim_mc	= new yt_skim_MC;
+	if (isData == 1)
+		m_skim_data	= new yt_skim_data;
 }
 
 void yt_selector::SlaveBegin(TTree * /*tree*/)
@@ -77,7 +81,8 @@ Bool_t yt_selector::Process(Long64_t entry)
 	}
 	if (isMC) {
 		//cout << "This is MC." << endl;
-		AnaNtup_MC::Process(entry);
+		//AnaNtup_MC::Process(entry);
+		AnaNtup::Process(entry);
 	}
 
 	// Reset vectors
@@ -129,11 +134,11 @@ Bool_t yt_selector::Process(Long64_t entry)
 		El_isTightLH,
 		El_nBLayerHits,
 		El_expectBLayerHit,
-		El_type,
-		El_origin,
-		El_bkgMotherPdgId,
-		El_bkgOrigin,
-		El_chFlip,
+		El_type, // MC only
+		El_origin, // MC only
+		El_bkgMotherPdgId, // MC only
+		El_bkgOrigin, // MC only
+		El_chFlip, // MC only
 		El_ptcone20,
 		El_ptcone30,
 		El_ptcone40,
@@ -181,8 +186,8 @@ Bool_t yt_selector::Process(Long64_t entry)
 		Mu_passOR,
 		Mu_isTight,
 		Mu_isCosmic,
-		Mu_type,
-		Mu_origin,
+		Mu_type, // MC only
+		Mu_origin, // MC only
 		Mu_ptcone20,
 		Mu_ptcone30,
 		Mu_ptcone40,
@@ -215,7 +220,8 @@ Bool_t yt_selector::Process(Long64_t entry)
 		Mu_TrigMatch_mu24_iloose_L1MU15,
 		Mu_TrigMatch_mu24_ivarloose_L1MU15,
 		Mu_trigMatchPair_mu18_mu8noL1,
-		Mu_trigMatchPair_mu20_mu8noL1);
+		Mu_trigMatchPair_mu20_mu8noL1,
+		Mu_trigMatchPair_mu22_mu8noL1);
 
 	fill_jets(
 		NJet,
@@ -229,10 +235,10 @@ Bool_t yt_selector::Process(Long64_t entry)
 		Jet_MV2c20,
 		Jet_MV2c10,
 		Jet_SFw,
-		Jet_ConeTruthLabel,
-		Jet_PartonTruthLabel,
-		Jet_HadronConeExclTruthLabel,
-		Jet_deltaR,
+		Jet_ConeTruthLabel, // MC only
+		Jet_PartonTruthLabel, // MC only
+		Jet_HadronConeExclTruthLabel, // MC only
+		Jet_deltaR, // MC only
 		Jet_nTrk,
 		Jet_passOR);
 
@@ -339,6 +345,22 @@ Bool_t yt_selector::Process(Long64_t entry)
 	fill_signal_jets(vec_JVT_jets);
 	// Now sort leptons by descending Pt
 	sort(vec_signal_lept.begin(), vec_signal_lept.end(), sort_descending_Pt<Lepton>);
+
+	// Skimming data and MC for real lepton efficiency study 
+	if (isMC == 1) {
+		float pileup_weight = m_cutflow->pileupwgh;
+		m_skim_mc->set_event_weight_sum(derivation_stat_weights);
+		m_skim_mc->execute(vec_elec, vec_muon, vec_lept, vec_jets,
+						   vec_baseline_elec, vec_baseline_muon, vec_baseline_lept, vec_baseline_jets,
+						   vec_signal_elec, vec_signal_muon, vec_signal_lept, vec_signal_jets,
+						   Etmiss_TST_Et, EventWeight, PRWrandomRunNumber, pileup_weight, process);
+	}
+	if (isData == 1) {
+		m_skim_data->execute(vec_elec, vec_muon, vec_lept, vec_jets,
+							 vec_baseline_elec, vec_baseline_muon, vec_baseline_lept, vec_baseline_jets,
+							 vec_signal_elec, vec_signal_muon, vec_signal_lept, vec_signal_jets,
+							 Etmiss_TST_Et, RunNb);
+	}
 
 	bool cut12 = m_cutflow->pass_at_least_two_signal_leptons_greater_than_20GeV(vec_signal_lept);
 	m_cutflow->update(At_least_two_signal_leptons_greater_than_20GeV, cut12);

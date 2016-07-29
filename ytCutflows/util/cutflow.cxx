@@ -26,15 +26,22 @@ int main( int argc, char* argv[] )
 	bool isData = false;
 	bool isMC   = false;
 	TString process;
+
 	for (int i = 1; i < argc; i++) {
 		//const char* key = strtok(argv[i], "=");
 		//const char* val = strtok(0, " ");
 		const char* key = argv[i];
 		if (strcmp(key, "isData") == 0 ) isData = true;
 		if (strcmp(key, "isMC") == 0 ) isMC = true;
+		if (strcmp(key, "Zee") == 0) process = "Zee";
+		if (strcmp(key, "Zmumu") == 0) process = "Zmumu";
+		if (strcmp(key, "ttbar") == 0) process = "ttbar";
+		if (strcmp(key, "GG_ttn1") == 0) process = "GG_ttn1";
 	}
 
 	Info(APP_NAME, "isMC = %s, isData = %s", isMC ? "true" : "false", isData ? "true" : "false");
+	if (isMC == true && process.IsNull() == false)
+		Info(APP_NAME, "process = %s", process.Data());
 
 	TString path;
 	TChain *fChain = new TChain("AnaNtup", "chain");
@@ -45,19 +52,48 @@ int main( int argc, char* argv[] )
 		cout << "Currently, no data." << endl;
 	}
 	// for MC
-	if (isMC) {
+	else if (isMC) {
 		cout << "Add MC files to TChain..." << endl;
+/*
 		path = "/UserDisk2/yushen/Ximo_ntuples/v44/MC/user.jpoveda.t0789_v44.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.DAOD_SUSY2.s2608_r7725_p2666_output.root";
 		fChain->Add(path + "/user.jpoveda.9048853._000001.output.root");
+*/
+		path = "/UserDisk2/yushen/Ximo_ntuples/v44/MC/";
+		if (process == "Zee")
+			fChain->Add(path + "/Zee_merged.root");
+		else if (process == "Zmumu")
+			fChain->Add(path + "/Zmumu_merged.root");
+		else if (process == "ttbar")
+			fChain->Add(path + "/ttbar_merged.root");
+		else if (process == "GG_ttn1")
+			fChain->Add(path + "/GG_ttn1_merged.root");
+
+	}
+	//TFile *file = TFile::Open("/UserDisk2/yushen/Ximo_ntuples/v44/MC/user.jpoveda.t0789_v44.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.DAOD_SUSY2.s2608_r7725_p2666_output.root/user.jpoveda.9048853._000001.output.root");
+
+	TFile *file;
+	if (isData) {
+	}
+	if (isMC) {
+		if (process == "Zee")
+			file = TFile::Open(path + "/Zee_merged.root");
+		else if (process == "Zmumu")
+			file = TFile::Open(path + "/Zmumu_merged.root");
+		else if (process == "ttbar")
+			file = TFile::Open(path + "/ttbar_merged.root");
+		else if (process == "GG_ttn1")
+			file = TFile::Open(path + "/GG_ttn1_merged.root");
 	}
 
-	TFile *file = TFile::Open(path + "/user.jpoveda.9048853._000001.output.root");
 	TH1D *DerivationStat_Weights = (TH1D *)file->Get("DerivationStat_Weights");
 	double derivation_stat_weights = DerivationStat_Weights->GetBinContent(1);
+	//cout << "derivation_stat_weights=" << derivation_stat_weights << endl;
 
 	yt_selector *foo = new yt_selector;
 	foo->isMC = isMC;
 	foo->isData = isData;
+	if (isMC == true && process.IsNull() == false)
+		foo->process = process;
 	foo->derivation_stat_weights = derivation_stat_weights;
 	fChain->Process(foo);
 }

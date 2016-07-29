@@ -28,11 +28,11 @@ void yt_selector::fill_electrons(Int_t           NEl,
 								 vector<bool>    *El_isTightLH,
 								 vector<int>     *El_nBLayerHits,
 								 vector<int>     *El_expectBLayerHit,
-								 vector<int>     *El_type,
-								 vector<int>     *El_origin,
-								 vector<int>     *El_bkgMotherPdgId,
-								 vector<int>     *El_bkgOrigin,
-								 vector<int>     *El_chFlip,
+								 vector<int>     *El_type, // MC only
+								 vector<int>     *El_origin, // MC only
+								 vector<int>     *El_bkgMotherPdgId, // MC only
+								 vector<int>     *El_bkgOrigin, // MC only
+								 vector<int>     *El_chFlip, // MC only
 								 vector<double>  *El_ptcone20,
 								 vector<double>  *El_ptcone30,
 								 vector<double>  *El_ptcone40,
@@ -92,11 +92,11 @@ void yt_selector::fill_electrons(Int_t           NEl,
 		el.set_isTightLH( (*El_isTightLH)[i] );
 		el.set_nBLayerHits( (*El_nBLayerHits)[i] );
 		el.set_expectBLayerHit( (*El_expectBLayerHit)[i] );
-		el.set_type( (*El_type)[i] );
-		el.set_origin( (*El_origin)[i] );
-		el.set_bkgMotherPdgId( (*El_bkgMotherPdgId)[i] );
-		el.set_bkgOrigin( (*El_bkgOrigin)[i] );
-		el.set_chFlip( (*El_chFlip)[i] );
+		el.set_type( (*El_type)[i] ); // MC only
+		el.set_origin( (*El_origin)[i] ); // MC only
+		el.set_bkgMotherPdgId( (*El_bkgMotherPdgId)[i] ); // MC only
+		el.set_bkgOrigin( (*El_bkgOrigin)[i] ); // MC only
+		el.set_chFlip( (*El_chFlip)[i] ); // MC only
 		el.set_ptcone20( (*El_ptcone20)[i] );
 		el.set_ptcone30( (*El_ptcone30)[i] );
 		el.set_ptcone40( (*El_ptcone40)[i] );
@@ -147,8 +147,8 @@ void yt_selector::fill_muons(Int_t           NMu,
 							 vector<bool>    *Mu_passOR,
 							 vector<bool>    *Mu_isTight,
 							 vector<bool>    *Mu_isCosmic,
-							 vector<int>     *Mu_type,
-							 vector<int>     *Mu_origin,
+							 vector<int>     *Mu_type, // MC only
+							 vector<int>     *Mu_origin, // MC only
 							 vector<double>  *Mu_ptcone20,
 							 vector<double>  *Mu_ptcone30,
 							 vector<double>  *Mu_ptcone40,
@@ -181,7 +181,8 @@ void yt_selector::fill_muons(Int_t           NMu,
 							 vector<bool>    *Mu_TrigMatch_mu24_iloose_L1MU15,
 							 vector<bool>    *Mu_TrigMatch_mu24_ivarloose_L1MU15,
 							 vector<vector<bool> > *Mu_trigMatchPair_mu18_mu8noL1,
-							 vector<vector<bool> > *Mu_trigMatchPair_mu20_mu8noL1)
+							 vector<vector<bool> > *Mu_trigMatchPair_mu20_mu8noL1,
+							 vector<vector<bool> > *Mu_trigMatchPair_mu22_mu8noL1)
 {
 	for (int i = 0; i < NMu; i++) {
 		Muon mu;
@@ -244,6 +245,11 @@ void yt_selector::fill_muons(Int_t           NMu,
 			int index = distance((*Mu_trigMatchPair_mu20_mu8noL1)[i].begin(), itr);
 			mu.set_trigMatchPair_mu20_mu8noL1(index, *itr);
 		}
+		for (vector<bool>::iterator itr = (*Mu_trigMatchPair_mu22_mu8noL1)[i].begin();
+			itr != (*Mu_trigMatchPair_mu22_mu8noL1)[i].end(); itr++) {
+			int index = distance((*Mu_trigMatchPair_mu22_mu8noL1)[i].begin(), itr);
+			mu.set_trigMatchPair_mu22_mu8noL1(index, *itr);
+		}
 		mu.set_TLV_M(mu.get_pt(), mu.get_eta(), mu.get_phi(), Mu_Mass);
 		vec_muon.push_back(mu);
 	}
@@ -260,10 +266,10 @@ void yt_selector::fill_jets(Int_t           NJet,
 							vector<double>  *Jet_MV2c20,
 							vector<double>  *Jet_MV2c10,
 							vector<double>  *Jet_SFw,
-							vector<int>     *Jet_ConeTruthLabel,
-							vector<int>     *Jet_PartonTruthLabel,
-							vector<int>     *Jet_HadronConeExclTruthLabel,
-							vector<double>  *Jet_deltaR,
+							vector<int>     *Jet_ConeTruthLabel, // MC only
+							vector<int>     *Jet_PartonTruthLabel, // MC only
+							vector<int>     *Jet_HadronConeExclTruthLabel, // MC only
+							vector<double>  *Jet_deltaR, // MC only
 							vector<int>     *Jet_nTrk,
 							vector<bool>    *Jet_passOR)
 {
@@ -281,10 +287,10 @@ void yt_selector::fill_jets(Int_t           NJet,
 		je.set_MV2c20( (*Jet_MV2c20)[i] );
 		je.set_MV2c10( (*Jet_MV2c10)[i] );
 		je.set_SFw( (*Jet_SFw)[i] );
-		je.set_ConeTruthLabel( (*Jet_ConeTruthLabel)[i] );
-		je.set_PartonTruthLabel( (*Jet_PartonTruthLabel)[i] );
-		je.set_HadronConeExclTruthLabel( (*Jet_HadronConeExclTruthLabel)[i] );
-		je.set_deltaR( (*Jet_deltaR)[i] );
+		je.set_ConeTruthLabel( (*Jet_ConeTruthLabel)[i] ); // MC only
+		je.set_PartonTruthLabel( (*Jet_PartonTruthLabel)[i] ); // MC only
+		je.set_HadronConeExclTruthLabel( (*Jet_HadronConeExclTruthLabel)[i] ); // MC only
+		je.set_deltaR( (*Jet_deltaR)[i] ); // MC only
 		je.set_nTrk( (*Jet_nTrk)[i] );
 		je.set_passOR( (*Jet_passOR)[i]);
 		je.set_TLV_E(je.get_pt(), je.get_eta(), je.get_phi(), je.get_E());
