@@ -49,7 +49,24 @@ int main( int argc, char* argv[] )
 	// for data
 	if (isData) {
 		cout << "Add data files to TChain..." << endl;
-		cout << "Currently, no data." << endl;
+		//cout << "Currently, no data." << endl;
+		path = "/UserDisk2/yushen/Ximo_ntuples/v44/Data/";
+		//fChain->Add(path + "/merged_all_data.root");
+		fChain->Add(path + "/run303304.root");
+/*
+		path = "/UserDisk2/yushen/Ximo_ntuples/v44/Data/user.jpoveda.t0789_v44.00303304.physics_Main.DAOD_SUSY2.f716_m1620_p2689_output.root/";
+		fChain->Add(path + "/user.jpoveda.9048831._000001.output.root");
+		fChain->Add(path + "/user.jpoveda.9048831._000004.output.root");
+		fChain->Add(path + "/user.jpoveda.9048831._000005.output.root");
+		fChain->Add(path + "/user.jpoveda.9048831._000006.output.root");
+		fChain->Add(path + "/user.jpoveda.9048831._000007.output.root");
+		fChain->Add(path + "/user.jpoveda.9048831._000008.output.root");
+		fChain->Add(path + "/user.jpoveda.9048831._000009.output.root");
+		fChain->Add(path + "/user.jpoveda.9048831._000010.output.root");
+		fChain->Add(path + "/user.jpoveda.9048831._000011.output.root");
+		fChain->Add(path + "/user.jpoveda.9048831._000012.output.root");
+		fChain->Add(path + "/user.jpoveda.9048831._000013.output.root");
+*/
 	}
 	// for MC
 	else if (isMC) {
@@ -73,6 +90,7 @@ int main( int argc, char* argv[] )
 
 	TFile *file;
 	if (isData) {
+		file = TFile::Open(path + "/run303304.root");
 	}
 	if (isMC) {
 		if (process == "Zee")

@@ -78,6 +78,7 @@ Bool_t yt_selector::Process(Long64_t entry)
 	if (isData) {
 		//cout << "This is data." << endl;
 		//AnaNtup_Data::Process(entry);
+		AnaNtup::Process(entry);
 	}
 	if (isMC) {
 		//cout << "This is MC." << endl;
