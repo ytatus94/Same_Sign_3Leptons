@@ -107,7 +107,7 @@ Bool_t yt_selector::Process(Long64_t entry)
 	vec_signal_muon.clear();
 	vec_signal_jets.clear();
 	vec_signal_lept.clear();
-
+#ifdef _IS_MC_
 	fill_electrons(
 		NEl,
 		11, // particle id e- = 11
@@ -134,11 +134,13 @@ Bool_t yt_selector::Process(Long64_t entry)
 		El_isTightLH,
 		El_nBLayerHits,
 		El_expectBLayerHit,
+//
 		El_type, // MC only
 		El_origin, // MC only
 		El_bkgMotherPdgId, // MC only
 		El_bkgOrigin, // MC only
 		El_chFlip, // MC only
+//
 		El_ptcone20,
 		El_ptcone30,
 		El_ptcone40,
@@ -186,8 +188,10 @@ Bool_t yt_selector::Process(Long64_t entry)
 		Mu_passOR,
 		Mu_isTight,
 		Mu_isCosmic,
+//
 		Mu_type, // MC only
 		Mu_origin, // MC only
+//
 		Mu_ptcone20,
 		Mu_ptcone30,
 		Mu_ptcone40,
@@ -235,12 +239,157 @@ Bool_t yt_selector::Process(Long64_t entry)
 		Jet_MV2c20,
 		Jet_MV2c10,
 		Jet_SFw,
+//
 		Jet_ConeTruthLabel, // MC only
 		Jet_PartonTruthLabel, // MC only
 		Jet_HadronConeExclTruthLabel, // MC only
 		Jet_deltaR, // MC only
+//
 		Jet_nTrk,
 		Jet_passOR);
+#endif // #ifdef _IS_MC_
+
+#ifdef _IS_DATA_
+    fill_electrons(
+                   NEl,
+                   11, // particle id e- = 11
+                   El_eta,
+                   El_etaclus,
+                   El_phi,
+                   El_pT,
+                   El_E,
+                   El_charge,
+                   El_sigd0,
+                   El_z0sinTheta,
+                   El_d0pvtx,
+                   El_passOR,
+                   El_SFwMediumLH,
+                   El_IsoSFwMediumLH,
+                   El_SFwTightLH,
+                   El_SFwLooseAndBLayerLH,
+                   El_SFwTrigMediumLH_e12_lhloose_L1EM10VH,
+                   El_SFwTrigMediumLH_e17_lhloose,
+                   El_SFwTrigMediumLH_single,
+                   El_SFwTrigLooseAndBLayerLH_e12_lhloose_L1EM10VH,
+                   El_isLooseAndBLayerLH,
+                   El_isMediumLH,
+                   El_isTightLH,
+                   El_nBLayerHits,
+                   El_expectBLayerHit,
+                   /*
+                   El_type, // MC only
+                   El_origin, // MC only
+                   El_bkgMotherPdgId, // MC only
+                   El_bkgOrigin, // MC only
+                   El_chFlip, // MC only
+                   */
+                   El_ptcone20,
+                   El_ptcone30,
+                   El_ptcone40,
+                   El_ptvarcone20,
+                   El_ptvarcone30,
+                   El_ptvarcone40,
+                   El_topoetcone20,
+                   El_topoetcone30,
+                   El_topoetcone40,
+                   El_passIsoLooseTO,
+                   El_passIsoLoose,
+                   El_passIsoTight,
+                   El_passIsoGrad,
+                   El_passIsoGradCustomTight,
+                   El_passIsoGradCustom,
+                   El_passIsoGradLoose,
+                   El_trigMatch_e12_lhloose_L1EM10VH,
+                   El_trigMatch_e17_lhloose,
+                   El_trigMatch_e60_lhmedium,
+                   El_trigMatch_e24_lhmedium_iloose_L1EM20VH,
+                   El_trigMatch_2e12_lhloose_L12EM10VH,
+                   El_trigMatch_2e15_lhloose_L12EM10VH,
+                   El_trigMatch_2e15_lhvloose_L12EM13VH,
+                   El_trigMatch_2e15_lhvloose_nod0_L12EM13VH,
+                   El_trigMatch_2e17_lhvloose_nod0,
+                   El_trigMatch_e17_lhloose_mu14,
+                   El_trigMatch_e17_lhloose_nod0_mu14,
+                   El_TrigMatch_e24_lhmedium_nod0_ivarloose,
+                   El_TrigMatch_e24_lhtight_nod0_ivarloose,
+                   El_TrigMatch_e60_lhmedium_nod0);
+    
+    fill_muons(
+               NMu,
+               13, // particle id mu- = 13
+               Mu_eta,
+               Mu_phi,
+               Mu_pT,
+               Mu_SFw,
+               Mu_IsoSFw,
+               Mu_charge,
+               Mu_d0pvtx,
+               Mu_sigd0,
+               Mu_z0sinTheta,
+               Mu_isBad,
+               Mu_passOR,
+               Mu_isTight,
+               Mu_isCosmic,
+               /*
+               Mu_type, // MC only
+               Mu_origin, // MC only
+               */
+               Mu_ptcone20,
+               Mu_ptcone30,
+               Mu_ptcone40,
+               Mu_ptvarcone20,
+               Mu_ptvarcone30,
+               Mu_ptvarcone40,
+               Mu_topoetcone20,
+               Mu_topoetcone30,
+               Mu_topoetcone40,
+               Mu_passIsoLooseTO,
+               Mu_passIsoLoose,
+               Mu_passIsoTight,
+               Mu_passIsoGrad,
+               Mu_passIsoGradCustomTight,
+               Mu_passIsoGradCustom,
+               Mu_passIsoGradLoose,
+               MuTrigSF_HLT_mu20_iloose_L1MU15_OR_HLT_mu50,
+               Mu_trigMatch_mu26_imedium,
+               Mu_trigMatch_mu50,
+               Mu_trigMatch_mu8noL1,
+               Mu_trigMatch_mu14,
+               Mu_trigMatch_mu18,
+               Mu_trigMatch_mu18_mu8noL1,
+               Mu_trigMatch_e17_lhloose_mu14,
+               Mu_trigMatch_e17_lhloose_nod0_mu14,
+               Mu_trigMatch_mu20_mu8noL1,
+               Mu_trigMatch_mu22_mu8noL1,
+               Mu_TrigMatch_mu24_iloose,
+               Mu_TrigMatch_mu24_ivarloose,
+               Mu_TrigMatch_mu24_iloose_L1MU15,
+               Mu_TrigMatch_mu24_ivarloose_L1MU15,
+               Mu_trigMatchPair_mu18_mu8noL1,
+               Mu_trigMatchPair_mu20_mu8noL1,
+               Mu_trigMatchPair_mu22_mu8noL1);
+    
+    fill_jets(
+              NJet,
+              Jet_eta,
+              Jet_phi,
+              Jet_pT,
+              Jet_E,
+              Jet_quality,
+              Jet_JVT,
+              Jet_JVTsf,
+              Jet_MV2c20,
+              Jet_MV2c10,
+              Jet_SFw,
+              /*
+              Jet_ConeTruthLabel, // MC only
+              Jet_PartonTruthLabel, // MC only
+              Jet_HadronConeExclTruthLabel, // MC only
+              Jet_deltaR, // MC only
+              */
+              Jet_nTrk,
+              Jet_passOR);
+#endif // #ifdef _IS_DATA_
 
 	// sort by descending Pt
 	sort(vec_elec.begin(), vec_elec.end(), sort_descending_Pt<Electron>);

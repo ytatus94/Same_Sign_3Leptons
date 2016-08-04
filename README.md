@@ -5,6 +5,9 @@ Sample: user.jpoveda.t0789_v44.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.DA
 
 Use rcSetup Base,2.4.16
 
+v05. Add _IS_DATA_ and _IS_MC_ in the preprocessor
+The code knows to use data or MC once the #define _IS_MC_ and #define _IS_DATA_ set correctly.
+
 v04. Add skimming codes.
 
 v03. This version gets correct cutflow results
