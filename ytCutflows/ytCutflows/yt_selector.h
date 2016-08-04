@@ -38,6 +38,7 @@ public:
 	// user defined variables
 	double				derivation_stat_weights; // sum of EventWeight
 	TString				process;
+	double				luminosity;
 
 	yt_cutflows			*m_cutflow;
 	yt_skim_MC			*m_skim_mc;
@@ -386,6 +387,12 @@ public:
 	void set_baseline_and_signal_electrons();
 	void set_baseline_and_signal_muons();
 	void set_jets_and_bjets();
+
+	void set_isMC(bool b) { isMC = b; }
+	void set_isData(bool b) { isData = b; }
+	void set_process(TString str) { process = str; }
+	void set_derivation_stat_weights(double d) { derivation_stat_weights = d; }
+	void set_luminosity(double d) { luminosity = d; }
 
 	template<typename T>
 	void debug_print(vector<T> vec);

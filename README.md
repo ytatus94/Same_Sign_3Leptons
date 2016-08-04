@@ -5,6 +5,12 @@ Sample: user.jpoveda.t0789_v44.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.DA
 
 Use rcSetup Base,2.4.16
 
+v06. Provide set functions and luminosity now becomes an input in the cutflow.cxx
+1. Provide set functions for yt_selector.
+2. Change the type of events_pass_cutflow from int to unsigned int.
+3. Luminosity becomes an input in the cutflow.cxx.
+4. Use PRWWeight instead calculated by myself.
+
 v05. Add _IS_DATA_ and _IS_MC_ in the preprocessor
 The code knows to use data or MC once the #define _IS_MC_ and #define _IS_DATA_ set correctly.
 

@@ -202,7 +202,9 @@ void yt_skim_MC::execute(vector<Electron> elec, vector<Muon> muon, vector<Lepton
     // Event normalization
     this->set_cross_section_by_process(process);
     this->set_derivation_efficiency("25ns", process);
-    normalization = lumi * (crossSection * kFactor) * (filterEfficiency * analysis1LeptonFilter) * (event_weight / event_weight_sum);
+    //normalization = lumi * (crossSection * kFactor) * (filterEfficiency * analysis1LeptonFilter) * (event_weight / event_weight_sum);
+    normalization = lumi * (crossSection * kFactor) * (event_weight / event_weight_sum);
+
     n_normalized_events += normalization;
 
     // Counts some numbers ...
@@ -778,6 +780,11 @@ void yt_skim_MC::set_derivation_efficiency(TString bunch_spacing, TString proces
         }
         
     }
+}
+
+void yt_skim_MC::set_luminosity(double number)
+{
+	lumi = number;
 }
 
 void yt_skim_MC::set_event_weight_sum(double sum)

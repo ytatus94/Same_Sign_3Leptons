@@ -497,12 +497,13 @@ Bool_t yt_selector::Process(Long64_t entry)
 
 	// Skimming data and MC for real lepton efficiency study 
 	if (isMC == 1) {
-		float pileup_weight = m_cutflow->pileupwgh;
+		//float pileup_weight = m_cutflow->pileupwgh;
+		m_skim_mc->set_luminosity(luminosity);
 		m_skim_mc->set_event_weight_sum(derivation_stat_weights);
 		m_skim_mc->execute(vec_elec, vec_muon, vec_lept, vec_jets,
 						   vec_baseline_elec, vec_baseline_muon, vec_baseline_lept, vec_baseline_jets,
 						   vec_signal_elec, vec_signal_muon, vec_signal_lept, vec_signal_jets,
-						   Etmiss_TST_Et, EventWeight, PRWrandomRunNumber, pileup_weight, process);
+						   Etmiss_TST_Et, EventWeight, PRWrandomRunNumber, PRWWeight, process);
 	}
 	if (isData == 1) {
 		m_skim_data->execute(vec_elec, vec_muon, vec_lept, vec_jets,

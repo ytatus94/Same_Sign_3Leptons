@@ -124,7 +124,8 @@ public:
 	double event_weight_sum;
 
     // Normalisation scale factor
-    const double lumi = 5.8; // unit: 1/fb, 3.2/fb (2015) + 2.6/fb (2016)
+    //const double lumi = 5.8; // unit: 1/fb, 3.2/fb (2015) + 2.6/fb (2016)
+    double lumi;
 
     // Cross section
     double crossSection; // Inclusive crossSection * factor 1 * factor 2 * factor 3
@@ -150,6 +151,7 @@ public:
     void tag_and_probe_Zee(int run_number);
     void tag_and_probe_ttbar(double Etmiss_TST_Et);
 
+	void set_luminosity(double number);
 	void set_run_number(int number);
 	void set_pileup_weight(float number);
 	void set_event_weight_sum(double sum);

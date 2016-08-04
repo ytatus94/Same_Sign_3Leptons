@@ -74,10 +74,10 @@ yt_cutflows::yt_cutflows()
 	eventInfo = eInfos->at(0);
 
 	// initialize events_pass_cutflow to zero
-	events_pass_cutflow = vector<int>(Ncuts, 0); // initialize Ncuts elements to zero.
+	events_pass_cutflow = vector<unsigned int>(Ncuts, 0); // initialize Ncuts elements to zero.
 
 	// initialize pileup_weight to zero
-	pileupwgh = 0.;
+	//pileupwgh = 0.;
 }
 
 yt_cutflows::~yt_cutflows()

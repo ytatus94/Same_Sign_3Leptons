@@ -89,11 +89,15 @@ int main( int argc, char* argv[] )
 	double derivation_stat_weights = DerivationStat_Weights->GetBinContent(1);
 	//cout << "derivation_stat_weights=" << derivation_stat_weights << endl;
 
+    //const double lumi = 5.8; // unit: 1/fb, 3.2/fb (2015) + 2.6/fb (2016)
+	double luminosity = 475.796043 / 1000.;
+
 	yt_selector *foo = new yt_selector;
-	foo->isMC = isMC;
-	foo->isData = isData;
+	foo->set_isMC(isMC);
+	foo->set_isData(isData);
 	if (isMC == true && process.IsNull() == false)
-		foo->process = process;
-	foo->derivation_stat_weights = derivation_stat_weights;
+		foo->set_process(process);
+	foo->set_derivation_stat_weights(derivation_stat_weights);
+	foo->set_luminosity(luminosity);
 	fChain->Process(foo);
 }
