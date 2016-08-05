@@ -12,7 +12,7 @@ yt_skim_MC::yt_skim_MC()
     El_isBaseline                  = new vector<bool>();
     El_isSignal                    = new vector<bool>();
     El_isZProbe                    = new vector<bool>();
-    El_isZProbe_TriggMatched       = new vector<bool>();
+    El_isZProbe_TriggerMatched     = new vector<bool>();
     El_isTTbarProbe                = new vector<bool>();
     El_tag_trigger_SF              = new vector<double>();
 
@@ -24,7 +24,7 @@ yt_skim_MC::yt_skim_MC()
     Mu_isBaseline                  = new vector<bool>();
     Mu_isSignal                    = new vector<bool>();
     Mu_isZProbe                    = new vector<bool>();
-    Mu_isZProbe_TriggMatched       = new vector<bool>();
+    Mu_isZProbe_TriggerMatched     = new vector<bool>();
     Mu_isTTbarProbe                = new vector<bool>();
     Mu_tag_trigger_SF              = new vector<float>();
 
@@ -133,7 +133,7 @@ void yt_skim_MC::initialize(TTree *tree, TString process)
     output_tree->Branch("El_isBaseline",                &El_isBaseline);
     output_tree->Branch("El_isSignal",                  &El_isSignal);
     output_tree->Branch("El_isZProbe",                  &El_isZProbe);
-    output_tree->Branch("El_isZProbe_TriggMatched",     &El_isZProbe_TriggMatched);
+    output_tree->Branch("El_isZProbe_TriggerMatched",   &El_isZProbe_TriggerMatched);
     output_tree->Branch("El_isTTbarProbe",              &El_isTTbarProbe);
     output_tree->Branch("El_tag_trigger_SF",            &El_tag_trigger_SF);
 
@@ -145,7 +145,7 @@ void yt_skim_MC::initialize(TTree *tree, TString process)
     output_tree->Branch("Mu_isBaseline",                &Mu_isBaseline);
     output_tree->Branch("Mu_isSignal",                  &Mu_isSignal);
     output_tree->Branch("Mu_isZProbe",                  &Mu_isZProbe);
-    output_tree->Branch("Mu_isZProbe_TriggMatched",     &Mu_isZProbe_TriggMatched);
+    output_tree->Branch("Mu_isZProbe_TriggerMatched",   &Mu_isZProbe_TriggerMatched);
     output_tree->Branch("Mu_isTTbarProbe",              &Mu_isTTbarProbe);
     output_tree->Branch("Mu_tag_trigger_SF",            &Mu_tag_trigger_SF);
 
@@ -293,7 +293,7 @@ void yt_skim_MC::reset_vectors()
     El_isBaseline->clear();
     El_isSignal->clear();
     El_isZProbe->clear();
-    El_isZProbe_TriggMatched->clear();
+    El_isZProbe_TriggerMatched->clear();
     El_isTTbarProbe->clear();
     El_tag_trigger_SF->clear();
 
@@ -305,7 +305,7 @@ void yt_skim_MC::reset_vectors()
     Mu_isBaseline->clear();
     Mu_isSignal->clear();
     Mu_isZProbe->clear();
-    Mu_isZProbe_TriggMatched->clear();
+    Mu_isZProbe_TriggerMatched->clear();
     Mu_isTTbarProbe->clear();
     Mu_tag_trigger_SF->clear();
 
@@ -322,7 +322,7 @@ void yt_skim_MC::reset_vectors()
         El_isBaseline->push_back(false);
         El_isSignal->push_back(false);
         El_isZProbe->push_back(false);
-        El_isZProbe_TriggMatched->push_back(false);
+        El_isZProbe_TriggerMatched->push_back(false);
         El_isTTbarProbe->push_back(false);
         El_tag_trigger_SF->push_back(1);
     }
@@ -336,7 +336,7 @@ void yt_skim_MC::reset_vectors()
         Mu_isBaseline->push_back(false);
         Mu_isSignal->push_back(false);
         Mu_isZProbe->push_back(false);
-        Mu_isZProbe_TriggMatched->push_back(false);
+        Mu_isZProbe_TriggerMatched->push_back(false);
         Mu_isTTbarProbe->push_back(false);
         Mu_tag_trigger_SF->push_back(1);
     }
@@ -506,7 +506,7 @@ void yt_skim_MC::tag_and_probe_Zee(int run_number)
             if (current_mll > 80000. && current_mll < 100000.) {
                 El_isZProbe->at(probe_elec_itr.get_index()) = true;
                 if (isTriggerMatched)
-                    El_isZProbe_TriggMatched->at(probe_elec_itr.get_index()) = true;
+                    El_isZProbe_TriggerMatched->at(probe_elec_itr.get_index()) = true;
                 n_tot_ZTandP_electrons++;
                 n_normalized_tot_ZTandP_electrons += normalization;
             }
@@ -544,7 +544,7 @@ void yt_skim_MC::tag_and_probe_Zee(int run_number)
             if (current_mll > 80000. && current_mll < 100000.) {
                 Mu_isZProbe->at(probe_muon_itr.get_index()) = true;
                 if (isTriggerMatched)
-                    Mu_isZProbe_TriggMatched->at(probe_muon_itr.get_index()) = true;
+                    Mu_isZProbe_TriggerMatched->at(probe_muon_itr.get_index()) = true;
                 n_tot_ZTandP_muons++;
                 n_normalized_tot_ZTandP_muons += normalization;
             }

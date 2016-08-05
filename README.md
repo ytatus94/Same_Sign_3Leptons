@@ -5,6 +5,8 @@ Sample: user.jpoveda.t0789_v44.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.DA
 
 Use rcSetup Base,2.4.16
 
+v08. Correct TriggMatched to TriggerMatched
+
 v07. Add data samples in cutflow.cxx
 
 v06. Provide set functions and luminosity now becomes an input in the cutflow.cxx
