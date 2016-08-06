@@ -38,10 +38,13 @@ void yt_selector::Begin(TTree * /*tree*/)
 
    TString option = GetOption();
 	m_cutflow	= new yt_cutflows;
+
+#ifdef _SKIM_
 	if (isMC == 1)
 		m_skim_mc	= new yt_skim_MC;
 	if (isData == 1)
 		m_skim_data	= new yt_skim_data;
+#endif // #ifdef _SKIM_
 }
 
 void yt_selector::SlaveBegin(TTree * /*tree*/)
@@ -108,6 +111,7 @@ Bool_t yt_selector::Process(Long64_t entry)
 	vec_signal_muon.clear();
 	vec_signal_jets.clear();
 	vec_signal_lept.clear();
+
 #ifdef _IS_MC_
 	fill_electrons(
 		NEl,
@@ -442,12 +446,15 @@ Bool_t yt_selector::Process(Long64_t entry)
 															  AvgMu, EventWeight, PRWWeight,
 															  LB, RunNb);
 */
+
+#ifndef _SKIM_
 	bool cut4  = m_cutflow->pass_trigger(isData, isMC, RunNb, PRWrandomRunNumber,
 										 HLT_2e12_lhloose_L12EM10VH, HLT_e17_lhloose_mu14, HLT_mu18_mu8noL1, HLT_xe70,
 										 HLT_2e17_lhvloose_nod0, HLT_e17_lhloose_nod0_mu14, HLT_mu20_mu8noL1, HLT_xe100_mht_L1XE50,
 										 Etmiss_TST_Et);
 	m_cutflow->update(Trigger, cut4);
 	if (!cut4) return kTRUE;
+#endif // #ifndef _SKIM_
 
 	bool cut5  = m_cutflow->pass_global_flags(isData, isMC, DetError);
 	m_cutflow->update(Global_flags, cut5);
@@ -457,9 +464,11 @@ Bool_t yt_selector::Process(Long64_t entry)
 	m_cutflow->update(Bad_muon, cut6);
 	if (!cut6) return kTRUE;
 
+#ifndef _SKIM_
 	bool cut7  = m_cutflow->pass_at_least_one_jet_passes_jet_OR(vec_baseline_jets); // use baseline jets
 	m_cutflow->update(At_least_one_jet_passes_jet_OR, cut7);
 	if (!cut7) return kTRUE;
+#endif // #ifdef _SKIM_
 
 	bool cut8  = m_cutflow->pass_bad_jet(vec_jets); // we have to use the raw jet objects (vec_jets) at this step.
 	m_cutflow->update(Bad_jet, cut8);
@@ -476,9 +485,11 @@ Bool_t yt_selector::Process(Long64_t entry)
 	// JVT cut applied after OR and jet quality
 	fill_JVT_jets(vec_OR_jets);
 
+#ifndef _SKIM_
 	bool cut9  = m_cutflow->pass_at_least_one_signal_jet(vec_JVT_jets);
 	m_cutflow->update(At_least_one_signal_jet, cut9);
 	if (!cut9) return kTRUE;
+#endif // #ifndef _SKIM_
 
 	bool cut10 = m_cutflow->pass_cosmic_muon_veto(vec_OR_muon);
 	m_cutflow->update(Cosmic_muons_veto, cut10);
@@ -496,6 +507,7 @@ Bool_t yt_selector::Process(Long64_t entry)
 	// Now sort leptons by descending Pt
 	sort(vec_signal_lept.begin(), vec_signal_lept.end(), sort_descending_Pt<Lepton>);
 
+#ifdef _SKIM_
 	// Skimming data and MC for real lepton efficiency study 
 	if (isMC == 1) {
 		//float pileup_weight = m_cutflow->pileupwgh;
@@ -512,6 +524,7 @@ Bool_t yt_selector::Process(Long64_t entry)
 							 vec_signal_elec, vec_signal_muon, vec_signal_lept, vec_signal_jets,
 							 Etmiss_TST_Et, RunNb);
 	}
+#endif // #ifdef _SKIM_
 
 	bool cut12 = m_cutflow->pass_at_least_two_signal_leptons_greater_than_20GeV(vec_signal_lept);
 	m_cutflow->update(At_least_two_signal_leptons_greater_than_20GeV, cut12);

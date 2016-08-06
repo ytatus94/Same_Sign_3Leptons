@@ -33,6 +33,7 @@ int main( int argc, char* argv[] )
 		const char* key = argv[i];
 		if (strcmp(key, "isData") == 0 ) isData = true;
 		if (strcmp(key, "isMC") == 0 ) isMC = true;
+		if (strcmp(key, "4topSM") == 0) process = "4topSM";
 		if (strcmp(key, "Zee") == 0) process = "Zee";
 		if (strcmp(key, "Zmumu") == 0) process = "Zmumu";
 		if (strcmp(key, "ttbar") == 0) process = "ttbar";
@@ -51,8 +52,8 @@ int main( int argc, char* argv[] )
 		cout << "Add data files to TChain..." << endl;
 		//cout << "Currently, no data." << endl;
 		path = "/UserDisk2/yushen/Ximo_ntuples/v44/Data/";
-		//fChain->Add(path + "/merged_all_data.root");
-		fChain->Add(path + "/run303304.root");
+		fChain->Add(path + "/merged_all_data.root");
+		//fChain->Add(path + "/run303304.root");
 /*
 		path = "/UserDisk2/yushen/Ximo_ntuples/v44/Data/user.jpoveda.t0789_v44.00303304.physics_Main.DAOD_SUSY2.f716_m1620_p2689_output.root/";
 		fChain->Add(path + "/user.jpoveda.9048831._000001.output.root");
@@ -75,8 +76,12 @@ int main( int argc, char* argv[] )
 		path = "/UserDisk2/yushen/Ximo_ntuples/v44/MC/user.jpoveda.t0789_v44.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.DAOD_SUSY2.s2608_r7725_p2666_output.root";
 		fChain->Add(path + "/user.jpoveda.9048853._000001.output.root");
 */
+
 		path = "/UserDisk2/yushen/Ximo_ntuples/v44/MC/";
-		if (process == "Zee")
+		if (process == "4topSM") {
+			fChain->Add(path + "/user.jpoveda.t0789_v44.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.DAOD_SUSY2.s2608_r7725_p2666_output.root/user.jpoveda.9048853._000001.output.root");
+		}
+		else if (process == "Zee")
 			fChain->Add(path + "/Zee_merged.root");
 		else if (process == "Zmumu")
 			fChain->Add(path + "/Zmumu_merged.root");
@@ -86,14 +91,18 @@ int main( int argc, char* argv[] )
 			fChain->Add(path + "/GG_ttn1_merged.root");
 
 	}
+
 	//TFile *file = TFile::Open("/UserDisk2/yushen/Ximo_ntuples/v44/MC/user.jpoveda.t0789_v44.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.DAOD_SUSY2.s2608_r7725_p2666_output.root/user.jpoveda.9048853._000001.output.root");
 
 	TFile *file;
 	if (isData) {
-		file = TFile::Open(path + "/run303304.root");
+		file = TFile::Open(path + "/merged_all_data.root");
+		//file = TFile::Open(path + "/run303304.root");
 	}
 	if (isMC) {
-		if (process == "Zee")
+		if (process == "4topSM")
+			file = TFile::Open(path + "/user.jpoveda.t0789_v44.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.DAOD_SUSY2.s2608_r7725_p2666_output.root/user.jpoveda.9048853._000001.output.root");
+		else if (process == "Zee")
 			file = TFile::Open(path + "/Zee_merged.root");
 		else if (process == "Zmumu")
 			file = TFile::Open(path + "/Zmumu_merged.root");
@@ -105,10 +114,10 @@ int main( int argc, char* argv[] )
 
 	TH1D *DerivationStat_Weights = (TH1D *)file->Get("DerivationStat_Weights");
 	double derivation_stat_weights = DerivationStat_Weights->GetBinContent(1);
-	//cout << "derivation_stat_weights=" << derivation_stat_weights << endl;
+	cout << "derivation_stat_weights=" << derivation_stat_weights << endl;
 
-    //const double lumi = 5.8; // unit: 1/fb, 3.2/fb (2015) + 2.6/fb (2016)
-	double luminosity = 475.796043 / 1000.;
+    const double luminosity = 5.8; // unit: 1/fb, 3.2/fb (2015) + 2.6/fb (2016)
+	//double luminosity = 475.796043 / 1000.; // for run 303304
 
 	yt_selector *foo = new yt_selector;
 	foo->set_isMC(isMC);
@@ -118,4 +127,5 @@ int main( int argc, char* argv[] )
 	foo->set_derivation_stat_weights(derivation_stat_weights);
 	foo->set_luminosity(luminosity);
 	fChain->Process(foo);
+
 }

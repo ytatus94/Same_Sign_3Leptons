@@ -28,7 +28,7 @@ public:
     vector<bool>    *El_isBaseline;
     vector<bool>    *El_isSignal;
     vector<bool>    *El_isZProbe;
-    vector<bool>    *El_isZProbe_TriggMatched;
+    vector<bool>    *El_isZProbe_TriggerMatched;
     vector<bool>    *El_isTTbarProbe;
     vector<double>  *El_tag_trigger_SF;
 
@@ -40,7 +40,7 @@ public:
     vector<bool>    *Mu_isBaseline;
     vector<bool>    *Mu_isSignal;
     vector<bool>    *Mu_isZProbe;
-    vector<bool>    *Mu_isZProbe_TriggMatched;
+    vector<bool>    *Mu_isZProbe_TriggerMatched;
     vector<bool>    *Mu_isTTbarProbe;
     vector<float>   *Mu_tag_trigger_SF;
 

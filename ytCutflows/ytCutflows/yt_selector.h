@@ -21,6 +21,8 @@ using namespace std;
 #define _IS_MC_
 //#define _IS_DATA_
 
+#define _SKIM_ // if doing skim
+
 #ifdef _IS_MC_
 typedef AnaNtup_MC AnaNtup;
 #endif // #ifdef _IS_MC_
@@ -41,8 +43,10 @@ public:
 	double				luminosity;
 
 	yt_cutflows			*m_cutflow;
+#ifdef _SKIM_
 	yt_skim_MC			*m_skim_mc;
 	yt_skim_data		*m_skim_data;
+#endif // #ifdef _SKIM_
 
 	vector<Electron>	vec_elec;
 	vector<Muon>		vec_muon;
@@ -419,13 +423,14 @@ void yt_selector::Init(TTree *tree)
 
 	//AnaNtup_MC::Init(tree);
 	AnaNtup::Init(tree);
+#ifdef _SKIM_
 #ifdef _IS_MC_
 	m_skim_mc->initialize(AnaNtup::fChain, process);
 #endif // #ifdef _IS_MC_
 #ifdef _IS_DATA_
 	m_skim_data->initialize(AnaNtup::fChain);
 #endif // #ifdef _IS_DATA_
-
+#endif // #ifdef _SKIM_
 }
 
 Bool_t yt_selector::Notify()
