@@ -5,6 +5,9 @@ Sample: user.jpoveda.t0789_v44.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.DA
 
 Use rcSetup Base,2.4.16
 
+v10. Add the tag single lepton trigger which Sebastien used.
+But still comment the tag single lepton trigger.
+
 v09. Add _SKIM_ in the preprocessor.
 1. Modify yt_selector.h, yt_selector.cxx, and cutflow.cxx
 

@@ -460,6 +460,8 @@ void yt_skim_data::tag_and_probe_Zee(int run_number)
 				continue;
 			// Check does the tag trigger matched
 			bool isTriggerMatched = false;
+			//if (tag_elec_itr.get_trigMatch_e24_lhmedium_iloose_L1EM20VH())
+				//isTriggerMatched = true;
 			// Ximo said let all lepton trigger matching
 			isTriggerMatched = true;
 
@@ -494,6 +496,8 @@ void yt_skim_data::tag_and_probe_Zee(int run_number)
 				continue;
 			// Check does the tag tragger matched
 			bool isTriggerMatched = false;
+			//if (tag_muon_itr.get_trigMatch_mu26_imedium())
+				//isTriggerMatched = true;
 			// Ximo said let all lepton trigger matching
 			isTriggerMatched = true;
 
