@@ -5,6 +5,8 @@ Sample: user.jpoveda.t0789_v44.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.DA
 
 Use rcSetup Base,2.4.16
 
+v11. Add sample 303421 to test the skim and the lumi is set to 13.2 fb-1.
+
 v10. Add the tag single lepton trigger which Sebastien used.
 But still comment the tag single lepton trigger.
 

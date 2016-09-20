@@ -54,6 +54,7 @@ int main( int argc, char* argv[] )
 		path = "/UserDisk2/yushen/Ximo_ntuples/v44/Data/";
 		fChain->Add(path + "/merged_all_data.root");
 		//fChain->Add(path + "/run303304.root");
+		//fChain->Add(path + "/run303421.root");
 /*
 		path = "/UserDisk2/yushen/Ximo_ntuples/v44/Data/user.jpoveda.t0789_v44.00303304.physics_Main.DAOD_SUSY2.f716_m1620_p2689_output.root/";
 		fChain->Add(path + "/user.jpoveda.9048831._000001.output.root");
@@ -98,6 +99,7 @@ int main( int argc, char* argv[] )
 	if (isData) {
 		file = TFile::Open(path + "/merged_all_data.root");
 		//file = TFile::Open(path + "/run303304.root");
+		//file = TFile::Open(path + "/run303421.root");
 	}
 	if (isMC) {
 		if (process == "4topSM")
@@ -116,8 +118,11 @@ int main( int argc, char* argv[] )
 	double derivation_stat_weights = DerivationStat_Weights->GetBinContent(1);
 	cout << "derivation_stat_weights=" << derivation_stat_weights << endl;
 
-    const double luminosity = 5.8; // unit: 1/fb, 3.2/fb (2015) + 2.6/fb (2016)
+    //const double luminosity = 5.8; // unit: 1/fb, 3.2/fb (2015) + 2.6/fb (2016)
+	//const double luminosity = (3212.96 + 10589.2) / 1000.; // unit: 1/fb, 3.2/fb (2015) + 10.5892/fb (2016)
+	const double luminosity = 13.2; // unit: 1/fb, Ximo: the lumi is 13.2 for the ichep analysis
 	//double luminosity = 475.796043 / 1000.; // for run 303304
+	//double luminosity = 507.7084468 / 1000.; // for run 303421
 
 	yt_selector *foo = new yt_selector;
 	foo->set_isMC(isMC);
