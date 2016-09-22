@@ -849,6 +849,7 @@ void yt_selector::Terminate()
 	//delete HLT_object;
 	//delete m_GRL;
 	m_cutflow->print();
+	debug_sum_of_weight_print();
 	// release memories
 	delete m_cutflow;
 }

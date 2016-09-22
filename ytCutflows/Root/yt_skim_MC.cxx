@@ -205,7 +205,7 @@ void yt_skim_MC::execute(vector<Electron> elec, vector<Muon> muon, vector<Lepton
 
     // Event normalization
     this->set_cross_section_by_process(process);
-    this->set_derivation_efficiency("25ns", process);
+    //this->set_derivation_efficiency("25ns", process);
     //normalization = lumi * (crossSection * kFactor) * (filterEfficiency * analysis1LeptonFilter) * (event_weight / event_weight_sum);
     normalization = lumi * (crossSection * kFactor) * (event_weight / event_weight_sum);
 
@@ -494,11 +494,20 @@ void yt_skim_MC::tag_and_probe_Zee(int run_number)
             if (tag_elec_itr.get_charge() == probe_elec_itr.get_charge())
                 continue;
             // Check does the tag trigger matched
+            // electrons:
+            // 2015: HLT_e24_lhmedium_L1EM20VH
+            // 2016: HLT_e24_lhtight_nod0_ivarloose
             bool isTriggerMatched = false;
-			//if (tag_elec_itr.get_trigMatch_e24_lhmedium_iloose_L1EM20VH())
-				//isTriggerMatched = true;
+            if (run_number < 290000) { // 2015 data
+                if (tag_elec_itr.get_trigMatch_e24_lhmedium_iloose_L1EM20VH())
+                    isTriggerMatched = true;
+            }
+            else if (run_number > 290000) { // 2016 data
+                if (tag_elec_itr.get_trigMatch_e24_lhtight_nod0_ivarloose())
+                    isTriggerMatched = true;
+            }
             // Ximo said let all lepton trigger matching
-            isTriggerMatched = true;
+            //isTriggerMatched = true;
 
             // Store the tag trigger SF associated to the probe
             El_tag_trigger_SF->at(probe_elec_itr.get_index()) = tag_elec_itr.get_SFwTrigMediumLH_single();
@@ -534,11 +543,20 @@ void yt_skim_MC::tag_and_probe_Zee(int run_number)
             if (tag_muon_itr.get_charge() == probe_muon_itr.get_charge())
                 continue;
             // Check does the tag tragger matched
+            // muons:
+            // 2015: HLT_mu20_iloose_L1MU15
+            // 2016: HLT_mu24_ivarmedium
             bool isTriggerMatched = false;
-			//if (tag_muon_itr.get_trigMatch_mu26_imedium())
-				//isTriggerMatched = true;
+			if (run_number < 290000) { // 2015 data
+                if (tag_muon_itr.get_trigMatch_mu24_iloose_L1MU15()) // no mu20 found, so use mu24
+                    isTriggerMatched = true;
+            }
+            else if (run_number > 290000) { // 2016 data
+                if (tag_muon_itr.get_trigMatch_mu24_ivarloose()) // no ivarmedium found, so use ivarloose
+                    isTriggerMatched = true;
+            }
             // Ximo said let all lepton trigger matching
-            isTriggerMatched = true;
+            //isTriggerMatched = true;
 
             // Store the tag trigger SF associated to the probe
             Mu_tag_trigger_SF->at(probe_muon_itr.get_index()) = tag_muon_itr.get_MuTrigSF_HLT_mu20_iloose_L1MU15_OR_HLT_mu50();
