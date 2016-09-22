@@ -61,7 +61,8 @@ public:
 	vector<string> confFiles;
  	vector<string> lcalcFiles;
 
-	vector<unsigned int> events_pass_cutflow; // 0 to 4,294,967,295
+	//vector<unsigned int> events_pass_cutflow; // 0 to 4,294,967,295
+	vector<double> events_pass_cutflow;
 
 	//float pileupwgh;
 

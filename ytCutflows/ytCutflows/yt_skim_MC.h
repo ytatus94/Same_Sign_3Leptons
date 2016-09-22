@@ -49,6 +49,8 @@ public:
     vector<bool>    *Jet_bJet_isSignal;
 
     // Events variables
+    double  baseline_weight;
+    double  signal_weight;
     bool    isSS2l_trigger;
     double  normalization;
     double  pileup_weight;
@@ -143,7 +145,7 @@ public:
 	void execute(vector<Electron> elec, vector<Muon> muon, vector<Lepton> lept, vector<Jet> jets,
 				 vector<Electron> baseline_elec, vector<Muon> baseline_muon, vector<Lepton> baseline_lept, vector<Jet> baseline_jets,
 				 vector<Electron> signal_elec, vector<Muon> signal_muon, vector<Lepton> signal_lept, vector<Jet> signal_jets,
-                 double Etmiss_TST_Et, double event_weight, int run_number, float pileup_weight, TString process);
+                 double Etmiss_TST_Et, double event_weight, int run_number, float pileup_weight, double baseline_weight, double signal_weight, TString process);
 	void finalize(TString process);
 
     void reset_vectors();
@@ -154,6 +156,8 @@ public:
 	void set_luminosity(double number);
 	void set_run_number(int number);
 	void set_pileup_weight(float number);
+    void set_baseline_weight(double number);
+    void set_signal_weight(double number);
 	void set_event_weight_sum(double sum);
     void set_cross_section_by_process(TString process);
 	void set_derivation_efficiency(TString bunch_spacing, TString process);

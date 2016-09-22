@@ -5,6 +5,13 @@ Sample: user.jpoveda.t0789_v44.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.DA
 
 Use rcSetup Base,2.4.16
 
+v12. Add weight calculation and change indentations.
+1. In yt_selector: change the indentations of fill methods, add new methods for calculating weights.
+2. In yt_cutflows: change the type of events_pass_cutflow from unsigned int to double. Also change the PRW file.
+3. In yt_skim_MC: add baseline_weight and signal_weight.
+4. In Fill_and_Set.cxx: change the indentations.
+5. In cutflow.cxx: add Zee testing samples.
+
 v11. Add sample 303421 to test the skim and the lumi is set to 13.2 fb-1.
 
 v10. Add the tag single lepton trigger which Sebastien used.

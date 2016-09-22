@@ -33,6 +33,8 @@ yt_skim_MC::yt_skim_MC()
     Jet_bJet_isSignal  = new vector<bool>();
 
     // Events variables
+    baseline_weight = 1.;
+    signal_weight = 1.;
     isSS2l_trigger = false;
     normalization = 0.;
     pileup_weight = 0.;
@@ -153,6 +155,8 @@ void yt_skim_MC::initialize(TTree *tree, TString process)
     output_tree->Branch("Jet_bJet_isSignal",    &Jet_bJet_isSignal);
 
     // Events numbers variables
+    output_tree->Branch("baseline_weight",  &baseline_weight);
+    output_tree->Branch("signal_weight",    &signal_weight);
     output_tree->Branch("isSS2l_trigger",   &isSS2l_trigger);
     output_tree->Branch("normalization",    &normalization);
     output_tree->Branch("pileup_weight",    &pileup_weight);
@@ -190,7 +194,7 @@ void yt_skim_MC::initialize(TTree *tree, TString process)
 void yt_skim_MC::execute(vector<Electron> elec, vector<Muon> muon, vector<Lepton> lept, vector<Jet> jets,
 						 vector<Electron> baseline_elec, vector<Muon> baseline_muon, vector<Lepton> baseline_lept, vector<Jet> baseline_jets,
 						 vector<Electron> signal_elec, vector<Muon> signal_muon, vector<Lepton> signal_lept, vector<Jet> signal_jets,
-						 double Etmiss_TST_Et, double event_weight, int run_number, float pileup_weight, TString process)
+						 double Etmiss_TST_Et, double event_weight, int run_number, float pileup_weight, double baseline_weight, double signal_weight, TString process)
 {
 	// clear all the vector members
 	this->yt_skim::initialize();
@@ -229,6 +233,8 @@ void yt_skim_MC::execute(vector<Electron> elec, vector<Muon> muon, vector<Lepton
         calculate_new_variables(Etmiss_TST_Et);
         set_run_number(run_number); 
         set_pileup_weight(pileup_weight);
+        set_baseline_weight(baseline_weight);
+        set_signal_weight(signal_weight);
         tag_and_probe_Zee(run_number);
         tag_and_probe_ttbar(Etmiss_TST_Et);
 
@@ -804,4 +810,14 @@ void yt_skim_MC::set_run_number(int number)
 void yt_skim_MC::set_pileup_weight(float number)
 {
 	pileup_weight = number;
+}
+
+void yt_skim_MC::set_baseline_weight(double number)
+{
+    baseline_weight = number;
+}
+
+void yt_skim_MC::set_signal_weight(double number)
+{
+    signal_weight = number;
 }
