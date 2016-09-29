@@ -61,22 +61,23 @@ public:
 	vector<string> confFiles;
  	vector<string> lcalcFiles;
 
-	//vector<unsigned int> events_pass_cutflow; // 0 to 4,294,967,295
-	vector<double> events_pass_cutflow;
+	vector<unsigned int> events_pass_cutflow; // 0 to 4,294,967,295
+	vector<double>		 events_pass_cutflow_with_PRW_weight;
 
-	//float pileupwgh;
+	float pileupwgh;
 
 public:
 	yt_cutflows();
 	virtual ~yt_cutflows();
 	void update(int cut, bool passed);
-	void print();
-/*
+	void update(int cut, bool passed, double PRW_weight);
+	void print(bool with_PRW_weight);
+
 	int get_mc_random_event_number(bool isData, bool isMC,
 								   int event_number, int channel_number,
 								   double average_mu, double event_weight, double PRW_weight,
 								   int lumi_block, int run_number);
-*/
+
 	// user defined cutflow methods
 	bool pass_all_events();
 	bool pass_GRL(bool isData, int RunNb, int LB);

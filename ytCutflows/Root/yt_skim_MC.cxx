@@ -33,8 +33,8 @@ yt_skim_MC::yt_skim_MC()
     Jet_bJet_isSignal  = new vector<bool>();
 
     // Events variables
-    baseline_weight = 1.;
-    signal_weight = 1.;
+	baseline_weight = 1.;
+	signal_weight = 1.;
     isSS2l_trigger = false;
     normalization = 0.;
     pileup_weight = 0.;
@@ -121,7 +121,7 @@ yt_skim_MC::~yt_skim_MC()
 void yt_skim_MC::initialize(TTree *tree, TString process)
 {
 	// Declare the output
-	TString output_path("/UserDisk2/yushen/Ximo_ntuples/v44/Skimmed/");
+	TString output_path("/raid05/users/shen/Ximo_ntuples/v44/Skimmed/");
 	output_file = TFile::Open(output_path + "/MC_probes_" + process + ".root", "RECREATE");
 	output_tree = (TTree*)tree->CloneTree(0);
 
@@ -155,8 +155,8 @@ void yt_skim_MC::initialize(TTree *tree, TString process)
     output_tree->Branch("Jet_bJet_isSignal",    &Jet_bJet_isSignal);
 
     // Events numbers variables
-    output_tree->Branch("baseline_weight",  &baseline_weight);
-    output_tree->Branch("signal_weight",    &signal_weight);
+	output_tree->Branch("baseline_weight",  &baseline_weight);
+	output_tree->Branch("signal_weight",    &signal_weight);
     output_tree->Branch("isSS2l_trigger",   &isSS2l_trigger);
     output_tree->Branch("normalization",    &normalization);
     output_tree->Branch("pileup_weight",    &pileup_weight);
@@ -233,8 +233,8 @@ void yt_skim_MC::execute(vector<Electron> elec, vector<Muon> muon, vector<Lepton
         calculate_new_variables(Etmiss_TST_Et);
         set_run_number(run_number); 
         set_pileup_weight(pileup_weight);
-        set_baseline_weight(baseline_weight);
-        set_signal_weight(signal_weight);
+		set_baseline_weight(baseline_weight);
+		set_signal_weight(signal_weight);
         tag_and_probe_Zee(run_number);
         tag_and_probe_ttbar(Etmiss_TST_Et);
 
@@ -814,10 +814,10 @@ void yt_skim_MC::set_pileup_weight(float number)
 
 void yt_skim_MC::set_baseline_weight(double number)
 {
-    baseline_weight = number;
+	baseline_weight = number;
 }
 
 void yt_skim_MC::set_signal_weight(double number)
 {
-    signal_weight = number;
+	signal_weight = number;
 }

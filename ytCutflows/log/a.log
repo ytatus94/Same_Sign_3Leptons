@@ -1,0 +1,78 @@
+Add MC files to TChain...
+derivation_stat_weights=2.28135e+08
+PathResolver              WARNING XMLPATH environment variable not defined!
+PathResolver              WARNING XMLPATH environment variable not defined!
+--- TGRLCollection      : Now merging GRLs where possible. Metadata required to be identical.[0m
+myWeightTool              INFO    AsgTool myWeightTool @ 0x3b71590
+**************************************************
+Cutflow: Number of Events pass cut
+**************************************************
+Cut 0: All events before derivations (DerivationStat_Weights) = 228134695 
+Cut 1: All events in derivation/ntuple = 52029     
+Cut 2: GRL (for data only) = 0         
+Cut 3: Primary vertex = 42731     
+Cut 4: Trigger       = 42787     
+Cut 5: Global flags (data only) = 42787     
+Cut 6: Bad muon      = 52028     
+Cut 7: >= 1 jet passes jet OR = 0         
+Cut 8: Bad jet       = 42731     
+Cut 9: >= 1 signal jet = 0         
+Cut 10: Cosmic muons veto = 42696     
+Cut 11: >= 2 baseline leptons > 10 GeV = 36522     
+Cut 12: >= 2 signal leptons > 20 GeV = 20688     
+Cut 13: Same sign    = 0         
+***** El-El channel *****
+Cut 14: Channel seperation, same-sign [20, 20]: (el-el) = 0         
+Cut 15: Trigger matching: (el-el) = 20687     
+Cut 16: >= 1 bjet > 20 GeV: (el-el) = 0         
+Cut 17: 4 jets > 50 GeV: (el-el) = 0         
+Cut 18: MET > 125 GeV: (el-el) = 0         
+***** El-Mu channel *****
+Cut 14: Channel seperation, same-sign [20, 20]: (el-mu) = 0         
+Cut 15: Trigger matching: (el-mu) = 0         
+Cut 16: >= 1 bjet > 20 GeV: (el-mu) = 0         
+Cut 17: 4 jets > 50 GeV: (el-mu) = 0         
+Cut 18: MET > 125 GeV: (el-mu) = 0         
+***** Mu-Mu channel *****
+Cut 14: Channel seperation, same-sign [20, 20]: (mu-mu) = 0         
+Cut 15: Trigger matching: (mu-mu) = 0         
+Cut 16: >= 1 bjet > 20 GeV: (mu-mu) = 0         
+Cut 17: 4 jets > 50 GeV: (mu-mu) = 0         
+Cut 18: MET > 125 GeV: (mu-mu) = 0         
+**************************************************
+**************************************************
+ Sum of EventWeight for each cut
+**************************************************
+Cut 0: All events before derivations (DerivationStat_Weights) = 0         
+Cut 1: All events in derivation/ntuple = 8.74936e+07
+Cut 2: GRL (for data only) = 0         
+Cut 3: Primary vertex = 7.68904e+07
+Cut 4: Trigger       = 7.25804e+07
+Cut 5: Global flags (data only) = 7.25804e+07
+Cut 6: Bad muon      = 8.7492e+07
+Cut 7: >= 1 jet passes jet OR = 0         
+Cut 8: Bad jet       = 7.24883e+07
+Cut 9: >= 1 signal jet = 0         
+Cut 10: Cosmic muons veto = 7.68453e+07
+Cut 11: >= 2 baseline leptons > 10 GeV = 6.57231e+07
+Cut 12: >= 2 signal leptons > 20 GeV = 3.79877e+07
+Cut 13: Same sign    = 0         
+***** El-El channel *****
+Cut 14: Channel seperation, same-sign [20, 20]: (el-el) = 0         
+Cut 15: Trigger matching: (el-el) = 3.79868e+07
+Cut 16: >= 1 bjet > 20 GeV: (el-el) = 0         
+Cut 17: 4 jets > 50 GeV: (el-el) = 0         
+Cut 18: MET > 125 GeV: (el-el) = 0         
+***** El-Mu channel *****
+Cut 14: Channel seperation, same-sign [20, 20]: (el-mu) = 0         
+Cut 15: Trigger matching: (el-mu) = 0         
+Cut 16: >= 1 bjet > 20 GeV: (el-mu) = 0         
+Cut 17: 4 jets > 50 GeV: (el-mu) = 0         
+Cut 18: MET > 125 GeV: (el-mu) = 0         
+***** Mu-Mu channel *****
+Cut 14: Channel seperation, same-sign [20, 20]: (mu-mu) = 0         
+Cut 15: Trigger matching: (mu-mu) = 0         
+Cut 16: >= 1 bjet > 20 GeV: (mu-mu) = 0         
+Cut 17: 4 jets > 50 GeV: (mu-mu) = 0         
+Cut 18: MET > 125 GeV: (mu-mu) = 0         
+**************************************************

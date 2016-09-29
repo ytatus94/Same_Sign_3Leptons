@@ -41,7 +41,7 @@ public:
 	double				derivation_stat_weights; // sum of EventWeight
 	TString				process;
 	double				luminosity;
-	vector<double> 		sum_of_weight_at_cut; // weight
+	vector<double>		sum_of_weight_at_cut; // weight =
 
 	yt_cutflows			*m_cutflow;
 #ifdef _SKIM_
@@ -93,287 +93,281 @@ public:
 	virtual void    Terminate();
 	// user defined functions
 #ifdef _IS_MC_
-	void fill_electrons(
-		Int_t           NEl,
-		int             flavor,
-		vector<double>  *El_eta,
-		vector<double>  *El_etaclus,
-		vector<double>  *El_phi,
-		vector<double>  *El_pT,
-		vector<double>  *El_E,
-		vector<int>     *El_charge,
-		vector<double>  *El_sigd0,
-		vector<double>  *El_z0sinTheta,
-		vector<double>  *El_d0pvtx,
-		vector<bool>    *El_passOR,
-		vector<double>  *El_SFwMediumLH,
-		vector<float>   *El_IsoSFwMediumLH,
-		vector<double>  *El_SFwTightLH,
-		vector<double>  *El_SFwLooseAndBLayerLH,
-		vector<double>  *El_SFwTrigMediumLH_e12_lhloose_L1EM10VH,
-		vector<double>  *El_SFwTrigMediumLH_e17_lhloose,
-		vector<double>  *El_SFwTrigMediumLH_single,
-		vector<double>  *El_SFwTrigLooseAndBLayerLH_e12_lhloose_L1EM10VH,
-		vector<bool>    *El_isLooseAndBLayerLH,
-		vector<bool>    *El_isMediumLH,
-		vector<bool>    *El_isTightLH,
-		vector<int>     *El_nBLayerHits,
-		vector<int>     *El_expectBLayerHit,
+	void fill_electrons(Int_t           NEl,
+						int             flavor,
+						vector<double>  *El_eta,
+						vector<double>  *El_etaclus,
+						vector<double>  *El_phi,
+						vector<double>  *El_pT,
+						vector<double>  *El_E,
+						vector<int>     *El_charge,
+						vector<double>  *El_sigd0,
+						vector<double>  *El_z0sinTheta,
+						vector<double>  *El_d0pvtx,
+						vector<bool>    *El_passOR,
+						vector<double>  *El_SFwMediumLH,
+						vector<float>   *El_IsoSFwMediumLH,
+						vector<double>  *El_SFwTightLH,
+						vector<double>  *El_SFwLooseAndBLayerLH,
+						vector<double>  *El_SFwTrigMediumLH_e12_lhloose_L1EM10VH,
+						vector<double>  *El_SFwTrigMediumLH_e17_lhloose,
+						vector<double>  *El_SFwTrigMediumLH_single,
+						vector<double>  *El_SFwTrigLooseAndBLayerLH_e12_lhloose_L1EM10VH,
+						vector<bool>    *El_isLooseAndBLayerLH,
+						vector<bool>    *El_isMediumLH,
+						vector<bool>    *El_isTightLH,
+						vector<int>     *El_nBLayerHits,
+						vector<int>     *El_expectBLayerHit,
 //
-		vector<int>     *El_type, // MC only
-		vector<int>     *El_origin, // MC only
-		vector<int>     *El_bkgMotherPdgId, // MC only
-		vector<int>     *El_bkgOrigin, // MC only
-		vector<int>     *El_chFlip, // MC only
+						vector<int>     *El_type, // MC only
+						vector<int>     *El_origin, // MC only
+						vector<int>     *El_bkgMotherPdgId, // MC only
+						vector<int>     *El_bkgOrigin, // MC only
+						vector<int>     *El_chFlip, // MC only
 //
-		vector<double>  *El_ptcone20,
-		vector<double>  *El_ptcone30,
-		vector<double>  *El_ptcone40,
-		vector<double>  *El_ptvarcone20,
-		vector<double>  *El_ptvarcone30,
-		vector<double>  *El_ptvarcone40,
-		vector<double>  *El_topoetcone20,
-		vector<double>  *El_topoetcone30,
-		vector<double>  *El_topoetcone40,
-		vector<bool>    *El_passIsoLooseTO,
-		vector<bool>    *El_passIsoLoose,
-		vector<bool>    *El_passIsoTight,
-		vector<bool>    *El_passIsoGrad,
-		vector<bool>    *El_passIsoGradCustomTight,
-		vector<bool>    *El_passIsoGradCustom,
-		vector<bool>    *El_passIsoGradLoose,
-		vector<bool>    *El_trigMatch_e12_lhloose_L1EM10VH,
-		vector<bool>    *El_trigMatch_e17_lhloose,
-		vector<bool>    *El_trigMatch_e60_lhmedium,
-		vector<bool>    *El_trigMatch_e24_lhmedium_iloose_L1EM20VH,
-		vector<bool>    *El_trigMatch_2e12_lhloose_L12EM10VH,
-		vector<bool>    *El_trigMatch_2e15_lhloose_L12EM10VH,
-		vector<bool>    *El_trigMatch_2e15_lhvloose_L12EM13VH,
-		vector<bool>    *El_trigMatch_2e15_lhvloose_nod0_L12EM13VH,
-		vector<bool>    *El_trigMatch_2e17_lhvloose_nod0,
-		vector<bool>    *El_trigMatch_e17_lhloose_mu14,
-		vector<bool>    *El_trigMatch_e17_lhloose_nod0_mu14,
-		vector<bool>    *El_TrigMatch_e24_lhmedium_nod0_ivarloose,
-		vector<bool>    *El_TrigMatch_e24_lhtight_nod0_ivarloose,
-		vector<bool>    *El_TrigMatch_e60_lhmedium_nod0);
+						vector<double>  *El_ptcone20,
+						vector<double>  *El_ptcone30,
+						vector<double>  *El_ptcone40,
+						vector<double>  *El_ptvarcone20,
+						vector<double>  *El_ptvarcone30,
+						vector<double>  *El_ptvarcone40,
+						vector<double>  *El_topoetcone20,
+						vector<double>  *El_topoetcone30,
+						vector<double>  *El_topoetcone40,
+						vector<bool>    *El_passIsoLooseTO,
+						vector<bool>    *El_passIsoLoose,
+						vector<bool>    *El_passIsoTight,
+						vector<bool>    *El_passIsoGrad,
+						vector<bool>    *El_passIsoGradCustomTight,
+						vector<bool>    *El_passIsoGradCustom,
+						vector<bool>    *El_passIsoGradLoose,
+						vector<bool>    *El_trigMatch_e12_lhloose_L1EM10VH,
+						vector<bool>    *El_trigMatch_e17_lhloose,
+						vector<bool>    *El_trigMatch_e60_lhmedium,
+						vector<bool>    *El_trigMatch_e24_lhmedium_iloose_L1EM20VH,
+						vector<bool>    *El_trigMatch_2e12_lhloose_L12EM10VH,
+						vector<bool>    *El_trigMatch_2e15_lhloose_L12EM10VH,
+						vector<bool>    *El_trigMatch_2e15_lhvloose_L12EM13VH,
+						vector<bool>    *El_trigMatch_2e15_lhvloose_nod0_L12EM13VH,
+						vector<bool>    *El_trigMatch_2e17_lhvloose_nod0,
+						vector<bool>    *El_trigMatch_e17_lhloose_mu14,
+						vector<bool>    *El_trigMatch_e17_lhloose_nod0_mu14,
+						vector<bool>    *El_TrigMatch_e24_lhmedium_nod0_ivarloose,
+						vector<bool>    *El_TrigMatch_e24_lhtight_nod0_ivarloose,
+						vector<bool>    *El_TrigMatch_e60_lhmedium_nod0);
 
-	void fill_muons(
-		Int_t           NMu,
-		int             flavor,
-		vector<double>  *Mu_eta,
-		vector<double>  *Mu_phi,
-		vector<double>  *Mu_pT,
-		vector<double>  *Mu_SFw,
-		vector<float>   *Mu_IsoSFw,
-		vector<int>     *Mu_charge,
-		vector<double>  *Mu_d0pvtx,
-		vector<double>  *Mu_sigd0,
-		vector<double>  *Mu_z0sinTheta,
-		vector<bool>    *Mu_isBad,
-		vector<bool>    *Mu_passOR,
-		vector<bool>    *Mu_isTight,
-		vector<bool>    *Mu_isCosmic,
+	void fill_muons(Int_t           NMu,
+					int             flavor,
+					vector<double>  *Mu_eta,
+					vector<double>  *Mu_phi,
+					vector<double>  *Mu_pT,
+					vector<double>  *Mu_SFw,
+					vector<float>   *Mu_IsoSFw,
+					vector<int>     *Mu_charge,
+					vector<double>  *Mu_d0pvtx,
+					vector<double>  *Mu_sigd0,
+					vector<double>  *Mu_z0sinTheta,
+					vector<bool>    *Mu_isBad,
+					vector<bool>    *Mu_passOR,
+					vector<bool>    *Mu_isTight,
+					vector<bool>    *Mu_isCosmic,
 //
-		vector<int>     *Mu_type, // MC only
-		vector<int>     *Mu_origin, // MC only
+					vector<int>     *Mu_type, // MC only
+					vector<int>     *Mu_origin, // MC only
 //
-		vector<double>  *Mu_ptcone20,
-		vector<double>  *Mu_ptcone30,
-		vector<double>  *Mu_ptcone40,
-		vector<double>  *Mu_ptvarcone20,
-		vector<double>  *Mu_ptvarcone30,
-		vector<double>  *Mu_ptvarcone40,
-		vector<double>  *Mu_topoetcone20,
-		vector<double>  *Mu_topoetcone30,
-		vector<double>  *Mu_topoetcone40,
-		vector<bool>    *Mu_passIsoLooseTO,
-		vector<bool>    *Mu_passIsoLoose,
-		vector<bool>    *Mu_passIsoTight,
-		vector<bool>    *Mu_passIsoGrad,
-		vector<bool>    *Mu_passIsoGradCustomTight,
-		vector<bool>    *Mu_passIsoGradCustom,
-		vector<bool>    *Mu_passIsoGradLoose,
-		Float_t         MuTrigSF_HLT_mu20_iloose_L1MU15_OR_HLT_mu50,
-		vector<bool>    *Mu_trigMatch_mu26_imedium,
-		vector<bool>    *Mu_trigMatch_mu50,
-		vector<bool>    *Mu_trigMatch_mu8noL1,
-		vector<bool>    *Mu_trigMatch_mu14,
-		vector<bool>    *Mu_trigMatch_mu18,
-		vector<bool>    *Mu_trigMatch_mu18_mu8noL1,
-		vector<bool>    *Mu_trigMatch_e17_lhloose_mu14,
-		vector<bool>    *Mu_trigMatch_e17_lhloose_nod0_mu14,
-		vector<bool>    *Mu_trigMatch_mu20_mu8noL1,
-		vector<bool>    *Mu_trigMatch_mu22_mu8noL1,
-		vector<bool>    *Mu_TrigMatch_mu24_iloose,
-		vector<bool>    *Mu_TrigMatch_mu24_ivarloose,
-		vector<bool>    *Mu_TrigMatch_mu24_iloose_L1MU15,
-		vector<bool>    *Mu_TrigMatch_mu24_ivarloose_L1MU15,
-		vector<vector<bool> > *Mu_trigMatchPair_mu18_mu8noL1,
-		vector<vector<bool> > *Mu_trigMatchPair_mu20_mu8noL1,
-		vector<vector<bool> > *Mu_trigMatchPair_mu22_mu8noL1);
+					vector<double>  *Mu_ptcone20,
+					vector<double>  *Mu_ptcone30,
+					vector<double>  *Mu_ptcone40,
+					vector<double>  *Mu_ptvarcone20,
+					vector<double>  *Mu_ptvarcone30,
+					vector<double>  *Mu_ptvarcone40,
+					vector<double>  *Mu_topoetcone20,
+					vector<double>  *Mu_topoetcone30,
+					vector<double>  *Mu_topoetcone40,
+					vector<bool>    *Mu_passIsoLooseTO,
+					vector<bool>    *Mu_passIsoLoose,
+					vector<bool>    *Mu_passIsoTight,
+					vector<bool>    *Mu_passIsoGrad,
+					vector<bool>    *Mu_passIsoGradCustomTight,
+					vector<bool>    *Mu_passIsoGradCustom,
+					vector<bool>    *Mu_passIsoGradLoose,
+					Float_t         MuTrigSF_HLT_mu20_iloose_L1MU15_OR_HLT_mu50,
+					vector<bool>    *Mu_trigMatch_mu26_imedium,
+					vector<bool>    *Mu_trigMatch_mu50,
+					vector<bool>    *Mu_trigMatch_mu8noL1,
+					vector<bool>    *Mu_trigMatch_mu14,
+					vector<bool>    *Mu_trigMatch_mu18,
+					vector<bool>    *Mu_trigMatch_mu18_mu8noL1,
+					vector<bool>    *Mu_trigMatch_e17_lhloose_mu14,
+					vector<bool>    *Mu_trigMatch_e17_lhloose_nod0_mu14,
+					vector<bool>    *Mu_trigMatch_mu20_mu8noL1,
+					vector<bool>    *Mu_trigMatch_mu22_mu8noL1,
+					vector<bool>    *Mu_TrigMatch_mu24_iloose,
+					vector<bool>    *Mu_TrigMatch_mu24_ivarloose,
+					vector<bool>    *Mu_TrigMatch_mu24_iloose_L1MU15,
+					vector<bool>    *Mu_TrigMatch_mu24_ivarloose_L1MU15,
+					vector<vector<bool> > *Mu_trigMatchPair_mu18_mu8noL1,
+					vector<vector<bool> > *Mu_trigMatchPair_mu20_mu8noL1,
+					vector<vector<bool> > *Mu_trigMatchPair_mu22_mu8noL1);
 
-	void fill_jets(
-		Int_t           NJet,
-		vector<double>  *Jet_eta,
-		vector<double>  *Jet_phi,
-		vector<double>  *Jet_pT,
-		vector<double>  *Jet_E,
-		vector<double>  *Jet_quality,
-		vector<double>  *Jet_JVT,
-		vector<double>  *Jet_JVTsf,
-		vector<double>  *Jet_MV2c20,
-		vector<double>  *Jet_MV2c10,
-		vector<double>  *Jet_SFw,
+	void fill_jets(Int_t           NJet,
+				   vector<double>  *Jet_eta,
+				   vector<double>  *Jet_phi,
+				   vector<double>  *Jet_pT,
+				   vector<double>  *Jet_E,
+				   vector<double>  *Jet_quality,
+				   vector<double>  *Jet_JVT,
+				   vector<double>  *Jet_JVTsf,
+				   vector<double>  *Jet_MV2c20,
+				   vector<double>  *Jet_MV2c10,
+				   vector<double>  *Jet_SFw,
 //
-		vector<int>     *Jet_ConeTruthLabel, // MC only
-		vector<int>     *Jet_PartonTruthLabel, // MC only
-		vector<int>     *Jet_HadronConeExclTruthLabel, // MC only
-		vector<double>  *Jet_deltaR, // MC only
+				   vector<int>     *Jet_ConeTruthLabel, // MC only
+				   vector<int>     *Jet_PartonTruthLabel, // MC only
+				   vector<int>     *Jet_HadronConeExclTruthLabel, // MC only
+				   vector<double>  *Jet_deltaR, // MC only
 //
-		vector<int>     *Jet_nTrk,
-		vector<bool>    *Jet_passOR);
+				   vector<int>     *Jet_nTrk,
+				   vector<bool>    *Jet_passOR);
 #endif // #ifdef _IS_MC_
 
 #ifdef _IS_DATA_
-    void fill_electrons(
-    	Int_t           NEl,
-		int             flavor,
-		vector<double>  *El_eta,
-		vector<double>  *El_etaclus,
-		vector<double>  *El_phi,
-		vector<double>  *El_pT,
-		vector<double>  *El_E,
-		vector<int>     *El_charge,
-		vector<double>  *El_sigd0,
-		vector<double>  *El_z0sinTheta,
-		vector<double>  *El_d0pvtx,
-		vector<bool>    *El_passOR,
-		vector<double>  *El_SFwMediumLH,
-		vector<float>   *El_IsoSFwMediumLH,
-		vector<double>  *El_SFwTightLH,
-		vector<double>  *El_SFwLooseAndBLayerLH,
-		vector<double>  *El_SFwTrigMediumLH_e12_lhloose_L1EM10VH,
-		vector<double>  *El_SFwTrigMediumLH_e17_lhloose,
-		vector<double>  *El_SFwTrigMediumLH_single,
-		vector<double>  *El_SFwTrigLooseAndBLayerLH_e12_lhloose_L1EM10VH,
-		vector<bool>    *El_isLooseAndBLayerLH,
-		vector<bool>    *El_isMediumLH,
-		vector<bool>    *El_isTightLH,
-		vector<int>     *El_nBLayerHits,
-		vector<int>     *El_expectBLayerHit,
-/*
-		vector<int>     *El_type, // MC only
-		vector<int>     *El_origin, // MC only
-		vector<int>     *El_bkgMotherPdgId, // MC only
-		vector<int>     *El_bkgOrigin, // MC only
-		vector<int>     *El_chFlip, // MC only
-*/
-		vector<double>  *El_ptcone20,
-		vector<double>  *El_ptcone30,
-		vector<double>  *El_ptcone40,
-		vector<double>  *El_ptvarcone20,
-		vector<double>  *El_ptvarcone30,
-		vector<double>  *El_ptvarcone40,
-		vector<double>  *El_topoetcone20,
-		vector<double>  *El_topoetcone30,
-		vector<double>  *El_topoetcone40,
-		vector<bool>    *El_passIsoLooseTO,
-		vector<bool>    *El_passIsoLoose,
-		vector<bool>    *El_passIsoTight,
-		vector<bool>    *El_passIsoGrad,
-		vector<bool>    *El_passIsoGradCustomTight,
-		vector<bool>    *El_passIsoGradCustom,
-		vector<bool>    *El_passIsoGradLoose,
-		vector<bool>    *El_trigMatch_e12_lhloose_L1EM10VH,
-		vector<bool>    *El_trigMatch_e17_lhloose,
-		vector<bool>    *El_trigMatch_e60_lhmedium,
-		vector<bool>    *El_trigMatch_e24_lhmedium_iloose_L1EM20VH,
-		vector<bool>    *El_trigMatch_2e12_lhloose_L12EM10VH,
-		vector<bool>    *El_trigMatch_2e15_lhloose_L12EM10VH,
-		vector<bool>    *El_trigMatch_2e15_lhvloose_L12EM13VH,
-		vector<bool>    *El_trigMatch_2e15_lhvloose_nod0_L12EM13VH,
-		vector<bool>    *El_trigMatch_2e17_lhvloose_nod0,
-		vector<bool>    *El_trigMatch_e17_lhloose_mu14,
-		vector<bool>    *El_trigMatch_e17_lhloose_nod0_mu14,
-		vector<bool>    *El_TrigMatch_e24_lhmedium_nod0_ivarloose,
-		vector<bool>    *El_TrigMatch_e24_lhtight_nod0_ivarloose,
-		vector<bool>    *El_TrigMatch_e60_lhmedium_nod0);
+    void fill_electrons(Int_t           NEl,
+                        int             flavor,
+                        vector<double>  *El_eta,
+                        vector<double>  *El_etaclus,
+                        vector<double>  *El_phi,
+                        vector<double>  *El_pT,
+                        vector<double>  *El_E,
+                        vector<int>     *El_charge,
+                        vector<double>  *El_sigd0,
+                        vector<double>  *El_z0sinTheta,
+                        vector<double>  *El_d0pvtx,
+                        vector<bool>    *El_passOR,
+                        vector<double>  *El_SFwMediumLH,
+                        vector<float>   *El_IsoSFwMediumLH,
+                        vector<double>  *El_SFwTightLH,
+                        vector<double>  *El_SFwLooseAndBLayerLH,
+                        vector<double>  *El_SFwTrigMediumLH_e12_lhloose_L1EM10VH,
+                        vector<double>  *El_SFwTrigMediumLH_e17_lhloose,
+                        vector<double>  *El_SFwTrigMediumLH_single,
+                        vector<double>  *El_SFwTrigLooseAndBLayerLH_e12_lhloose_L1EM10VH,
+                        vector<bool>    *El_isLooseAndBLayerLH,
+                        vector<bool>    *El_isMediumLH,
+                        vector<bool>    *El_isTightLH,
+                        vector<int>     *El_nBLayerHits,
+                        vector<int>     *El_expectBLayerHit,
+                        /*
+                        vector<int>     *El_type, // MC only
+                        vector<int>     *El_origin, // MC only
+                        vector<int>     *El_bkgMotherPdgId, // MC only
+                        vector<int>     *El_bkgOrigin, // MC only
+                        vector<int>     *El_chFlip, // MC only
+                        */
+                        vector<double>  *El_ptcone20,
+                        vector<double>  *El_ptcone30,
+                        vector<double>  *El_ptcone40,
+                        vector<double>  *El_ptvarcone20,
+                        vector<double>  *El_ptvarcone30,
+                        vector<double>  *El_ptvarcone40,
+                        vector<double>  *El_topoetcone20,
+                        vector<double>  *El_topoetcone30,
+                        vector<double>  *El_topoetcone40,
+                        vector<bool>    *El_passIsoLooseTO,
+                        vector<bool>    *El_passIsoLoose,
+                        vector<bool>    *El_passIsoTight,
+                        vector<bool>    *El_passIsoGrad,
+                        vector<bool>    *El_passIsoGradCustomTight,
+                        vector<bool>    *El_passIsoGradCustom,
+                        vector<bool>    *El_passIsoGradLoose,
+                        vector<bool>    *El_trigMatch_e12_lhloose_L1EM10VH,
+                        vector<bool>    *El_trigMatch_e17_lhloose,
+                        vector<bool>    *El_trigMatch_e60_lhmedium,
+                        vector<bool>    *El_trigMatch_e24_lhmedium_iloose_L1EM20VH,
+                        vector<bool>    *El_trigMatch_2e12_lhloose_L12EM10VH,
+                        vector<bool>    *El_trigMatch_2e15_lhloose_L12EM10VH,
+                        vector<bool>    *El_trigMatch_2e15_lhvloose_L12EM13VH,
+                        vector<bool>    *El_trigMatch_2e15_lhvloose_nod0_L12EM13VH,
+                        vector<bool>    *El_trigMatch_2e17_lhvloose_nod0,
+                        vector<bool>    *El_trigMatch_e17_lhloose_mu14,
+                        vector<bool>    *El_trigMatch_e17_lhloose_nod0_mu14,
+                        vector<bool>    *El_TrigMatch_e24_lhmedium_nod0_ivarloose,
+                        vector<bool>    *El_TrigMatch_e24_lhtight_nod0_ivarloose,
+                        vector<bool>    *El_TrigMatch_e60_lhmedium_nod0);
     
-    void fill_muons(
-    	Int_t           NMu,
-		int             flavor,
-		vector<double>  *Mu_eta,
-		vector<double>  *Mu_phi,
-		vector<double>  *Mu_pT,
-		vector<double>  *Mu_SFw,
-		vector<float>   *Mu_IsoSFw,
-		vector<int>     *Mu_charge,
-		vector<double>  *Mu_d0pvtx,
-		vector<double>  *Mu_sigd0,
-		vector<double>  *Mu_z0sinTheta,
-		vector<bool>    *Mu_isBad,
-		vector<bool>    *Mu_passOR,
-		vector<bool>    *Mu_isTight,
-		vector<bool>    *Mu_isCosmic,
-/*
-		vector<int>     *Mu_type, // MC only
-		vector<int>     *Mu_origin, // MC only
-*/
-		vector<double>  *Mu_ptcone20,
-		vector<double>  *Mu_ptcone30,
-		vector<double>  *Mu_ptcone40,
-		vector<double>  *Mu_ptvarcone20,
-		vector<double>  *Mu_ptvarcone30,
-		vector<double>  *Mu_ptvarcone40,
-		vector<double>  *Mu_topoetcone20,
-		vector<double>  *Mu_topoetcone30,
-		vector<double>  *Mu_topoetcone40,
-		vector<bool>    *Mu_passIsoLooseTO,
-		vector<bool>    *Mu_passIsoLoose,
-		vector<bool>    *Mu_passIsoTight,
-		vector<bool>    *Mu_passIsoGrad,
-		vector<bool>    *Mu_passIsoGradCustomTight,
-		vector<bool>    *Mu_passIsoGradCustom,
-		vector<bool>    *Mu_passIsoGradLoose,
-		Float_t         MuTrigSF_HLT_mu20_iloose_L1MU15_OR_HLT_mu50,
-		vector<bool>    *Mu_trigMatch_mu26_imedium,
-		vector<bool>    *Mu_trigMatch_mu50,
-		vector<bool>    *Mu_trigMatch_mu8noL1,
-		vector<bool>    *Mu_trigMatch_mu14,
-		vector<bool>    *Mu_trigMatch_mu18,
-		vector<bool>    *Mu_trigMatch_mu18_mu8noL1,
-		vector<bool>    *Mu_trigMatch_e17_lhloose_mu14,
-		vector<bool>    *Mu_trigMatch_e17_lhloose_nod0_mu14,
-		vector<bool>    *Mu_trigMatch_mu20_mu8noL1,
-		vector<bool>    *Mu_trigMatch_mu22_mu8noL1,
-		vector<bool>    *Mu_TrigMatch_mu24_iloose,
-		vector<bool>    *Mu_TrigMatch_mu24_ivarloose,
-		vector<bool>    *Mu_TrigMatch_mu24_iloose_L1MU15,
-		vector<bool>    *Mu_TrigMatch_mu24_ivarloose_L1MU15,
-		vector<vector<bool> > *Mu_trigMatchPair_mu18_mu8noL1,
-		vector<vector<bool> > *Mu_trigMatchPair_mu20_mu8noL1,
-		vector<vector<bool> > *Mu_trigMatchPair_mu22_mu8noL1);
+    void fill_muons(Int_t           NMu,
+                    int             flavor,
+                    vector<double>  *Mu_eta,
+                    vector<double>  *Mu_phi,
+                    vector<double>  *Mu_pT,
+                    vector<double>  *Mu_SFw,
+                    vector<float>   *Mu_IsoSFw,
+                    vector<int>     *Mu_charge,
+                    vector<double>  *Mu_d0pvtx,
+                    vector<double>  *Mu_sigd0,
+                    vector<double>  *Mu_z0sinTheta,
+                    vector<bool>    *Mu_isBad,
+                    vector<bool>    *Mu_passOR,
+                    vector<bool>    *Mu_isTight,
+                    vector<bool>    *Mu_isCosmic,
+                    /*
+                    vector<int>     *Mu_type, // MC only
+                    vector<int>     *Mu_origin, // MC only
+                    */
+                    vector<double>  *Mu_ptcone20,
+                    vector<double>  *Mu_ptcone30,
+                    vector<double>  *Mu_ptcone40,
+                    vector<double>  *Mu_ptvarcone20,
+                    vector<double>  *Mu_ptvarcone30,
+                    vector<double>  *Mu_ptvarcone40,
+                    vector<double>  *Mu_topoetcone20,
+                    vector<double>  *Mu_topoetcone30,
+                    vector<double>  *Mu_topoetcone40,
+                    vector<bool>    *Mu_passIsoLooseTO,
+                    vector<bool>    *Mu_passIsoLoose,
+                    vector<bool>    *Mu_passIsoTight,
+                    vector<bool>    *Mu_passIsoGrad,
+                    vector<bool>    *Mu_passIsoGradCustomTight,
+                    vector<bool>    *Mu_passIsoGradCustom,
+                    vector<bool>    *Mu_passIsoGradLoose,
+                    Float_t         MuTrigSF_HLT_mu20_iloose_L1MU15_OR_HLT_mu50,
+                    vector<bool>    *Mu_trigMatch_mu26_imedium,
+                    vector<bool>    *Mu_trigMatch_mu50,
+                    vector<bool>    *Mu_trigMatch_mu8noL1,
+                    vector<bool>    *Mu_trigMatch_mu14,
+                    vector<bool>    *Mu_trigMatch_mu18,
+                    vector<bool>    *Mu_trigMatch_mu18_mu8noL1,
+                    vector<bool>    *Mu_trigMatch_e17_lhloose_mu14,
+                    vector<bool>    *Mu_trigMatch_e17_lhloose_nod0_mu14,
+                    vector<bool>    *Mu_trigMatch_mu20_mu8noL1,
+                    vector<bool>    *Mu_trigMatch_mu22_mu8noL1,
+                    vector<bool>    *Mu_TrigMatch_mu24_iloose,
+                    vector<bool>    *Mu_TrigMatch_mu24_ivarloose,
+                    vector<bool>    *Mu_TrigMatch_mu24_iloose_L1MU15,
+                    vector<bool>    *Mu_TrigMatch_mu24_ivarloose_L1MU15,
+                    vector<vector<bool> > *Mu_trigMatchPair_mu18_mu8noL1,
+                    vector<vector<bool> > *Mu_trigMatchPair_mu20_mu8noL1,
+                    vector<vector<bool> > *Mu_trigMatchPair_mu22_mu8noL1);
     
-    void fill_jets(
-    	Int_t           NJet,
-		vector<double>  *Jet_eta,
-		vector<double>  *Jet_phi,
-		vector<double>  *Jet_pT,
-		vector<double>  *Jet_E,
-		vector<double>  *Jet_quality,
-		vector<double>  *Jet_JVT,
-		vector<double>  *Jet_JVTsf,
-		vector<double>  *Jet_MV2c20,
-		vector<double>  *Jet_MV2c10,
-		vector<double>  *Jet_SFw,
-/*
-		vector<int>     *Jet_ConeTruthLabel, // MC only
-		vector<int>     *Jet_PartonTruthLabel, // MC only
-		vector<int>     *Jet_HadronConeExclTruthLabel, // MC only
-		vector<double>  *Jet_deltaR, // MC only
-*/
-		vector<int>     *Jet_nTrk,
-		vector<bool>    *Jet_passOR);
+    void fill_jets(Int_t           NJet,
+                   vector<double>  *Jet_eta,
+                   vector<double>  *Jet_phi,
+                   vector<double>  *Jet_pT,
+                   vector<double>  *Jet_E,
+                   vector<double>  *Jet_quality,
+                   vector<double>  *Jet_JVT,
+                   vector<double>  *Jet_JVTsf,
+                   vector<double>  *Jet_MV2c20,
+                   vector<double>  *Jet_MV2c10,
+                   vector<double>  *Jet_SFw,
+                   /*
+                   vector<int>     *Jet_ConeTruthLabel, // MC only
+                   vector<int>     *Jet_PartonTruthLabel, // MC only
+                   vector<int>     *Jet_HadronConeExclTruthLabel, // MC only
+                   vector<double>  *Jet_deltaR, // MC only
+                   */
+                   vector<int>     *Jet_nTrk,
+                   vector<bool>    *Jet_passOR);
 #endif // #ifdef _IS_DATA_
 
 	void fill_leptons(vector<Electron> elec, vector<Muon> muon);
@@ -405,7 +399,7 @@ public:
 	void set_derivation_stat_weights(double d) { derivation_stat_weights = d; }
 	void set_luminosity(double d) { luminosity = d; }
 
-    // Output methods
+	// Output methods
 	template<typename T>
 	void debug_print(vector<T> vec);
 	void debug_elec_print(vector<Electron> elec);
@@ -413,17 +407,17 @@ public:
 	void debug_lept_print(vector<Lepton> lept);
 	void debug_jets_print(vector<Jet> jets);
 
-    // Weight related methods
-    double ID_weight(vector<Electron> elec, bool signal = true);
-    double ID_weight(vector<Muon> muon);
-    double Iso_weight(vector<Electron> elec);
-    double Iso_weight(vector<Muon> muon);
-    double lept_weight(double elec_ID_weight, double elec_iso_weight, double muon_ID_weight, double muon_iso_weight);
-    double jets_weight(vector<Jet> jets);
-    double calculate_weight(double event_weight, double PRW_weight, double lept_weight, double jets_weight);
-    double calculate_weight(double event_weight, double PRW_weight, vector<Electron> elec, vector<Muon> muon, vector<Jet> jets);
-    void update(int cut, bool passed, double weight);
-    void debug_sum_of_weight_print();
+	// Weight related methods
+	double ID_weight(vector<Electron> elec, bool signal = true);
+	double ID_weight(vector<Muon> muon);
+	double Iso_weight(vector<Electron> elec);
+	double Iso_weight(vector<Muon> muon);
+	double lept_weight(double elec_ID_weight, double elec_iso_weight, double muon_ID_weight, double muon_iso_weight);
+	double jets_weight(vector<Jet> jets);
+	double calculate_weight(double event_weight, double PRW_weight, double lept_weight, double jets_weight);
+	double calculate_weight(double event_weight, double PRW_weight, vector<Electron> elec, vector<Muon> muon, vector<Jet> jets);
+	void update(int cut, bool passed, double weight);
+	void debug_sum_of_weight_print();
 
 	ClassDef(yt_selector, 0);
 };
@@ -531,33 +525,21 @@ void yt_selector::debug_elec_print(vector<Electron> vec_elec)
 			<< ", isSignal=" << el_itr.get_isSignal()
 			<< ", flavor=" << el_itr.get_flavor() 
 			<< ", charge=" << el_itr.get_charge()
-			<< ", d0pvtx=" << el_itr.get_d0pvtx()
 			<< ", |d0sig|=" << fabs(el_itr.get_sigd0())
 			<< ", |z0sinTheta|=" << fabs(el_itr.get_z0sinTheta())
 			<< ", ptvarcone20/pt=" << el_itr.get_ptvarcone20() / el_itr.get_pt()
 			<< ", topoetcone20/pt=" << el_itr.get_topoetcone20() / el_itr.get_pt()
-			<< ", SFwTightLH=" << el_itr.get_SFwTightLH()
+			<< ", trigMatch_2e12_lhloose_L12EM10VH=" << el_itr.get_trigMatch_2e12_lhloose_L12EM10VH()
+			<< ", trigMatch_e17_lhloose_mu14=" << el_itr.get_trigMatch_e17_lhloose_mu14()
+			<< ", trigMatch_2e17_lhvloose_nod0=" << el_itr.get_trigMatch_2e17_lhvloose_nod0()
+			<< ", trigMatch_e17_lhloose_nod0_mu14=" << el_itr.get_trigMatch_e17_lhloose_nod0_mu14()
 			<< ", SFwMediumLH=" << el_itr.get_SFwMediumLH()
 			<< ", SFwLooseAndBLayerLH=" << el_itr.get_SFwLooseAndBLayerLH()
 			<< ", IsoSFwMediumLH=" << el_itr.get_IsoSFwMediumLH()
-			<< ", SFwTrigMediumLH_single=" << el_itr.get_SFwTrigMediumLH_single()
 			<< ", SFwTrigMediumLH_e12_lhloose_L1EM10VH=" << el_itr.get_SFwTrigMediumLH_e12_lhloose_L1EM10VH()
 			<< ", SFwTrigMediumLH_e17_lhloose=" << el_itr.get_SFwTrigMediumLH_e17_lhloose()
+			<< ", SFwTrigMediumLH_single=" << el_itr.get_SFwTrigMediumLH_single()
 			<< ", SFwTrigLooseAndBLayerLH_e12_lhloose_L1EM10VH=" << el_itr.get_SFwTrigLooseAndBLayerLH_e12_lhloose_L1EM10VH()
-			<< ", trigMatch_e12_lhloose_L1EM10VH=" << el_itr.get_trigMatch_e12_lhloose_L1EM10VH()
-			<< ", trigMatch_e17_lhloose=" << el_itr.get_trigMatch_e17_lhloose()
-			<< ", trigMatch_e17_lhloose_mu14=" << el_itr.get_trigMatch_e17_lhloose_mu14()
-			<< ", trigMatch_e17_lhloose_nod0_mu14=" << el_itr.get_trigMatch_e17_lhloose_nod0_mu14()
-			<< ", trigMatch_e24_lhmedium_iloose_L1EM20VH=" << el_itr.get_trigMatch_e24_lhmedium_iloose_L1EM20VH()
-			<< ", trigMatch_e60_lhmedium=" << el_itr.get_trigMatch_e60_lhmedium()
-			<< ", trigMatch_2e12_lhloose_L12EM10VH=" << el_itr.get_trigMatch_2e12_lhloose_L12EM10VH()
-			<< ", trigMatch_2e15_lhloose_L12EM10VH=" << el_itr.get_trigMatch_2e15_lhloose_L12EM10VH()
-			<< ", trigMatch_2e15_lhvloose_L12EM13VH=" << el_itr.get_trigMatch_2e15_lhvloose_L12EM13VH()
-			<< ", trigMatch_2e15_lhvloose_nod0_L12EM13VH=" << el_itr.get_trigMatch_2e15_lhvloose_nod0_L12EM13VH()
-			<< ", trigMatch_2e17_lhvloose_nod0=" << el_itr.get_trigMatch_2e17_lhvloose_nod0()
-			<< ", trigMatch_e24_lhmedium_nod0_ivarloose=" << el_itr.get_trigMatch_e24_lhmedium_nod0_ivarloose()
-			<< ", trigMatch_e24_lhtight_nod0_ivarloose=" << el_itr.get_trigMatch_e24_lhtight_nod0_ivarloose()
-			<< ", trigMatch_e60_lhmedium_nod0=" << el_itr.get_trigMatch_e60_lhmedium_nod0()
 			<< endl;
 		i++;
 	}
@@ -581,27 +563,10 @@ void yt_selector::debug_muon_print(vector<Muon> vec_muon)
 			<< ", charge=" << mu_itr.get_charge()
 			<< ", isBad=" << mu_itr.get_isBad()
 			<< ", isCosmic=" << mu_itr.get_isCosmic()
-			<< ", d0pvtx=" << mu_itr.get_d0pvtx()
 			<< ", |d0sig|=" << fabs(mu_itr.get_sigd0())
 			<< ", |z0sinTheta|=" << fabs(mu_itr.get_z0sinTheta())
 			<< ", ptvarcone30/pt=" << mu_itr.get_ptvarcone30() / mu_itr.get_pt()
-			<< ", SFw=" << mu_itr.get_SFw()
-			<< ", IsoSFw=" << mu_itr.get_IsoSFw()
-			<< ", MuTrigSF_HLT_mu20_iloose_L1MU15_OR_HLT_mu50=" << mu_itr.get_MuTrigSF_HLT_mu20_iloose_L1MU15_OR_HLT_mu50()
-			<< ", trigMatch_mu8noL1=" << mu_itr.get_trigMatch_mu8noL1()
-			<< ", trigMatch_mu14=" << mu_itr.get_trigMatch_mu14()
-			<< ", trigMatch_mu18=" << mu_itr.get_trigMatch_mu18()
-			<< ", trigMatch_mu18_mu8noL1=" << mu_itr.get_trigMatch_mu18_mu8noL1()
-			<< ", trigMatch_mu20_mu8noL1=" << mu_itr.get_trigMatch_mu20_mu8noL1()
-			<< ", trigMatch_mu22_mu8noL1=" << mu_itr.get_trigMatch_mu22_mu8noL1()
-			<< ", trigMatch_mu26_imedium=" << mu_itr.get_trigMatch_mu26_imedium()
-			<< ", trigMatch_mu50=" << mu_itr.get_trigMatch_mu50()
 			<< ", trigMatch_e17_lhloose_mu14=" << mu_itr.get_trigMatch_e17_lhloose_mu14()
-			<< ", trigMatch_e17_lhloose_nod0_mu14=" << mu_itr.get_trigMatch_e17_lhloose_nod0_mu14()
-			<< ", trigMatch_mu24_iloose=" << mu_itr.get_trigMatch_mu24_iloose()
-			<< ", trigMatch_mu24_ivarloose=" << mu_itr.get_trigMatch_mu24_ivarloose()
-			<< ", trigMatch_mu24_iloose_L1MU15=" << mu_itr.get_trigMatch_mu24_iloose_L1MU15()
-			<< ", trigMatch_mu24_ivarloose_L1MU15=" << mu_itr.get_trigMatch_mu24_ivarloose_L1MU15()
 			<< endl;
 		i++;
 	}
@@ -623,11 +588,9 @@ void yt_selector::debug_jets_print(vector<Jet> vec_jets)
 			<< ", isBjet=" << jet_itr.get_isBjet()
 			<< ", quality=" << jet_itr.get_quality()
 			<< ", JVT=" << jet_itr.get_JVT()
-			<< ", JVTsf=" << jet_itr.get_JVTsf()
-			<< ", MV2c20=" << jet_itr.get_MV2c20()
 			<< ", MV2c10=" << jet_itr.get_MV2c10()
-            << ", SFw=" << jet_itr.get_SFw()
-            << ", nTrk=" << jet_itr.get_nTrk()
+			<< ", SFw=" << jet_itr.get_SFw()
+			<< ", JVTsf=" << jet_itr.get_JVTsf()
 			<< endl;
 		i++;
 	}
@@ -743,6 +706,7 @@ void yt_selector::debug_sum_of_weight_print()
 		}
 	}
 	cout << "**************************************************" << endl;
+
 }
 
 #endif // #ifdef YT_SELECTOR_CXX

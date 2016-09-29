@@ -42,8 +42,8 @@ yt_cutflows::yt_cutflows()
 	// Using the information from  http://atlasdqm.web.cern.ch/atlasdqm/grlgen/All_Good/
 	m_GRL = new GoodRunsListSelectionTool("GoodRunsListSelectionTool");
 	std::vector<std::string> vecStringGRL;
-	vecStringGRL.push_back("/UserDisk2/yushen/Ximo_ntuples/v44/Cutflow/ytCutflows/GRL/data15_13TeV.periodAllYear_DetStatus-v79-repro20-02_DQDefects-00-02-02_PHYS_StandardGRL_All_Good_25ns.xml");
-	vecStringGRL.push_back("/UserDisk2/yushen/Ximo_ntuples/v44/Cutflow/ytCutflows/GRL/data16_13TeV.periodAllYear_DetStatus-v80-pro20-08_DQDefects-00-02-02_PHYS_StandardGRL_All_Good_25ns.xml");
+	vecStringGRL.push_back("/raid05/users/shen/Ximo_ntuples/v44/Cutflow/ytCutflows/GRL/data15_13TeV.periodAllYear_DetStatus-v79-repro20-02_DQDefects-00-02-02_PHYS_StandardGRL_All_Good_25ns.xml");
+	vecStringGRL.push_back("/raid05/users/shen/Ximo_ntuples/v44/Cutflow/ytCutflows/GRL/data16_13TeV.periodAllYear_DetStatus-v80-pro20-08_DQDefects-00-02-02_PHYS_StandardGRL_All_Good_25ns.xml");
 	m_GRL->setProperty("GoodRunsListVec", vecStringGRL);
 	m_GRL->setProperty("PassThrough", false);
 	if ( !m_GRL->initialize().isSuccess() ) {
@@ -54,9 +54,8 @@ yt_cutflows::yt_cutflows()
 	m_Pileup  = new CP::PileupReweightingTool("Pileup");
 	confFiles.push_back("/cvmfs/atlas.cern.ch/repo/sw/database/GroupData/dev/SUSYTools/merged_prw_mc15c.root");
 	// iLumiCalc file can be obtained with the lates GRL in https://atlas-lumicalc.cern.ch/
-	lcalcFiles.push_back("/UserDisk2/yushen/Ximo_ntuples/v44/Cutflow/ytCutflows/PRW/ilumicalc_histograms_None_276262-284484.root");
-	lcalcFiles.push_back("/UserDisk2/yushen/Ximo_ntuples/v44/Cutflow/ytCutflows/PRW/ilumicalc_histograms_None_297730-303560.root");
-	//lcalcFiles.push_back("/UserDisk2/yushen/Ximo_ntuples/v44/Cutflow/ytCutflows/PRW/ilumicalc_histograms_None_297730-303560_OflLumi-13TeV-001.root");
+	lcalcFiles.push_back("/raid05/users/shen/Ximo_ntuples/v44/Cutflow/ytCutflows/PRW/ilumicalc_histograms_None_276262-284484.root");
+	lcalcFiles.push_back("/raid05/users/shen/Ximo_ntuples/v44/Cutflow/ytCutflows/PRW/ilumicalc_histograms_None_297730-303560_OflLumi-13TeV-001.root");
 	m_Pileup->setProperty("ConfigFiles", confFiles);
 	m_Pileup->setProperty("DefaultChannel", 410000);
 	m_Pileup->setProperty("LumiCalcFiles", lcalcFiles);
@@ -75,8 +74,8 @@ yt_cutflows::yt_cutflows()
 	eventInfo = eInfos->at(0);
 
 	// initialize events_pass_cutflow to zero
-	//events_pass_cutflow = vector<unsigned int>(Ncuts, 0); // initialize Ncuts elements to zero.
-	events_pass_cutflow = vector<double>(Ncuts, 0.); // initialize Ncuts elements to zero.
+	events_pass_cutflow = vector<unsigned int>(Ncuts, 0); // initialize Ncuts elements to zero.
+	events_pass_cutflow_with_PRW_weight = vector<double>(Ncuts, 0.);
 
 	// initialize pileup_weight to zero
 	//pileupwgh = 0.;
@@ -96,32 +95,55 @@ void yt_cutflows::update(int cut, bool passed)
 		events_pass_cutflow[cut] += 1;
 }
 
-void yt_cutflows::print()
+void yt_cutflows::update(int cut, bool passed, double PRW_weight)
 {
+	if (passed)
+		events_pass_cutflow_with_PRW_weight[cut] += 1.0 * PRW_weight;
+}
+
+void yt_cutflows::print(bool with_PRW_weight = false)
+{
+	cout << "**************************************************" << endl;
+	if (!with_PRW_weight)
+		cout << "Cutflow: Number of Events pass cut" << endl;
+	else
+		cout << "Cutflow with PRW weight: Number of Events pass cut * PRWWeight" << endl;
 	cout << "**************************************************" << endl;
 	for (int cuts = 0; cuts < Ncuts; cuts++) {
 		//if (cuts == 14) {
 		if (cuts == ee_channel_separation) {
 			cout << "***** El-El channel *****" << endl;
-			cout << setw(20) << left << cut_name[cuts]  << " = " << setw(10) << events_pass_cutflow[cuts] << endl;
+			if (!with_PRW_weight)
+				cout << setw(20) << left << cut_name[cuts]  << " = " << setw(10) << events_pass_cutflow[cuts] << endl;
+			else
+				cout << setw(20) << left << cut_name[cuts]  << " = " << setw(10) << events_pass_cutflow_with_PRW_weight[cuts] << endl;
 		}
 		//else if (cuts == 19) {
 		else if (cuts == emu_channel_separation) {
 			cout << "***** El-Mu channel *****" << endl;
-			cout << setw(20) << left << cut_name[cuts]  << " = " << setw(10) << events_pass_cutflow[cuts] << endl;
+			if (!with_PRW_weight)
+				cout << setw(20) << left << cut_name[cuts]  << " = " << setw(10) << events_pass_cutflow[cuts] << endl;
+			else
+				cout << setw(20) << left << cut_name[cuts]  << " = " << setw(10) << events_pass_cutflow_with_PRW_weight[cuts] << endl;
 		}
 		//else if (cuts == 24) {
 		else if (cuts == mumu_channel_separation) {
 			cout << "***** Mu-Mu channel *****" << endl;
-			cout << setw(20) << left << cut_name[cuts]  << " = " << setw(10) << events_pass_cutflow[cuts] << endl;
+			if (!with_PRW_weight)
+				cout << setw(20) << left << cut_name[cuts]  << " = " << setw(10) << events_pass_cutflow[cuts] << endl;
+			else
+				cout << setw(20) << left << cut_name[cuts]  << " = " << setw(10) << events_pass_cutflow_with_PRW_weight[cuts] << endl;
 		}
 		else {
-			cout << setw(20) << left << cut_name[cuts]  << " = " << setw(10) << events_pass_cutflow[cuts] << endl;
+			if (!with_PRW_weight)
+				cout << setw(20) << left << cut_name[cuts]  << " = " << setw(10) << events_pass_cutflow[cuts] << endl;
+			else
+				cout << setw(20) << left << cut_name[cuts]  << " = " << setw(10) << events_pass_cutflow_with_PRW_weight[cuts] << endl;
 		}
 	}
 	cout << "**************************************************" << endl;
 }
-/*
+
 int yt_cutflows::get_mc_random_event_number(bool isData, bool isMC,
 											int event_number, int channel_number,
 											double average_mu, double event_weight, double PRW_weight,
@@ -156,7 +178,8 @@ int yt_cutflows::get_mc_random_event_number(bool isData, bool isMC,
 	// example to retrieve decoration:
 	//float pileupwgh = eventInfo->auxdata<float>("PileupWeight");
 	pileupwgh = eventInfo->auxdata<float>("PileupWeight");
-//
+cout << "pileupwgh=" << pileupwgh << endl;
+/*
 	// NEW: Systematic Variations
 	// DOWN
 	CP::SystematicSet downSet;
@@ -173,12 +196,12 @@ int yt_cutflows::get_mc_random_event_number(bool isData, bool isMC,
 	m_Pileup->apply(*eventInfo);
 	average_mu = eventInfo->auxdata<float>("corrected_averageInteractionsPerCrossing");
 	double pileupwghUP = eventInfo->auxdata<double>("PileupWeight");
-//
+*/
 	unsigned int random_run_number = eventInfo->auxdata<unsigned int>("RandomRunNumber");
 
 	return static_cast<int>(random_run_number);
 }
-*/
+
 bool yt_cutflows::pass_all_events()
 {
 	return true;

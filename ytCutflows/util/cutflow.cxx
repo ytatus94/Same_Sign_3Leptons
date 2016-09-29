@@ -19,7 +19,7 @@ int main( int argc, char* argv[] )
 	const char* APP_NAME = argv[0];
 
 	if (argc < 2) {
-		Error(APP_NAME, " Usage: %s [isData isMC]", APP_NAME);
+		Error(APP_NAME, " Usage: %s [isData=1/0 isMC=1/0]", APP_NAME);
 		exit(0);
 	}
 
@@ -51,14 +51,12 @@ int main( int argc, char* argv[] )
 	if (isData) {
 		cout << "Add data files to TChain..." << endl;
 		//cout << "Currently, no data." << endl;
-		path = "/UserDisk2/yushen/Ximo_ntuples/v44/Data/";
+		path = "/raid05/users/shen/Ximo_ntuples/v44/Data/";
 		fChain->Add(path + "/merged_all_data.root");
-
-		// For testing purpose
 		//fChain->Add(path + "/run303304.root");
 		//fChain->Add(path + "/run303421.root");
 /*
-		path = "/UserDisk2/yushen/Ximo_ntuples/v44/Data/user.jpoveda.t0789_v44.00303304.physics_Main.DAOD_SUSY2.f716_m1620_p2689_output.root/";
+		path = "/raid05/users/shen/Ximo_ntuples/v44/Data/user.jpoveda.t0789_v44.00303304.physics_Main.DAOD_SUSY2.f716_m1620_p2689_output.root/";
 		fChain->Add(path + "/user.jpoveda.9048831._000001.output.root");
 		fChain->Add(path + "/user.jpoveda.9048831._000004.output.root");
 		fChain->Add(path + "/user.jpoveda.9048831._000005.output.root");
@@ -75,28 +73,33 @@ int main( int argc, char* argv[] )
 	// for MC
 	else if (isMC) {
 		cout << "Add MC files to TChain..." << endl;
-		path = "/UserDisk2/yushen/Ximo_ntuples/v44/MC/";
+/*
+		path = "/UserDisk2/yushen/Ximo_ntuples/v44/MC/user.jpoveda.t0789_v44.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.DAOD_SUSY2.s2608_r7725_p2666_output.root";
+		fChain->Add(path + "/user.jpoveda.9048853._000001.output.root");
+*/
+
+		path = "/raid05/users/shen/Ximo_ntuples/v44/MC/";
 		if (process == "4topSM") {
 			fChain->Add(path + "/user.jpoveda.t0789_v44.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.DAOD_SUSY2.s2608_r7725_p2666_output.root/user.jpoveda.9048853._000001.output.root");
 		}
-        else if (process == "Zee") {
+		else if (process == "Zee") {
 			fChain->Add(path + "/Zee_merged.root");
 
-            //TString path_Zee = path + "user.jpoveda.t0789_v44.361106.PowhegPythia8EvtGen_AZNLOCTEQ6L1_Zee.DAOD_SUSY2.s2576_r7725_p2666_output.root/";
-            //fChain->Add(path_Zee + "user.jpoveda.9049172._000001.output.root");
-            //fChain->Add(path_Zee + "user.jpoveda.9049172._000002.output.root");
-            //fChain->Add(path_Zee + "user.jpoveda.9049172._000003.output.root");
-            //fChain->Add(path_Zee + "user.jpoveda.9049172._000004.output.root");
-            //fChain->Add(path_Zee + "user.jpoveda.9049172._000005.output.root");
-            //fChain->Add(path_Zee + "user.jpoveda.9049172._000006.output.root");
-            //fChain->Add(path_Zee + "user.jpoveda.9049172._000007.output.root");
-            //fChain->Add(path_Zee + "user.jpoveda.9049172._000008.output.root");
-            //fChain->Add(path_Zee + "user.jpoveda.9049172._000009.output.root");
-            //fChain->Add(path_Zee + "user.jpoveda.9049172._000010.output.root");
-            //fChain->Add(path_Zee + "user.jpoveda.9049172._000011.output.root");
-            //fChain->Add(path_Zee + "user.jpoveda.9049172._000012.output.root");
-            //fChain->Add(path_Zee + "user.jpoveda.9049172._000013.output.root");
-        }
+			//TString path_Zee = path + "user.jpoveda.t0789_v44.361106.PowhegPythia8EvtGen_AZNLOCTEQ6L1_Zee.DAOD_SUSY2.s2576_r7725_p2666_output.root/";
+			//fChain->Add(path_Zee + "user.jpoveda.9049172._000001.output.root");
+			//fChain->Add(path_Zee + "user.jpoveda.9049172._000002.output.root");
+			//fChain->Add(path_Zee + "user.jpoveda.9049172._000003.output.root");
+			//fChain->Add(path_Zee + "user.jpoveda.9049172._000004.output.root");
+			//fChain->Add(path_Zee + "user.jpoveda.9049172._000005.output.root");
+			//fChain->Add(path_Zee + "user.jpoveda.9049172._000006.output.root");
+			//fChain->Add(path_Zee + "user.jpoveda.9049172._000007.output.root");
+			//fChain->Add(path_Zee + "user.jpoveda.9049172._000008.output.root");
+			//fChain->Add(path_Zee + "user.jpoveda.9049172._000009.output.root");
+			//fChain->Add(path_Zee + "user.jpoveda.9049172._000010.output.root");
+			//fChain->Add(path_Zee + "user.jpoveda.9049172._000011.output.root");
+			//fChain->Add(path_Zee + "user.jpoveda.9049172._000012.output.root");
+			//fChain->Add(path_Zee + "user.jpoveda.9049172._000013.output.root");
+		}
 		else if (process == "Zmumu")
 			fChain->Add(path + "/Zmumu_merged.root");
 		else if (process == "ttbar")
@@ -105,6 +108,8 @@ int main( int argc, char* argv[] )
 			fChain->Add(path + "/GG_ttn1_merged.root");
 
 	}
+
+	//TFile *file = TFile::Open("/UserDisk2/yushen/Ximo_ntuples/v44/MC/user.jpoveda.t0789_v44.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.DAOD_SUSY2.s2608_r7725_p2666_output.root/user.jpoveda.9048853._000001.output.root");
 
 	TFile *file;
 	if (isData) {
@@ -115,24 +120,24 @@ int main( int argc, char* argv[] )
 	if (isMC) {
 		if (process == "4topSM")
 			file = TFile::Open(path + "/user.jpoveda.t0789_v44.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.DAOD_SUSY2.s2608_r7725_p2666_output.root/user.jpoveda.9048853._000001.output.root");
-        else if (process == "Zee") {
+		else if (process == "Zee") {
 			file = TFile::Open(path + "/Zee_merged.root");
 
-            //TString path_Zee = path + "user.jpoveda.t0789_v44.361106.PowhegPythia8EvtGen_AZNLOCTEQ6L1_Zee.DAOD_SUSY2.s2576_r7725_p2666_output.root/";
-            //file = TFile::Open(path_Zee + "user.jpoveda.9049172._000001.output.root");
-            //file = TFile::Open(path_Zee + "user.jpoveda.9049172._000002.output.root");
-            //file = TFile::Open(path_Zee + "user.jpoveda.9049172._000003.output.root");
-            //file = TFile::Open(path_Zee + "user.jpoveda.9049172._000004.output.root");
-            //file = TFile::Open(path_Zee + "user.jpoveda.9049172._000005.output.root");
-            //file = TFile::Open(path_Zee + "user.jpoveda.9049172._000006.output.root");
-            //file = TFile::Open(path_Zee + "user.jpoveda.9049172._000007.output.root");
-            //file = TFile::Open(path_Zee + "user.jpoveda.9049172._000008.output.root");
-            //file = TFile::Open(path_Zee + "user.jpoveda.9049172._000009.output.root");
-            //file = TFile::Open(path_Zee + "user.jpoveda.9049172._000010.output.root");
-            //file = TFile::Open(path_Zee + "user.jpoveda.9049172._000011.output.root");
-            //file = TFile::Open(path_Zee + "user.jpoveda.9049172._000012.output.root");
-            //file = TFile::Open(path_Zee + "user.jpoveda.9049172._000013.output.root");
-        }
+			//TString path_Zee = path + "user.jpoveda.t0789_v44.361106.PowhegPythia8EvtGen_AZNLOCTEQ6L1_Zee.DAOD_SUSY2.s2576_r7725_p2666_output.root/";
+			//file = TFile::Open(path_Zee + "user.jpoveda.9049172._000001.output.root");
+			//file = TFile::Open(path_Zee + "user.jpoveda.9049172._000002.output.root");
+			//file = TFile::Open(path_Zee + "user.jpoveda.9049172._000003.output.root");
+			//file = TFile::Open(path_Zee + "user.jpoveda.9049172._000004.output.root");
+			//file = TFile::Open(path_Zee + "user.jpoveda.9049172._000005.output.root");
+			//file = TFile::Open(path_Zee + "user.jpoveda.9049172._000006.output.root");
+			//file = TFile::Open(path_Zee + "user.jpoveda.9049172._000007.output.root");
+			//file = TFile::Open(path_Zee + "user.jpoveda.9049172._000008.output.root");
+			//file = TFile::Open(path_Zee + "user.jpoveda.9049172._000009.output.root");
+			//file = TFile::Open(path_Zee + "user.jpoveda.9049172._000010.output.root");
+			//file = TFile::Open(path_Zee + "user.jpoveda.9049172._000011.output.root");
+			//file = TFile::Open(path_Zee + "user.jpoveda.9049172._000012.output.root");
+			//file = TFile::Open(path_Zee + "user.jpoveda.9049172._000013.output.root");
+		}
 		else if (process == "Zmumu")
 			file = TFile::Open(path + "/Zmumu_merged.root");
 		else if (process == "ttbar")
@@ -146,8 +151,8 @@ int main( int argc, char* argv[] )
 	cout << "derivation_stat_weights=" << derivation_stat_weights << endl;
 
     //const double luminosity = 5.8; // unit: 1/fb, 3.2/fb (2015) + 2.6/fb (2016)
-	//const double luminosity = (3212.96 + 10589.2) / 1000.; // unit: 1/fb, 3.2/fb (2015) + 10.5892/fb (2016)
-	const double luminosity = 13.2; // unit: 1/fb, Ximo: the lumi is 13.2 for the ichep analysis
+    //const double luminosity = (3212.96 + 10589.2) / 1000.; // unit: 1/fb, 3.2/fb (2015) + 10.5892/fb (2016)
+    const double luminosity = 13.2; // unit: 1/fb, Ximo: the lumi is 13.2 for the ichep analysis
 	//double luminosity = 475.796043 / 1000.; // for run 303304
 	//double luminosity = 507.7084468 / 1000.; // for run 303421
 
@@ -159,5 +164,4 @@ int main( int argc, char* argv[] )
 	foo->set_derivation_stat_weights(derivation_stat_weights);
 	foo->set_luminosity(luminosity);
 	fChain->Process(foo);
-
 }

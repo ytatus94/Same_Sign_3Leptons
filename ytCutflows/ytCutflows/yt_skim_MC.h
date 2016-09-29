@@ -49,8 +49,8 @@ public:
     vector<bool>    *Jet_bJet_isSignal;
 
     // Events variables
-    double  baseline_weight;
-    double  signal_weight;
+	double  baseline_weight;
+	double  signal_weight;
     bool    isSS2l_trigger;
     double  normalization;
     double  pileup_weight;
@@ -156,9 +156,9 @@ public:
 	void set_luminosity(double number);
 	void set_run_number(int number);
 	void set_pileup_weight(float number);
-    void set_baseline_weight(double number);
-    void set_signal_weight(double number);
 	void set_event_weight_sum(double sum);
+	void set_baseline_weight(double number);
+	void set_signal_weight(double number);
     void set_cross_section_by_process(TString process);
 	void set_derivation_efficiency(TString bunch_spacing, TString process);
 
