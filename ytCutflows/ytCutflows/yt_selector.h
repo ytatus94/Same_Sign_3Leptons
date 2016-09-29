@@ -235,8 +235,8 @@ public:
 #endif // #ifdef _IS_MC_
 
 #ifdef _IS_DATA_
-    void fill_electrons(
-    	Int_t           NEl,
+	void fill_electrons(
+		Int_t           NEl,
 		int             flavor,
 		vector<double>  *El_eta,
 		vector<double>  *El_etaclus,
@@ -298,9 +298,9 @@ public:
 		vector<bool>    *El_TrigMatch_e24_lhmedium_nod0_ivarloose,
 		vector<bool>    *El_TrigMatch_e24_lhtight_nod0_ivarloose,
 		vector<bool>    *El_TrigMatch_e60_lhmedium_nod0);
-    
-    void fill_muons(
-    	Int_t           NMu,
+
+	void fill_muons(
+		Int_t           NMu,
 		int             flavor,
 		vector<double>  *Mu_eta,
 		vector<double>  *Mu_phi,
@@ -353,9 +353,9 @@ public:
 		vector<vector<bool> > *Mu_trigMatchPair_mu18_mu8noL1,
 		vector<vector<bool> > *Mu_trigMatchPair_mu20_mu8noL1,
 		vector<vector<bool> > *Mu_trigMatchPair_mu22_mu8noL1);
-    
-    void fill_jets(
-    	Int_t           NJet,
+
+	void fill_jets(
+		Int_t           NJet,
 		vector<double>  *Jet_eta,
 		vector<double>  *Jet_phi,
 		vector<double>  *Jet_pT,
@@ -405,7 +405,7 @@ public:
 	void set_derivation_stat_weights(double d) { derivation_stat_weights = d; }
 	void set_luminosity(double d) { luminosity = d; }
 
-    // Output methods
+	// Output methods
 	template<typename T>
 	void debug_print(vector<T> vec);
 	void debug_elec_print(vector<Electron> elec);
@@ -413,17 +413,17 @@ public:
 	void debug_lept_print(vector<Lepton> lept);
 	void debug_jets_print(vector<Jet> jets);
 
-    // Weight related methods
-    double ID_weight(vector<Electron> elec, bool signal = true);
-    double ID_weight(vector<Muon> muon);
-    double Iso_weight(vector<Electron> elec);
-    double Iso_weight(vector<Muon> muon);
-    double lept_weight(double elec_ID_weight, double elec_iso_weight, double muon_ID_weight, double muon_iso_weight);
-    double jets_weight(vector<Jet> jets);
-    double calculate_weight(double event_weight, double PRW_weight, double lept_weight, double jets_weight);
-    double calculate_weight(double event_weight, double PRW_weight, vector<Electron> elec, vector<Muon> muon, vector<Jet> jets);
-    void update(int cut, bool passed, double weight);
-    void debug_sum_of_weight_print();
+	// Weight related methods
+	double ID_weight(vector<Electron> elec, bool signal = true);
+	double ID_weight(vector<Muon> muon);
+	double Iso_weight(vector<Electron> elec);
+	double Iso_weight(vector<Muon> muon);
+	double lept_weight(double elec_ID_weight, double elec_iso_weight, double muon_ID_weight, double muon_iso_weight);
+	double jets_weight(vector<Jet> jets);
+	double calculate_weight(double event_weight, double PRW_weight, double lept_weight, double jets_weight);
+	double calculate_weight(double event_weight, double PRW_weight, vector<Electron> elec, vector<Muon> muon, vector<Jet> jets);
+	void update(int cut, bool passed, double weight);
+	void debug_sum_of_weight_print();
 
 	ClassDef(yt_selector, 0);
 };
@@ -626,8 +626,8 @@ void yt_selector::debug_jets_print(vector<Jet> vec_jets)
 			<< ", JVTsf=" << jet_itr.get_JVTsf()
 			<< ", MV2c20=" << jet_itr.get_MV2c20()
 			<< ", MV2c10=" << jet_itr.get_MV2c10()
-            << ", SFw=" << jet_itr.get_SFw()
-            << ", nTrk=" << jet_itr.get_nTrk()
+			<< ", SFw=" << jet_itr.get_SFw()
+			<< ", nTrk=" << jet_itr.get_nTrk()
 			<< endl;
 		i++;
 	}
