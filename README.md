@@ -5,6 +5,10 @@ Sample: user.jpoveda.t0789_v44.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.DA
 
 Use rcSetup Base,2.4.16
 
+v15. Add Sherpa samples
+1. Add merged_Sherpa_Zee.root and merged_Sherpa_Zmumu.root in cutflow.cxx.
+2. Change /UserDisk2/yushen to /raid05/users.
+
 v14. Change the indentation in yt_selector.h
 
 v13. Tag must fires single lepton trigger in the Z T&P method.

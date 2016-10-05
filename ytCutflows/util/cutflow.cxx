@@ -38,6 +38,8 @@ int main( int argc, char* argv[] )
 		if (strcmp(key, "Zmumu") == 0) process = "Zmumu";
 		if (strcmp(key, "ttbar") == 0) process = "ttbar";
 		if (strcmp(key, "GG_ttn1") == 0) process = "GG_ttn1";
+		if (strcmp(key, "Zee_Sherpa") == 0) process = "Zee_Sherpa";
+		if (strcmp(key, "Zmumu_Sherpa") == 0) process = "Zmumu_Sherpa";
 	}
 
 	Info(APP_NAME, "isMC = %s, isData = %s", isMC ? "true" : "false", isData ? "true" : "false");
@@ -51,7 +53,7 @@ int main( int argc, char* argv[] )
 	if (isData) {
 		cout << "Add data files to TChain..." << endl;
 		//cout << "Currently, no data." << endl;
-		path = "/UserDisk2/yushen/Ximo_ntuples/v44/Data/";
+		path = "/raid05/users/shen/Ximo_ntuples/v44/Data/";
 		fChain->Add(path + "/merged_all_data.root");
 
 		// For testing purpose
@@ -75,7 +77,7 @@ int main( int argc, char* argv[] )
 	// for MC
 	else if (isMC) {
 		cout << "Add MC files to TChain..." << endl;
-		path = "/UserDisk2/yushen/Ximo_ntuples/v44/MC/";
+		path = "/raid05/users/shen/Ximo_ntuples/v44/MC/";
 		if (process == "4topSM") {
 			fChain->Add(path + "/user.jpoveda.t0789_v44.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.DAOD_SUSY2.s2608_r7725_p2666_output.root/user.jpoveda.9048853._000001.output.root");
 		}
@@ -103,7 +105,10 @@ int main( int argc, char* argv[] )
 			fChain->Add(path + "/ttbar_merged.root");
 		else if (process == "GG_ttn1")
 			fChain->Add(path + "/GG_ttn1_merged.root");
-
+		else if (process == "Zee_Sherpa")
+			fChain->Add(path + "/merged_Sherpa_Zee.root");
+		else if (process == "Zmumu_Sherpa")
+			fChain->Add(path + "/merged_Sherpa_Zmumu.root");
 	}
 
 	TFile *file;
@@ -139,6 +144,11 @@ int main( int argc, char* argv[] )
 			file = TFile::Open(path + "/ttbar_merged.root");
 		else if (process == "GG_ttn1")
 			file = TFile::Open(path + "/GG_ttn1_merged.root");
+		else if (process == "Zee_Sherpa")
+			file = TFile::Open(path + "/merged_Sherpa_Zee.root");
+		else if (process == "Zmumu_Sherpa")
+			file = TFile::Open(path + "/merged_Sherpa_Zmumu.root");
+
 	}
 
 	TH1D *DerivationStat_Weights = (TH1D *)file->Get("DerivationStat_Weights");
