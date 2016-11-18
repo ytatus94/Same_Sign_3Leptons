@@ -5,8 +5,8 @@
 #include <TFile.h>
 #include <TTree.h>
 
-#include "ytCutflows/Leptons.h"
-#include "ytCutflows/Jet.h"
+#include "ytNUHM2Analysis/Leptons.h"
+#include "ytNUHM2Analysis/Jet.h"
 
 #include <iostream>
 #include <vector>

@@ -1,7 +1,7 @@
 #ifndef YT_SKIM_DATA_H
 #define YT_SKIM_DATA_H
 
-#include "ytCutflows/yt_skim.h"
+#include "ytNUHM2Analysis/yt_skim.h"
 
 #include <iostream>
 #include <vector>

@@ -2,6 +2,9 @@
 #include <ytNUHM2Analysis/yt_cutflows.h>
 #include <ytNUHM2Analysis/yt_optimization.h>
 #include <ytNUHM2Analysis/DileptonTriggerWeight.h>
+#include <ytNUHM2Analysis/yt_skim.h>
+#include <ytNUHM2Analysis/yt_skim_MC.h>
+#include <ytNUHM2Analysis/yt_skim_data.h>
 
 #ifdef __CINT__
 
@@ -17,4 +20,7 @@
 #pragma link C++ class yt_cutflows+;
 #pragma link C++ class yt_optimization+;
 #pragma link C++ class DileptonTriggerWeight+;
+#pragma link C++ class yt_skim+
+#pragma link C++ class yt_skim_MC+
+#pragma link C++ class yt_skim_data+
 #endif
