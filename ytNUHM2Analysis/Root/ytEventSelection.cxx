@@ -24,6 +24,8 @@ ytEventSelection::ytEventSelection ()
 	m_optimization	= new yt_optimization;
 	m_XsecDB		= new SUSY::CrossSectionDB(PathResolverFindCalibDirectory("SUSYTools/mc15_13TeV/"));
 	m_dtwTool		= new DileptonTriggerWeight;
+	m_skim_MC		= new yt_skim_MC;
+	m_skim_data		= new yt_skim_data;
 
 	// initialize event weight sum to zero
 	//sum_of_weight_at_cut = vector<double>(Ncuts, 0); // initialize Ncuts elements to zero.
@@ -545,6 +547,14 @@ EL::StatusCode ytEventSelection::initialize ()
 		m_optimization->initialize();
 	}
 	
+	if (isSkim) {
+		if (isMC)
+			m_skim_MC->initialize(fChain, process);
+		else if (isData)
+			m_skim_data->initialize(fChain);
+
+	}
+	
 	return EL::StatusCode::SUCCESS;
 }
 
@@ -827,7 +837,9 @@ EL::StatusCode ytEventSelection::execute ()
 			El_trigMatch_e17_lhloose_nod0_mu14,
 			El_TrigMatch_e24_lhmedium_nod0_ivarloose,
 			El_TrigMatch_e24_lhtight_nod0_ivarloose,
-			El_TrigMatch_e60_lhmedium_nod0);
+			El_TrigMatch_e60_lhmedium_nod0,
+			El_passChargeFlipTagger,
+			El_passChargeFlipTaggerBDT);
 
 		fill_muons(
 			NMu,
@@ -961,7 +973,7 @@ EL::StatusCode ytEventSelection::execute ()
 	// Apply cuts
 	//----------------------------------//
 
-	//m_cutflow->events_pass_cutflow[DerivationStat_Weights] = derivation_stat_weights; // read the first bin from root file.
+	m_cutflow->events_pass_cutflow[DerivationStat_Weights] = derivation_stat_weights; // read the first bin from root file.
 
 	bool cut1  = m_cutflow->pass_all_events();
 	m_cutflow->update(All_events, cut1);
@@ -996,9 +1008,11 @@ EL::StatusCode ytEventSelection::execute ()
 	m_cutflow->update(Bad_muon, cut6);
 	if (!cut6) return EL::StatusCode::SUCCESS;
 
-	bool cut7  = m_cutflow->pass_at_least_one_jet_passes_jet_OR(vec_baseline_jets); // use baseline jets
-	m_cutflow->update(At_least_one_jet_passes_jet_OR, cut7);
-	if (!cut7) return EL::StatusCode::SUCCESS;
+	if (!isSkim) {
+		bool cut7  = m_cutflow->pass_at_least_one_jet_passes_jet_OR(vec_baseline_jets); // use baseline jets
+		m_cutflow->update(At_least_one_jet_passes_jet_OR, cut7);
+		if (!cut7) return EL::StatusCode::SUCCESS;
+	}
 
 	bool cut8  = m_cutflow->pass_bad_jet(vec_jets); // we have to use the raw jet objects (vec_jets) at this step.
 	m_cutflow->update(Bad_jet, cut8);
@@ -1015,10 +1029,11 @@ EL::StatusCode ytEventSelection::execute ()
 	// JVT cut applied after OR and jet quality
 	fill_JVT_jets(vec_OR_jets);
 
-	bool cut9  = m_cutflow->pass_at_least_one_signal_jet(vec_JVT_jets);
-	m_cutflow->update(At_least_one_signal_jet, cut9);
-	if (!cut9) return EL::StatusCode::SUCCESS;
-
+	if (!isSkim) {
+		bool cut9  = m_cutflow->pass_at_least_one_signal_jet(vec_JVT_jets);
+		m_cutflow->update(At_least_one_signal_jet, cut9);
+		if (!cut9) return EL::StatusCode::SUCCESS;
+	}
 
 	bool cut10 = m_cutflow->pass_cosmic_muon_veto(vec_OR_muon);
 	m_cutflow->update(Cosmic_muons_veto, cut10);
@@ -1040,6 +1055,25 @@ EL::StatusCode ytEventSelection::execute ()
 	double baseline_weight = 1., signal_weight = 1.;
 	baseline_weight = ID_weight(vec_baseline_elec, false) * ID_weight(vec_baseline_muon) * jets_weight(vec_signal_jets);
 	signal_weight = ID_weight(vec_signal_elec, true) * Iso_weight(vec_signal_elec) * ID_weight(vec_signal_muon) * Iso_weight(vec_signal_muon) * jets_weight(vec_signal_jets);
+
+	if (isSkim) {
+		// Skimming data and MC for real lepton efficiency study
+		if (isMC) {
+			m_skim_MC->set_luminosity(luminosity);
+			m_skim_MC->set_event_weight_sum(derivation_stat_weights);
+			m_skim_MC->execute(vec_elec, vec_muon, vec_lept, vec_jets,
+							   vec_baseline_elec, vec_baseline_muon, vec_baseline_lept, vec_baseline_jets,
+							   vec_signal_elec, vec_signal_muon, vec_signal_lept, vec_signal_jets,
+							   Etmiss_TST_Et, EventWeight, PRWrandomRunNumber, PRWWeight, baseline_weight, signal_weight, process);
+		}
+		else if (isData) {
+			m_skim_data->execute(vec_elec, vec_muon, vec_lept, vec_jets,
+								 vec_baseline_elec, vec_baseline_muon, vec_baseline_lept, vec_baseline_jets,
+								 vec_signal_elec, vec_signal_muon, vec_signal_lept, vec_signal_jets,
+								 Etmiss_TST_Et, RunNb);
+
+		}
+	}
 
 	bool cut12 = m_cutflow->pass_at_least_two_signal_leptons_greater_than_20GeV(vec_signal_lept);
 	m_cutflow->update(At_least_two_signal_leptons_greater_than_20GeV, cut12);
@@ -2071,7 +2105,9 @@ void ytEventSelection::fill_electrons(
 	vector<bool>	*El_trigMatch_e17_lhloose_nod0_mu14,
 	vector<bool>	*El_TrigMatch_e24_lhmedium_nod0_ivarloose,
 	vector<bool>	*El_TrigMatch_e24_lhtight_nod0_ivarloose,
-	vector<bool>	*El_TrigMatch_e60_lhmedium_nod0)
+	vector<bool>	*El_TrigMatch_e60_lhmedium_nod0,
+	vector<bool>	*El_passChargeFlipTagger,
+	vector<float>	*El_passChargeFlipTaggerBDT)
 {
 	for (int i = 0; i < NEl; i++) {
 		Electron el;
@@ -2138,6 +2174,8 @@ void ytEventSelection::fill_electrons(
 		el.set_trigMatch_e24_lhmedium_nod0_ivarloose( (*El_TrigMatch_e24_lhmedium_nod0_ivarloose)[i] );
 		el.set_trigMatch_e24_lhtight_nod0_ivarloose( (*El_TrigMatch_e24_lhtight_nod0_ivarloose)[i] );
 		el.set_trigMatch_e60_lhmedium_nod0( (*El_TrigMatch_e60_lhmedium_nod0)[i] );
+		el.set_passChargeFlipTagger( (*El_passChargeFlipTagger)[i] );
+		el.set_passChargeFlipTaggerBDT( (*El_passChargeFlipTaggerBDT)[i] );
 		el.set_TLV_E(el.get_pt(), el.get_eta(), el.get_phi(), el.get_E());
 		vec_elec.push_back(el);
 	}

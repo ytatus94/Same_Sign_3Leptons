@@ -1,5 +1,5 @@
 #define YT_SKIM_CXX
-#include "ytCutflows/yt_skim.h"
+#include "ytNUHM2Analysis/yt_skim.h"
 
 void yt_skim::initialize()
 {

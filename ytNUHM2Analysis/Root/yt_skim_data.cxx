@@ -1,5 +1,5 @@
 #define YT_SKIM_DATA_CXX
-#include "ytCutflows/yt_skim_data.h"
+#include "ytNUHM2Analysis/yt_skim_data.h"
 
 yt_skim_data::yt_skim_data()
 {
@@ -91,7 +91,7 @@ yt_skim_data::~yt_skim_data()
 void yt_skim_data::initialize(TTree *tree)
 {
 	// Declare the output
-	TString output_path("/raid05/users/shen/Ximo_ntuples/v44/Skimmed/");
+	TString output_path("/raid05/users/shen/Ximo_ntuples/v47/Skimmed/");
 	output_file = TFile::Open(output_path + "/data_probes_all_periods.root", "RECREATE");
 	output_tree = (TTree*)tree->CloneTree(0);
 

@@ -18,6 +18,9 @@
 #include "ytNUHM2Analysis/Jet.h"
 #include "ytNUHM2Analysis/yt_cutflows.h"
 #include "ytNUHM2Analysis/yt_optimization.h"
+#include "ytNUHM2Analysis/yt_skim.h"
+#include "ytNUHM2Analysis/yt_skim_MC.h"
+#include "ytNUHM2Analysis/yt_skim_data.h"
 //#include "ytNUHM2Analysis/yt_useful_functions.h"
 #include "ytNUHM2Analysis/DileptonTriggerWeight.h"
 
@@ -63,33 +66,35 @@ public:
 
 	//vector<double>		sum_of_weight_at_cut; //!
 
-	yt_cutflows			*m_cutflow; //!
-	yt_optimization		*m_optimization; //!
+	yt_cutflows				*m_cutflow; //!
+	yt_optimization			*m_optimization; //!
+	yt_skim_MC				*m_skim_MC; //!
+	yt_skim_data			*m_skim_data; //!
 
 	SUSY::CrossSectionDB	*m_XsecDB; //!
 	DileptonTriggerWeight	*m_dtwTool;
 
-	vector<Electron>	vec_elec; //!
-	vector<Muon>		vec_muon; //!
-	vector<Lepton>		vec_lept; //!
-	vector<Jet>			vec_jets; //!
+	vector<Electron>		vec_elec; //!
+	vector<Muon>			vec_muon; //!
+	vector<Lepton>			vec_lept; //!
+	vector<Jet>				vec_jets; //!
 
-	vector<Electron>	vec_baseline_elec; //!
-	vector<Muon>		vec_baseline_muon; //!
-	vector<Lepton>		vec_baseline_lept; //!
-	vector<Jet>			vec_baseline_jets; //!
+	vector<Electron>		vec_baseline_elec; //!
+	vector<Muon>			vec_baseline_muon; //!
+	vector<Lepton>			vec_baseline_lept; //!
+	vector<Jet>				vec_baseline_jets; //!
 
-	vector<Electron> 	vec_OR_elec; //!
-	vector<Muon>		vec_OR_muon; //!
-	vector<Lepton>		vec_OR_lept; //!
-	vector<Jet>			vec_OR_jets; //!
+	vector<Electron> 		vec_OR_elec; //!
+	vector<Muon>			vec_OR_muon; //!
+	vector<Lepton>			vec_OR_lept; //!
+	vector<Jet>				vec_OR_jets; //!
 
-	vector<Jet>			vec_JVT_jets; //!
+	vector<Jet>				vec_JVT_jets; //!
 
-	vector<Electron> 	vec_signal_elec; //!
-	vector<Muon>		vec_signal_muon; //!
-	vector<Lepton>		vec_signal_lept; //!
-	vector<Jet>			vec_signal_jets; //!
+	vector<Electron> 		vec_signal_elec; //!
+	vector<Muon>			vec_signal_muon; //!
+	vector<Lepton>			vec_signal_lept; //!
+	vector<Jet>				vec_signal_jets; //!
 
 
 	// variables that don't get filled at submission time should be
@@ -837,7 +842,9 @@ void fill_muons(
 		vector<bool>	*El_trigMatch_e17_lhloose_nod0_mu14,
 		vector<bool>	*El_TrigMatch_e24_lhmedium_nod0_ivarloose,
 		vector<bool>	*El_TrigMatch_e24_lhtight_nod0_ivarloose,
-		vector<bool>	*El_TrigMatch_e60_lhmedium_nod0);
+		vector<bool>	*El_TrigMatch_e60_lhmedium_nod0,
+		vector<bool>	*El_passChargeFlipTagger,
+		vector<float>	*El_passChargeFlipTaggerBDT);
 
 	void fill_muons(
 		Int_t			NMu,
@@ -949,12 +956,14 @@ void fill_muons(
 	void set_isMC(bool b) { isMC = b; }
 	void set_isData(bool b) { isData = b; }
 	void set_isSkim(bool b) { isSkim = b; }
+	void set_isOptimization(bool b) { isOptimization = b; }
 	void set_isFullSim(bool b) { isFullSim = b; }
 	void set_isAF2Sim(bool b) { isAF2Sim = b; }
 
 	void set_process(string s) { process = s; }
-/*
+
 	void set_luminosity(double d) { luminosity = d; }
+/*
 	void set_cross_section(double d) { cross_section = d; }
 	void set_k_factor(double d) { k_factor = d; }
 	void set_filter_efficiency(double d) { filter_efficiency = d; }

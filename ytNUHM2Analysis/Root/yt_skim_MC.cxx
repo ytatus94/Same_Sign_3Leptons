@@ -1,5 +1,5 @@
 #define YT_SKIM_MC_CXX
-#include "ytCutflows/yt_skim_MC.h"
+#include "ytNUHM2Analysis/yt_skim_MC.h"
 
 yt_skim_MC::yt_skim_MC()
 {
@@ -121,7 +121,7 @@ yt_skim_MC::~yt_skim_MC()
 void yt_skim_MC::initialize(TTree *tree, TString process)
 {
 	// Declare the output
-	TString output_path("/raid05/users/shen/Ximo_ntuples/v44/Skimmed/");
+	TString output_path("/raid05/users/shen/Ximo_ntuples/v47/Skimmed/");
 	output_file = TFile::Open(output_path + "/MC_probes_" + process + ".root", "RECREATE");
 	output_tree = (TTree*)tree->CloneTree(0);
 

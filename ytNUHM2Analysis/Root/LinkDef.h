@@ -20,7 +20,7 @@
 #pragma link C++ class yt_cutflows+;
 #pragma link C++ class yt_optimization+;
 #pragma link C++ class DileptonTriggerWeight+;
-#pragma link C++ class yt_skim+
-#pragma link C++ class yt_skim_MC+
-#pragma link C++ class yt_skim_data+
+#pragma link C++ class yt_skim+;
+#pragma link C++ class yt_skim_MC+;
+#pragma link C++ class yt_skim_data+;
 #endif
