@@ -5,6 +5,8 @@
 #include <ytNUHM2Analysis/yt_skim.h>
 #include <ytNUHM2Analysis/yt_skim_MC.h>
 #include <ytNUHM2Analysis/yt_skim_data.h>
+#include <ytNUHM2Analysis/ytRealLeptonsEfficiency_MC.h>
+#include <ytNUHM2Analysis/ytRealLeptonsEfficiency_Data.h>
 
 #ifdef __CINT__
 
@@ -23,4 +25,6 @@
 #pragma link C++ class yt_skim+;
 #pragma link C++ class yt_skim_MC+;
 #pragma link C++ class yt_skim_data+;
+#pragma link C++ class ytRealLeptonsEfficiency_MC+;
+#pragma link C++ class ytRealLeptonsEfficiency_Data+;
 #endif

@@ -101,7 +101,7 @@ public:
 	yt_skim_data();
 	virtual ~yt_skim_data();
 
-	void initialize(TTree *tree);
+	void initialize(TTree *tree, TString process);
 	void execute(vector<Electron> elec, vector<Muon> muon, vector<Lepton> lept, vector<Jet> jets,
 				 vector<Electron> baseline_elec, vector<Muon> baseline_muon, vector<Lepton> baseline_lept, vector<Jet> baseline_jets,
 				 vector<Electron> signal_elec, vector<Muon> signal_muon, vector<Lepton> signal_lept, vector<Jet> signal_jets,

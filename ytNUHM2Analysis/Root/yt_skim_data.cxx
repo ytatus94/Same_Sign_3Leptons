@@ -88,11 +88,11 @@ yt_skim_data::~yt_skim_data()
 	//delete output_file;
 }
 
-void yt_skim_data::initialize(TTree *tree)
+void yt_skim_data::initialize(TTree *tree, TString process)
 {
 	// Declare the output
 	TString output_path("/raid05/users/shen/Ximo_ntuples/v47/Skimmed/");
-	output_file = TFile::Open(output_path + "/data_probes_all_periods.root", "RECREATE");
+	output_file = TFile::Open(output_path + "/data_probes_" + process + ".root", "RECREATE");
 	output_tree = (TTree*)tree->CloneTree(0);
 
 	// Building the new branches

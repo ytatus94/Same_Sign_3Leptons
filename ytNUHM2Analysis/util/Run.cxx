@@ -1,7 +1,7 @@
 // Usage:
-// Run cutflow/skim/optimization isData [PROOF/Condor]
-// Run cutflow/skim/optimization isMC Zee/Zmumu/ttbar/GG_ttn1 [PROOF/Condor]
+// Run cutflow/skim/optimization isData sample=abc [PROOF/Condor]
 // Run cutflow/skim/optimization isMC sample=abc [PROOF/Condor]
+// Run cutflow/skim/optimization isMC Zee/Zmumu/ttbar/GG_ttn1 [PROOF/Condor]
 //
 
 #include "SampleHandler/SampleHandler.h"
@@ -219,6 +219,7 @@ int main( int argc, char* argv[] ) {
 		printf("Running skim for %s\n", isMC ? process.c_str() : "Data");
 	else if (isOptimization)
 		printf("Running SR optimization for %s\n", isMC ? process.c_str() : "Data");
+	cout << "process = " << process << endl;
 
 	printf("isMC = %s, isData = %s\n", isMC ? "true" : "false", isData ? "true" : "false");
 
@@ -258,13 +259,13 @@ int main( int argc, char* argv[] ) {
 		else if (isOptimization)
 			submitDir = "optimization_MC_" + process;
 	}
-	else if (isData) {
+	else if (isData && !process.empty()) {
 		if (isCutflow)
-			submitDir = "cutflow_Data";
+			submitDir = "cutflow_Data_" + process;
 		else if (isSkim)
-			submitDir = "skim_Data";
+			submitDir = "skim_Data_" + process;
 		else if (isOptimization)
-			submitDir = "optimization_Data";
+			submitDir = "optimization_Data_" + process;
 	}
 	cout << "submitDir = " << submitDir << endl;
 
@@ -274,7 +275,7 @@ int main( int argc, char* argv[] ) {
 	// use SampleHandler to scan all of the subdirectories of a directory for particular MC single file:
 	const char* inputFilePath;
 	const char* NUHM2_inputFilePath;
-	const char* bkg_inputFilePath;
+	//const char* bkg_inputFilePath;
 
 	if (isMC) {
 		cout << "Read MC files..." << endl;
@@ -494,6 +495,8 @@ int main( int argc, char* argv[] ) {
 		cout << "Read Data files..." << endl;
 		inputFilePath = "../Data"; // no slash (/) at the end.
 		//SH::ScanDir().scan(sh, inputFilePath); // Get all datasets in inputFilePath
+		SH::ScanDir().filePattern(process + ".root").scan(sh, inputFilePath); // Get specific root file
+		/*
 		SH::ScanDir().filePattern("merged_data15.root").scan(sh, inputFilePath); // Get specific root file
 		SH::ScanDir().filePattern("merged_data16_periodA.root").scan(sh, inputFilePath); // Get specific root file
 		SH::ScanDir().filePattern("merged_data16_periodB.root").scan(sh, inputFilePath); // Get specific root file
@@ -504,6 +507,7 @@ int main( int argc, char* argv[] ) {
 		SH::ScanDir().filePattern("merged_data16_periodG.root").scan(sh, inputFilePath); // Get specific root file
 		SH::ScanDir().filePattern("merged_data16_periodI.root").scan(sh, inputFilePath); // Get specific root file
 		SH::ScanDir().filePattern("merged_data16_rest.root").scan(sh, inputFilePath); // Get specific root file
+		*/
 		//SH::ScanDir().filePattern("merged_all_data.root").scan(sh, inputFilePath); // Get specific root file
 		//SH::ScanDir().samplePattern("user.*.physics_Main.DAOD_SUSY2.*").scan(sh, inputFilePath); // Get all root files in this dataset
 	}

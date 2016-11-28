@@ -551,7 +551,7 @@ EL::StatusCode ytEventSelection::initialize ()
 		if (isMC)
 			m_skim_MC->initialize(fChain, process);
 		else if (isData)
-			m_skim_data->initialize(fChain);
+			m_skim_data->initialize(fChain, process);
 
 	}
 	
