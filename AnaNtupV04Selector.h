@@ -268,19 +268,19 @@ public :
    virtual void    Terminate();
 
     virtual void SetElecTLV(int iEl, vector<double> *el_pt,
-				     vector<double> *el_eta,
-				     vector<double> *el_phi,
-				     vector<double> *el_E);
+                                     vector<double> *el_eta,
+                                     vector<double> *el_phi,
+                                     vector<double> *el_E);
 
     virtual void SetMuonTLV(int iMu, vector<double> *mu_pt,
-				     vector<double> *mu_eta,
-				     vector<double> *mu_phi,
-				     double mu_M);
+                                     vector<double> *mu_eta,
+                                     vector<double> *mu_phi,
+                                     double mu_M);
 
     virtual void SetJetTLV(int iJet, vector<double> *jet_pt,
                                      vector<double> *jet_eta,
-				     vector<double> *jet_phi,
-				     vector<double> *jet_E);
+                                     vector<double> *jet_phi,
+                                     vector<double> *jet_E);
 
 
     virtual void OverlapRemoval(vector<OR_Object> *el_obj,
@@ -289,8 +289,8 @@ public :
                                 double dRejet = 0.2,
                                 double dRjetmu = 0.4,
                                 double dRjete = 0.4,
-			        double dRemu = 0.1,
-			        double dRee = 0.1);
+                                double dRemu = 0.1,
+                                double dRee = 0.1);
 
    ClassDef(AnaNtupV04Selector,0);
 };
