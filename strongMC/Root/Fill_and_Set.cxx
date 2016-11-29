@@ -9,13 +9,13 @@ void MySelector::Fill_electrons(int              RunNb,
                                 Int_t            NEl,
                                 int              flavor,
                                 vector<double>   *El_eta,
-				vector<double>   *El_etaclus,
+                                vector<double>   *El_etaclus,
                                 vector<double>   *El_phi,
                                 vector<double>   *El_pT,
                                 vector<double>   *El_E,
                                 vector<int>      *El_charge,
                                 vector<double>   *El_sigd0,
-				vector<double>   *El_sigd0old,
+                                vector<double>   *El_sigd0old,
                                 vector<double>   *El_z0pvtx,
                                 vector<double>   *El_d0pvtx,
                                 vector<double>   *El_SFwMedium,
@@ -28,12 +28,12 @@ void MySelector::Fill_electrons(int              RunNb,
                                 vector<bool>     *El_isLoose,
                                 vector<bool>     *El_isMedium,
                                 vector<bool>     *El_isTight,
-				vector<int>      *El_nBLayerHits,
-				vector<int>      *El_expectBLayerHit,
-				vector<int>      *El_type,
-				vector<int>      *El_origin,
-				vector<int>      *El_bkgMotherPdgId,
-				vector<int>      *El_bkgOrigin,
+                                vector<int>      *El_nBLayerHits,
+                                vector<int>      *El_expectBLayerHit,
+                                vector<int>      *El_type,
+                                vector<int>      *El_origin,
+                                vector<int>      *El_bkgMotherPdgId,
+                                vector<int>      *El_bkgOrigin,
                                 vector<double>   *El_ptcone20,
                                 vector<double>   *El_ptcone30,
                                 vector<double>   *El_ptcone40,
@@ -50,12 +50,12 @@ void MySelector::Fill_electrons(int              RunNb,
                                 vector<bool>     *El_passIsoGradLoose)
 {
     for (int i = 0; i < NEl; i++) {
-		// Fix d0 significance
-		double sigd0 = 0;
-		if (isMC)
-	    	sigd0 = sigd0_fixed_mc(6633, (*El_d0pvtx)[i], (*El_sigd0)[i], (*El_phi)[i]);
-		else if (isData)
-		    sigd0 = sigd0_fixed_data(RunNb, (*El_d0pvtx)[i], (*El_sigd0)[i], (*El_phi)[i]);
+        // Fix d0 significance
+        double sigd0 = 0;
+        if (isMC)
+            sigd0 = sigd0_fixed_mc(6633, (*El_d0pvtx)[i], (*El_sigd0)[i], (*El_phi)[i]);
+        else if (isData)
+            sigd0 = sigd0_fixed_data(RunNb, (*El_d0pvtx)[i], (*El_sigd0)[i], (*El_phi)[i]);
         else
             sigd0 = (*El_sigd0)[i];
 
@@ -63,7 +63,7 @@ void MySelector::Fill_electrons(int              RunNb,
         el.set_number(NEl);
         el.set_flavor(flavor);
         el.set_eta( (*El_eta)[i] );
-	el.set_etaclus( (*El_etaclus)[i] );
+        el.set_etaclus( (*El_etaclus)[i] );
         el.set_phi( (*El_phi)[i] );
         el.set_pt( (*El_pT)[i] );
         el.set_E( (*El_E)[i] );
@@ -83,12 +83,12 @@ void MySelector::Fill_electrons(int              RunNb,
         el.set_isLoose( (*El_isLoose)[i] );
         el.set_isMedium( (*El_isMedium)[i] );
         el.set_isTight( (*El_isTight)[i] );
-	el.set_nBLayerHits( (*El_nBLayerHits)[i] );
-	el.set_expectBLayerHit( (*El_expectBLayerHit)[i] );
-	el.set_type( (*El_type)[i] );
-	el.set_origin( (*El_origin)[i] );
-	el.set_bkgMotherPdgId( (*El_bkgMotherPdgId)[i] );
-	el.set_bkgOrigin( (*El_bkgOrigin)[i] );
+        el.set_nBLayerHits( (*El_nBLayerHits)[i] );
+        el.set_expectBLayerHit( (*El_expectBLayerHit)[i] );
+        el.set_type( (*El_type)[i] );
+        el.set_origin( (*El_origin)[i] );
+        el.set_bkgMotherPdgId( (*El_bkgMotherPdgId)[i] );
+        el.set_bkgOrigin( (*El_bkgOrigin)[i] );
         el.set_ptcone20( (*El_ptcone20)[i] );
         el.set_ptcone30( (*El_ptcone30)[i] );
         el.set_ptcone40( (*El_ptcone40)[i] );
@@ -118,12 +118,12 @@ void MySelector::Fill_muons(int              RunNb,
                             vector<int>      *Mu_charge,
                             vector<double>   *Mu_d0pvtx,
                             vector<double>   *Mu_sigd0,
-			    vector<double>   *Mu_sigd0old,
+                            vector<double>   *Mu_sigd0old,
                             vector<double>   *Mu_z0pvtx,
                             vector<bool>     *Mu_isBad,
                             vector<bool>     *Mu_isCosmic,
-			    vector<int>      *Mu_type,
-			    vector<int>      *Mu_origin,
+                            vector<int>      *Mu_type,
+                            vector<int>      *Mu_origin,
                             vector<double>   *Mu_ptcone20,
                             vector<double>   *Mu_ptcone30,
                             vector<double>   *Mu_ptcone40,
@@ -140,13 +140,13 @@ void MySelector::Fill_muons(int              RunNb,
                             vector<bool>     *Mu_passIsoGradLoose)
 {
     for (int i = 0; i < NMu; i++) {
-		// Fix d0 significance
-		double sigd0 = 0;
-		if (isMC)
-	    	sigd0 = sigd0_fixed_mc(6633, (*Mu_d0pvtx)[i], (*Mu_sigd0)[i], (*Mu_phi)[i]);
-		else if (isData)
-		    sigd0 = sigd0_fixed_data(RunNb, (*Mu_d0pvtx)[i], (*Mu_sigd0)[i], (*Mu_phi)[i]);
-		else
+        // Fix d0 significance
+        double sigd0 = 0;
+        if (isMC)
+            sigd0 = sigd0_fixed_mc(6633, (*Mu_d0pvtx)[i], (*Mu_sigd0)[i], (*Mu_phi)[i]);
+        else if (isData)
+            sigd0 = sigd0_fixed_data(RunNb, (*Mu_d0pvtx)[i], (*Mu_sigd0)[i], (*Mu_phi)[i]);
+        else
             sigd0 = (*Mu_sigd0)[i];
 
         Muon mu;
@@ -164,8 +164,8 @@ void MySelector::Fill_muons(int              RunNb,
         mu.set_z0pvtx( (*Mu_z0pvtx)[i] );
         mu.set_isBad( (*Mu_isBad)[i] );
         mu.set_isCosmic( (*Mu_isCosmic)[i] );
-	mu.set_type( (*Mu_type)[i] );
-	mu.set_origin( (*Mu_origin)[i] );
+        mu.set_type( (*Mu_type)[i] );
+        mu.set_origin( (*Mu_origin)[i] );
         mu.set_ptcone20( (*Mu_ptcone20)[i] );
         mu.set_ptcone30( (*Mu_ptcone30)[i] );
         mu.set_ptcone40( (*Mu_ptcone40)[i] );
@@ -195,9 +195,9 @@ void MySelector::Fill_jets(Int_t             NJet,
                            vector<double>    *Jet_JVT,
                            vector<double>    *Jet_MV2c20,
                            vector<double>    *Jet_SFw,
-			   vector<int>       *Jet_ConeTruthLabel,
-			   vector<int>       *Jet_PartonTruthLabel,
-			   vector<double>    *Jet_deltaR,
+                           vector<int>       *Jet_ConeTruthLabel,
+                           vector<int>       *Jet_PartonTruthLabel,
+                           vector<double>    *Jet_deltaR,
                            vector<int>       *Jet_nTrk)
 
 {
@@ -209,13 +209,13 @@ void MySelector::Fill_jets(Int_t             NJet,
         je.set_pt( (*Jet_pT)[i] );
         je.set_E( (*Jet_E)[i] );
         je.set_quality( (*Jet_quality)[i] );
-		je.set_JVT( (*Jet_JVF)[i] );
+        je.set_JVT( (*Jet_JVF)[i] );
         je.set_JVT( (*Jet_JVT)[i] );
         je.set_MV2c20( (*Jet_MV2c20)[i] );
         je.set_SFw( (*Jet_SFw)[i] );
-	je.set_ConeTruthLabel( (*Jet_ConeTruthLabel)[i] );
-	je.set_PartonTruthLabel( (*Jet_PartonTruthLabel)[i] );
-	je.set_deltaR( (*Jet_deltaR)[i] );
+        je.set_ConeTruthLabel( (*Jet_ConeTruthLabel)[i] );
+        je.set_PartonTruthLabel( (*Jet_PartonTruthLabel)[i] );
+        je.set_deltaR( (*Jet_deltaR)[i] );
         je.set_nTrk( (*Jet_nTrk)[i] );
         je.set_TLV_E(je.get_pt(), je.get_eta(), je.get_phi(), je.get_E());
         vec_jets.push_back(je);

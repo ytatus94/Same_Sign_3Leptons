@@ -41,7 +41,7 @@ int main( int argc, char* argv[] )
     // for MC ttbar cutflow
     if (isMC) {
         cout << "Add MC files to TChain..." << endl;
-	fChain->Add("/afs/cern.ch/work/y/yushen/private/Ximo/SS3LAnalysis/submit_dir/data-output/mc15_13TeV.370602.MGPy8EG_A14N23LO_NUHM2_m12_400_strong.merge.DAOD.e4209_a766_a777_r6282.root");
+        fChain->Add("/afs/cern.ch/work/y/yushen/private/Ximo/SS3LAnalysis/submit_dir/data-output/mc15_13TeV.370602.MGPy8EG_A14N23LO_NUHM2_m12_400_strong.merge.DAOD.e4209_a766_a777_r6282.root");
         //fChain->Add("../user.jpoveda.t0609_v12.410000.PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad.DAOD_SUSY1.s2608_r6633_p2353_output.root.31243678/user.jpoveda.5684539._000001.output.root");
         //fChain->Add("../user.jpoveda.t0609_v12.410000.PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad.DAOD_SUSY1.s2608_r6633_p2353_output.root.31251316/user.jpoveda.5684539._000002.output.root");
         //fChain->Add("../user.jpoveda.t0609_v12.410000.PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad.DAOD_SUSY1.s2608_r6633_p2353_output.root.31311442/user.jpoveda.5684539._000003.output.root");

@@ -227,7 +227,7 @@ public:
     TH1 *h_MET_signal_SS_emu;
     TH1 *h_MET_signal_SS_mumu;
 
-	// For Meff (baseline)
+    // For Meff (baseline)
     TH1 *h_meff_baseline_OS_ee;
     TH1 *h_meff_baseline_OS_emu;
     TH1 *h_meff_baseline_OS_mumu;
@@ -235,7 +235,7 @@ public:
     TH1 *h_meff_baseline_SS_emu;
     TH1 *h_meff_baseline_SS_mumu;
     
-	// For Meff (signal)
+    // For Meff (signal)
     TH1 *h_meff_signal_OS_ee;
     TH1 *h_meff_signal_OS_emu;
     TH1 *h_meff_signal_OS_mumu;
@@ -244,7 +244,7 @@ public:
     TH1 *h_meff_signal_SS_mumu;
 */    
 public:
-    TTree	*fChain; //!pointer to the analyzed TTree or TChain
+    TTree   *fChain; //!pointer to the analyzed TTree or TChain
 
     MySelector(TTree * /*tree*/ =0) : fChain(0) { }
     virtual ~MySelector() { }
@@ -272,7 +272,7 @@ public:
                         vector<double>   *El_E,
                         vector<int>      *El_charge,
                         vector<double>   *El_sigd0,
-			vector<double>   *El_sigd0old,
+                        vector<double>   *El_sigd0old,
                         vector<double>   *El_z0pvtx,
                         vector<double>   *El_d0pvtx,
                         vector<double>   *El_SFwMedium,
@@ -285,12 +285,12 @@ public:
                         vector<bool>     *El_isLoose,
                         vector<bool>     *El_isMedium,
                         vector<bool>     *El_isTight,
-			vector<int>      *El_nBLayerHits,
-			vector<int>      *El_expectBLayerHit,
-			vector<int>      *El_type,
-			vector<int>      *El_origin,
-			vector<int>      *El_bkgMotherPdgId,
-			vector<int>      *El_bkgOrigin,
+                        vector<int>      *El_nBLayerHits,
+                        vector<int>      *El_expectBLayerHit,
+                        vector<int>      *El_type,
+                        vector<int>      *El_origin,
+                        vector<int>      *El_bkgMotherPdgId,
+                        vector<int>      *El_bkgOrigin,
                         vector<double>   *El_ptcone20,
                         vector<double>   *El_ptcone30,
                         vector<double>   *El_ptcone40,
@@ -316,12 +316,12 @@ public:
                     vector<int>      *Mu_charge,
                     vector<double>   *Mu_d0pvtx,
                     vector<double>   *Mu_sigd0,
-		    vector<double>   *Mu_sigd0old,
+                    vector<double>   *Mu_sigd0old,
                     vector<double>   *Mu_z0pvtx,
                     vector<bool>     *Mu_isBad,
                     vector<bool>     *Mu_isCosmic,
-		    vector<int>      *Mu_type,
-		    vector<int>      *Mu_origin,
+                    vector<int>      *Mu_type,
+                    vector<int>      *Mu_origin,
                     vector<double>   *Mu_ptcone20,
                     vector<double>   *Mu_ptcone30,
                     vector<double>   *Mu_ptcone40,
@@ -347,9 +347,9 @@ public:
                    vector<double>    *Jet_JVT,
                    vector<double>    *Jet_MV2c20,
                    vector<double>    *Jet_SFw,
-		   vector<int>       *Jet_ConeTruthLabel,
-		   vector<int>       *Jet_PartonTruthLabel,
-		   vector<double>    *Jet_deltaR, 
+                   vector<int>       *Jet_ConeTruthLabel,
+                   vector<int>       *Jet_PartonTruthLabel,
+                   vector<double>    *Jet_deltaR, 
                    vector<int>       *Jet_nTrk);
     
     void Fill_leptons(vector<Electron> vec_elec, vector<Muon> vec_muon);
@@ -369,7 +369,7 @@ public:
     void Set_baseline_and_signal_jets();
 
     friend void OverlapRemoval(int EventNumber,
-			       			   vector<Electron> *el_obj,
+                               vector<Electron> *el_obj,
                                vector<Muon>     *mu_obj,
                                vector<Jet>      *jet_obj,
                                double dRejet,
