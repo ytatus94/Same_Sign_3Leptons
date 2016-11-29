@@ -412,9 +412,9 @@ Bool_t MySelector::Process(Long64_t entry)
     // TH1F* h_w = (TH1F*)f->Get("DerivationStat_Weights");
     // SumW += h_w->GetBinContent(1);
     if (isData == 1)
-	fAllEventsBeforeDerivations = 3651777; // data 266904
+        fAllEventsBeforeDerivations = 3651777; // data 266904
     if (isMC == 1)
-	fAllEventsBeforeDerivations = 1997000; // MC ttbar
+        fAllEventsBeforeDerivations = 1997000; // MC ttbar
     hCutFlows->Fill(0); // Cut 0: All events before derivations (DerivationStat_Weights)
 
     AnaNtupSelector::Process(entry);
@@ -604,12 +604,12 @@ Bool_t MySelector::Process(Long64_t entry)
     // Cosmics rejection cuts: these cuts should be applied AFTER overlap removal to avoid removing muons from heavy flavor decays.
     int cosmicMuon = 0;
     for (auto & mu_itr : vec_muon) {
-	if (!mu_itr.get_passOR()) continue;	
-        if (mu_itr.get_isCosmic() == true &&
-            mu_itr.get_passOR() == true) {
-            mu_itr.set_baseline(0);
-            mu_itr.set_passOR(0);
-            cosmicMuon++;
+        if (!mu_itr.get_passOR()) continue;	
+            if (mu_itr.get_isCosmic() == true &&
+                mu_itr.get_passOR() == true) {
+                mu_itr.set_baseline(0);
+                mu_itr.set_passOR(0);
+                cosmicMuon++;
         }
     }
     if (cosmicMuon > 0) return kTRUE;
@@ -684,7 +684,7 @@ Bool_t MySelector::Process(Long64_t entry)
         if (Nlep_sig_pt20 == 2 && same_sign == 1) { // a same-sign pair within the signal leptons in the event
             fAtLeastTwoSignalLeptons++;
             hCutFlows->Fill(9); // Cut 9: ≥ 2 signal leptons (>20 GeV)
-	}
+        }
         else {
             fAtLeastTwoSignalLeptons++;
             hCutFlows->Fill(9); // Cut 9: ≥ 2 signal leptons (>20 GeV)
@@ -704,9 +704,9 @@ Bool_t MySelector::Process(Long64_t entry)
 
     // Channel separation [20,20]
     if (Nlep_sig_pt20 >= 2) {
-	    bool same_sign_pair = false;
+        bool same_sign_pair = false;
         
-	    for (int i = 0; i < Nlep_sig - 1; i++) {
+        for (int i = 0; i < Nlep_sig - 1; i++) {
             int i_charge = vec_signal_lept.at(i).get_charge();
             int i_flavor = vec_signal_lept.at(i).get_flavor();
 
@@ -726,7 +726,7 @@ Bool_t MySelector::Process(Long64_t entry)
             }
             if (same_sign_pair)
                 break;
-	    }
+        }
     }
     
     switch (channel_selection) {
@@ -896,7 +896,7 @@ Bool_t MySelector::Process(Long64_t entry)
             break;
     }
 
-/*	     
+/* 
     // Channel separation [20,20]: El-El channel
     if (Nel_sig_pt20 == 2 && Nmu_sig_pt20 == 0) {
         fChannelSelection_elel++;
