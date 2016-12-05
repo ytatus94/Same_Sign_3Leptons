@@ -555,7 +555,7 @@ int main( int argc, char* argv[] ) {
 			alg->set_process(string(bkg_sample));
 	}
 	*/
-	const double luminosity = 33.3; // unit: 1/fb
+	const double luminosity = 36.5; // unit: 1/fb 2015+2016
 	alg->set_luminosity(luminosity);
 
 	if (isData)

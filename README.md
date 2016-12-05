@@ -7,6 +7,10 @@ This is SS/3L+jet cutflows study v44.
 ### Setting:
 
 
+### v01-06. (oldskim branch) Change lumi
+The lumi for 2015 + 2016 data is 3.2 + 33.3 = 36.5 fb-1
+
+
 ### v01-06. (oldskim branch) Add RLE codes.
 * new file:   `ytNUHM2Analysis/Root/ytRealLeptonsEfficiency_Data.cxx`
 * new file:   `ytNUHM2Analysis/Root/ytRealLeptonsEfficiency_MC.cxx`
