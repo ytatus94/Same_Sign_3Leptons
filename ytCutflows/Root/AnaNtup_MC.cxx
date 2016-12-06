@@ -68,7 +68,7 @@ Bool_t AnaNtup_MC::Process(Long64_t entry)
    //
    // The return value is currently not used.
 
-	fChain->GetTree()->GetEntry(entry);
+   fChain->GetTree()->GetEntry(entry);
 
    return kTRUE;
 }
