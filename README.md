@@ -7,6 +7,11 @@ This is SS/3L+jet cutflows study v44.
 ### Setting:
 
 
+### v01-07. (oldskim branch) Add two scripts to run skim and RLE
+* Add `run_all_RLE.sh` and `run_all_skim.sh`
+* Modify `RLE.cxx` to read different period of data.
+
+
 ### v01-06. (oldskim branch) Change lumi
 The lumi for 2015 + 2016 data is 3.2 + 33.3 = 36.5 fb-1
 
