@@ -12,11 +12,11 @@ using namespace std;
 class yt_skim_MC : public yt_skim
 {
 public:
-	// user defined variables
+    // user defined variables
 
     // Declare the output
-	TFile *output_file;
-	TTree *output_tree;
+    TFile *output_file;
+    TTree *output_tree;
 
     // Declaring the new variables
     // Physics object variables
@@ -81,7 +81,7 @@ public:
     int     baseline_channel;
     int     channel; // -1 for less than 2 leptons,  1 for ee,  2 for em ,  3 for mm
 
-	int		run_number;
+    int     run_number;
     // ----------------------------
 /*
     vector<int>     EventNumberList;
@@ -120,8 +120,8 @@ public:
     double n_normalized_tot_TTbarTandP_electrons;
     double n_normalized_tot_TTbarTandP_muons;
 
-	// Event weight
-	double event_weight_sum;
+    // Event weight
+    double event_weight_sum;
 
     // Normalisation scale factor
     const double lumi = 5.8; // unit: 1/fb, 3.2/fb (2015) + 2.6/fb (2016)
@@ -135,28 +135,28 @@ public:
     double analysis1LeptonFilter;  // ttbar (non all had)
 
 public:
-	yt_skim_MC();
-	virtual ~yt_skim_MC();
+    yt_skim_MC();
+    virtual ~yt_skim_MC();
 
-	void initialize(TTree *tree, TString process);
-	void execute(vector<Electron> elec, vector<Muon> muon, vector<Lepton> lept, vector<Jet> jets,
-				 vector<Electron> baseline_elec, vector<Muon> baseline_muon, vector<Lepton> baseline_lept, vector<Jet> baseline_jets,
-				 vector<Electron> signal_elec, vector<Muon> signal_muon, vector<Lepton> signal_lept, vector<Jet> signal_jets,
+    void initialize(TTree *tree, TString process);
+    void execute(vector<Electron> elec, vector<Muon> muon, vector<Lepton> lept, vector<Jet> jets,
+                 vector<Electron> baseline_elec, vector<Muon> baseline_muon, vector<Lepton> baseline_lept, vector<Jet> baseline_jets,
+                 vector<Electron> signal_elec, vector<Muon> signal_muon, vector<Lepton> signal_lept, vector<Jet> signal_jets,
                  double Etmiss_TST_Et, double event_weight, int run_number, float pileup_weight, TString process);
-	void finalize(TString process);
+    void finalize(TString process);
 
     void reset_vectors();
     void calculate_new_variables(double Etmiss_TST_Et);
     void tag_and_probe_Zee(int run_number);
     void tag_and_probe_ttbar(double Etmiss_TST_Et);
 
-	void set_run_number(int number);
-	void set_pileup_weight(float number);
-	void set_event_weight_sum(double sum);
+    void set_run_number(int number);
+    void set_pileup_weight(float number);
+    void set_event_weight_sum(double sum);
     void set_cross_section_by_process(TString process);
-	void set_derivation_efficiency(TString bunch_spacing, TString process);
+    void set_derivation_efficiency(TString bunch_spacing, TString process);
 
-	ClassDef(yt_skim_MC, 0);
+    ClassDef(yt_skim_MC, 0);
 };
 
 #endif // #ifndef YT_SKIM_MC_H
