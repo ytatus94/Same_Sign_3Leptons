@@ -33,8 +33,8 @@ yt_skim_MC::yt_skim_MC()
     Jet_bJet_isSignal  = new vector<bool>();
 
     // Events variables
-	baseline_weight = 1.;
-	signal_weight = 1.;
+    baseline_weight = 1.;
+    signal_weight = 1.;
     isSS2l_trigger = false;
     normalization = 0.;
     pileup_weight = 0.;
@@ -67,7 +67,7 @@ yt_skim_MC::yt_skim_MC()
     baseline_channel = 0;
     channel = -1; // -1 for less than 2 leptons,  1 for ee,  2 for em ,  3 for mm
 
-	run_number = 0;
+    run_number = 0;
 
     // Counters
     //n_duplicated_EventNumber = 0;
@@ -100,8 +100,8 @@ yt_skim_MC::yt_skim_MC()
     n_normalized_tot_TTbarTandP_electrons = 0;
     n_normalized_tot_TTbarTandP_muons = 0;
 
-	// Event weight
-	event_weight_sum = 0;
+    // Event weight
+    event_weight_sum = 0;
 
     // Cross section
     crossSection = 1; // Inclusive crossSection * factor 1 * factor 2 * factor 3
@@ -114,16 +114,16 @@ yt_skim_MC::yt_skim_MC()
 
 yt_skim_MC::~yt_skim_MC()
 {
-	//delete output_tree;
-	//delete output_file;
+    //delete output_tree;
+    //delete output_file;
 }
 
 void yt_skim_MC::initialize(TTree *tree, TString process)
 {
-	// Declare the output
-	TString output_path("/raid05/users/shen/Ximo_ntuples/v44/Skimmed/");
-	output_file = TFile::Open(output_path + "/MC_probes_" + process + ".root", "RECREATE");
-	output_tree = (TTree*)tree->CloneTree(0);
+    // Declare the output
+    TString output_path("/raid05/users/shen/Ximo_ntuples/v44/Skimmed/");
+    output_file = TFile::Open(output_path + "/MC_probes_" + process + ".root", "RECREATE");
+    output_tree = (TTree*)tree->CloneTree(0);
 
     // Building the new branches
     // Physics object variables
@@ -155,8 +155,8 @@ void yt_skim_MC::initialize(TTree *tree, TString process)
     output_tree->Branch("Jet_bJet_isSignal",    &Jet_bJet_isSignal);
 
     // Events numbers variables
-	output_tree->Branch("baseline_weight",  &baseline_weight);
-	output_tree->Branch("signal_weight",    &signal_weight);
+    output_tree->Branch("baseline_weight",  &baseline_weight);
+    output_tree->Branch("signal_weight",    &signal_weight);
     output_tree->Branch("isSS2l_trigger",   &isSS2l_trigger);
     output_tree->Branch("normalization",    &normalization);
     output_tree->Branch("pileup_weight",    &pileup_weight);
@@ -188,18 +188,18 @@ void yt_skim_MC::initialize(TTree *tree, TString process)
     output_tree->Branch("isSS2l",           &isSS2l);
     output_tree->Branch("baseline_channel", &baseline_channel);
     output_tree->Branch("channel",          &channel); // 1 for ee, 2 for em ,3 for mm
-	output_tree->Branch("run_number",		&run_number);
+    output_tree->Branch("run_number",       &run_number);
 }
 
 void yt_skim_MC::execute(vector<Electron> elec, vector<Muon> muon, vector<Lepton> lept, vector<Jet> jets,
-						 vector<Electron> baseline_elec, vector<Muon> baseline_muon, vector<Lepton> baseline_lept, vector<Jet> baseline_jets,
-						 vector<Electron> signal_elec, vector<Muon> signal_muon, vector<Lepton> signal_lept, vector<Jet> signal_jets,
-						 double Etmiss_TST_Et, double event_weight, int run_number, float pileup_weight, double baseline_weight, double signal_weight, TString process)
+                         vector<Electron> baseline_elec, vector<Muon> baseline_muon, vector<Lepton> baseline_lept, vector<Jet> baseline_jets,
+                         vector<Electron> signal_elec, vector<Muon> signal_muon, vector<Lepton> signal_lept, vector<Jet> signal_jets,
+                         double Etmiss_TST_Et, double event_weight, int run_number, float pileup_weight, double baseline_weight, double signal_weight, TString process)
 {
-	// clear all the vector members
-	this->yt_skim::initialize();
-	// fill all the vector members
-	this->yt_skim::execute(elec, muon, lept, jets,
+    // clear all the vector members
+    this->yt_skim::initialize();
+    // fill all the vector members
+    this->yt_skim::execute(elec, muon, lept, jets,
                            baseline_elec, baseline_muon, baseline_lept, baseline_jets,
                            signal_elec, signal_muon, signal_lept, signal_jets);
 
@@ -233,8 +233,8 @@ void yt_skim_MC::execute(vector<Electron> elec, vector<Muon> muon, vector<Lepton
         calculate_new_variables(Etmiss_TST_Et);
         set_run_number(run_number); 
         set_pileup_weight(pileup_weight);
-		set_baseline_weight(baseline_weight);
-		set_signal_weight(signal_weight);
+        set_baseline_weight(baseline_weight);
+        set_signal_weight(signal_weight);
         tag_and_probe_Zee(run_number);
         tag_and_probe_ttbar(Etmiss_TST_Et);
 
@@ -245,10 +245,10 @@ void yt_skim_MC::execute(vector<Electron> elec, vector<Muon> muon, vector<Lepton
 
 void yt_skim_MC::finalize(TString process)
 {
-	cout << "Write into file" << endl;
-	output_file->cd();
-	output_tree->Write();
-	output_file->Close();
+    cout << "Write into file" << endl;
+    output_file->cd();
+    output_tree->Write();
+    output_file->Close();
 
     cout << endl;
     cout << "SUM OF THE EVENTS WEIGHTS = " << event_weight_sum << endl;
@@ -356,51 +356,51 @@ void yt_skim_MC::reset_vectors()
 
 void yt_skim_MC::calculate_new_variables(double Etmiss_TST_Et)
 {
-    baseline_mll	= calculate_mll(vec_baseline_lept);
-    mll 			= calculate_mll(vec_signal_lept);
-    mjj 			= calculate_mjj(vec_signal_jets);
-    Ht				= calculate_Ht(vec_signal_lept, vec_signal_jets);
-    meff 			= calculate_Meff(Ht, Etmiss_TST_Et);
+    baseline_mll    = calculate_mll(vec_baseline_lept);
+    mll             = calculate_mll(vec_signal_lept);
+    mjj             = calculate_mjj(vec_signal_jets);
+    Ht              = calculate_Ht(vec_signal_lept, vec_signal_jets);
+    meff            = calculate_Meff(Ht, Etmiss_TST_Et);
 
     // leptons variables
-    nBaseLeps	= vec_baseline_lept.size();
-    nSigLeps	= vec_signal_lept.size();
+    nBaseLeps   = vec_baseline_lept.size();
+    nSigLeps    = vec_signal_lept.size();
 
     if (nSigLeps > 0) {
-        lep1Pt		= vec_signal_lept.at(0).get_pt();
-        lep1Eta		= vec_signal_lept.at(0).get_eta();
-        lep1Type	= vec_signal_lept.at(0).get_type();
-        lep1Origin	= vec_signal_lept.at(0).get_origin();
+        lep1Pt      = vec_signal_lept.at(0).get_pt();
+        lep1Eta     = vec_signal_lept.at(0).get_eta();
+        lep1Type    = vec_signal_lept.at(0).get_type();
+        lep1Origin  = vec_signal_lept.at(0).get_origin();
     }
     else {
-        lep1Pt		= -5000000.;
-        lep1Eta		= -5000.;
-        lep1Type	= false;
-        lep1Origin	= false;
+        lep1Pt      = -5000000.;
+        lep1Eta     = -5000.;
+        lep1Type    = false;
+        lep1Origin  = false;
     }
     if (nSigLeps > 1) {
-        lep2Pt		= vec_signal_lept.at(1).get_pt();
-        lep2Eta		= vec_signal_lept.at(1).get_eta();
-        lep2Type	= vec_signal_lept.at(1).get_type();
-        lep2Origin	= vec_signal_lept.at(1).get_origin();
+        lep2Pt      = vec_signal_lept.at(1).get_pt();
+        lep2Eta     = vec_signal_lept.at(1).get_eta();
+        lep2Type    = vec_signal_lept.at(1).get_type();
+        lep2Origin  = vec_signal_lept.at(1).get_origin();
     }
     else {
-        lep2Pt		= -5000000.;
-        lep2Eta		= -5000.;
-        lep2Type	= false;
-        lep2Origin	= false;
+        lep2Pt      = -5000000.;
+        lep2Eta     = -5000.;
+        lep2Type    = false;
+        lep2Origin  = false;
     }
     if (nSigLeps > 2) {
-        lep3Pt		= vec_signal_lept.at(2).get_pt();
-        lep3Eta		= vec_signal_lept.at(2).get_eta();
-        lep3Type	= vec_signal_lept.at(2).get_type();
-        lep3Origin	= vec_signal_lept.at(2).get_origin();
+        lep3Pt      = vec_signal_lept.at(2).get_pt();
+        lep3Eta     = vec_signal_lept.at(2).get_eta();
+        lep3Type    = vec_signal_lept.at(2).get_type();
+        lep3Origin  = vec_signal_lept.at(2).get_origin();
     }
     else {
-        lep3Pt		= -5000000.;
-        lep3Eta		= -5000.;
-        lep3Type	= false;
-        lep3Origin	= false;
+        lep3Pt      = -5000000.;
+        lep3Eta     = -5000.;
+        lep3Type    = false;
+        lep3Origin  = false;
     }
 
     // jets variables
@@ -495,8 +495,8 @@ void yt_skim_MC::tag_and_probe_Zee(int run_number)
                 continue;
             // Check does the tag trigger matched
             bool isTriggerMatched = false;
-			//if (tag_elec_itr.get_trigMatch_e24_lhmedium_iloose_L1EM20VH())
-				//isTriggerMatched = true;
+            //if (tag_elec_itr.get_trigMatch_e24_lhmedium_iloose_L1EM20VH())
+                //isTriggerMatched = true;
             // Ximo said let all lepton trigger matching
             isTriggerMatched = true;
 
@@ -535,8 +535,8 @@ void yt_skim_MC::tag_and_probe_Zee(int run_number)
                 continue;
             // Check does the tag tragger matched
             bool isTriggerMatched = false;
-			//if (tag_muon_itr.get_trigMatch_mu26_imedium())
-				//isTriggerMatched = true;
+            //if (tag_muon_itr.get_trigMatch_mu26_imedium())
+                //isTriggerMatched = true;
             // Ximo said let all lepton trigger matching
             isTriggerMatched = true;
 
@@ -794,30 +794,30 @@ void yt_skim_MC::set_derivation_efficiency(TString bunch_spacing, TString proces
 
 void yt_skim_MC::set_luminosity(double number)
 {
-	lumi = number;
+    lumi = number;
 }
 
 void yt_skim_MC::set_event_weight_sum(double sum)
 {
-	event_weight_sum = sum;
+    event_weight_sum = sum;
 }
 
 void yt_skim_MC::set_run_number(int number)
 {
-	run_number = number;
+    run_number = number;
 }
 
 void yt_skim_MC::set_pileup_weight(float number)
 {
-	pileup_weight = number;
+    pileup_weight = number;
 }
 
 void yt_skim_MC::set_baseline_weight(double number)
 {
-	baseline_weight = number;
+    baseline_weight = number;
 }
 
 void yt_skim_MC::set_signal_weight(double number)
 {
-	signal_weight = number;
+    signal_weight = number;
 }
