@@ -86,7 +86,7 @@ public:
     Bool_t          HLT_xe80_mht_L1XE50; //!
     Bool_t          HLT_xe90_mht_L1XE50; //!
     Bool_t          HLT_xe100_mht_L1XE50; //!
-	Bool_t          HLT_xe110_mht_L1XE50; //!	
+    Bool_t          HLT_xe110_mht_L1XE50; //!   
     //Bool_t          HLT_xe110_pueta_L1XE50; //!
     //Bool_t          HLT_xe110_pufit_L1XE50; //!
     Bool_t          HLT_xe100_tc_em_L1XE50; //!
@@ -94,7 +94,7 @@ public:
     Bool_t          HLT_xe90_tc_lcw_L1XE50; //!
     Bool_t          HLT_xe80_tc_lcw_wEFMu_L1XE50; //!
     Bool_t          HLT_e7_lhmedium_mu24; //!
-	Bool_t          HLT_e7_lhmedium_nod0_mu24; //!
+    Bool_t          HLT_e7_lhmedium_nod0_mu24; //!
     Bool_t          HLT_e17_lhloose_nod0_mu14; //!
     Bool_t          HLT_e26_lhmedium_nod0_L1EM22VHI_mu8noL1; //!
     Bool_t          HLT_e24_lhmedium_nod0_L1EM20VHI_mu8noL1; //!
@@ -186,15 +186,15 @@ public:
     vector<bool>    *El_isTightLH; //!
     vector<int>     *El_nBLayerHits; //!
     vector<int>     *El_expectBLayerHit; //!
-	vector<int>		*El_truthType; //!
-	vector<int>		*El_truthOrigin; //!
-	vector<int>		*El_bkgTruthType; //!
-	vector<int>		*El_bkgTruthOrigin; //!
-	vector<int>		*El_bkgMotherPdgId; //!
-	vector<int>		*El_firstEgMotherTruthType; //!
-	vector<int>		*El_firstEgMotherTruthOrigin; //!
-	vector<int>		*El_firstEgMotherPdgId; //!
-	vector<int>		*El_chFlip; //!
+    vector<int>     *El_truthType; //!
+    vector<int>     *El_truthOrigin; //!
+    vector<int>     *El_bkgTruthType; //!
+    vector<int>     *El_bkgTruthOrigin; //!
+    vector<int>     *El_bkgMotherPdgId; //!
+    vector<int>     *El_firstEgMotherTruthType; //!
+    vector<int>     *El_firstEgMotherTruthOrigin; //!
+    vector<int>     *El_firstEgMotherPdgId; //!
+    vector<int>     *El_chFlip; //!
     //vector<int>     *El_type; //!
     //vector<int>     *El_origin; //!
     //vector<int>     *El_bkgMotherPdgId; //!
@@ -230,8 +230,8 @@ public:
     vector<bool>    *El_TrigMatch_e24_lhmedium_nod0_ivarloose; //!
     vector<bool>    *El_TrigMatch_e24_lhtight_nod0_ivarloose; //!
     vector<bool>    *El_TrigMatch_e60_lhmedium_nod0; //!
-	vector<bool>	*El_passChargeFlipTagger; //!
-	vector<float>	*El_passChargeFlipTaggerBDT; //!
+    vector<bool>    *El_passChargeFlipTagger; //!
+    vector<float>   *El_passChargeFlipTaggerBDT; //!
     Int_t           NJet; //!
     vector<double>  *Jet_eta; //!
     vector<double>  *Jet_phi; //!
@@ -391,7 +391,7 @@ public:
     TBranch        *b_HLT_xe80_mht_L1XE50; //!
     TBranch        *b_HLT_xe90_mht_L1XE50; //!
     TBranch        *b_HLT_xe100_mht_L1XE50; //!
-	TBranch			*b_HLT_xe110_mht_L1XE50; //!
+    TBranch         *b_HLT_xe110_mht_L1XE50; //!
     //TBranch        *b_HLT_xe110_pueta_L1XE50; //!
     //TBranch        *b_HLT_xe110_pufit_L1XE50; //!
     TBranch        *b_HLT_xe100_tc_em_L1XE50; //!
@@ -399,7 +399,7 @@ public:
     TBranch        *b_HLT_xe90_tc_lcw_L1XE50; //!
     TBranch        *b_HLT_xe80_tc_lcw_wEFMu_L1XE50; //!
     TBranch        *b_HLT_e7_lhmedium_mu24; //!
-	TBranch		   *b_HLT_e7_lhmedium_nod0_mu24; //!
+    TBranch        *b_HLT_e7_lhmedium_nod0_mu24; //!
     TBranch        *b_HLT_e17_lhloose_nod0_mu14; //!
     TBranch        *b_HLT_e26_lhmedium_nod0_L1EM22VHI_mu8noL1; //!
     TBranch        *b_HLT_e24_lhmedium_nod0_L1EM20VHI_mu8noL1; //!
@@ -491,15 +491,15 @@ public:
     TBranch        *b_El_isTightLH; //!
     TBranch        *b_El_nBLayerHits; //!
     TBranch        *b_El_expectBLayerHit; //!
-	TBranch			*b_El_truthType; //!
-	TBranch			*b_El_truthOrigin; //!
-	TBranch			*b_El_bkgTruthType; //!
-	TBranch			*b_El_bkgTruthOrigin; //!
-	TBranch			*b_El_bkgMotherPdgId; //!
-	TBranch			*b_El_firstEgMotherTruthType; //!
-	TBranch			*b_El_firstEgMotherTruthOrigin; //!
-	TBranch			*b_El_firstEgMotherPdgId; //!
-	TBranch			*b_El_chFlip; //!
+    TBranch         *b_El_truthType; //!
+    TBranch         *b_El_truthOrigin; //!
+    TBranch         *b_El_bkgTruthType; //!
+    TBranch         *b_El_bkgTruthOrigin; //!
+    TBranch         *b_El_bkgMotherPdgId; //!
+    TBranch         *b_El_firstEgMotherTruthType; //!
+    TBranch         *b_El_firstEgMotherTruthOrigin; //!
+    TBranch         *b_El_firstEgMotherPdgId; //!
+    TBranch         *b_El_chFlip; //!
     //TBranch        *b_El_type; //!
     //TBranch        *b_El_origin; //!
     //TBranch        *b_El_bkgMotherPdgId; //!
@@ -535,8 +535,8 @@ public:
     TBranch        *b_El_TrigMatch_e24_lhmedium_nod0_ivarloose; //!
     TBranch        *b_El_TrigMatch_e24_lhtight_nod0_ivarloose; //!
     TBranch        *b_El_TrigMatch_e60_lhmedium_nod0; //!
-	TBranch			*b_El_passChargeFlipTagger; //!
-	TBranch			*b_El_passChargeFlipTaggerBDT; //!
+    TBranch         *b_El_passChargeFlipTagger; //!
+    TBranch         *b_El_passChargeFlipTaggerBDT; //!
     TBranch        *b_NJet; //!
     TBranch        *b_Jet_eta; //!
     TBranch        *b_Jet_phi; //!
@@ -804,7 +804,7 @@ public:
     TH1F *ratio_3; //!
     TH1F *ratio_4; //!
 */
-	TCanvas *baseline_mll_plot; //!
+    TCanvas *baseline_mll_plot; //!
     TCanvas *cut_efficiency_plot; //!
     TCanvas *real_efficiency_plot; //!
     //TLine *line; //!
