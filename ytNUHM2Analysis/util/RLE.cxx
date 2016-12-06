@@ -104,7 +104,7 @@ int main( int argc, char* argv[] ) {
 
     if (isMC && !process.empty())
         cout << "process = " << process << endl;
-    else if (isData && !process.empty()) {
+    else if (isData && !process.empty())
         cout << "process = " << process << endl;
 
     if (isMC) {
@@ -162,7 +162,7 @@ int main( int argc, char* argv[] ) {
     }
     else if (isData) {
         inputFilePath = "/raid05/users/shen/Ximo_ntuples/v47/Skimmed/20161206";
-        SH::ScanDir().filePattern("data_probes_all_periods.root").scan(sh, inputFilePath);
+        SH::ScanDir().filePattern("data_probes_" + process + ".root").scan(sh, inputFilePath);
     }
 
 
