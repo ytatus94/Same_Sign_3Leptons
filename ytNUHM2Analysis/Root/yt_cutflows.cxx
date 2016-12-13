@@ -66,7 +66,7 @@ yt_cutflows::yt_cutflows()
     m_Pileup->setProperty("DataScaleFactorUP", 1.0 / 1.0);
     m_Pileup->setProperty("DataScaleFactorDOWN", 1.0 / 1.18);
     if ( !m_Pileup->initialize().isSuccess() ) {
-        Error("In Begin()", "Fail to properly initialize the PRW. Exiting.");   
+        Error("In Begin()", "Fail to properly initialize the PRW. Exiting.");
     }
 
     // Dummy EventInfo object to manipulate later
@@ -124,7 +124,7 @@ void yt_cutflows::print()
 
 int yt_cutflows::get_mc_random_event_number(bool isData, bool isMC,
                                             int event_number, int channel_number,
-                                            double average_mu, double event_weight, double PRW_weight,
+                                            double average_mu, double event_weight, //double PRW_weight,
                                             int lumi_block, int run_number)
 {
     // Put the ntuple variables into EventInfo
@@ -177,6 +177,16 @@ int yt_cutflows::get_mc_random_event_number(bool isData, bool isMC,
     unsigned int random_run_number = eventInfo->auxdata<unsigned int>("RandomRunNumber");
 
     return static_cast<int>(random_run_number);
+}
+
+float yt_cutflows::get_AvgMu()
+{
+    return eventInfo->auxdata< float >( "corrected_averageInteractionsPerCrossing" );
+}
+
+float yt_cutflows::get_pileup_weight()
+{
+    return eventInfo->auxdata<float>( "PileupWeight" );
 }
 
 bool yt_cutflows::pass_all_events()
@@ -373,7 +383,7 @@ bool yt_cutflows::pass_same_sign(vector<Lepton> vec_lept)
         pass = true;
     }
     else if (vec_lept.size() == 2) {
-        int sign = vec_lept[0].get_charge() * vec_lept[1].get_charge(); 
+        int sign = vec_lept[0].get_charge() * vec_lept[1].get_charge();
         if (sign == 1)
             pass = true;
     }
@@ -545,7 +555,7 @@ bool yt_cutflows::pass_ee_2015_trigger_matching(vector<Electron> vec_elec,
             if (el_itr.get_flavor() == 11 &&
                 el_itr.get_pt() > 20000. &&
                 el_itr.get_trigMatch_2e12_lhloose_L12EM10VH() == true) {
-                e_match++;  
+                e_match++;
             }
         }
         if (e_match >= 2)
@@ -669,7 +679,7 @@ bool yt_cutflows::pass_mumu_2015_trigger_matching(vector<Muon> vec_muon,
                     }
                 }
             }
-        }           
+        }
     }
     return pass;
 }
@@ -695,7 +705,7 @@ bool yt_cutflows::pass_mumu_2016_trigger_matching(vector<Muon> vec_muon,
                     pass = true;
                 }
             }
-        }           
+        }
     }
     return pass;
 }

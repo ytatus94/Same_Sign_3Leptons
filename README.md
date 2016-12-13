@@ -7,6 +7,10 @@ This is SS/3L+jet cutflows study v44.
 ### Setting:
 
 
+### v01-11. (oldskim branch) Add two methods to calculate AvgMu and pileup_weight in yt_cutflows
+*  Add `get_AvgMu()` and `get_pileup_weight()` in `yt_cutflows`
+
+
 ### v01-10. (oldskim branch) Scripts run in the background
 * Let `run_all_RLE.sh` and `run_all_skim.sh` run in the background
 
