@@ -1036,13 +1036,13 @@ EL::StatusCode ytRealLeptonsEfficiency_MC :: execute ()
         // single lepton triggers:
         if (trigger == "single_lepton_trigger") {
             // Electron: e24_lhmedium_L1EM20VH (2015)
-            //           e24_lhtight_nod0_ivarloose (2016)
-            if (RunNb < 290000) { // 2015 data
+            //           HLT_e26_lhtight_nod0_ivarloose (2016)
+            if (run_number < 290000) { // 2015 data
                 if (!HLT_e24_lhmedium_L1EM20VH)
                     return EL::StatusCode::SUCCESS; // Go to next event
             }
-            else if (RunNb > 290000) { // 2016 data
-                if (!HLT_e24_lhtight_nod0_ivarloose)
+            else if (run_number > 290000) { // 2016 data
+                if (!HLT_e26_lhtight_nod0_ivarloose)
                     return EL::StatusCode::SUCCESS; // Go to next event
             }
         }
@@ -1062,13 +1062,13 @@ EL::StatusCode ytRealLeptonsEfficiency_MC :: execute ()
         // single lepton triggers:
         if (trigger == "single_lepton_trigger") {
             // Muon: mu20_iloose_L1MU15 (2015)
-            //       mu24_ivarmedium (2016)
-            if (RunNb < 290000) { // 2015 data
+            //       HLT_mu26_ivarmedium (2016)
+            if (run_number < 290000) { // 2015 data
                 if (!HLT_mu20_iloose_L1MU15)
                     return EL::StatusCode::SUCCESS; // Go to next event
             }
-            else if (RunNb > 290000) { // 2016 data
-                if (!HLT_mu24_ivarmedium)
+            else if (run_number > 290000) { // 2016 data
+                if (!HLT_mu26_ivarmedium)
                     return EL::StatusCode::SUCCESS; // Go to next event
             }
         }

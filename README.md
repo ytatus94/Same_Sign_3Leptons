@@ -7,7 +7,10 @@ This is SS/3L+jet cutflows study v44.
 ### Setting:
 
 
-### v01-11. (oldskim branch) Use new single lepton trigger and tag pt threshold.
+### v01-13. (oldskim branch) Also use new single lepton trigger in ytRealLeptonsEfficiency_MC
+
+
+### v01-12. (oldskim branch) Use new single lepton trigger and tag pt threshold.
 1. tag pt threshold use 30 GeV (original use 25 GeV)
 2. Single lepton trigger for 2016 uses: `HLT_e26_lhtight_nod0_ivarloose` and `HLT_mu26_ivarmedium`
 
