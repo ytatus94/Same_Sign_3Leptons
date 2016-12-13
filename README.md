@@ -7,6 +7,11 @@ This is SS/3L+jet cutflows study v44.
 ### Setting:
 
 
+### v01-11. (oldskim branch) Use new single lepton trigger and tag pt threshold.
+1. tag pt threshold use 30 GeV (original use 25 GeV)
+2. Single lepton trigger for 2016 uses: `HLT_e26_lhtight_nod0_ivarloose` and `HLT_mu26_ivarmedium`
+
+
 ### v01-11. (oldskim branch) Add two methods to calculate AvgMu and pileup_weight in yt_cutflows
 *  Add `get_AvgMu()` and `get_pileup_weight()` in `yt_cutflows`
 

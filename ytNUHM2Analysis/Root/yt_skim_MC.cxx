@@ -486,7 +486,7 @@ void yt_skim_MC::tag_and_probe_Zee(int run_number)
         for (auto & tag_elec_itr : vec_signal_elec) {
             if (tag_elec_itr.get_index() == probe_elec_itr.get_index())
                 continue;
-            if (tag_elec_itr.get_pt() < 25000.)
+            if (tag_elec_itr.get_pt() < 30000.)
                 continue;
             if (fabs(tag_elec_itr.get_eta()) > 2.)
                 continue;
@@ -496,7 +496,7 @@ void yt_skim_MC::tag_and_probe_Zee(int run_number)
             // Check does the tag trigger matched
             // electrons:
             // 2015: HLT_e24_lhmedium_L1EM20VH
-            // 2016: HLT_e24_lhtight_nod0_ivarloose
+            // 2016: HLT_e26_lhtight_nod0_ivarloose
             bool isTriggerMatched = false;
             if (run_number < 290000) { // 2015 data
                 if (tag_elec_itr.get_trigMatch_e24_lhmedium_iloose_L1EM20VH())
@@ -537,7 +537,7 @@ void yt_skim_MC::tag_and_probe_Zee(int run_number)
         for (auto & tag_muon_itr : vec_signal_muon) {
             if (tag_muon_itr.get_index() == probe_muon_itr.get_index())
                 continue;
-            if (tag_muon_itr.get_pt() < 25000)
+            if (tag_muon_itr.get_pt() < 30000)
                 continue;
             // Opposite Charge requirement
             if (tag_muon_itr.get_charge() == probe_muon_itr.get_charge())
@@ -545,14 +545,14 @@ void yt_skim_MC::tag_and_probe_Zee(int run_number)
             // Check does the tag tragger matched
             // muons:
             // 2015: HLT_mu20_iloose_L1MU15
-            // 2016: HLT_mu24_ivarmedium
+            // 2016: HLT_mu26_ivarmedium
             bool isTriggerMatched = false;
             if (run_number < 290000) { // 2015 data
                 if (tag_muon_itr.get_trigMatch_mu24_iloose_L1MU15()) // no mu20 found, so use mu24
                     isTriggerMatched = true;
             }
             else if (run_number > 290000) { // 2016 data
-                if (tag_muon_itr.get_trigMatch_mu24_ivarloose()) // no ivarmedium found, so use ivarloose
+                if (tag_muon_itr.get_trigMatch_mu26_imedium()) // no ivarmedium found, so use ivarloose
                     isTriggerMatched = true;
             }
             // Ximo said let all lepton trigger matching

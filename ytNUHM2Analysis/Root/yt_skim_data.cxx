@@ -451,7 +451,7 @@ void yt_skim_data::tag_and_probe_Zee(int run_number)
         for (auto & tag_elec_itr : vec_signal_elec) {
             if (tag_elec_itr.get_index() == probe_elec_itr.get_index())
                 continue;
-            if (tag_elec_itr.get_pt() < 25000.)
+            if (tag_elec_itr.get_pt() < 30000.)
                 continue;
             if (fabs(tag_elec_itr.get_eta()) > 2.)
                 continue;
@@ -489,7 +489,7 @@ void yt_skim_data::tag_and_probe_Zee(int run_number)
         for (auto & tag_muon_itr : vec_signal_muon) {
             if (tag_muon_itr.get_index() == probe_muon_itr.get_index())
                 continue;
-            if (tag_muon_itr.get_pt() < 25000)
+            if (tag_muon_itr.get_pt() < 30000)
                 continue;
             // Opposite Charge requirement
             if (tag_muon_itr.get_charge() == probe_muon_itr.get_charge())
