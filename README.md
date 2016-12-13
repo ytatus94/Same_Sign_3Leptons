@@ -7,6 +7,10 @@ This is SS/3L+jet cutflows study v44.
 ### Setting:
 
 
+### v01-10. (oldskim branch) Scripts run in the background
+* Let `run_all_RLE.sh` and `run_all_skim.sh` run in the background
+
+
 ### v01-09. (oldskim branch) Fix bug in `RLE.cxx`
 
 
