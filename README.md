@@ -7,6 +7,10 @@ This is SS/3L+jet cutflows study v44.
 ### Setting:
 
 
+### v01-14. (oldskim branch) Change the implementation in set_derivation_stat_weights()
+* Now the `h_derivation_stat_weights` is set in `set_derivation_stat_weights()`
+
+
 ### v01-13. (oldskim branch) Also use new single lepton trigger in ytRealLeptonsEfficiency_MC
 
 

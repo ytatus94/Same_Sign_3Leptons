@@ -89,7 +89,7 @@ public:
     int     meff_bin;
     int     events_survived;
     int     events_survived_weighted;
-    
+
 
     // Cuts
     static const int n_lept_cuts[5];
@@ -118,7 +118,7 @@ public:
     void set_k_factor(double d) { k_factor = d; }
     void set_filter_efficiency(double d) { filter_efficiency = d; }
     void set_cross_section_kfactor_efficiency(double d) { cross_section_kfactor_efficiency = d; }
-    void set_derivation_stat_weights(double d) { derivation_stat_weights = d; }
+    void set_derivation_stat_weights(double d) { derivation_stat_weights = d; h_derivation_stat_weights->SetBinContent(1, derivation_stat_weights); }
 
     void set_event_weight(double d) { event_weight = d; }
     void set_lepton_weight(double d) { lepton_weight = d; }
