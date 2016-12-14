@@ -47,12 +47,12 @@ yt_skim::yt_skim()
 void yt_skim::clear_all_object_vectors()
 {
     // clear all vectors
-/*
+
     vec_elec.clear();
     vec_muon.clear();
     vec_lept.clear();
     vec_jets.clear();
-*/
+
     vec_baseline_elec.clear();
     vec_baseline_muon.clear();
     vec_baseline_lept.clear();
@@ -67,19 +67,19 @@ void yt_skim::clear_all_object_vectors()
     vec_signal_bjet.clear();
 }
 
-void yt_skim::fill_all_object_vectors(//vector<Electron> elec, vector<Muon> muon, vector<Lepton> lept, vector<Jet> jets,
+void yt_skim::fill_all_object_vectors(vector<Electron> elec, vector<Muon> muon, vector<Lepton> lept, vector<Jet> jets,
                                       vector<Electron> baseline_elec, vector<Muon> baseline_muon, vector<Lepton> baseline_lept, vector<Jet> baseline_jets,
                                       vector<Electron> signal_elec, vector<Muon> signal_muon, vector<Lepton> signal_lept, vector<Jet> signal_jets)
 {
     // in event loop:
     // copy vectors from yt_selector.
-    //this->copy_raw_object_vectors(elec, muon, lept, jets);
+    this->copy_raw_object_vectors(elec, muon, lept, jets);
     this->copy_baseline_object_vectors(baseline_elec, baseline_muon, baseline_lept, baseline_jets);
     this->copy_signal_object_vectors(signal_elec, signal_muon, signal_lept, signal_jets);
     //this->fill_signal_jets_no_eta_cut(jets);
     //this->fill_signal_bjet(signal_jets);
 }
-/*
+
 void yt_skim::copy_raw_object_vectors(vector<Electron> elec, vector<Muon> muon, vector<Lepton> lept, vector<Jet> jets)
 {
     vec_elec = elec;
@@ -87,7 +87,7 @@ void yt_skim::copy_raw_object_vectors(vector<Electron> elec, vector<Muon> muon, 
     vec_lept = lept;
     vec_jets = jets;
 }
-*/
+
 void yt_skim::copy_baseline_object_vectors(vector<Electron> elec, vector<Muon> muon, vector<Lepton> lept, vector<Jet> jets)
 {
     vec_baseline_elec = elec;
@@ -134,10 +134,10 @@ void yt_skim::initialize(TTree *tree, string process)
 {
     // Declare the output
     TString output_path("/raid05/users/shen/Ximo_ntuples/v47/Skimmed/");
-    if (process != "Data") {
+    if (isMC) {
         output_file = TFile::Open(output_path + "/MC_probes_" + process + ".root", "RECREATE");
     }
-    else {
+    else if (isData) {
         output_file = TFile::Open(output_path + "/data_probes_" + process + ".root", "RECREATE");
     }
     output_tree = (TTree*)tree->CloneTree(0);
@@ -213,14 +213,14 @@ void yt_skim::initialize(TTree *tree, string process)
     // Events numbers variables
 }
 
-void yt_skim::execute(//vector<Electron> elec, vector<Muon> muon, vector<Lepton> lept, vector<Jet> jets,
+void yt_skim::execute(vector<Electron> elec, vector<Muon> muon, vector<Lepton> lept, vector<Jet> jets,
                       vector<Electron> baseline_elec, vector<Muon> baseline_muon, vector<Lepton> baseline_lept, vector<Jet> baseline_jets,
                       vector<Electron> signal_elec, vector<Muon> signal_muon, vector<Lepton> signal_lept, vector<Jet> signal_jets)
 {
     // clear all the vector members
     this->clear_all_object_vectors();
     // fill all the vector members
-    this->fill_all_object_vectors(//elec, muon, lept, jets,
+    this->fill_all_object_vectors(elec, muon, lept, jets,
                                   baseline_elec, baseline_muon, baseline_lept, baseline_jets,
                                   signal_elec, signal_muon, signal_lept, signal_jets);
     // calculate normalization for this event
@@ -287,11 +287,11 @@ void yt_skim::reset_vectors()
     EE_pair->clear();
     MuMu_pair->clear();
 
-    for (unsigned int i = 0; i < vec_baseline_elec.size(); i++) {
+    for (unsigned int i = 0; i < vec_elec.size(); i++) {
         EE_pair->push_back(dummy);
     }
 
-    for (unsigned int i = 0; i < vec_baseline_muon.size(); i++) {
+    for (unsigned int i = 0; i < vec_muon.size(); i++) {
         MuMu_pair->push_back(dummy);
     }
 
@@ -315,7 +315,7 @@ void yt_skim::reset_vectors()
     //Jet_isSignal->clear();
     //bJet_isSignal->clear();
 
-    for (unsigned int i = 0; i < vec_baseline_elec.size(); i++) {
+    for (unsigned int i = 0; i < vec_elec.size(); i++) {
         El_isBaseline->push_back(false);
         El_isSignal->push_back(false);
         El_isZTag->push_back(false);
@@ -325,7 +325,8 @@ void yt_skim::reset_vectors()
         //El_DR_closest_Jet->push_back(100);
     }
 
-    for (unsigned int i = 0; i < vec_baseline_muon.size(); i++) {
+
+    for (unsigned int i = 0; i < vec_muon.size(); i++) {
         Mu_isBaseline->push_back(false);
         Mu_isSignal->push_back(false);
         Mu_isZTag->push_back(false);
@@ -333,7 +334,8 @@ void yt_skim::reset_vectors()
         Mu_ZTandP_mll->push_back(0);
         Mu_isZProbe_TriggerMatched->push_back(false);
         //Mu_DR_closest_Jet->push_back(100);
-    } 
+    }
+
 /*
     for (unsigned int i = 0; i < vec_jets.size(); i++) {
         Jet_isBaseline->push_back(false);
@@ -509,7 +511,6 @@ void yt_skim::Z_tag_and_probe()
             }
         }
         El_ZTandP_mll->at(probe_elec_itr.get_index()) = best_match_mll;
-
     }
 
     // Muons

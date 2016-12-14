@@ -1187,7 +1187,7 @@ EL::StatusCode ytEventSelection::execute ()
         m_skim->set_new_AvgMu(m_cutflow->get_AvgMu());
         m_skim->set_tag_pt_threshold(tag_pt_threshold);
         // Do skim
-        m_skim->execute(//vec_elec, vec_muon, vec_lept, vec_jets,
+        m_skim->execute(vec_elec, vec_muon, vec_lept, vec_jets,
                         vec_baseline_elec, vec_baseline_muon, vec_baseline_lept, vec_baseline_jets,
                         vec_signal_elec, vec_signal_muon, vec_signal_lept, vec_signal_jets);
 /*

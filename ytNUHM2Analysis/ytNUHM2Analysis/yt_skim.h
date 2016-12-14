@@ -75,12 +75,12 @@ public:
     TTree *output_tree;
 
 public:
-/*
+
     vector<Electron>    vec_elec;
     vector<Muon>        vec_muon;
     vector<Lepton>      vec_lept;
     vector<Jet>         vec_jets;
-*/
+
     vector<Electron>    vec_baseline_elec;
     vector<Muon>        vec_baseline_muon;
     vector<Lepton>      vec_baseline_lept;
@@ -160,17 +160,17 @@ public:
     //void set_Etmiss(double d) { Etmiss = d; }
 
     void clear_all_object_vectors();
-    void fill_all_object_vectors(//vector<Electron> elec, vector<Muon> muon, vector<Lepton> lept, vector<Jet> jets,
+    void fill_all_object_vectors(vector<Electron> elec, vector<Muon> muon, vector<Lepton> lept, vector<Jet> jets,
                                  vector<Electron> baseline_elec, vector<Muon> baseline_muon, vector<Lepton> baseline_lept, vector<Jet> baseline_jets,
                                  vector<Electron> signal_elec, vector<Muon> signal_muon, vector<Lepton> signal_lept, vector<Jet> signal_jets);
-    //void copy_raw_object_vectors(vector<Electron> elec, vector<Muon> muon, vector<Lepton> lept, vector<Jet> jets);
+    void copy_raw_object_vectors(vector<Electron> elec, vector<Muon> muon, vector<Lepton> lept, vector<Jet> jets);
     void copy_baseline_object_vectors(vector<Electron> elec, vector<Muon> muon, vector<Lepton> lept, vector<Jet> jets);
     void copy_signal_object_vectors(vector<Electron> elec, vector<Muon> muon, vector<Lepton> lept, vector<Jet> jets);
     //void fill_signal_jets_no_eta_cut(vector<Jet> jets);
     //void fill_signal_bjet(vector<Jet> signal_jets);
 
     void initialize(TTree *tree, string process);
-    void execute(//vector<Electron> elec, vector<Muon> muon, vector<Lepton> lept, vector<Jet> jets,
+    void execute(vector<Electron> elec, vector<Muon> muon, vector<Lepton> lept, vector<Jet> jets,
                  vector<Electron> baseline_elec, vector<Muon> baseline_muon, vector<Lepton> baseline_lept, vector<Jet> baseline_jets,
                  vector<Electron> signal_elec, vector<Muon> signal_muon, vector<Lepton> signal_lept, vector<Jet> signal_jets);
     void finalize();
