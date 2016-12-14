@@ -1,5 +1,5 @@
-#ifndef ytNUHM2Analysis_ytEventSelection_H
-#define ytNUHM2Analysis_ytEventSelection_H
+#ifndef ytEventSelection_H
+#define ytEventSelection_H
 
 #include <EventLoop/Algorithm.h>
 
@@ -17,12 +17,13 @@
 #include "ytNUHM2Analysis/Leptons.h"
 #include "ytNUHM2Analysis/Jet.h"
 #include "ytNUHM2Analysis/yt_cutflows.h"
-#include "ytNUHM2Analysis/yt_optimization.h"
 #include "ytNUHM2Analysis/yt_skim.h"
-#include "ytNUHM2Analysis/yt_skim_MC.h"
-#include "ytNUHM2Analysis/yt_skim_data.h"
+//#include "ytNUHM2Analysis/yt_skim_MC.h"
+//#include "ytNUHM2Analysis/yt_skim_data.h"
+#include "ytNUHM2Analysis/yt_optimization.h"
 //#include "ytNUHM2Analysis/yt_useful_functions.h"
 #include "ytNUHM2Analysis/DileptonTriggerWeight.h"
+
 
 #include <iostream>
 #include <vector>
@@ -56,46 +57,47 @@ public:
     // user defined variables
     string process;
 
-    double  derivation_stat_weights; //!
+    double derivation_stat_weights; //!
 
-    float   luminosity;
-    float   cross_section; //!
-    float   k_factor; //!
-    float   filter_efficiency; //!
-    float   cross_section_kfactor_efficiency; //!
+    float luminosity;
+    float cross_section; //!
+    float k_factor; //!
+    float filter_efficiency; //!
+    float cross_section_kfactor_efficiency; //! unit: pb
 
+    float tag_pt_threshold; //!
     //vector<double>        sum_of_weight_at_cut; //!
 
-    yt_cutflows             *m_cutflow; //!
-    yt_optimization         *m_optimization; //!
-    yt_skim_MC              *m_skim_MC; //!
-    yt_skim_data            *m_skim_data; //!
+    yt_cutflows         *m_cutflow; //!
+    yt_skim             *m_skim; //!
+    //yt_skim_MC          *m_skim_MC; //!
+    //yt_skim_data        *m_skim_data; //!
+    yt_optimization     *m_optimization; //!
 
     SUSY::CrossSectionDB    *m_XsecDB; //!
     DileptonTriggerWeight   *m_dtwTool;
 
-    vector<Electron>        vec_elec; //!
-    vector<Muon>            vec_muon; //!
-    vector<Lepton>          vec_lept; //!
-    vector<Jet>             vec_jets; //!
+    vector<Electron>    vec_elec; //!
+    vector<Muon>        vec_muon; //!
+    vector<Lepton>      vec_lept; //!
+    vector<Jet>         vec_jets; //!
 
-    vector<Electron>        vec_baseline_elec; //!
-    vector<Muon>            vec_baseline_muon; //!
-    vector<Lepton>          vec_baseline_lept; //!
-    vector<Jet>             vec_baseline_jets; //!
+    vector<Electron>    vec_baseline_elec; //!
+    vector<Muon>        vec_baseline_muon; //!
+    vector<Lepton>      vec_baseline_lept; //!
+    vector<Jet>         vec_baseline_jets; //!
 
-    vector<Electron>        vec_OR_elec; //!
-    vector<Muon>            vec_OR_muon; //!
-    vector<Lepton>          vec_OR_lept; //!
-    vector<Jet>             vec_OR_jets; //!
+    vector<Electron>    vec_OR_elec; //!
+    vector<Muon>        vec_OR_muon; //!
+    vector<Lepton>      vec_OR_lept; //!
+    vector<Jet>         vec_OR_jets; //!
 
-    vector<Jet>             vec_JVT_jets; //!
+    vector<Jet>         vec_JVT_jets; //!
 
-    vector<Electron>        vec_signal_elec; //!
-    vector<Muon>            vec_signal_muon; //!
-    vector<Lepton>          vec_signal_lept; //!
-    vector<Jet>             vec_signal_jets; //!
-
+    vector<Electron>    vec_signal_elec; //!
+    vector<Muon>        vec_signal_muon; //!
+    vector<Lepton>      vec_signal_lept; //!
+    vector<Jet>         vec_signal_jets; //!
 
     // variables that don't get filled at submission time should be
     // protected from being send from the submission node to the worker
@@ -193,7 +195,7 @@ public:
     vector<bool>    *Mu_isCosmic; //!
     //#ifdef _IS_MC_
     vector<int>     *Mu_type; //!
-    vector<int> *Mu_origin; //!
+    vector<int>     *Mu_origin; //!
     //#endif // #ifdef _IS_MC_
     vector<double>  *Mu_ptcone20; //!
     vector<double>  *Mu_ptcone30; //!
@@ -610,16 +612,25 @@ public:
     TH1F *h_NLepts; //!
     TH1F *h_NJets; //!
 
-    TH1F *h_Nvtx_PRW; //!
-    TH1F *h_AvgMu_PRW; //!
-    TH1F *h_NLepts_PRW; //!
-    TH1F *h_NJets_PRW; //!
+    TH1F *h_Nvtx_weighted; //!
+    TH1F *h_AvgMu_weighted; //!
+    TH1F *h_NLepts_weighted; //!
+    TH1F *h_NJets_weighted; //!
 
-    // Canvas
-    TCanvas *c_Nvtx; //!
-    TCanvas *c_AvgMu; //!
-    TCanvas *c_NLepts; //!
-    TCanvas *c_NJets; //!
+    TH1F *h_AvgMu_OSee; //!
+    TH1F *h_AvgMu_OSmumu; //!
+    TH1F *h_AvgMu_OSee_weighted; //!
+    TH1F *h_AvgMu_OSmumu_weighted; //!
+
+    TH1F *h_baseline_OSee_mll; //!
+    TH1F *h_baseline_OSmumu_mll; //!
+    TH1F *h_baseline_OSee_mll_weighted; //!
+    TH1F *h_baseline_OSmumu_mll_weighted; //!
+
+    TH1F *h_signal_OSee_mll; //!
+    TH1F *h_signal_OSmumu_mll; //!
+    TH1F *h_signal_OSee_mll_weighted; //!
+    TH1F *h_signal_OSmumu_mll_weighted; //!
 
     // this is a standard constructor
     ytEventSelection ();
@@ -705,7 +716,7 @@ public:
         vector<bool>    *El_passChargeFlipTagger,
         vector<float>   *El_passChargeFlipTaggerBDT);
 
-void fill_muons(
+    void fill_muons(
         Int_t           NMu,
         int             flavor,
         vector<double>  *Mu_eta,
@@ -806,13 +817,13 @@ void fill_muons(
         vector<bool>    *El_isTightLH,
         vector<int>     *El_nBLayerHits,
         vector<int>     *El_expectBLayerHit,
-        /*
+/*
         vector<int>     *El_type, // MC only
         vector<int>     *El_origin, // MC only
         vector<int>     *El_bkgMotherPdgId, // MC only
         vector<int>     *El_bkgOrigin, // MC only
         vector<int>     *El_chFlip, // MC only
-        */
+*/
         vector<double>  *El_ptcone20,
         vector<double>  *El_ptcone30,
         vector<double>  *El_ptcone40,
@@ -862,10 +873,10 @@ void fill_muons(
         vector<bool>    *Mu_passOR,
         vector<bool>    *Mu_isTight,
         vector<bool>    *Mu_isCosmic,
-        /*
+/*
         vector<int>     *Mu_type, // MC only
         vector<int>     *Mu_origin, // MC only
-        */
+*/
         vector<double>  *Mu_ptcone20,
         vector<double>  *Mu_ptcone30,
         vector<double>  *Mu_ptcone40,
@@ -913,12 +924,12 @@ void fill_muons(
         vector<double>  *Jet_MV2c20,
         vector<double>  *Jet_MV2c10,
         vector<double>  *Jet_SFw,
-        /*
+/*
         vector<int>     *Jet_ConeTruthLabel, // MC only
         vector<int>     *Jet_PartonTruthLabel, // MC only
         vector<int>     *Jet_HadronConeExclTruthLabel, // MC only
         vector<double>  *Jet_deltaR, // MC only
-        */
+*/
         vector<int>     *Jet_nTrk,
         vector<bool>    *Jet_passOR);
     //#endif // #ifdef _IS_DATA_
@@ -961,8 +972,8 @@ void fill_muons(
     void set_isAF2Sim(bool b) { isAF2Sim = b; }
 
     void set_process(string s) { process = s; }
-
-    void set_luminosity(double d) { luminosity = d; }
+    void set_luminosity(float f) { luminosity = f; }
+    void set_tag_pt_threshold(float f) { tag_pt_threshold = f; }
 /*
     void set_cross_section(double d) { cross_section = d; }
     void set_k_factor(double d) { k_factor = d; }
@@ -980,13 +991,13 @@ void fill_muons(
     double calculate_weight(double event_weight, double PRW_weight, vector<Electron> elec, vector<Muon> muon, vector<Jet> jets);
     void update(int cut, bool passed, double weight);
     void debug_sum_of_weight_print();
-*/
+
     // plots
     void make_plots_Nvtx();
     void make_plots_AvgMu();
     void make_plots_NLepts();
     void make_plots_NJets();
-
+*/
     // this is needed to distribute the algorithm to the workers
     ClassDef(ytEventSelection, 1);
 };

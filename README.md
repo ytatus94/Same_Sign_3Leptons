@@ -7,6 +7,9 @@ This is SS/3L+jet cutflows study v44.
 ### Setting:
 
 
+### v01-15. (oldskim branch) Modify `ytEventSelection` to use the new skim code.
+
+
 ### v01-14. (oldskim branch) Change the implementation in set_derivation_stat_weights()
 * Now the `h_derivation_stat_weights` is set in `set_derivation_stat_weights()`
 

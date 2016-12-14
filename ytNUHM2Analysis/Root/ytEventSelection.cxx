@@ -21,15 +21,15 @@ ytEventSelection::ytEventSelection ()
     //Info(function_name, "Function calls");
 
     m_cutflow       = new yt_cutflows;
+    m_skim          = new yt_skim;
+    //m_skim_MC       = new yt_skim_MC;
+    //m_skim_data     = new yt_skim_data;
     m_optimization  = new yt_optimization;
     m_XsecDB        = new SUSY::CrossSectionDB(PathResolverFindCalibDirectory("SUSYTools/mc15_13TeV/"));
     m_dtwTool       = new DileptonTriggerWeight;
-    m_skim_MC       = new yt_skim_MC;
-    m_skim_data     = new yt_skim_data;
 
     // initialize event weight sum to zero
     //sum_of_weight_at_cut = vector<double>(Ncuts, 0); // initialize Ncuts elements to zero.
-
 }
 
 
@@ -77,20 +77,65 @@ EL::StatusCode ytEventSelection::histInitialize ()
     wk()->addOutput(h_NLepts);
     wk()->addOutput(h_NJets);
 
-    h_Nvtx_PRW      = new TH1F("h_Nvtx_PRW", "Nvtx (PRW);Nvtx;Events", 50, 0 , 50);
-    h_AvgMu_PRW     = new TH1F("h_AvgMu_PRW", "AvgMu (PRW);<#mu>;Events", 50, 0 , 50);
-    h_NLepts_PRW    = new TH1F("h_NLepts_PRW", "Number of leptons (PRW);N_{leptons};Events",10, 0, 10);
-    h_NJets_PRW     = new TH1F("h_NJets_PRW", "Number of jets (PRW);N_{jets};Events", 40, 0, 40);
+    h_Nvtx_weighted      = new TH1F("h_Nvtx_weighted", "Nvtx (weighted);Nvtx;Events", 50, 0 , 50);
+    h_AvgMu_weighted     = new TH1F("h_AvgMu_weighted", "AvgMu (weighted);<#mu>;Events", 50, 0 , 50);
+    h_NLepts_weighted    = new TH1F("h_NLepts_weighted", "Number of leptons (weighted);N_{leptons};Events",10, 0, 10);
+    h_NJets_weighted     = new TH1F("h_NJets_weighted", "Number of jets (weighted);N_{jets};Events", 40, 0, 40);
     
-    h_Nvtx_PRW->Sumw2();
-    h_AvgMu_PRW->Sumw2();
-    h_NLepts_PRW->Sumw2();
-    h_NJets_PRW->Sumw2();
+    h_Nvtx_weighted->Sumw2();
+    h_AvgMu_weighted->Sumw2();
+    h_NLepts_weighted->Sumw2();
+    h_NJets_weighted->Sumw2();
 
-    wk()->addOutput(h_Nvtx_PRW);
-    wk()->addOutput(h_AvgMu_PRW);
-    wk()->addOutput(h_NLepts_PRW);
-    wk()->addOutput(h_NJets_PRW);
+    wk()->addOutput(h_Nvtx_weighted);
+    wk()->addOutput(h_AvgMu_weighted);
+    wk()->addOutput(h_NLepts_weighted);
+    wk()->addOutput(h_NJets_weighted);
+
+    h_AvgMu_OSee            = new TH1F("h_AvgMu_OSee", "AvgMu;<#mu>;Events", 50, 0 , 50);
+    h_AvgMu_OSmumu          = new TH1F("h_AvgMu_OSmumu", "AvgMu;<#mu>;Events", 50, 0 , 50);
+    h_AvgMu_OSee_weighted   = new TH1F("h_AvgMu_OSee_weighted", "AvgMu (weighted);<#mu>;Events", 50, 0 , 50);
+    h_AvgMu_OSmumu_weighted = new TH1F("h_AvgMu_OSmumu_weighted", "AvgMu (weighted);<#mu>;Events", 50, 0 , 50);
+
+    h_AvgMu_OSee->Sumw2();
+    h_AvgMu_OSmumu->Sumw2();
+    h_AvgMu_OSee_weighted->Sumw2();
+    h_AvgMu_OSmumu_weighted->Sumw2();
+
+    wk()->addOutput(h_AvgMu_OSee);
+    wk()->addOutput(h_AvgMu_OSmumu);
+    wk()->addOutput(h_AvgMu_OSee_weighted);
+    wk()->addOutput(h_AvgMu_OSmumu_weighted);
+
+    h_baseline_OSee_mll = new TH1F("h_baseline_OSee_mll", "mll;M_{ll} [GeV];Events", 90, 60, 150);
+    h_baseline_OSmumu_mll = new TH1F("h_baseline_OSmumu_mll", "mll;M_{ll} [GeV];Events", 90, 60, 150);
+    h_baseline_OSee_mll_weighted = new TH1F("h_baseline_OSee_mll_weighted", "mll;M_{ll} [GeV];Events", 90, 60, 150);
+    h_baseline_OSmumu_mll_weighted = new TH1F("h_baseline_OSmumu_mll_weighted", "mll;M_{ll} [GeV];Events", 90, 60, 150);
+
+    h_baseline_OSee_mll->Sumw2();
+    h_baseline_OSmumu_mll->Sumw2();
+    h_baseline_OSee_mll_weighted->Sumw2();
+    h_baseline_OSmumu_mll_weighted->Sumw2();
+
+    wk()->addOutput(h_baseline_OSee_mll);
+    wk()->addOutput(h_baseline_OSmumu_mll);
+    wk()->addOutput(h_baseline_OSee_mll_weighted);
+    wk()->addOutput(h_baseline_OSmumu_mll_weighted);
+
+    h_signal_OSee_mll = new TH1F("h_signal_OSee_mll", "mll;M_{ll} [GeV];Events", 90, 60, 150);
+    h_signal_OSmumu_mll = new TH1F("h_signal_OSmumu_mll", "mll;M_{ll} [GeV];Events", 90, 60, 150);
+    h_signal_OSee_mll_weighted = new TH1F("h_signal_OSee_mll_weighted", "mll;M_{ll} [GeV];Events", 90, 60, 150);
+    h_signal_OSmumu_mll_weighted = new TH1F("h_signal_OSmumu_mll_weighted", "mll;M_{ll} [GeV];Events", 90, 60, 150);
+
+    h_signal_OSee_mll->Sumw2();
+    h_signal_OSmumu_mll->Sumw2();
+    h_signal_OSee_mll_weighted->Sumw2();
+    h_signal_OSmumu_mll_weighted->Sumw2();
+
+    wk()->addOutput(h_signal_OSee_mll);
+    wk()->addOutput(h_signal_OSmumu_mll);
+    wk()->addOutput(h_signal_OSee_mll_weighted);
+    wk()->addOutput(h_signal_OSmumu_mll_weighted);
 
     return EL::StatusCode::SUCCESS;
 }
@@ -107,6 +152,7 @@ EL::StatusCode ytEventSelection::fileExecute ()
 
     TH1F *h1 = (TH1F *)wk()->inputFile()->Get("DerivationStat_Weights");
     derivation_stat_weights = h1->GetBinContent(1);
+    //cout <<   "derivation_stat_weights=" << h1->GetBinContent(1) << endl;
 
     return EL::StatusCode::SUCCESS;
 }
@@ -540,21 +586,22 @@ EL::StatusCode ytEventSelection::initialize ()
     fChain->SetBranchAddress("TruthPDGID1", &TruthPDGID1, &b_TruthPDGID1);
     fChain->SetBranchAddress("TruthPDGID2", &TruthPDGID2, &b_TruthPDGID2);
 
+    if (isSkim) {
+        m_skim->initialize(wk()->tree(), process);
+/*
+        if (isMC)
+            m_skim_MC->initialize(fChain, process);
+        else if (isData)
+            m_skim_data->initialize(fChain, process);
+*/
+    }
     if (isOptimization) {
         m_optimization->set_isMC(isMC);
         m_optimization->set_isData(isData);
         m_optimization->set_process(process);
         m_optimization->initialize();
     }
-    
-    if (isSkim) {
-        if (isMC)
-            m_skim_MC->initialize(fChain, process);
-        else if (isData)
-            m_skim_data->initialize(fChain, process);
 
-    }
-    
     return EL::StatusCode::SUCCESS;
 }
 
@@ -944,29 +991,50 @@ EL::StatusCode ytEventSelection::execute ()
     // Now sort leptons by descending Pt
     sort(vec_baseline_lept.begin(), vec_baseline_lept.end(), sort_descending_Pt<Lepton>);
 
+    int random_run_number = -1;
+    random_run_number = m_cutflow->get_mc_random_event_number(isData, isMC,
+                                                              EventNumber, ChannelNumber,
+                                                              AvgMu, EventWeight, //PRWWeight,
+                                                              LB, RunNb);
+
+    //cout << "*** EventNumber=" << EventNumber << endl;
+    //cout << "ytEventSelection AvgMu=" << AvgMu << endl;
+    //cout << "ytEventSelection PRWWeight=" << PRWWeight << endl;
+    //cout << "yt_cutflows AvgMu=" << m_cutflow->get_AvgMu() << endl;
+    //cout << "yt_cutflows pileup_weight=" << m_cutflow->get_pileup_weight() << endl;
+
+    float pileup_weight = 1.;
+    pileup_weight = m_cutflow->get_pileup_weight();
+
     // Dump histograms
-    h_Nvtx->Fill(Nvtx, EventWeight);
-    h_Nvtx_PRW->Fill(Nvtx, EventWeight * PRWWeight);
+    if (isData) {
+        h_Nvtx->Fill(Nvtx);
+        h_AvgMu->Fill(m_cutflow->get_AvgMu() * 1.0/1.09);
 
-    h_AvgMu->Fill(AvgMu, EventWeight);
-    h_AvgMu_PRW->Fill(AvgMu, EventWeight * PRWWeight);
+        if (vec_lept.size() > 0)
+            h_NLepts->Fill(vec_lept.at(0).get_number());
+        else
+            h_NLepts->Fill(0.);
 
-    if (vec_lept.size() > 0) {
-        h_NLepts->Fill(vec_lept.at(0).get_number(), EventWeight);
-        h_NLepts_PRW->Fill(vec_lept.at(0).get_number(), EventWeight * PRWWeight);
+        if (vec_jets.size() > 0)
+            h_NJets->Fill(vec_jets.at(0).get_number());
+        else
+            h_NJets->Fill(0.);
     }
-    else {
-        h_NLepts->Fill(0., EventWeight);
-        h_NLepts_PRW->Fill(0., EventWeight * PRWWeight);
-    }
+    else if (isMC) {
+        double weight = luminosity * cross_section_kfactor_efficiency * 1000. * EventWeight * pileup_weight /*/ derivation_stat_weights*/;
+        h_Nvtx_weighted->Fill(Nvtx, weight);
+        h_AvgMu_weighted->Fill(m_cutflow->get_AvgMu(), weight);
 
-    if (vec_jets.size() > 0) {
-        h_NJets->Fill(vec_jets.at(0).get_number(), EventWeight);
-        h_NJets_PRW->Fill(vec_jets.at(0).get_number(), EventWeight * PRWWeight);
-    }
-    else {
-        h_NJets->Fill(0., EventWeight);
-        h_NJets_PRW->Fill(0., EventWeight * PRWWeight);
+        if (vec_lept.size() > 0)
+            h_NLepts_weighted->Fill(vec_lept.at(0).get_number(), weight);
+        else
+            h_NLepts_weighted->Fill(0., weight);
+
+        if (vec_jets.size() > 0)
+            h_NJets_weighted->Fill(vec_jets.at(0).get_number(), weight);
+        else
+            h_NJets_weighted->Fill(0., weight);
     }
 
     //----------------------------------//
@@ -986,13 +1054,13 @@ EL::StatusCode ytEventSelection::execute ()
     bool cut3  = m_cutflow->pass_primary_vertex(PV_z);
     m_cutflow->update(Primary_vertex, cut3);
     if (!cut3) return EL::StatusCode::SUCCESS;
-
+/*
     int random_run_number = -1;
     random_run_number = m_cutflow->get_mc_random_event_number(isData, isMC,
                                                               EventNumber, ChannelNumber,
-                                                              AvgMu, EventWeight, PRWWeight,
+                                                              AvgMu, EventWeight, //PRWWeight,
                                                               LB, RunNb);
-
+*/
     bool cut4  = m_cutflow->pass_trigger(isData, isMC, RunNb, random_run_number /*PRWrandomRunNumber*/,
                                          HLT_2e12_lhloose_L12EM10VH, HLT_e17_lhloose_mu14, HLT_mu18_mu8noL1, HLT_xe70,
                                          HLT_2e17_lhvloose_nod0, HLT_e17_lhloose_nod0_mu14, HLT_mu22_mu8noL1, HLT_xe100_mht_L1XE50, HLT_xe110_mht_L1XE50,
@@ -1051,12 +1119,78 @@ EL::StatusCode ytEventSelection::execute ()
     // Now sort leptons by descending Pt
     sort(vec_signal_lept.begin(), vec_signal_lept.end(), sort_descending_Pt<Lepton>);
 
+    //cout << "*** EventNumber=" << EventNumber << endl;
+    //cout << "ytEventSelection AvgMu=" << AvgMu << endl;
+    //cout << "ytEventSelection PRWWeight=" << PRWWeight << endl;
+    //cout << "yt_cutflows AvgMu=" << m_cutflow->get_AvgMu() << endl;
+    //cout << "yt_cutflows pileup_weight=" << m_cutflow->get_pileup_weight() << endl;
+
+    // Dump the AvgMu histograms of the opposit sign baseline leptons.
+    if (vec_baseline_lept.size() == 2) {
+        int sign = vec_baseline_lept[0].get_charge() * vec_baseline_lept[1].get_charge();
+        int channel = vec_baseline_lept[0].get_flavor() * vec_baseline_lept[1].get_flavor();
+
+        TLorentzVector tlv_lept0;
+        TLorentzVector tlv_lept1;
+        tlv_lept0.SetPtEtaPhiM(vec_baseline_lept[0].get_pt(), vec_baseline_lept[0].get_eta(), vec_baseline_lept[0].get_phi(), vec_baseline_lept[0].get_M());
+        tlv_lept1.SetPtEtaPhiM(vec_baseline_lept[1].get_pt(), vec_baseline_lept[1].get_eta(), vec_baseline_lept[1].get_phi(), vec_baseline_lept[1].get_M());
+        double mll = (tlv_lept0 + tlv_lept1).M();
+
+        if (sign == -1 && channel == 121) {
+            // OS ee
+            if (isData) {
+                h_AvgMu_OSee->Fill(m_cutflow->get_AvgMu() * 1.0 / 1.09);
+                h_baseline_OSee_mll->Fill(mll / 1000.);
+            }
+            else if (isMC) {
+                double weight = luminosity * cross_section_kfactor_efficiency * 1000. * EventWeight * pileup_weight /*/ derivation_stat_weights*/;
+                h_AvgMu_OSee_weighted->Fill(m_cutflow->get_AvgMu(), weight);
+                h_baseline_OSee_mll_weighted->Fill(mll / 1000., weight);
+            }
+        }
+        else if (sign == -1 && channel == 169) {
+            // OS mumu
+            if (isData) {
+                h_AvgMu_OSmumu->Fill(m_cutflow->get_AvgMu() * 1.0 / 1.09);
+                h_baseline_OSmumu_mll->Fill(mll / 1000.);
+            }
+            else if (isMC) {
+                double weight = luminosity * cross_section_kfactor_efficiency * 1000. * EventWeight * pileup_weight /*/ derivation_stat_weights*/;
+                h_AvgMu_OSmumu_weighted->Fill(m_cutflow->get_AvgMu(), weight);
+                h_baseline_OSmumu_mll_weighted->Fill(mll / 1000., weight);
+            }
+        }
+    }
+
     // Calculate weight
     double baseline_weight = 1., signal_weight = 1.;
     baseline_weight = ID_weight(vec_baseline_elec, false) * ID_weight(vec_baseline_muon) * jets_weight(vec_signal_jets);
     signal_weight = ID_weight(vec_signal_elec, true) * Iso_weight(vec_signal_elec) * ID_weight(vec_signal_muon) * Iso_weight(vec_signal_muon) * jets_weight(vec_signal_jets);
 
     if (isSkim) {
+        //cout << "Doing skim at here..." << endl;
+        // Setting
+        m_skim->set_isMC(isMC);
+        m_skim->set_isData(isData);
+        m_skim->set_process(process);
+        m_skim->set_luminosity(luminosity);
+        m_skim->set_cross_section(cross_section);
+        m_skim->set_k_factor(k_factor);
+        m_skim->set_filter_efficiency(filter_efficiency);
+        m_skim->set_cross_section_kfactor_efficiency(cross_section_kfactor_efficiency);
+        m_skim->set_event_weight_sum(derivation_stat_weights);
+        m_skim->set_event_weight(EventWeight);
+        m_skim->set_pileup_weight(pileup_weight /*PRWWeight*/);
+        m_skim->set_baseline_weight(baseline_weight);
+        m_skim->set_signal_weight(signal_weight);
+        m_skim->set_run_number(random_run_number /*PRWrandomRunNumber*/);
+        m_skim->set_new_AvgMu(m_cutflow->get_AvgMu());
+        m_skim->set_tag_pt_threshold(tag_pt_threshold);
+        // Do skim
+        m_skim->execute(vec_elec, vec_muon, vec_lept, vec_jets,
+                        vec_baseline_elec, vec_baseline_muon, vec_baseline_lept, vec_baseline_jets,
+                        vec_signal_elec, vec_signal_muon, vec_signal_lept, vec_signal_jets);
+/*
         // Skimming data and MC for real lepton efficiency study
         if (isMC) {
             m_skim_MC->set_luminosity(luminosity);
@@ -1064,7 +1198,7 @@ EL::StatusCode ytEventSelection::execute ()
             m_skim_MC->execute(vec_elec, vec_muon, vec_lept, vec_jets,
                                vec_baseline_elec, vec_baseline_muon, vec_baseline_lept, vec_baseline_jets,
                                vec_signal_elec, vec_signal_muon, vec_signal_lept, vec_signal_jets,
-                               Etmiss_TST_Et, EventWeight, PRWrandomRunNumber, PRWWeight, baseline_weight, signal_weight, process);
+                               Etmiss_TST_Et, EventWeight, random_run_number, pileup_weight, baseline_weight, signal_weight, process);
         }
         else if (isData) {
             m_skim_data->execute(vec_elec, vec_muon, vec_lept, vec_jets,
@@ -1073,11 +1207,49 @@ EL::StatusCode ytEventSelection::execute ()
                                  Etmiss_TST_Et, RunNb);
 
         }
+*/
     }
 
     bool cut12 = m_cutflow->pass_at_least_two_signal_leptons_greater_than_20GeV(vec_signal_lept);
     m_cutflow->update(At_least_two_signal_leptons_greater_than_20GeV, cut12);
     if (!cut12) return EL::StatusCode::SUCCESS;
+
+    // Dump the AvgMu histograms of the opposit sign baseline leptons.
+    if (vec_signal_lept.size() == 2) {
+        int sign = vec_signal_lept[0].get_charge() * vec_signal_lept[1].get_charge();
+        int channel = vec_baseline_lept[0].get_flavor() * vec_baseline_lept[1].get_flavor();
+
+        TLorentzVector tlv_lept0;
+        TLorentzVector tlv_lept1;
+        tlv_lept0.SetPtEtaPhiM(vec_signal_lept[0].get_pt(), vec_signal_lept[0].get_eta(), vec_signal_lept[0].get_phi(), vec_signal_lept[0].get_M());
+        tlv_lept1.SetPtEtaPhiM(vec_signal_lept[1].get_pt(), vec_signal_lept[1].get_eta(), vec_signal_lept[1].get_phi(), vec_signal_lept[1].get_M());
+        double mll = (tlv_lept0 + tlv_lept1).M();
+
+        if (sign == -1 && channel == 121) {
+            // OS ee
+            if (isData) {
+                //h_AvgMu_OSee->Fill(m_cutflow->get_AvgMu() * 1.0 / 1.16);
+                h_signal_OSee_mll->Fill(mll / 1000.);
+            }
+            else if (isMC) {
+                double weight = luminosity * cross_section_kfactor_efficiency * 1000. * EventWeight * pileup_weight /*/ derivation_stat_weights*/;
+                //h_AvgMu_OSee_weighted->Fill(m_cutflow->get_AvgMu(), weight);
+                h_signal_OSee_mll_weighted->Fill(mll / 1000., weight);
+            }
+        }
+        else if (sign == -1 && channel == 169) {
+            // OS mumu
+            if (isData) {
+                //h_AvgMu_OSmumu->Fill(m_cutflow->get_AvgMu() * 1.0 / 1.16);
+                h_signal_OSmumu_mll->Fill(mll / 1000.);
+            }
+            else if (isMC) {
+                double weight = luminosity * cross_section_kfactor_efficiency * 1000. * EventWeight * pileup_weight /*/ derivation_stat_weights*/;
+                //h_AvgMu_OSmumu_weighted->Fill(m_cutflow->get_AvgMu(), weight);
+                h_signal_OSmumu_mll_weighted->Fill(mll / 1000., weight);
+            }
+        }
+    }
 
     bool cut13 = m_cutflow->pass_same_sign(vec_signal_lept);
     m_cutflow->update(Same_sign, cut13);
@@ -1094,7 +1266,6 @@ EL::StatusCode ytEventSelection::execute ()
                                                     HLT_2e12_lhloose_L12EM10VH, HLT_e17_lhloose_mu14, HLT_mu18_mu8noL1, HLT_xe70,
                                                     HLT_2e17_lhvloose_nod0, HLT_e17_lhloose_nod0_mu14, HLT_mu22_mu8noL1, HLT_xe100_mht_L1XE50, HLT_xe110_mht_L1XE50,
                                                     Etmiss_TST_Et);
-
     if (ee_cut1 == 1 && ee_cut2) {
         m_cutflow->update(ee_trigger_matching, ee_cut2);
     }
@@ -1220,12 +1391,12 @@ EL::StatusCode ytEventSelection::execute ()
         m_optimization->set_filter_efficiency(filter_efficiency);
         m_optimization->set_cross_section_kfactor_efficiency(cross_section_kfactor_efficiency);
 
-        m_optimization->set_derivation_stat_weights(derivation_stat_weights);
+        //m_optimization->set_derivation_stat_weights(derivation_stat_weights);
 
         m_optimization->set_event_weight(EventWeight);
         m_optimization->set_lepton_weight(lepton_weight * dilepton_trigger_weight);
         m_optimization->set_jet_weight(jet_weight);
-        m_optimization->set_pileup_weight(PRWWeight);
+        m_optimization->set_pileup_weight(pileup_weight);
 
         m_optimization->set_met(Etmiss_TST_Et);
 
@@ -1267,8 +1438,15 @@ EL::StatusCode ytEventSelection::finalize ()
     //Info(function_name, "Function calls");
 
     m_cutflow->print();
-    if (isOptimization)
+
+    if (isSkim) {
+        m_skim->finalize();
+        //m_skim->debug_print();
+    }
+    if (isOptimization) {
+        m_optimization->set_derivation_stat_weights(derivation_stat_weights);
         m_optimization->finalize();
+    }
 
     return EL::StatusCode::SUCCESS;
 }
@@ -1290,12 +1468,12 @@ EL::StatusCode ytEventSelection::histFinalize ()
 
     //const char * function_name = "histFinalize()";
     //Info(function_name, "Function calls");
-
+/*
     this->make_plots_Nvtx();
     this->make_plots_AvgMu();
     this->make_plots_NLepts();
     this->make_plots_NJets();
-
+*/
     return EL::StatusCode::SUCCESS;
 }
 
@@ -1316,15 +1494,15 @@ void ytEventSelection::debug_lept_print(vector<Lepton> vec_lept)
     for (auto & lep_itr : vec_lept) {
         //cout << "NEl+NMu=" << lep_itr.get_number() << endl;
         cout << i + 1
-        << ": pt=" << lep_itr.get_pt()
-        << ", eta=" << lep_itr.get_eta()
-        << ", phi=" << lep_itr.get_phi()
-        << ", baseline=" << lep_itr.get_baseline()
-        << ", passOR=" << lep_itr.get_passOR()
-        << ", isSignal=" << lep_itr.get_isSignal()
-        << ", flavor=" << lep_itr.get_flavor()
-        << ", charge=" << lep_itr.get_charge()
-        << endl;
+            << ": pt=" << lep_itr.get_pt()
+            << ", eta=" << lep_itr.get_eta()
+            << ", phi=" << lep_itr.get_phi()
+            << ", baseline=" << lep_itr.get_baseline()
+            << ", passOR=" << lep_itr.get_passOR()
+            << ", isSignal=" << lep_itr.get_isSignal()
+            << ", flavor=" << lep_itr.get_flavor()
+            << ", charge=" << lep_itr.get_charge()
+            << endl;
         i++;
     }
 }
@@ -1339,42 +1517,42 @@ void ytEventSelection::debug_elec_print(vector<Electron> vec_elec)
     for (auto & el_itr : vec_elec) {
         //cout << "NEl=" << el_itr.get_number() << endl;
         cout << i + 1
-        << ": pt=" << el_itr.get_pt() 
-        << ", eta=" << el_itr.get_eta() << ", etaclus=" << el_itr.get_etaclus() 
-        << ", phi=" << el_itr.get_phi() 
-        << ", baseline=" << el_itr.get_baseline() 
-        << ", passOR=" << el_itr.get_passOR() 
-        << ", isSignal=" << el_itr.get_isSignal()
-        << ", flavor=" << el_itr.get_flavor() 
-        << ", charge=" << el_itr.get_charge()
-        << ", d0pvtx=" << el_itr.get_d0pvtx()
-        << ", |d0sig|=" << fabs(el_itr.get_sigd0())
-        << ", |z0sinTheta|=" << fabs(el_itr.get_z0sinTheta())
-        << ", ptvarcone20/pt=" << el_itr.get_ptvarcone20() / el_itr.get_pt()
-        << ", topoetcone20/pt=" << el_itr.get_topoetcone20() / el_itr.get_pt()
-        << ", SFwTightLH=" << el_itr.get_SFwTightLH()
-        << ", SFwMediumLH=" << el_itr.get_SFwMediumLH()
-        << ", SFwLooseAndBLayerLH=" << el_itr.get_SFwLooseAndBLayerLH()
-        << ", IsoSFwMediumLH=" << el_itr.get_IsoSFwMediumLH()
-        << ", SFwTrigMediumLH_single=" << el_itr.get_SFwTrigMediumLH_single()
-        << ", SFwTrigMediumLH_e12_lhloose_L1EM10VH=" << el_itr.get_SFwTrigMediumLH_e12_lhloose_L1EM10VH()
-        << ", SFwTrigMediumLH_e17_lhloose=" << el_itr.get_SFwTrigMediumLH_e17_lhloose()
-        << ", SFwTrigLooseAndBLayerLH_e12_lhloose_L1EM10VH=" << el_itr.get_SFwTrigLooseAndBLayerLH_e12_lhloose_L1EM10VH()
-        << ", trigMatch_e12_lhloose_L1EM10VH=" << el_itr.get_trigMatch_e12_lhloose_L1EM10VH()
-        << ", trigMatch_e17_lhloose=" << el_itr.get_trigMatch_e17_lhloose()
-        << ", trigMatch_e17_lhloose_mu14=" << el_itr.get_trigMatch_e17_lhloose_mu14()
-        << ", trigMatch_e17_lhloose_nod0_mu14=" << el_itr.get_trigMatch_e17_lhloose_nod0_mu14()
-        << ", trigMatch_e24_lhmedium_iloose_L1EM20VH=" << el_itr.get_trigMatch_e24_lhmedium_iloose_L1EM20VH()
-        << ", trigMatch_e60_lhmedium=" << el_itr.get_trigMatch_e60_lhmedium()
-        << ", trigMatch_2e12_lhloose_L12EM10VH=" << el_itr.get_trigMatch_2e12_lhloose_L12EM10VH()
-        << ", trigMatch_2e15_lhloose_L12EM10VH=" << el_itr.get_trigMatch_2e15_lhloose_L12EM10VH()
-        << ", trigMatch_2e15_lhvloose_L12EM13VH=" << el_itr.get_trigMatch_2e15_lhvloose_L12EM13VH()
-        << ", trigMatch_2e15_lhvloose_nod0_L12EM13VH=" << el_itr.get_trigMatch_2e15_lhvloose_nod0_L12EM13VH()
-        << ", trigMatch_2e17_lhvloose_nod0=" << el_itr.get_trigMatch_2e17_lhvloose_nod0()
-        << ", trigMatch_e24_lhmedium_nod0_ivarloose=" << el_itr.get_trigMatch_e24_lhmedium_nod0_ivarloose()
-        << ", trigMatch_e24_lhtight_nod0_ivarloose=" << el_itr.get_trigMatch_e24_lhtight_nod0_ivarloose()
-        << ", trigMatch_e60_lhmedium_nod0=" << el_itr.get_trigMatch_e60_lhmedium_nod0()
-        << endl;
+            << ": pt=" << el_itr.get_pt()
+            << ", eta=" << el_itr.get_eta() << ", etaclus=" << el_itr.get_etaclus()
+            << ", phi=" << el_itr.get_phi()
+            << ", baseline=" << el_itr.get_baseline()
+            << ", passOR=" << el_itr.get_passOR()
+            << ", isSignal=" << el_itr.get_isSignal()
+            << ", flavor=" << el_itr.get_flavor()
+            << ", charge=" << el_itr.get_charge()
+            << ", d0pvtx=" << el_itr.get_d0pvtx()
+            << ", |d0sig|=" << fabs(el_itr.get_sigd0())
+            << ", |z0sinTheta|=" << fabs(el_itr.get_z0sinTheta())
+            << ", ptvarcone20/pt=" << el_itr.get_ptvarcone20() / el_itr.get_pt()
+            << ", topoetcone20/pt=" << el_itr.get_topoetcone20() / el_itr.get_pt()
+            << ", SFwTightLH=" << el_itr.get_SFwTightLH()
+            << ", SFwMediumLH=" << el_itr.get_SFwMediumLH()
+            << ", SFwLooseAndBLayerLH=" << el_itr.get_SFwLooseAndBLayerLH()
+            << ", IsoSFwMediumLH=" << el_itr.get_IsoSFwMediumLH()
+            << ", SFwTrigMediumLH_single=" << el_itr.get_SFwTrigMediumLH_single()
+            << ", SFwTrigMediumLH_e12_lhloose_L1EM10VH=" << el_itr.get_SFwTrigMediumLH_e12_lhloose_L1EM10VH()
+            << ", SFwTrigMediumLH_e17_lhloose=" << el_itr.get_SFwTrigMediumLH_e17_lhloose()
+            << ", SFwTrigLooseAndBLayerLH_e12_lhloose_L1EM10VH=" << el_itr.get_SFwTrigLooseAndBLayerLH_e12_lhloose_L1EM10VH()
+            << ", trigMatch_e12_lhloose_L1EM10VH=" << el_itr.get_trigMatch_e12_lhloose_L1EM10VH()
+            << ", trigMatch_e17_lhloose=" << el_itr.get_trigMatch_e17_lhloose()
+            << ", trigMatch_e17_lhloose_mu14=" << el_itr.get_trigMatch_e17_lhloose_mu14()
+            << ", trigMatch_e17_lhloose_nod0_mu14=" << el_itr.get_trigMatch_e17_lhloose_nod0_mu14()
+            << ", trigMatch_e24_lhmedium_iloose_L1EM20VH=" << el_itr.get_trigMatch_e24_lhmedium_iloose_L1EM20VH()
+            << ", trigMatch_e60_lhmedium=" << el_itr.get_trigMatch_e60_lhmedium()
+            << ", trigMatch_2e12_lhloose_L12EM10VH=" << el_itr.get_trigMatch_2e12_lhloose_L12EM10VH()
+            << ", trigMatch_2e15_lhloose_L12EM10VH=" << el_itr.get_trigMatch_2e15_lhloose_L12EM10VH()
+            << ", trigMatch_2e15_lhvloose_L12EM13VH=" << el_itr.get_trigMatch_2e15_lhvloose_L12EM13VH()
+            << ", trigMatch_2e15_lhvloose_nod0_L12EM13VH=" << el_itr.get_trigMatch_2e15_lhvloose_nod0_L12EM13VH()
+            << ", trigMatch_2e17_lhvloose_nod0=" << el_itr.get_trigMatch_2e17_lhvloose_nod0()
+            << ", trigMatch_e24_lhmedium_nod0_ivarloose=" << el_itr.get_trigMatch_e24_lhmedium_nod0_ivarloose()
+            << ", trigMatch_e24_lhtight_nod0_ivarloose=" << el_itr.get_trigMatch_e24_lhtight_nod0_ivarloose()
+            << ", trigMatch_e60_lhmedium_nod0=" << el_itr.get_trigMatch_e60_lhmedium_nod0()
+            << endl;
         i++;
     }
 }
@@ -1389,38 +1567,38 @@ void ytEventSelection::debug_muon_print(vector<Muon> vec_muon)
     for (auto & mu_itr : vec_muon) {
         //cout << "NMu=" << mu_itr.get_number() << endl;
         cout << i + 1
-        << ": pt=" << mu_itr.get_pt()
-        << ", eta=" << mu_itr.get_eta()
-        << ", phi=" << mu_itr.get_phi()
-        << ", baseline=" << mu_itr.get_baseline()
-        << ", passOR=" << mu_itr.get_passOR()
-        << ", isSignal=" << mu_itr.get_isSignal()
-        << ", flavor=" << mu_itr.get_flavor()
-        << ", charge=" << mu_itr.get_charge()
-        << ", isBad=" << mu_itr.get_isBad()
-        << ", isCosmic=" << mu_itr.get_isCosmic()
-        << ", d0pvtx=" << mu_itr.get_d0pvtx()
-        << ", |d0sig|=" << fabs(mu_itr.get_sigd0())
-        << ", |z0sinTheta|=" << fabs(mu_itr.get_z0sinTheta())
-        << ", ptvarcone30/pt=" << mu_itr.get_ptvarcone30() / mu_itr.get_pt()
-        << ", SFw=" << mu_itr.get_SFw()
-        << ", IsoSFw=" << mu_itr.get_IsoSFw()
-        << ", MuTrigSF_HLT_mu20_iloose_L1MU15_OR_HLT_mu50=" << mu_itr.get_MuTrigSF_HLT_mu20_iloose_L1MU15_OR_HLT_mu50()
-        << ", trigMatch_mu8noL1=" << mu_itr.get_trigMatch_mu8noL1()
-        << ", trigMatch_mu14=" << mu_itr.get_trigMatch_mu14()
-        << ", trigMatch_mu18=" << mu_itr.get_trigMatch_mu18()
-        << ", trigMatch_mu18_mu8noL1=" << mu_itr.get_trigMatch_mu18_mu8noL1()
-        << ", trigMatch_mu20_mu8noL1=" << mu_itr.get_trigMatch_mu20_mu8noL1()
-        << ", trigMatch_mu22_mu8noL1=" << mu_itr.get_trigMatch_mu22_mu8noL1()
-        << ", trigMatch_mu26_imedium=" << mu_itr.get_trigMatch_mu26_imedium()
-        << ", trigMatch_mu50=" << mu_itr.get_trigMatch_mu50()
-        << ", trigMatch_e17_lhloose_mu14=" << mu_itr.get_trigMatch_e17_lhloose_mu14()
-        << ", trigMatch_e17_lhloose_nod0_mu14=" << mu_itr.get_trigMatch_e17_lhloose_nod0_mu14()
-        << ", trigMatch_mu24_iloose=" << mu_itr.get_trigMatch_mu24_iloose()
-        << ", trigMatch_mu24_ivarloose=" << mu_itr.get_trigMatch_mu24_ivarloose()
-        << ", trigMatch_mu24_iloose_L1MU15=" << mu_itr.get_trigMatch_mu24_iloose_L1MU15()
-        << ", trigMatch_mu24_ivarloose_L1MU15=" << mu_itr.get_trigMatch_mu24_ivarloose_L1MU15()
-        << endl;
+            << ": pt=" << mu_itr.get_pt()
+            << ", eta=" << mu_itr.get_eta()
+            << ", phi=" << mu_itr.get_phi()
+            << ", baseline=" << mu_itr.get_baseline()
+            << ", passOR=" << mu_itr.get_passOR()
+            << ", isSignal=" << mu_itr.get_isSignal()
+            << ", flavor=" << mu_itr.get_flavor()
+            << ", charge=" << mu_itr.get_charge()
+            << ", isBad=" << mu_itr.get_isBad()
+            << ", isCosmic=" << mu_itr.get_isCosmic()
+            << ", d0pvtx=" << mu_itr.get_d0pvtx()
+            << ", |d0sig|=" << fabs(mu_itr.get_sigd0())
+            << ", |z0sinTheta|=" << fabs(mu_itr.get_z0sinTheta())
+            << ", ptvarcone30/pt=" << mu_itr.get_ptvarcone30() / mu_itr.get_pt()
+            << ", SFw=" << mu_itr.get_SFw()
+            << ", IsoSFw=" << mu_itr.get_IsoSFw()
+            << ", MuTrigSF_HLT_mu20_iloose_L1MU15_OR_HLT_mu50=" << mu_itr.get_MuTrigSF_HLT_mu20_iloose_L1MU15_OR_HLT_mu50()
+            << ", trigMatch_mu8noL1=" << mu_itr.get_trigMatch_mu8noL1()
+            << ", trigMatch_mu14=" << mu_itr.get_trigMatch_mu14()
+            << ", trigMatch_mu18=" << mu_itr.get_trigMatch_mu18()
+            << ", trigMatch_mu18_mu8noL1=" << mu_itr.get_trigMatch_mu18_mu8noL1()
+            << ", trigMatch_mu20_mu8noL1=" << mu_itr.get_trigMatch_mu20_mu8noL1()
+            << ", trigMatch_mu22_mu8noL1=" << mu_itr.get_trigMatch_mu22_mu8noL1()
+            << ", trigMatch_mu26_imedium=" << mu_itr.get_trigMatch_mu26_imedium()
+            << ", trigMatch_mu50=" << mu_itr.get_trigMatch_mu50()
+            << ", trigMatch_e17_lhloose_mu14=" << mu_itr.get_trigMatch_e17_lhloose_mu14()
+            << ", trigMatch_e17_lhloose_nod0_mu14=" << mu_itr.get_trigMatch_e17_lhloose_nod0_mu14()
+            << ", trigMatch_mu24_iloose=" << mu_itr.get_trigMatch_mu24_iloose()
+            << ", trigMatch_mu24_ivarloose=" << mu_itr.get_trigMatch_mu24_ivarloose()
+            << ", trigMatch_mu24_iloose_L1MU15=" << mu_itr.get_trigMatch_mu24_iloose_L1MU15()
+            << ", trigMatch_mu24_ivarloose_L1MU15=" << mu_itr.get_trigMatch_mu24_ivarloose_L1MU15()
+            << endl;
         i++;
     }
 }
@@ -1435,20 +1613,20 @@ void ytEventSelection::debug_jets_print(vector<Jet> vec_jets)
     for (auto & jet_itr : vec_jets) {
         //cout << "NJet=" << jet_itr.get_number() << endl;
         cout << i + 1
-        << ": pt=" << jet_itr.get_pt()
-        << ", eta=" << jet_itr.get_eta()
-        << ", phi=" << jet_itr.get_phi()
-        << ", baseline=" << jet_itr.get_baseline()
-        << ", passOR=" << jet_itr.get_passOR()
-        << ", isBjet=" << jet_itr.get_isBjet()
-        << ", quality=" << jet_itr.get_quality()
-        << ", JVT=" << jet_itr.get_JVT()
-        << ", JVTsf=" << jet_itr.get_JVTsf()
-        << ", MV2c20=" << jet_itr.get_MV2c20()
-        << ", MV2c10=" << jet_itr.get_MV2c10()
-        << ", SFw=" << jet_itr.get_SFw()
-        << ", nTrk=" << jet_itr.get_nTrk()
-        << endl;
+            << ": pt=" << jet_itr.get_pt()
+            << ", eta=" << jet_itr.get_eta()
+            << ", phi=" << jet_itr.get_phi()
+            << ", baseline=" << jet_itr.get_baseline()
+            << ", passOR=" << jet_itr.get_passOR()
+            << ", isBjet=" << jet_itr.get_isBjet()
+            << ", quality=" << jet_itr.get_quality()
+            << ", JVT=" << jet_itr.get_JVT()
+            << ", JVTsf=" << jet_itr.get_JVTsf()
+            << ", MV2c20=" << jet_itr.get_MV2c20()
+            << ", MV2c10=" << jet_itr.get_MV2c10()
+            << ", SFw=" << jet_itr.get_SFw()
+            << ", nTrk=" << jet_itr.get_nTrk()
+            << endl;
         i++;
     }
 }
@@ -1590,7 +1768,7 @@ void ytEventSelection::debug_sum_of_weight_print()
 */
 
 
-
+/*
 //----------------------------------//
 // make plots
 //----------------------------------//
@@ -1719,7 +1897,7 @@ void ytEventSelection::make_plots_NJets()
 
     wk()->addOutput(c_NJets);
 }
-
+*/
 
 //----------------------------------//
 // Fill & set functions
