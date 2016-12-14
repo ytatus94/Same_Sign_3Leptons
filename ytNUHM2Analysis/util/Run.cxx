@@ -547,6 +547,7 @@ int main( int argc, char* argv[] ) {
     alg->set_isFullSim(isFullSim);
     alg->set_isAF2Sim(isAF2Sim);
     alg->set_process(process);
+	alg->set_tag_pt_threshold(25000.);
     /*
     if (isMC && !process.empty()) {
         if (process != "bkg")

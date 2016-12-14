@@ -7,6 +7,11 @@ This is SS/3L+jet cutflows study v44.
 ### Setting:
 
 
+### v01-15-01. (newskim branch) Use new skim code.
+1. Use new skim code which combine data and mc
+2. Remove raw elec, muon, jets, lept vectors in skim code. Use baseline vectors to replace raw vectors.
+
+
 ### v01-15. (oldskim branch) Modify `ytEventSelection` to use the new skim code.
 
 

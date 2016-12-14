@@ -1,14 +1,58 @@
 #define YT_SKIM_CXX
 #include "ytNUHM2Analysis/yt_skim.h"
 
-void yt_skim::initialize()
+yt_skim::yt_skim()
+{
+    // Physics object variables
+    EE_pair     = new vector<ZTandP_pair>();
+    MuMu_pair   = new vector<ZTandP_pair>();
+
+    El_isBaseline   = new vector<bool>();
+    El_isSignal     = new vector<bool>();
+    El_isZTag       = new vector<bool>();
+    El_isZProbe     = new vector<bool>();
+    El_ZTandP_mll   = new vector<double>();
+    El_isZProbe_TriggerMatched = new vector<bool>();
+    //El_DR_closest_Jet = new vector<double>();
+
+    Mu_isBaseline   = new vector<bool>();
+    Mu_isSignal     = new vector<bool>();
+    Mu_isZTag       = new vector<bool>();
+    Mu_isZProbe     = new vector<bool>();
+    Mu_ZTandP_mll   = new vector<double>();
+    Mu_isZProbe_TriggerMatched = new vector<bool>();
+    //Mu_DR_closest_Jet = new vector<double>();
+
+    //Jet_isBaseline  = new vector<bool>();
+    //Jet_isSignal    = new vector<bool>();
+    //bJet_isSignal   = new vector<bool>();
+
+    // Events variables
+    normalization = 1.;
+    baseline_mll = 0.;
+    signal_mll = 0.;
+    //jets_mll = 0.;
+    //Ht = 0.;
+    //meff = 0.;
+
+    // Counter
+    N_at_least_two_baseline_lepton_events = 0;
+    N_exactly_two_baseline_lepton_events = 0;
+    N_tot_baseline_electrons = 0;
+    N_tot_baseline_muons = 0;
+    N_tot_TandP_pair_electron = 0;
+    N_tot_TandP_pair_muon = 0;
+}
+
+void yt_skim::clear_all_object_vectors()
 {
     // clear all vectors
+/*
     vec_elec.clear();
     vec_muon.clear();
     vec_lept.clear();
     vec_jets.clear();
-
+*/
     vec_baseline_elec.clear();
     vec_baseline_muon.clear();
     vec_baseline_lept.clear();
@@ -23,23 +67,19 @@ void yt_skim::initialize()
     vec_signal_bjet.clear();
 }
 
-void yt_skim::execute(vector<Electron> elec, vector<Muon> muon, vector<Lepton> lept, vector<Jet> jets,
-                      vector<Electron> baseline_elec, vector<Muon> baseline_muon, vector<Lepton> baseline_lept, vector<Jet> baseline_jets,
-                      vector<Electron> signal_elec, vector<Muon> signal_muon, vector<Lepton> signal_lept, vector<Jet> signal_jets)
+void yt_skim::fill_all_object_vectors(//vector<Electron> elec, vector<Muon> muon, vector<Lepton> lept, vector<Jet> jets,
+                                      vector<Electron> baseline_elec, vector<Muon> baseline_muon, vector<Lepton> baseline_lept, vector<Jet> baseline_jets,
+                                      vector<Electron> signal_elec, vector<Muon> signal_muon, vector<Lepton> signal_lept, vector<Jet> signal_jets)
 {
     // in event loop:
     // copy vectors from yt_selector.
-    copy_raw_object_vectors(elec, muon, lept, jets);
-    copy_baseline_object_vectors(baseline_elec, baseline_muon, baseline_lept, baseline_jets);
-    copy_signal_object_vectors(signal_elec, signal_muon, signal_lept, signal_jets);
-    fill_signal_jets_no_eta_cut(jets);
-    fill_signal_bjet(signal_jets);
+    //this->copy_raw_object_vectors(elec, muon, lept, jets);
+    this->copy_baseline_object_vectors(baseline_elec, baseline_muon, baseline_lept, baseline_jets);
+    this->copy_signal_object_vectors(signal_elec, signal_muon, signal_lept, signal_jets);
+    //this->fill_signal_jets_no_eta_cut(jets);
+    //this->fill_signal_bjet(signal_jets);
 }
-
-void yt_skim::finalize()
-{
-}
-
+/*
 void yt_skim::copy_raw_object_vectors(vector<Electron> elec, vector<Muon> muon, vector<Lepton> lept, vector<Jet> jets)
 {
     vec_elec = elec;
@@ -47,7 +87,7 @@ void yt_skim::copy_raw_object_vectors(vector<Electron> elec, vector<Muon> muon, 
     vec_lept = lept;
     vec_jets = jets;
 }
-
+*/
 void yt_skim::copy_baseline_object_vectors(vector<Electron> elec, vector<Muon> muon, vector<Lepton> lept, vector<Jet> jets)
 {
     vec_baseline_elec = elec;
@@ -63,7 +103,7 @@ void yt_skim::copy_signal_object_vectors(vector<Electron> elec, vector<Muon> muo
     vec_signal_lept = lept;
     vec_signal_jets = jets;
 }
-
+/*
 void yt_skim::fill_signal_jets_no_eta_cut(vector<Jet> jets)
 {
     for (auto & jet_itr : jets) {
@@ -86,8 +126,264 @@ void yt_skim::fill_signal_bjet(vector<Jet> signal_jets)
 {
     for (auto & signal_jets_itr : signal_jets) {
         if (signal_jets_itr.get_isBjet() == true)
-            vec_signal_bjet.push_back(signal_jets_itr); 
+            vec_signal_bjet.push_back(signal_jets_itr);
     }
+}
+*/
+void yt_skim::initialize(TTree *tree, string process)
+{
+    // Declare the output
+    TString output_path("/raid05/users/shen/Ximo_ntuples/v47/Skimmed/");
+    if (process != "Data") {
+        output_file = TFile::Open(output_path + "/MC_probes_" + process + ".root", "RECREATE");
+    }
+    else {
+        output_file = TFile::Open(output_path + "/data_probes_" + process + ".root", "RECREATE");
+    }
+    output_tree = (TTree*)tree->CloneTree(0);
+
+    // Building the new branches
+    // Normalization
+    output_tree->Branch("normalization", &normalization);
+    output_tree->Branch("luminosity", &luminosity);
+    output_tree->Branch("cross_section", &cross_section);
+    output_tree->Branch("k_factor", &k_factor);
+    output_tree->Branch("filter_efficiency", &filter_efficiency);
+    output_tree->Branch("cross_section_kfactor_efficiency", &cross_section_kfactor_efficiency);
+    output_tree->Branch("event_weight_sum", &event_weight_sum);
+    output_tree->Branch("event_weight", &event_weight);
+    output_tree->Branch("pileup_weight", &pileup_weight);
+    output_tree->Branch("baseline_weight", &baseline_weight);
+    output_tree->Branch("signal_weight", &signal_weight);
+    output_tree->Branch("run_number", &run_number);
+    output_tree->Branch("new_AvgMu", &new_AvgMu);
+    // Physics object variables
+/*
+    output_tree->Branch("tag_flavor", &tag_flavor);
+    output_tree->Branch("tag_index", &tag_index);
+    output_tree->Branch("tag_pt", &tag_pt);
+    output_tree->Branch("tag_eta", &tag_eta);
+    output_tree->Branch("tag_phi", &tag_phi);
+    output_tree->Branch("tag_is_trigger_matched", &tag_is_trigger_matched);
+    output_tree->Branch("tag_id_SFw", &tag_id_SFw);
+    output_tree->Branch("tag_iso_SFw", &tag_iso_SFw);
+    output_tree->Branch("tag_trigger_SFw", &tag_trigger_SFw);
+
+    output_tree->Branch("probe_flavor", &probe_flavor);
+    output_tree->Branch("probe_index", &probe_index);
+    output_tree->Branch("probe_pt", &probe_pt);
+    output_tree->Branch("probe_eta", &probe_eta);
+    output_tree->Branch("probe_phi", &probe_phi);
+    output_tree->Branch("probe_is_baseline", &probe_is_baseline);
+    output_tree->Branch("probe_is_signal", &probe_is_signal);
+    output_tree->Branch("probe_id_SFw", &probe_id_SFw);
+    output_tree->Branch("probe_iso_SFw", &probe_iso_SFw);
+    output_tree->Branch("probe_deltaR_closest_jet", &probe_deltaR_closest_jet);
+    output_tree->Branch("TandP_baseline_mll", &baseline_mll);
+    output_tree->Branch("TandP_signal_mll", &signal_mll);
+*/
+    output_tree->Branch("El_isBaseline",                &El_isBaseline);
+    output_tree->Branch("El_isSignal",                  &El_isSignal);
+    output_tree->Branch("El_isZTag",                    &El_isZTag);
+    output_tree->Branch("El_isZProbe",                  &El_isZProbe);
+    output_tree->Branch("El_ZTandP_mll",                &El_ZTandP_mll);
+    output_tree->Branch("El_isZProbe_TriggerMatched",   &El_isZProbe_TriggerMatched);
+    //output_tree->Branch("El_DR_closest_Jet",          &El_DR_closest_Jet);
+
+    output_tree->Branch("Mu_isBaseline",                &Mu_isBaseline);
+    output_tree->Branch("Mu_isSignal",                  &Mu_isSignal);
+    output_tree->Branch("Mu_isZTag",                    &Mu_isZProbe);
+    output_tree->Branch("Mu_isZProbe",                  &Mu_isZProbe);
+    output_tree->Branch("Mu_ZTandP_mll",                &Mu_ZTandP_mll);
+    output_tree->Branch("Mu_isZProbe_TriggerMatched",   &Mu_isZProbe_TriggerMatched);
+    //output_tree->Branch("Mu_DR_closest_Jet",          &Mu_DR_closest_Jet);
+
+    //output_tree->Branch("Jet_isBaseline",     &Jet_isBaseline);
+    //output_tree->Branch("Jet_isSignal",   &Jet_isSignal);
+    //output_tree->Branch("bJet_isSignal",  &bJet_isSignal);
+
+    // Events numbers variables
+    //output_tree->Branch("normalization", &normalization);
+    output_tree->Branch("baseline_mll", &baseline_mll);
+    output_tree->Branch("signal_mll",   &signal_mll);
+    //output_tree->Branch("jets_mll",   &jets_mll);
+    //output_tree->Branch("Ht",         &Ht);
+    //output_tree->Branch("meff",       &meff);
+
+    // Events numbers variables
+}
+
+void yt_skim::execute(//vector<Electron> elec, vector<Muon> muon, vector<Lepton> lept, vector<Jet> jets,
+                      vector<Electron> baseline_elec, vector<Muon> baseline_muon, vector<Lepton> baseline_lept, vector<Jet> baseline_jets,
+                      vector<Electron> signal_elec, vector<Muon> signal_muon, vector<Lepton> signal_lept, vector<Jet> signal_jets)
+{
+    // clear all the vector members
+    this->clear_all_object_vectors();
+    // fill all the vector members
+    this->fill_all_object_vectors(//elec, muon, lept, jets,
+                                  baseline_elec, baseline_muon, baseline_lept, baseline_jets,
+                                  signal_elec, signal_muon, signal_lept, signal_jets);
+    // calculate normalization for this event
+    if (isMC)
+        normalization = luminosity * (cross_section_kfactor_efficiency * 1000.) * (event_weight / event_weight_sum) * pileup_weight;
+    else if (isData)
+        normalization = 1.;
+
+    if (baseline_lept.size() >= 2) {
+        N_at_least_two_baseline_lepton_events++;
+        if (baseline_lept.size() == 2)
+            N_exactly_two_baseline_lepton_events++;
+
+        N_tot_baseline_electrons += vec_baseline_elec.size();
+        N_tot_baseline_muons += vec_baseline_muon.size();
+
+        this->reset_vectors();
+        this->calculate_new_variables();
+        this->Z_tag_and_probe();
+
+        // fill all new branches
+        output_tree->Fill();
+    }
+}
+
+void yt_skim::finalize()
+{
+    cout << "Write into file" << endl;
+    output_file->cd();
+    output_tree->Write();
+    output_file->Close();
+
+    // output information
+}
+
+void yt_skim::reset_vectors()
+{
+    // Create dummy instance of ZTandP_pair
+    // Use dummy to file EE_pair and MuMu_pair
+    ZTandP_pair dummy;
+    dummy.tag_flavor = 0;
+    dummy.tag_index = -1;
+    dummy.tag_pt = 0.;
+    dummy.tag_eta = 10.;
+    dummy.tag_phi = 10.;
+    dummy.tag_is_trigger_matched = false;
+    dummy.tag_id_SFw = 1.;
+    dummy.tag_iso_SFw = 1.;
+    dummy.tag_trigger_SFw = 1.;
+    dummy.probe_flavor = 0;
+    dummy.probe_index = -1;
+    dummy.probe_pt = 0.;
+    dummy.probe_eta = 10.;
+    dummy.probe_phi = 10.;
+    dummy.probe_is_baseline = false;
+    dummy.probe_is_signal = false;
+    dummy.probe_id_SFw = 1.;
+    dummy.probe_iso_SFw = 1.;
+    //dummy.probe_deltaR_closest_jet = 100;
+    dummy.baseline_mll = 0.;
+    dummy.signal_mll = 0.;
+
+    // reset vectors in event loop
+    EE_pair->clear();
+    MuMu_pair->clear();
+
+    for (unsigned int i = 0; i < vec_baseline_elec.size(); i++) {
+        EE_pair->push_back(dummy);
+    }
+
+    for (unsigned int i = 0; i < vec_baseline_muon.size(); i++) {
+        MuMu_pair->push_back(dummy);
+    }
+
+    El_isBaseline->clear();
+    El_isSignal->clear();
+    El_isZTag->clear();
+    El_isZProbe->clear();
+    El_ZTandP_mll->clear();
+    El_isZProbe_TriggerMatched->clear();
+    //El_DR_closest_Jet->clear();
+
+    Mu_isBaseline->clear();
+    Mu_isSignal->clear();
+    Mu_isZTag->clear();
+    Mu_isZProbe->clear();
+    Mu_ZTandP_mll->clear();
+    Mu_isZProbe_TriggerMatched->clear();
+    //Mu_DR_closest_Jet->clear();
+
+    //Jet_isBaseline->clear();
+    //Jet_isSignal->clear();
+    //bJet_isSignal->clear();
+
+    for (unsigned int i = 0; i < vec_baseline_elec.size(); i++) {
+        El_isBaseline->push_back(false);
+        El_isSignal->push_back(false);
+        El_isZTag->push_back(false);
+        El_isZProbe->push_back(false);
+        El_ZTandP_mll->push_back(0);
+        El_isZProbe_TriggerMatched->push_back(false);
+        //El_DR_closest_Jet->push_back(100);
+    }
+
+    for (unsigned int i = 0; i < vec_baseline_muon.size(); i++) {
+        Mu_isBaseline->push_back(false);
+        Mu_isSignal->push_back(false);
+        Mu_isZTag->push_back(false);
+        Mu_isZProbe->push_back(false);
+        Mu_ZTandP_mll->push_back(0);
+        Mu_isZProbe_TriggerMatched->push_back(false);
+        //Mu_DR_closest_Jet->push_back(100);
+    } 
+/*
+    for (unsigned int i = 0; i < vec_jets.size(); i++) {
+        Jet_isBaseline->push_back(false);
+        Jet_isSignal->push_back(false);
+        bJet_isSignal->push_back(false);
+    } 
+*/
+}
+
+void yt_skim::calculate_new_variables()
+{
+    baseline_mll = calculate_mll(vec_baseline_lept);
+    signal_mll = calculate_mll(vec_signal_lept);
+    //jets_mll = calculate_mjj(vec_signal_jets);
+    //Ht = calculate_Ht(vec_signal_lept, vec_signal_jets);
+    //meff = calculate_Meff(Ht, Etmiss);
+
+    // Filling the baseline / signal objects indicators / DRjets
+    for (auto & elec_itr : vec_baseline_elec) {
+        int current_index = elec_itr.get_index();
+        El_isBaseline->at(current_index) = true;
+        //El_DR_closest_Jet->at(current_index) = calculate_deltaR(elec_itr, vec_signal_jets_no_eta_cut);
+    }
+
+    for (auto & muon_itr : vec_baseline_muon) {
+        int current_index = muon_itr.get_index();
+        Mu_isBaseline->at(current_index) = true;
+        //Mu_DR_closest_Jet->at(current_index) = calculate_deltaR(muon_itr, vec_signal_jets_no_eta_cut);
+    }
+
+    for (auto & elec_itr : vec_signal_elec) {
+        El_isSignal->at(elec_itr.get_index()) = true;
+    }
+
+    for (auto & muon_itr : vec_signal_muon) {
+        Mu_isSignal->at(muon_itr.get_index()) = true;
+    }
+/*
+    for (auto & jet_itr : vec_baseline_jets) {
+        Jet_isBaseline->at(jet_itr.get_index()) = true;
+    }
+
+    for (auto & jet_itr : vec_signal_jets) {
+        Jet_isSignal->at(jet_itr.get_index()) = true;
+    }
+
+    for (auto & bjet_itr : vec_signal_bjet) {
+        bJet_isSignal->at(bjet_itr.get_index()) = true;
+    }
+*/
 }
 
 double yt_skim::calculate_mll(vector<Lepton> leptons)
@@ -102,11 +398,11 @@ double yt_skim::calculate_mll(vector<Lepton> leptons)
     double mll = (tlv_lept_0 + tlv_lept_1).M();
     return mll;
 }
-
+/*
 double yt_skim::calculate_mjj(vector<Jet> jets)
 {
     // calculate the invariant mass of the 2 leading jets
-    if (jets.size() < 2) 
+    if (jets.size() < 2)
         return -999.;
 
     TLorentzVector tlv_jets_0, tlv_jets_1;
@@ -134,21 +430,14 @@ double yt_skim::calculate_Meff(double Ht, double Etmiss)
     return  Ht + Etmiss;
 }
 
-vector<double> yt_skim::calculate_DR_closestJet(Lepton lept, vector<Jet> jets)
+double yt_skim::calculate_deltaR(Lepton lept, vector<Jet> jets)
 {
-    // Get the DR between the considered lepton and the closest jet
-    //  - The first number is the DR computed with the rapidity
-    //  - The second is the truth categorisation of the closest jet :
-    //      1 -> light-jet
-    //      2 -> c-jet
-    //      3 -> b-jet
-    //      0 -> other jets ( mainly tau jets )
+    // Get the deltaR between the considered lepton and the closest jet
 
-    double out_DR = 100.;
-    double closest_jet_label = 0;
+    double deltaR = 100.;
     int flavor = lept.get_flavor();
     for (auto & jet_itr : jets) {
-        // computing DR
+        // computing deltaR
         TLorentzVector lep_tlv;
         TLorentzVector jet_tlv;
         if (flavor == 11)
@@ -164,68 +453,125 @@ vector<double> yt_skim::calculate_DR_closestJet(Lepton lept, vector<Jet> jets)
         double DR = sqrt(pow(Deta, 2) + pow(Dphi, 2));
 
         // DR cut
-        if ( DR < out_DR ) {
-            out_DR = DR;
-            //closest_jet_label = current_jet.label;
-            closest_jet_label = 0; // This part may cause problem!!!
+        if ( DR < deltaR ) {
+            deltaR = DR;
         }
     }
 
-    // Generates the output
-    vector<double> output;
-    output.push_back(out_DR);
-    if (closest_jet_label >= 3)
-        output.push_back(1);
-    else if (closest_jet_label == 4)
-        output.push_back(2);
-    else if (closest_jet_label == 5)
-        output.push_back(3);
-    else output.push_back(0);
+    return deltaR;
+}
+*/
+void yt_skim::Z_tag_and_probe()
+{
+    // Z T&P method
 
-    return output;
+    // Electrons:
+    for (auto & probe_elec_itr : vec_baseline_elec) {
+        double best_match_mll = 1000000.;
+        for (auto & tag_elec_itr : vec_signal_elec) {
+            if (tag_elec_itr.get_index() == probe_elec_itr.get_index())
+                continue;
+            if (tag_elec_itr.get_pt() < tag_pt_threshold)
+                continue;
+            if (fabs(tag_elec_itr.get_eta()) > 2.)
+                continue;
+            // Opposite Charge requirement
+            if (tag_elec_itr.get_charge() == probe_elec_itr.get_charge())
+                continue;
+            // Check does the tag trigger matched
+            // electrons:
+            // 2015: HLT_e24_lhmedium_L1EM20VH
+            // 2016: HLT_e26_lhtight_nod0_ivarloose
+            bool is_tag_trigger_matched = false;
+            if (run_number < 290000) { // 2015 data
+                if (tag_elec_itr.get_trigMatch_e24_lhmedium_iloose_L1EM20VH()) // no e24_lhmedium so use e24_lhmedium_iloose
+                    is_tag_trigger_matched = true;
+            }
+            else if (run_number > 290000) {
+                if (tag_elec_itr.get_trigMatch_e24_lhtight_nod0_ivarloose()) // no e26 so use e24
+                    is_tag_trigger_matched = true;
+            }
+
+            TLorentzVector tlv_tag;
+            TLorentzVector tlv_probe;
+            tlv_tag.SetPtEtaPhiM(tag_elec_itr.get_pt(), tag_elec_itr.get_eta(), tag_elec_itr.get_phi(), tag_elec_itr.get_M());
+            tlv_probe.SetPtEtaPhiM(probe_elec_itr.get_pt(), probe_elec_itr.get_eta(), probe_elec_itr.get_phi(), probe_elec_itr.get_M());
+            double current_mll = (tlv_tag + tlv_probe).M();
+            if (fabs(current_mll - 91.1876 * 1000.) < fabs(best_match_mll - 91.1876 * 1000.))
+                best_match_mll = current_mll;
+            // mll window cut
+            if (current_mll > 80000. && current_mll < 100000.) {
+                El_isZTag->at(tag_elec_itr.get_index()) = true;
+                El_isZProbe->at(probe_elec_itr.get_index()) = true;
+                if (is_tag_trigger_matched)
+                    El_isZProbe_TriggerMatched->at(probe_elec_itr.get_index()) = true;
+                N_tot_TandP_pair_electron++;
+            }
+        }
+        El_ZTandP_mll->at(probe_elec_itr.get_index()) = best_match_mll;
+
+    }
+
+    // Muons
+    for (auto & probe_muon_itr : vec_baseline_muon) {
+        double best_match_mll = 1000000.;
+        for (auto & tag_muon_itr : vec_signal_muon) {
+            if (tag_muon_itr.get_index() == probe_muon_itr.get_index())
+                continue;
+            if (tag_muon_itr.get_pt() < tag_pt_threshold)
+                continue;
+            // Opposite Charge requirement
+            if (tag_muon_itr.get_charge() == probe_muon_itr.get_charge())
+                continue;
+            // Check does the tag tragger matched
+            // muons:
+            // 2015: HLT_mu20_iloose_L1MU15
+            // 2016: HLT_mu26_ivarmedium
+            bool is_tag_trigger_matched = false;
+            if (run_number < 290000) { // 2015 data
+                if (tag_muon_itr.get_trigMatch_mu24_iloose_L1MU15()) // no mu20 found, so use mu24
+                    is_tag_trigger_matched = true;
+            }
+            else if (run_number > 290000) { // 2016 data
+                if (tag_muon_itr.get_trigMatch_mu26_imedium())
+                    is_tag_trigger_matched = true;
+            }
+
+            TLorentzVector tlv_tag;
+            TLorentzVector tlv_probe;
+            tlv_tag.SetPtEtaPhiM(tag_muon_itr.get_pt(), tag_muon_itr.get_eta(), tag_muon_itr.get_phi(), tag_muon_itr.get_M());
+            tlv_probe.SetPtEtaPhiM(probe_muon_itr.get_pt(), probe_muon_itr.get_eta(), probe_muon_itr.get_phi(), probe_muon_itr.get_M());
+            double current_mll = (tlv_tag + tlv_probe).M();
+            if (fabs(current_mll - 91.1876 * 1000.) < fabs(best_match_mll - 91.1876 * 1000.))
+                best_match_mll = current_mll;
+            // mll window cut
+            if (current_mll > 80000. && current_mll < 100000.) {
+                Mu_isZTag->at(tag_muon_itr.get_index()) = true;
+                Mu_isZProbe->at(probe_muon_itr.get_index()) = true;
+                if (is_tag_trigger_matched)
+                    Mu_isZProbe_TriggerMatched->at(probe_muon_itr.get_index()) = true;
+                N_tot_TandP_pair_muon++;
+            }
+        }
+        Mu_ZTandP_mll->at(probe_muon_itr.get_index()) = best_match_mll;
+    }
 }
 
-int yt_skim::Get_channel(vector<Lepton> vec_signal_lept) // Copy from Sebastien, but this part seems problematic
+void yt_skim::debug_print()
 {
-  int lepton_pairing = -1;
+    cout << "isMC=" << isMC << endl;
+    cout << "isData=" << isData << endl;
+    cout << "process=" << process << endl;
+    cout << "luminosity=" << luminosity << endl;
+    cout << "cross_section=" << cross_section << endl;
+    cout << "k_factor=" << k_factor << endl;
+    cout << "filter_efficiency=" << filter_efficiency << endl;
+    cout << "derivation_stat_weights=" << event_weight_sum << endl;
 
-  // Getting the up and down charge
-  vector<int> up_charge_index;
-  vector<int> down_charge_index;
-  for (int ii = 0 ; ii < (int)vec_signal_lept.size() ; ii++ ) {
-    if      ( vec_signal_lept.at(ii).get_charge() == 1  ) up_charge_index.push_back(ii);
-    else if ( vec_signal_lept.at(ii).get_charge() == -1 ) down_charge_index.push_back(ii);
-  }
-
-  // Assesing the channel with the up ss charge (no down charge ss pair)
-  if      ( up_charge_index.size() >= 2 && down_charge_index.size() < 2 ) {
-    if      ( vec_signal_lept.at( up_charge_index.at(0) ).get_flavor() == 11 && vec_signal_lept.at( up_charge_index.at(1) ).get_flavor() == 11 ) lepton_pairing = 1;
-    else if ( vec_signal_lept.at( up_charge_index.at(0) ).get_flavor() == 13 && vec_signal_lept.at( up_charge_index.at(1) ).get_flavor() == 13 ) lepton_pairing = 3;
-    else lepton_pairing = 2;
-  }
-  // Assesing the channel with the down ss charge (no up charge ss pair)
-  else if ( down_charge_index.size() >= 2 && up_charge_index.size() < 2 ) {
-    if      ( vec_signal_lept.at( down_charge_index.at(0) ).get_flavor() == 11 && vec_signal_lept.at( down_charge_index.at(1) ).get_flavor() == 11 ) lepton_pairing = 1;
-    else if ( vec_signal_lept.at( down_charge_index.at(0) ).get_flavor() == 13 && vec_signal_lept.at( down_charge_index.at(1) ).get_flavor() == 13 ) lepton_pairing = 3;
-    else lepton_pairing = 2;
-  }
-  
-  // Assesing the channel when both up and down ss pair are present
-  else if ( vec_signal_lept.size() != 0 ){
-    if ( vec_signal_lept.at(0).get_charge() == 1 && up_charge_index.size() >= 2 ) {
-      if      ( vec_signal_lept.at( up_charge_index.at(0) ).get_flavor() == 11 && vec_signal_lept.at( up_charge_index.at(1) ).get_flavor() == 11 ) lepton_pairing = 1;
-      else if ( vec_signal_lept.at( up_charge_index.at(0) ).get_flavor() == 13 && vec_signal_lept.at( up_charge_index.at(1) ).get_flavor() == 13 ) lepton_pairing = 3;
-      else lepton_pairing = 2;
-    }   
-    if ( vec_signal_lept.at(0).get_charge() == -1 && down_charge_index.size() >= 2  ) {
-      if      ( vec_signal_lept.at( down_charge_index.at(0) ).get_flavor() == 11 && vec_signal_lept.at( down_charge_index.at(1) ).get_flavor() == 11 ) lepton_pairing = 1;
-      else if ( vec_signal_lept.at( down_charge_index.at(0) ).get_flavor() == 13 && vec_signal_lept.at( down_charge_index.at(1) ).get_flavor() == 13 ) lepton_pairing = 3;
-      else lepton_pairing = 2;      
-    }
-    
-    // if ( vec_signal_lept.at(0).lepton_type == 1 ) lepton_pairing = 1;
-    // else if ( vec_signal_lept.at(0).lepton_type == 2 ) lepton_pairing = 3;
-  }
-  
-  return lepton_pairing;
+    cout << "N_at_least_two_baseline_lepton_events=" << N_at_least_two_baseline_lepton_events << endl;
+    cout << "N_exactly_two_baseline_lepton_events=" << N_exactly_two_baseline_lepton_events << endl;
+    cout << "N_tot_baseline_electrons=" << N_tot_baseline_electrons << endl; 
+    cout << "N_tot_baseline_muons=" << N_tot_baseline_muons << endl;
+    cout << "N_tot_TandP_pair_electron=" << N_tot_TandP_pair_electron << endl;
+    cout << "N_tot_TandP_pair_muon=" << N_tot_TandP_pair_muon << endl;
 }
