@@ -16,8 +16,9 @@
 #include <TSystem.h>
 
 
-#include "ytNUHM2Analysis/ytRealLeptonsEfficiency_Data.h"
-#include "ytNUHM2Analysis/ytRealLeptonsEfficiency_MC.h"
+#include "ytNUHM2Analysis/ytRealLeptonsEfficiency.h"
+//#include "ytNUHM2Analysis/ytRealLeptonsEfficiency_Data.h"
+//#include "ytNUHM2Analysis/ytRealLeptonsEfficiency_MC.h"
 
 int main( int argc, char* argv[] ) {
 
@@ -87,6 +88,7 @@ int main( int argc, char* argv[] ) {
             use_PROOF = true;
     }
 
+    // Print out input arguments
     printf("isMC = %s, isData = %s\n", isMC ? "true" : "false", isData ? "true" : "false");
 
     if (use_Condor) {

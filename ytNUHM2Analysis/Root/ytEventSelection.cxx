@@ -587,7 +587,10 @@ EL::StatusCode ytEventSelection::initialize ()
     fChain->SetBranchAddress("TruthPDGID2", &TruthPDGID2, &b_TruthPDGID2);
 
     if (isSkim) {
-        m_skim->initialize(wk()->tree(), process);
+        m_skim->set_isMC(isMC);
+        m_skim->set_isData(isData);
+        m_skim->set_process(process);
+        m_skim->initialize(wk()->tree());
 /*
         if (isMC)
             m_skim_MC->initialize(fChain, process);
@@ -1022,7 +1025,7 @@ EL::StatusCode ytEventSelection::execute ()
             h_NJets->Fill(0.);
     }
     else if (isMC) {
-        double weight = luminosity * cross_section_kfactor_efficiency * 1000. * EventWeight * pileup_weight /*/ derivation_stat_weights*/;
+        double weight = luminosity * cross_section_kfactor_efficiency * 1000. * EventWeight * pileup_weight / derivation_stat_weights;
         h_Nvtx_weighted->Fill(Nvtx, weight);
         h_AvgMu_weighted->Fill(m_cutflow->get_AvgMu(), weight);
 
@@ -1130,10 +1133,17 @@ EL::StatusCode ytEventSelection::execute ()
         int sign = vec_baseline_lept[0].get_charge() * vec_baseline_lept[1].get_charge();
         int channel = vec_baseline_lept[0].get_flavor() * vec_baseline_lept[1].get_flavor();
 
-        TLorentzVector tlv_lept0;
-        TLorentzVector tlv_lept1;
-        tlv_lept0.SetPtEtaPhiM(vec_baseline_lept[0].get_pt(), vec_baseline_lept[0].get_eta(), vec_baseline_lept[0].get_phi(), vec_baseline_lept[0].get_M());
-        tlv_lept1.SetPtEtaPhiM(vec_baseline_lept[1].get_pt(), vec_baseline_lept[1].get_eta(), vec_baseline_lept[1].get_phi(), vec_baseline_lept[1].get_M());
+        TLorentzVector tlv_lept0, tlv_lept1;
+        if (vec_baseline_lept[0].get_flavor() == 11) // electron
+            tlv_lept0.SetPtEtaPhiE(vec_baseline_lept[0].get_pt(), vec_baseline_lept[0].get_eta(), vec_baseline_lept[0].get_phi(), vec_baseline_lept[0].get_E());
+        else if (vec_baseline_lept[0].get_flavor() == 13) // muon
+            tlv_lept0.SetPtEtaPhiM(vec_baseline_lept[0].get_pt(), vec_baseline_lept[0].get_eta(), vec_baseline_lept[0].get_phi(), Mu_Mass);
+
+        if (vec_baseline_lept[1].get_flavor() == 11) // electron
+            tlv_lept1.SetPtEtaPhiE(vec_baseline_lept[1].get_pt(), vec_baseline_lept[1].get_eta(), vec_baseline_lept[1].get_phi(), vec_baseline_lept[1].get_E());
+        else if (vec_baseline_lept[1].get_flavor() == 13) // muon
+            tlv_lept1.SetPtEtaPhiM(vec_baseline_lept[1].get_pt(), vec_baseline_lept[1].get_eta(), vec_baseline_lept[1].get_phi(), Mu_Mass);
+
         double mll = (tlv_lept0 + tlv_lept1).M();
 
         if (sign == -1 && channel == 121) {
@@ -1143,7 +1153,7 @@ EL::StatusCode ytEventSelection::execute ()
                 h_baseline_OSee_mll->Fill(mll / 1000.);
             }
             else if (isMC) {
-                double weight = luminosity * cross_section_kfactor_efficiency * 1000. * EventWeight * pileup_weight /*/ derivation_stat_weights*/;
+                double weight = luminosity * cross_section_kfactor_efficiency * 1000. * EventWeight * pileup_weight / derivation_stat_weights;
                 h_AvgMu_OSee_weighted->Fill(m_cutflow->get_AvgMu(), weight);
                 h_baseline_OSee_mll_weighted->Fill(mll / 1000., weight);
             }
@@ -1155,7 +1165,7 @@ EL::StatusCode ytEventSelection::execute ()
                 h_baseline_OSmumu_mll->Fill(mll / 1000.);
             }
             else if (isMC) {
-                double weight = luminosity * cross_section_kfactor_efficiency * 1000. * EventWeight * pileup_weight /*/ derivation_stat_weights*/;
+                double weight = luminosity * cross_section_kfactor_efficiency * 1000. * EventWeight * pileup_weight / derivation_stat_weights;
                 h_AvgMu_OSmumu_weighted->Fill(m_cutflow->get_AvgMu(), weight);
                 h_baseline_OSmumu_mll_weighted->Fill(mll / 1000., weight);
             }
@@ -1170,9 +1180,9 @@ EL::StatusCode ytEventSelection::execute ()
     if (isSkim) {
         //cout << "Doing skim at here..." << endl;
         // Setting
-        m_skim->set_isMC(isMC);
-        m_skim->set_isData(isData);
-        m_skim->set_process(process);
+        //m_skim->set_isMC(isMC);
+        //m_skim->set_isData(isData);
+        //m_skim->set_process(process);
         m_skim->set_luminosity(luminosity);
         m_skim->set_cross_section(cross_section);
         m_skim->set_k_factor(k_factor);
@@ -1214,15 +1224,22 @@ EL::StatusCode ytEventSelection::execute ()
     m_cutflow->update(At_least_two_signal_leptons_greater_than_20GeV, cut12);
     if (!cut12) return EL::StatusCode::SUCCESS;
 
-    // Dump the AvgMu histograms of the opposit sign baseline leptons.
+    // Dump the AvgMu histograms of the opposit sign signal leptons.
     if (vec_signal_lept.size() == 2) {
         int sign = vec_signal_lept[0].get_charge() * vec_signal_lept[1].get_charge();
-        int channel = vec_baseline_lept[0].get_flavor() * vec_baseline_lept[1].get_flavor();
+        int channel = vec_signal_lept[0].get_flavor() * vec_signal_lept[1].get_flavor();
 
-        TLorentzVector tlv_lept0;
-        TLorentzVector tlv_lept1;
-        tlv_lept0.SetPtEtaPhiM(vec_signal_lept[0].get_pt(), vec_signal_lept[0].get_eta(), vec_signal_lept[0].get_phi(), vec_signal_lept[0].get_M());
-        tlv_lept1.SetPtEtaPhiM(vec_signal_lept[1].get_pt(), vec_signal_lept[1].get_eta(), vec_signal_lept[1].get_phi(), vec_signal_lept[1].get_M());
+        TLorentzVector tlv_lept0, tlv_lept1;
+        if (vec_signal_lept[0].get_flavor() == 11) // electron
+            tlv_lept0.SetPtEtaPhiE(vec_signal_lept[0].get_pt(), vec_signal_lept[0].get_eta(), vec_signal_lept[0].get_phi(), vec_signal_lept[0].get_E());
+        else if (vec_signal_lept[0].get_flavor() == 13) // muon
+            tlv_lept0.SetPtEtaPhiM(vec_signal_lept[0].get_pt(), vec_signal_lept[0].get_eta(), vec_signal_lept[0].get_phi(), Mu_Mass);
+
+        if (vec_signal_lept[1].get_flavor() == 11) // electron
+            tlv_lept1.SetPtEtaPhiE(vec_signal_lept[1].get_pt(), vec_signal_lept[1].get_eta(), vec_signal_lept[1].get_phi(), vec_signal_lept[1].get_E());
+        else if (vec_signal_lept[1].get_flavor() == 13) // muon
+            tlv_lept1.SetPtEtaPhiM(vec_signal_lept[1].get_pt(), vec_signal_lept[1].get_eta(), vec_signal_lept[1].get_phi(), Mu_Mass);
+
         double mll = (tlv_lept0 + tlv_lept1).M();
 
         if (sign == -1 && channel == 121) {
@@ -1232,7 +1249,7 @@ EL::StatusCode ytEventSelection::execute ()
                 h_signal_OSee_mll->Fill(mll / 1000.);
             }
             else if (isMC) {
-                double weight = luminosity * cross_section_kfactor_efficiency * 1000. * EventWeight * pileup_weight /*/ derivation_stat_weights*/;
+                double weight = luminosity * cross_section_kfactor_efficiency * 1000. * EventWeight * pileup_weight / derivation_stat_weights;
                 //h_AvgMu_OSee_weighted->Fill(m_cutflow->get_AvgMu(), weight);
                 h_signal_OSee_mll_weighted->Fill(mll / 1000., weight);
             }
@@ -1244,7 +1261,7 @@ EL::StatusCode ytEventSelection::execute ()
                 h_signal_OSmumu_mll->Fill(mll / 1000.);
             }
             else if (isMC) {
-                double weight = luminosity * cross_section_kfactor_efficiency * 1000. * EventWeight * pileup_weight /*/ derivation_stat_weights*/;
+                double weight = luminosity * cross_section_kfactor_efficiency * 1000. * EventWeight * pileup_weight / derivation_stat_weights;
                 //h_AvgMu_OSmumu_weighted->Fill(m_cutflow->get_AvgMu(), weight);
                 h_signal_OSmumu_mll_weighted->Fill(mll / 1000., weight);
             }

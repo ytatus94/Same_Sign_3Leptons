@@ -963,7 +963,7 @@ public:
     void debug_muon_print(vector<Muon> muon);
     void debug_lept_print(vector<Lepton> lept);
     void debug_jets_print(vector<Jet> jets);
-
+/*
     void set_isMC(bool b) { isMC = b; }
     void set_isData(bool b) { isData = b; }
     void set_isSkim(bool b) { isSkim = b; }
@@ -974,6 +974,7 @@ public:
     void set_process(string s) { process = s; }
     void set_luminosity(float f) { luminosity = f; }
     void set_tag_pt_threshold(float f) { tag_pt_threshold = f; }
+*/
 /*
     void set_cross_section(double d) { cross_section = d; }
     void set_k_factor(double d) { k_factor = d; }

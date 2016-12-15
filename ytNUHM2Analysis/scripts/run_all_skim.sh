@@ -13,4 +13,3 @@ Run skim isData sample=merged_data16_periodF > skim_Data_merged_data16_periodF.l
 Run skim isData sample=merged_data16_periodG > skim_Data_merged_data16_periodG.log 2>&1 &
 Run skim isData sample=merged_data16_periodI > skim_Data_merged_data16_periodI.log 2>&1 &
 Run skim isData sample=merged_data16_rest > skim_Data_merged_data16_rest.log 2>&1 &
-

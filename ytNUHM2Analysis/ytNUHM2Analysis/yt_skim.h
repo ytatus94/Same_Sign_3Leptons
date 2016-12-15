@@ -8,6 +8,7 @@
 
 #include "ytNUHM2Analysis/Leptons.h"
 #include "ytNUHM2Analysis/Jet.h"
+#include "ytNUHM2Analysis/yt_useful_functions.h"
 
 #include <iostream>
 #include <vector>
@@ -140,7 +141,7 @@ public:
 public:
     yt_skim();
     virtual ~yt_skim() {}
-
+/*
     void set_isMC(bool b) { isMC = b; }
     void set_isData(bool b) { isData = b; }
     void set_process(string s) { process = s; }
@@ -149,14 +150,17 @@ public:
     void set_k_factor(float f) { k_factor = f; }
     void set_filter_efficiency(float f) { filter_efficiency = f; }
     void set_cross_section_kfactor_efficiency(float f) { cross_section_kfactor_efficiency = f; }
+*/
     void set_event_weight_sum(double d) { event_weight_sum = d; }
+/*
     void set_event_weight(double d) { event_weight = d; }
     void set_pileup_weight(double d) { pileup_weight = d; }
+*/
     void set_baseline_weight(double d) { baseline_weight = d; }
     void set_signal_weight(double d) { signal_weight = d; }
     void set_run_number(int i) { run_number = i; }
     void set_new_AvgMu(float f) { new_AvgMu = f; }
-    void set_tag_pt_threshold(float f) { tag_pt_threshold = f; }
+    //void set_tag_pt_threshold(float f) { tag_pt_threshold = f; }
     //void set_Etmiss(double d) { Etmiss = d; }
 
     void clear_all_object_vectors();
@@ -169,7 +173,7 @@ public:
     //void fill_signal_jets_no_eta_cut(vector<Jet> jets);
     //void fill_signal_bjet(vector<Jet> signal_jets);
 
-    void initialize(TTree *tree, string process);
+    void initialize(TTree *tree);
     void execute(vector<Electron> elec, vector<Muon> muon, vector<Lepton> lept, vector<Jet> jets,
                  vector<Electron> baseline_elec, vector<Muon> baseline_muon, vector<Lepton> baseline_lept, vector<Jet> baseline_jets,
                  vector<Electron> signal_elec, vector<Muon> signal_muon, vector<Lepton> signal_lept, vector<Jet> signal_jets);
@@ -180,7 +184,7 @@ public:
     void Z_tag_and_probe();
 
 
-    double calculate_mll(vector<Lepton> leptons);
+    //double calculate_mll(vector<Lepton> leptons);
     //double calculate_mjj(vector<Jet> jets);
     //double calculate_Ht(vector<Lepton> leptons, vector<Jet> jets);
     //double calculate_Meff(double Ht, double Etmiss);

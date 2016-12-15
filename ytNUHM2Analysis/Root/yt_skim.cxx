@@ -130,7 +130,7 @@ void yt_skim::fill_signal_bjet(vector<Jet> signal_jets)
     }
 }
 */
-void yt_skim::initialize(TTree *tree, string process)
+void yt_skim::initialize(TTree *tree)
 {
     // Declare the output
     TString output_path("/raid05/users/shen/Ximo_ntuples/v47/Skimmed/");
@@ -388,6 +388,7 @@ void yt_skim::calculate_new_variables()
 */
 }
 
+/*
 double yt_skim::calculate_mll(vector<Lepton> leptons)
 {
     // calculate the invariant mass of the 2 leading leptons
@@ -395,12 +396,20 @@ double yt_skim::calculate_mll(vector<Lepton> leptons)
         return -999.;
 
     TLorentzVector tlv_lept_0, tlv_lept_1;
-    tlv_lept_0.SetPtEtaPhiM(leptons.at(0).get_pt(), leptons.at(0).get_eta(), leptons.at(0).get_phi(), leptons.at(0).get_M());
-    tlv_lept_1.SetPtEtaPhiM(leptons.at(1).get_pt(), leptons.at(1).get_eta(), leptons.at(1).get_phi(), leptons.at(1).get_M());
+    if (leptons.at(0).get_flavor() == 11)
+        tlv_lept_0.SetPtEtaPhiE(leptons.at(0).get_pt(), leptons.at(0).get_eta(), leptons.at(0).get_phi(), leptons.at(0).get_E());
+    else if (leptons.at(0).get_flavor() == 13)
+        tlv_lept_0.SetPtEtaPhiM(leptons.at(0).get_pt(), leptons.at(0).get_eta(), leptons.at(0).get_phi(), Mu_Mass);
+
+    if (leptons.at(0).get_flavor() == 11)
+        tlv_lept_1.SetPtEtaPhiE(leptons.at(1).get_pt(), leptons.at(1).get_eta(), leptons.at(1).get_phi(), leptons.at(1).get_E());
+    else if (leptons.at(0).get_flavor() == 13)
+        tlv_lept_1.SetPtEtaPhiM(leptons.at(1).get_pt(), leptons.at(1).get_eta(), leptons.at(1).get_phi(), Mu_Mass);
+
     double mll = (tlv_lept_0 + tlv_lept_1).M();
     return mll;
 }
-/*
+
 double yt_skim::calculate_mjj(vector<Jet> jets)
 {
     // calculate the invariant mass of the 2 leading jets

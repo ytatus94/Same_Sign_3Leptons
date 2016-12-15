@@ -7,6 +7,25 @@ This is SS/3L+jet cutflows study v44.
 ### Setting:
 
 
+### v01-15-03. (newskim branch) Modify `ytEventSelection.cxx` to let skim works
+1. In `yt_skim`: Change `initialize(TTree *tree, string process)` to `initialize(TTree *tree)`.
+2. In `yt_optimization`: Change the type of variables related to normalization from `double` to `float`.
+3. Change space in `Run.cxx`, `run_all_skim.sh`, and `yt_optimization.cxx`
+4. In `ytEventSelection.cxx`:
+   * Add the derivation weight back to the weight calculation.
+   * Move `m_skim->set_isMC(isMC)`, `m_skim->set_isData(isData)`, and `m_skim->set_process(process)` from `execute ()` to `initialize ()`
+   * Modify the method to fill `TLorentzVector` for electrons and muons.
+5. Move `ytRealLeptonsEfficiency_Data` and `ytRealLeptonsEfficiency_MC` to `misc/`.
+6. Add `ytRealLeptonsEfficiency`. So need to modify `LinkDef.h` and `RLE.cxx`.
+7. Move common methods in `ytEventSelection`, `yt_optimization`, and `yt_skim` to `yt_useful_functions`.
+8. In `yt_useful_functions`: modify the method to fill `TLorentzVector` for electrons and muons.
+9. In `yt_skim.cxx` comment `calculate_mll()`.
+
+
+### v01-15-02. (newskim branch) Add raw vectors back
+* Raw vectors are needed. Otherwise, there is "out-of-range" problem and the framework aborted.
+
+
 ### v01-15-01. (newskim branch) Use new skim code.
 1. Use new skim code which combine data and mc
 2. Remove raw elec, muon, jets, lept vectors in skim code. Use baseline vectors to replace raw vectors.
@@ -15,11 +34,11 @@ This is SS/3L+jet cutflows study v44.
 ### v01-15. (oldskim branch) Modify `ytEventSelection` to use the new skim code.
 
 
-### v01-14. (oldskim branch) Change the implementation in set_derivation_stat_weights()
+### v01-14. (oldskim branch) Change the implementation in `set_derivation_stat_weights()`
 * Now the `h_derivation_stat_weights` is set in `set_derivation_stat_weights()`
 
 
-### v01-13. (oldskim branch) Also use new single lepton trigger in ytRealLeptonsEfficiency_MC
+### v01-13. (oldskim branch) Also use new single lepton trigger in `ytRealLeptonsEfficiency_MC`
 
 
 ### v01-12. (oldskim branch) Use new single lepton trigger and tag pt threshold.
@@ -27,7 +46,7 @@ This is SS/3L+jet cutflows study v44.
 2. Single lepton trigger for 2016 uses: `HLT_e26_lhtight_nod0_ivarloose` and `HLT_mu26_ivarmedium`
 
 
-### v01-11. (oldskim branch) Add two methods to calculate AvgMu and pileup_weight in yt_cutflows
+### v01-11. (oldskim branch) Add two methods to calculate `AvgMu` and `pileup_weight` in `yt_cutflows`
 *  Add `get_AvgMu()` and `get_pileup_weight()` in `yt_cutflows`
 
 
@@ -75,8 +94,8 @@ Also add skim classes into `LinkDef.h`
 Add `yt_skim`, `yt_skim_MC`, `yt_skim_data` classes
 
 
-### v01-01. (oldskim branch) Add `AnaNtup_Data` codes in misc
+### v01-01. (oldskim branch) Add `AnaNtup_Data` codes in `misc/`
 
 
 ### v01. First commit
-This version can get the correct results.
+This version can get the correct cutflow results.
