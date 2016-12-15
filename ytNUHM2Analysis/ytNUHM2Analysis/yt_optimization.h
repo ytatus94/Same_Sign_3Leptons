@@ -108,25 +108,20 @@ public:
     void initialize();
     void execute(vector<Electron> elec, vector<Muon> muon, vector<Lepton> lept, vector<Jet> jets);
     void finalize();
-/*
+
     void set_isMC(bool b) { isMC = b; }
     void set_isData(bool b) { isData = b; }
-
     void set_process(string s) { process = s; }
-
     void set_luminosity(float f) { luminosity = f; }
     void set_cross_section(float f) { cross_section = f; }
     void set_k_factor(float f) { k_factor = f; }
     void set_filter_efficiency(float f) { filter_efficiency = f; }
     void set_cross_section_kfactor_efficiency(float f) { cross_section_kfactor_efficiency = f; }
-*/
     void set_derivation_stat_weights(double d) { derivation_stat_weights = d; h_derivation_stat_weights->SetBinContent(1, derivation_stat_weights); }
-
-    //void set_event_weight(double d) { event_weight = d; }
+    void set_event_weight(double d) { event_weight = d; }
+    void set_pileup_weight(double d) { pileup_weight = d; }
     void set_lepton_weight(double d) { lepton_weight = d; }
     void set_jet_weight(double d) { jet_weight = d; }
-    //void set_pileup_weight(double d) { pileup_weight = d; }
-
     void set_met(double d) { met = d; }
 
     void reset_vectors();

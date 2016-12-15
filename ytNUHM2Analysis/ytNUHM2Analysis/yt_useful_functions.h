@@ -7,7 +7,7 @@
 #include <iomanip>
 
 // Functions declarations
-
+/*
 void set_isMC(bool b) { isMC = b; }
 void set_isData(bool b) { isData = b; }
 
@@ -29,7 +29,7 @@ void set_event_weight(double d) { event_weight = d; }
 void set_pileup_weight(double d) { pileup_weight = d; }
 
 void set_tag_pt_threshold(float f) { tag_pt_threshold = f; }
-
+*/
 //template<typename T> bool sort_descending_Pt(T obj1, T obj2); // NOTE: cannot use const ref for arguments.
 //template<> bool sort_descending_Pt(TLorentzVector tlv1, TLorentzVector tlv2); // explicit specialization
 

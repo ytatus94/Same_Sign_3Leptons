@@ -7,6 +7,11 @@ This is SS/3L+jet cutflows study v44.
 ### Setting:
 
 
+### v01-15-04. (newskim branch) Use new `ytRealLeptonsEfficiency` 
+1. Move the common methods back.(in `ytEventSelection`, `yt_optimization`, and `yt_skim`)
+2. Use new `ytRealLeptonsEfficiency`
+
+
 ### v01-15-03. (newskim branch) Modify `ytEventSelection.cxx` to let skim works
 1. In `yt_skim`: Change `initialize(TTree *tree, string process)` to `initialize(TTree *tree)`.
 2. In `yt_optimization`: Change the type of variables related to normalization from `double` to `float`.

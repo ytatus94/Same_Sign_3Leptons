@@ -141,7 +141,7 @@ public:
 public:
     yt_skim();
     virtual ~yt_skim() {}
-/*
+
     void set_isMC(bool b) { isMC = b; }
     void set_isData(bool b) { isData = b; }
     void set_process(string s) { process = s; }
@@ -150,17 +150,14 @@ public:
     void set_k_factor(float f) { k_factor = f; }
     void set_filter_efficiency(float f) { filter_efficiency = f; }
     void set_cross_section_kfactor_efficiency(float f) { cross_section_kfactor_efficiency = f; }
-*/
     void set_event_weight_sum(double d) { event_weight_sum = d; }
-/*
     void set_event_weight(double d) { event_weight = d; }
     void set_pileup_weight(double d) { pileup_weight = d; }
-*/
     void set_baseline_weight(double d) { baseline_weight = d; }
     void set_signal_weight(double d) { signal_weight = d; }
     void set_run_number(int i) { run_number = i; }
     void set_new_AvgMu(float f) { new_AvgMu = f; }
-    //void set_tag_pt_threshold(float f) { tag_pt_threshold = f; }
+    void set_tag_pt_threshold(float f) { tag_pt_threshold = f; }
     //void set_Etmiss(double d) { Etmiss = d; }
 
     void clear_all_object_vectors();

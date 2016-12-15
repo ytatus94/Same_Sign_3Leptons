@@ -182,8 +182,9 @@ int main( int argc, char* argv[] ) {
     //job.options()->setDouble (EL::Job::optMaxEvents, 50000);
 
     // Add our analysis to the job:
+    ytRealLeptonsEfficiency* alg = new ytRealLeptonsEfficiency();
     if (isMC) {
-        ytRealLeptonsEfficiency_MC* alg = new ytRealLeptonsEfficiency_MC();
+        //ytRealLeptonsEfficiency_MC* alg = new ytRealLeptonsEfficiency_MC();
         alg->set_isMC(true);
         alg->set_isData(false);
         alg->set_trigger("single_lepton_trigger");
@@ -205,7 +206,7 @@ int main( int argc, char* argv[] ) {
         job.algsAdd( alg );
     }
     if (isData) {
-        ytRealLeptonsEfficiency_Data* alg = new ytRealLeptonsEfficiency_Data();
+        //ytRealLeptonsEfficiency_Data* alg = new ytRealLeptonsEfficiency_Data();
         alg->set_isMC(false);
         alg->set_isData(true);
         alg->set_trigger("single_lepton_trigger");
