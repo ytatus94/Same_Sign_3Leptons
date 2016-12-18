@@ -7,6 +7,11 @@ This is SS/3L+jet cutflows study v44.
 ### Setting:
 
 
+### v01-15-06. (newskim branch) Add `Avg_Mu` and  baseline/signal OSee/OSmumu mll histograms
+1. Add histograms after skimming and can compare with the results before applying skim.
+2. Comment out the unnecessary histograms.
+
+
 ### v01-15-05. (newskim branch) Add new `Skimmed_Data` and `Skimmed_MC` in `misc/`
 
 

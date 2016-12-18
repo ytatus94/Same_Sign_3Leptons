@@ -14,6 +14,7 @@
 #include <TH1.h>
 #include <TH2.h>
 #include <TH3.h>
+#include <TLorentzVector.h>
 
 #include <iostream>
 #include <vector>
@@ -41,7 +42,7 @@ public:
 
     TTree          *fChain;   //!pointer to the analyzed TTree or TChain
 
-    // Declaration of leaf types
+    // Declaration of leaf types //!
     Bool_t          HLT_e24_lhmedium_nod0_ivarloose; //!
     Bool_t          HLT_e24_lhtight_nod0_ivarloose; //!
     Bool_t          HLT_e24_lhmedium_nod0_L1EM20VH; //!
@@ -86,16 +87,16 @@ public:
     Bool_t          HLT_xe80_mht_L1XE50; //!
     Bool_t          HLT_xe90_mht_L1XE50; //!
     Bool_t          HLT_xe100_mht_L1XE50; //!
-    Bool_t          HLT_xe110_pueta_L1XE50; //!
-    Bool_t          HLT_xe110_pufit_L1XE50; //!
     Bool_t          HLT_xe100_tc_em_L1XE50; //!
+    Bool_t          HLT_xe110_mht_L1XE50; //!
     Bool_t          HLT_xe80_tc_lcw_L1XE50; //!
     Bool_t          HLT_xe90_tc_lcw_L1XE50; //!
     Bool_t          HLT_xe80_tc_lcw_wEFMu_L1XE50; //!
     Bool_t          HLT_e7_lhmedium_mu24; //!
+    Bool_t          HLT_e7_lhmedium_nod0_mu24; //!
     Bool_t          HLT_e17_lhloose_nod0_mu14; //!
     Bool_t          HLT_e26_lhmedium_nod0_L1EM22VHI_mu8noL1; //!
-    Bool_t          HLT_e24_lhmedium_nod0_L1EM22VHI_mu8noL1; //!
+    Bool_t          HLT_e24_lhmedium_nod0_L1EM20VHI_mu8noL1; //!
     Bool_t          HLT_2e12_lhloose_L12EM10VH; //!
     Bool_t          HLT_e17_lhloose_mu14; //!
     Bool_t          HLT_mu18_mu8noL1; //!
@@ -187,10 +188,14 @@ public:
     vector<int>     *El_nBLayerHits; //!
     vector<int>     *El_expectBLayerHit; //!
     //#ifdef _IS_MC_
-    vector<int>     *El_type; //!
-    vector<int>     *El_origin; //!
+    vector<int>     *El_truthType; //!
+    vector<int>     *El_truthOrigin; //!
+    vector<int>     *El_bkgTruthType; //!
+    vector<int>     *El_bkgTruthOrigin; //!
     vector<int>     *El_bkgMotherPdgId; //!
-    vector<int>     *El_bkgOrigin; //!
+    vector<int>     *El_firstEgMotherTruthType; //!
+    vector<int>     *El_firstEgMotherTruthOrigin; //!
+    vector<int>     *El_firstEgMotherPdgId; //!
     vector<int>     *El_chFlip; //!
     //#endif // #ifdef _IS_MC_
     vector<double>  *El_ptcone20; //!
@@ -223,6 +228,8 @@ public:
     vector<bool>    *El_TrigMatch_e24_lhmedium_nod0_ivarloose; //!
     vector<bool>    *El_TrigMatch_e24_lhtight_nod0_ivarloose; //!
     vector<bool>    *El_TrigMatch_e60_lhmedium_nod0; //!
+    vector<bool>    *El_passChargeFlipTagger; //!
+    vector<float>   *El_passChargeFlipTaggerBDT; //!
     Int_t           NJet; //!
     vector<double>  *Jet_eta; //!
     vector<double>  *Jet_phi; //!
@@ -295,6 +302,7 @@ public:
     Double_t        baseline_weight; //!
     Double_t        signal_weight; //!
     Int_t           run_number; //!
+    Float_t         new_AvgMu; //!
     vector<bool>    *El_isBaseline; //!
     vector<bool>    *El_isSignal; //!
     vector<bool>    *El_isZTag; //!
@@ -355,16 +363,16 @@ public:
     TBranch        *b_HLT_xe80_mht_L1XE50; //!
     TBranch        *b_HLT_xe90_mht_L1XE50; //!
     TBranch        *b_HLT_xe100_mht_L1XE50; //!
-    TBranch        *b_HLT_xe110_pueta_L1XE50; //!
-    TBranch        *b_HLT_xe110_pufit_L1XE50; //!
     TBranch        *b_HLT_xe100_tc_em_L1XE50; //!
+    TBranch        *b_HLT_xe110_mht_L1XE50; //!
     TBranch        *b_HLT_xe80_tc_lcw_L1XE50; //!
     TBranch        *b_HLT_xe90_tc_lcw_L1XE50; //!
     TBranch        *b_HLT_xe80_tc_lcw_wEFMu_L1XE50; //!
     TBranch        *b_HLT_e7_lhmedium_mu24; //!
+    TBranch        *b_HLT_e7_lhmedium_nod0_mu24; //!
     TBranch        *b_HLT_e17_lhloose_nod0_mu14; //!
     TBranch        *b_HLT_e26_lhmedium_nod0_L1EM22VHI_mu8noL1; //!
-    TBranch        *b_HLT_e24_lhmedium_nod0_L1EM22VHI_mu8noL1; //!
+    TBranch        *b_HLT_e24_lhmedium_nod0_L1EM20VHI_mu8noL1; //!
     TBranch        *b_HLT_2e12_lhloose_L12EM10VH; //!
     TBranch        *b_HLT_e17_lhloose_mu14; //!
     TBranch        *b_HLT_mu18_mu8noL1; //!
@@ -456,10 +464,14 @@ public:
     TBranch        *b_El_nBLayerHits; //!
     TBranch        *b_El_expectBLayerHit; //!
     //#ifdef _IS_MC_
-    TBranch        *b_El_type; //!
-    TBranch        *b_El_origin; //!
+    TBranch        *b_El_truthType; //!
+    TBranch        *b_El_truthOrigin; //!
+    TBranch        *b_El_bkgTruthType; //!
+    TBranch        *b_El_bkgTruthOrigin; //!
     TBranch        *b_El_bkgMotherPdgId; //!
-    TBranch        *b_El_bkgOrigin; //!
+    TBranch        *b_El_firstEgMotherTruthType; //!
+    TBranch        *b_El_firstEgMotherTruthOrigin; //!
+    TBranch        *b_El_firstEgMotherPdgId; //!
     TBranch        *b_El_chFlip; //!
     //#endif // #ifdef _IS_MC_
     TBranch        *b_El_ptcone20; //!
@@ -492,6 +504,8 @@ public:
     TBranch        *b_El_TrigMatch_e24_lhmedium_nod0_ivarloose; //!
     TBranch        *b_El_TrigMatch_e24_lhtight_nod0_ivarloose; //!
     TBranch        *b_El_TrigMatch_e60_lhmedium_nod0; //!
+    TBranch        *b_El_passChargeFlipTagger; //!
+    TBranch        *b_El_passChargeFlipTaggerBDT; //!
     TBranch        *b_NJet; //!
     TBranch        *b_Jet_eta; //!
     TBranch        *b_Jet_phi; //!
@@ -564,6 +578,7 @@ public:
     TBranch        *b_baseline_weight; //!
     TBranch        *b_signal_weight; //!
     TBranch        *b_run_number; //!
+    TBranch        *b_new_AvgMu; //!
     TBranch        *b_El_isBaseline; //!
     TBranch        *b_El_isSignal; //!
     TBranch        *b_El_isZTag; //!
@@ -580,30 +595,31 @@ public:
     TBranch        *b_signal_mll; //!
 
     // Histograms
+    // Unweighted histograms are for data
     TH1F *h_Nvtx; //!
     TH1F *h_AvgMu; //!
-    TH1F *h_zPV; //!
-    TH1F *h_NLepts; //!
-    TH1F *h_NJets; //!
-
-    TH1F *h_Nvtx_weighted; //!
-    TH1F *h_AvgMu_weighted; //!
-    TH1F *h_zPV_weighted; //!
-    TH1F *h_NLepts_weighted; //!
-    TH1F *h_NJets_weighted; //!
-
     TH1F *h_AvgMu_OSee; //!
     TH1F *h_AvgMu_OSmumu; //!
-    TH1F *h_AvgMu_OSee_weighted; //!
-    TH1F *h_AvgMu_OSmumu_weighted; //!
+    TH1F *h_zPV; //!
+    //TH1F *h_NLepts; //!
+    //TH1F *h_NJets; //!
 
     TH1F *h_baseline_OSee_mll; //!
     TH1F *h_baseline_OSmumu_mll; //!
-    TH1F *h_baseline_OSee_mll_weighted; //!
-    TH1F *h_baseline_OSmumu_mll_weighted; //!
-
     TH1F *h_signal_OSee_mll; //!
     TH1F *h_signal_OSmumu_mll; //!
+
+    // Weighted histograms are for MC
+    TH1F *h_Nvtx_weighted; //!
+    TH1F *h_AvgMu_weighted; //!
+    TH1F *h_AvgMu_OSee_weighted; //!
+    TH1F *h_AvgMu_OSmumu_weighted; //!
+    TH1F *h_zPV_weighted; //!
+    //TH1F *h_NLepts_weighted; //!
+    //TH1F *h_NJets_weighted; //!
+
+    TH1F *h_baseline_OSee_mll_weighted; //!
+    TH1F *h_baseline_OSmumu_mll_weighted; //!
     TH1F *h_signal_OSee_mll_weighted; //!
     TH1F *h_signal_OSmumu_mll_weighted; //!
 
@@ -612,16 +628,16 @@ public:
     TH1F *h_baseline_mll; //!
     TH1F *h_baseline_pt; //!
     TH1F *h_baseline_eta; //!
-    TH1F *h_baseline_d0pvtx; //!
-    TH1F *h_baseline_sigd0; //!
-    TH1F *h_baseline_d0err; //!
-    TH1F *h_baseline_z0sinTheta; //!
-    TH1F *h_baseline_ptvarcone20; //!
-    TH1F *h_baseline_ptvarcone30; //!
-    TH1F *h_baseline_topoetcone20; //!
+    //TH1F *h_baseline_d0pvtx; //!
+    //TH1F *h_baseline_sigd0; //!
+    //TH1F *h_baseline_d0err; //!
+    //TH1F *h_baseline_z0sinTheta; //!
+    //TH1F *h_baseline_ptvarcone20; //!
+    //TH1F *h_baseline_ptvarcone30; //!
+    //TH1F *h_baseline_topoetcone20; //!
     TH1F *h_baseline_nJets; //!
     //TH1F *h_baseline_dRjet; //!
-    TH1F *h_baseline_Etmiss; //!
+    //TH1F *h_baseline_Etmiss; //!
     //TH1F *h_baseline_meff; //!
 
     TH1F *h_baseline_LooseAndBLayerLLH_to_MediumLLH_cut; //!
@@ -635,7 +651,7 @@ public:
     TH2F *h_baseline_pt_eta; //! x: pt, y: eta
     TH2F *h_baseline_pt_nJets; //! x: pt, y: nJets
     //TH2F *h_baseline_pt_dRjet; //! x: pt, y: dRjet
-    TH2F *h_baseline_pt_Etmiss; //! x: pt, y: Etmiss
+    //TH2F *h_baseline_pt_Etmiss; //! x: pt, y: Etmiss
     //TH2F *h_baseline_pt_meff; //! x: pt, y: meff
 
     // 3-dim histograms
@@ -648,23 +664,23 @@ public:
     TH1F *h_signal_mll; //!
     TH1F *h_signal_pt; //!
     TH1F *h_signal_eta; //!
-    TH1F *h_signal_d0pvtx; //!
-    TH1F *h_signal_sigd0; //!
-    TH1F *h_signal_d0err; //!
-    TH1F *h_signal_z0sinTheta; //!
-    TH1F *h_signal_ptvarcone20; //!
-    TH1F *h_signal_ptvarcone30; //!
-    TH1F *h_signal_topoetcone20; //!
+    //TH1F *h_signal_d0pvtx; //!
+    //TH1F *h_signal_sigd0; //!
+    //TH1F *h_signal_d0err; //!
+    //TH1F *h_signal_z0sinTheta; //!
+    //TH1F *h_signal_ptvarcone20; //!
+    //TH1F *h_signal_ptvarcone30; //!
+    //TH1F *h_signal_topoetcone20; //!
     TH1F *h_signal_nJets; //!
     //TH1F *h_signal_dRjet; //!
-    TH1F *h_signal_Etmiss; //!
+    //TH1F *h_signal_Etmiss; //!
     //TH1F *h_signal_meff; //!
 
     // 2-dim histograms
     TH2F *h_signal_pt_eta; //! x: pt, y: eta
     TH2F *h_signal_pt_nJets; //! x: pt, y: nJets
     //TH2F *h_signal_pt_dRjet; //! x: pt, y: dRjet
-    TH2F *h_signal_pt_Etmiss; //! x: pt, y: Etmiss
+    //TH2F *h_signal_pt_Etmiss; //! x: pt, y: Etmiss
     //TH2F *h_signal_pt_meff; //! x: pt, y: meff
 
     // 3-dim histograms
@@ -708,14 +724,14 @@ public:
     TH1F *h_eff_eta; //!
     TH1F *h_eff_nJets; //!
     //TH1F *h_eff_dRjet; //!
-    TH1F *h_eff_Etmiss; //!
+    //TH1F *h_eff_Etmiss; //!
     //TH1F *h_eff_meff; //!
 
     // 2-dim histograms
     TH2F *h_2d_eff_pt_eta; //!
     TH2F *h_2d_eff_pt_nJets; //!
     //TH2F *h_2d_eff_pt_dRjet; //!
-    TH2F *h_2d_eff_pt_Etmiss; //!
+    //TH2F *h_2d_eff_pt_Etmiss; //!
     //TH2F *h_2d_eff_pt_meff; //!
 
     TCanvas *baseline_mll_plot; //!
@@ -728,26 +744,26 @@ public:
     vector<float> m_mll_bins; //!
     vector<float> m_pt_bins; //!
     vector<float> m_eta_bins; //!
-    vector<float> m_deltaR_bins; //!
+    //vector<float> m_deltaR_bins; //!
     vector<float> m_NJet_bins; //!
-    vector<float> m_Etmiss_bins; //!
-    vector<float> m_meff_bins; //!
+    //vector<float> m_Etmiss_bins; //!
+    //vector<float> m_meff_bins; //!
 
     int n_mll_bins; //!
     int n_pt_bins; //!
     int n_eta_bins; //!
-    int n_deltaR_bins; //!
+    //int n_deltaR_bins; //!
     int n_NJet_bins; //!
-    int n_Etmiss_bins; //!
-    int n_meff_bins; //!
+    //int n_Etmiss_bins; //!
+    //int n_meff_bins; //!
 
     static const float m_default_mll_bins[91]; //
     static const float m_default_pt_bins[14]; //!
     static const float m_default_eta_bins[21]; //!
-    static const float m_default_deltaR_bins[21]; //!
+    //static const float m_default_deltaR_bins[21]; //!
     static const float m_default_NJet_bins[11]; //!
-    static const float m_default_Etmiss_bins[9]; //!
-    static const float m_default_meff_bins[7]; //!
+    //static const float m_default_Etmiss_bins[9]; //!
+    //static const float m_default_meff_bins[7]; //!
 
     static const float m_muon_eta_bins[21]; //!
     static const float m_abs_eta_bins[11]; //!
@@ -757,7 +773,7 @@ public:
     static const float m_electron_coarse_eta_bins[6]; //!
     static const float m_muon_coarse_pt_bins[12]; //!
     static const float m_muon_coarse_eta_bins[5]; //!
-    static const float m_coarse_deltaR_bins[7]; //!
+    //static const float m_coarse_deltaR_bins[7]; //!
 
     // this is a standard constructor
     ytRealLeptonsEfficiency ();

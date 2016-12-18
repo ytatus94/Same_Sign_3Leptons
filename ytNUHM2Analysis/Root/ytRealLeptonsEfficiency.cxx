@@ -25,6 +25,7 @@ const float ytRealLeptonsEfficiency::m_default_pt_bins[14] = {
 const float ytRealLeptonsEfficiency::m_default_eta_bins[21]  = {
     -2.47, -2.37, -2.01, -1.81, -1.52, -1.37, -1.15, -0.8, -0.6, -0.1, 0., 0.1, 0.6, 0.8, 1.15, 1.37, 1.52, 1.81, 2.01, 2.37, 2.47
 };
+/*
 const float ytRealLeptonsEfficiency::m_default_deltaR_bins[21] = {
     0, 0.2, 0.4, 0.6, 0.8,
     1.0, 1.2, 1.4, 1.6, 1.8,
@@ -32,15 +33,18 @@ const float ytRealLeptonsEfficiency::m_default_deltaR_bins[21] = {
     3.0, 3.2, 3.4, 3.6, 3.8,
     4.0
 };
+*/
 const float ytRealLeptonsEfficiency::m_default_NJet_bins[11] = {
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 };
+/*
 const float ytRealLeptonsEfficiency::m_default_Etmiss_bins[9] = {
     0., 50. , 100., 150., 200. , 250., 300., 350., 400.
 };
 const float ytRealLeptonsEfficiency::m_default_meff_bins[7] = {
     0., 250., 500., 750., 1000., 1250., 1500.
 };
+*/
 const float ytRealLeptonsEfficiency::m_muon_eta_bins[21] = {
     -2.5, -2.25, -2., -1.75, -1.5, -1.25, -1., -0.75, -0.5, -0.25, 0, 0.25, 0.5, 0.75, 1., 1.25, 1.5, 1.75, 2., 2.25, 2.5
 };
@@ -63,10 +67,11 @@ const float ytRealLeptonsEfficiency::m_muon_coarse_eta_bins[5] = {
     //0, 0.5, 1.25 , 1.75 , 2.5
     0, 0.6, 1.2, 1.8, 2.5
 };
+/*
 const float ytRealLeptonsEfficiency::m_coarse_deltaR_bins[7] = {
     0, 0.2, 0.4, 0.6, 1.0, 2.0, 4.0
 };
-
+*/
 ytRealLeptonsEfficiency::ytRealLeptonsEfficiency ()
 {
     // Here you put any code for the base initialization of variables,
@@ -84,10 +89,10 @@ ytRealLeptonsEfficiency::ytRealLeptonsEfficiency ()
     n_mll_bins = m_mll_bins.size() - 1;
     n_pt_bins = m_pt_bins.size() - 1;
     n_eta_bins = m_eta_bins.size() - 1;
-    n_deltaR_bins = m_deltaR_bins.size() - 1;
+    //n_deltaR_bins = m_deltaR_bins.size() - 1;
     n_NJet_bins = m_NJet_bins.size() - 1;
-    n_Etmiss_bins = m_Etmiss_bins.size() - 1;
-    n_meff_bins = m_meff_bins.size() - 1;
+    //n_Etmiss_bins = m_Etmiss_bins.size() - 1;
+    //n_meff_bins = m_meff_bins.size() - 1;
 /*
     // For debug
     cout << "n_mll_bins=" << n_mll_bins << endl;
@@ -156,84 +161,81 @@ EL::StatusCode ytRealLeptonsEfficiency::histInitialize ()
     }
     cout << "n_eta_bins=" << n_eta_bins << endl;
 */
-    h_Nvtx      = new TH1F("h_Nvtx", "Nvtx;Nvtx;Events", 50, 0 , 50);
-    h_AvgMu     = new TH1F("h_AvgMu", "AvgMu;<#mu>;Events", 50, 0 , 50);
-    h_zPV       = new TH1F("h_zPV", "zPV", 200, -200, 200);
+    h_Nvtx          = new TH1F("h_Nvtx", "Nvtx;Nvtx;Events", 50, 0 , 50);
+    h_AvgMu         = new TH1F("h_AvgMu", "AvgMu;<#mu>;Events", 50, 0 , 50);
+    h_AvgMu_OSee    = new TH1F("h_AvgMu_OSee", "AvgMu;<#mu>;Events", 50, 0 , 50);
+    h_AvgMu_OSmumu  = new TH1F("h_AvgMu_OSmumu", "AvgMu;<#mu>;Events", 50, 0 , 50);
+    h_zPV           = new TH1F("h_zPV", "zPV", 200, -200, 200);
     //h_NLepts    = new TH1F("h_NLepts", "Number of leptons;N_{leptons};Events",10, 0, 10);
     //h_NJets     = new TH1F("h_NJets", "Number of jets;N_{jets};Events", 40, 0, 40);
 
     h_Nvtx->Sumw2();
     h_AvgMu->Sumw2();
+    h_AvgMu_OSee->Sumw2();
+    h_AvgMu_OSmumu->Sumw2();
     h_zPV->Sumw2();
     //h_NLepts->Sumw2();
     //h_NJets->Sumw2();
 
     wk()->addOutput(h_Nvtx);
     wk()->addOutput(h_AvgMu);
+    wk()->addOutput(h_AvgMu_OSee);
+    wk()->addOutput(h_AvgMu_OSmumu);
     wk()->addOutput(h_zPV);
     //wk()->addOutput(h_NLepts);
     //wk()->addOutput(h_NJets);
 
-    h_Nvtx_weighted      = new TH1F("h_Nvtx_weighted", "Nvtx (weighted);Nvtx;Events", 50, 0 , 50);
-    h_AvgMu_weighted     = new TH1F("h_AvgMu_weighted", "AvgMu (weighted);<#mu>;Events", 50, 0 , 50);
-    h_zPV_weighted       = new TH1F("h_zPV_weighted", "zPV (weighted)", 200, -200, 200);
+    h_baseline_OSee_mll     = new TH1F("h_baseline_OSee_mll", "mll;M_{ll} [GeV];Events", 90, 60, 150);
+    h_baseline_OSmumu_mll   = new TH1F("h_baseline_OSmumu_mll", "mll;M_{ll} [GeV];Events", 90, 60, 150);
+    h_signal_OSee_mll       = new TH1F("h_signal_OSee_mll", "mll;M_{ll} [GeV];Events", 90, 60, 150);
+    h_signal_OSmumu_mll     = new TH1F("h_signal_OSmumu_mll", "mll;M_{ll} [GeV];Events", 90, 60, 150);
+
+    h_baseline_OSee_mll->Sumw2();
+    h_baseline_OSmumu_mll->Sumw2();
+    h_signal_OSee_mll->Sumw2();
+    h_signal_OSmumu_mll->Sumw2();
+
+    wk()->addOutput(h_baseline_OSee_mll);
+    wk()->addOutput(h_baseline_OSmumu_mll);
+    wk()->addOutput(h_signal_OSee_mll);
+    wk()->addOutput(h_signal_OSmumu_mll);
+
+    h_Nvtx_weighted         = new TH1F("h_Nvtx_weighted", "Nvtx (weighted);Nvtx;Events", 50, 0 , 50);
+    h_AvgMu_weighted        = new TH1F("h_AvgMu_weighted", "AvgMu (weighted);<#mu>;Events", 50, 0 , 50);
+    h_AvgMu_OSee_weighted   = new TH1F("h_AvgMu_OSee_weighted", "AvgMu (weighted);<#mu>;Events", 50, 0 , 50);
+    h_AvgMu_OSmumu_weighted = new TH1F("h_AvgMu_OSmumu_weighted", "AvgMu (weighted);<#mu>;Events", 50, 0 , 50);
+    h_zPV_weighted          = new TH1F("h_zPV_weighted", "zPV (weighted)", 200, -200, 200);
     //h_NLepts_weighted    = new TH1F("h_NLepts_weighted", "Number of leptons (weighted);N_{leptons};Events",10, 0, 10);
     //h_NJets_weighted     = new TH1F("h_NJets_weighted", "Number of jets (weighted);N_{jets};Events", 40, 0, 40);
 
     h_Nvtx_weighted->Sumw2();
     h_AvgMu_weighted->Sumw2();
+    h_AvgMu_OSee_weighted->Sumw2();
+    h_AvgMu_OSmumu_weighted->Sumw2();
     h_zPV_weighted->Sumw2();
     //h_NLepts_weighted->Sumw2();
     //h_NJets_weighted->Sumw2();
 
     wk()->addOutput(h_Nvtx_weighted);
     wk()->addOutput(h_AvgMu_weighted);
+    wk()->addOutput(h_AvgMu_OSee_weighted);
+    wk()->addOutput(h_AvgMu_OSmumu_weighted);
     wk()->addOutput(h_zPV_weighted);
     //wk()->addOutput(h_NLepts_weighted);
     //wk()->addOutput(h_NJets_weighted);
 
-    h_AvgMu_OSee            = new TH1F("h_AvgMu_OSee", "AvgMu;<#mu>;Events", 50, 0 , 50);
-    h_AvgMu_OSmumu          = new TH1F("h_AvgMu_OSmumu", "AvgMu;<#mu>;Events", 50, 0 , 50);
-    h_AvgMu_OSee_weighted   = new TH1F("h_AvgMu_OSee_weighted", "AvgMu (weighted);<#mu>;Events", 50, 0 , 50);
-    h_AvgMu_OSmumu_weighted = new TH1F("h_AvgMu_OSmumu_weighted", "AvgMu (weighted);<#mu>;Events", 50, 0 , 50);
+    h_baseline_OSee_mll_weighted    = new TH1F("h_baseline_OSee_mll_weighted", "mll;M_{ll} [GeV];Events", 90, 60, 150);
+    h_baseline_OSmumu_mll_weighted  = new TH1F("h_baseline_OSmumu_mll_weighted", "mll;M_{ll} [GeV];Events", 90, 60, 150);
+    h_signal_OSee_mll_weighted      = new TH1F("h_signal_OSee_mll_weighted", "mll;M_{ll} [GeV];Events", 90, 60, 150);
+    h_signal_OSmumu_mll_weighted    = new TH1F("h_signal_OSmumu_mll_weighted", "mll;M_{ll} [GeV];Events", 90, 60, 150);
 
-    h_AvgMu_OSee->Sumw2();
-    h_AvgMu_OSmumu->Sumw2();
-    h_AvgMu_OSee_weighted->Sumw2();
-    h_AvgMu_OSmumu_weighted->Sumw2();
-
-    wk()->addOutput(h_AvgMu_OSee);
-    wk()->addOutput(h_AvgMu_OSmumu);
-    wk()->addOutput(h_AvgMu_OSee_weighted);
-    wk()->addOutput(h_AvgMu_OSmumu_weighted);
-
-    h_baseline_OSee_mll = new TH1F("h_baseline_OSee_mll", "mll;M_{ll} [GeV];Events", 90, 60, 150);
-    h_baseline_OSmumu_mll = new TH1F("h_baseline_OSmumu_mll", "mll;M_{ll} [GeV];Events", 90, 60, 150);
-    h_baseline_OSee_mll_weighted = new TH1F("h_baseline_OSee_mll_weighted", "mll;M_{ll} [GeV];Events", 90, 60, 150);
-    h_baseline_OSmumu_mll_weighted = new TH1F("h_baseline_OSmumu_mll_weighted", "mll;M_{ll} [GeV];Events", 90, 60, 150);
-
-    h_baseline_OSee_mll->Sumw2();
-    h_baseline_OSmumu_mll->Sumw2();
     h_baseline_OSee_mll_weighted->Sumw2();
     h_baseline_OSmumu_mll_weighted->Sumw2();
-
-    wk()->addOutput(h_baseline_OSee_mll);
-    wk()->addOutput(h_baseline_OSmumu_mll);
-    wk()->addOutput(h_baseline_OSee_mll_weighted);
-    wk()->addOutput(h_baseline_OSmumu_mll_weighted);
-
-    h_signal_OSee_mll = new TH1F("h_signal_OSee_mll", "mll;M_{ll} [GeV];Events", 90, 60, 150);
-    h_signal_OSmumu_mll = new TH1F("h_signal_OSmumu_mll", "mll;M_{ll} [GeV];Events", 90, 60, 150);
-    h_signal_OSee_mll_weighted = new TH1F("h_signal_OSee_mll_weighted", "mll;M_{ll} [GeV];Events", 90, 60, 150);
-    h_signal_OSmumu_mll_weighted = new TH1F("h_signal_OSmumu_mll_weighted", "mll;M_{ll} [GeV];Events", 90, 60, 150);
-
-    h_signal_OSee_mll->Sumw2();
-    h_signal_OSmumu_mll->Sumw2();
     h_signal_OSee_mll_weighted->Sumw2();
     h_signal_OSmumu_mll_weighted->Sumw2();
 
-    wk()->addOutput(h_signal_OSee_mll);
-    wk()->addOutput(h_signal_OSmumu_mll);
+    wk()->addOutput(h_baseline_OSee_mll_weighted);
+    wk()->addOutput(h_baseline_OSmumu_mll_weighted);
     wk()->addOutput(h_signal_OSee_mll_weighted);
     wk()->addOutput(h_signal_OSmumu_mll_weighted);
 
@@ -242,46 +244,46 @@ EL::StatusCode ytRealLeptonsEfficiency::histInitialize ()
     h_baseline_mll          = new TH1F("h_baseline_mll", "mll;M_{ll} [GeV];Events", n_mll_bins, &m_mll_bins[0]);
     h_baseline_pt           = new TH1F("h_baseline_pt", "pt;p_{T} [GeV];Events", n_pt_bins, &m_pt_bins[0]);
     h_baseline_eta          = new TH1F("h_baseline_eta", "eta;#eta;Events", n_eta_bins, &m_eta_bins[0]);
-    h_baseline_d0pvtx       = new TH1F("h_baseline_d0pvtx", "d0pvtx", 100, -0.15, 0.15);
-    h_baseline_sigd0        = new TH1F("h_baseline_sigd0", "sigd0", 100, 0, 10);
-    h_baseline_d0err        = new TH1F("h_baseline_d0err", "d0err", 100, -0.1, 0.1);
-    h_baseline_z0sinTheta   = new TH1F("h_baseline_z0SinTheta", "fabs(z0sinTheta)", 100, 0, 0.5);
-    h_baseline_ptvarcone20  = new TH1F("h_baseline_ptvarcone20", "ptvarcone20", 100, 0, 0.2);
-    h_baseline_ptvarcone30  = new TH1F("h_baseline_ptvarcone30", "ptvarcone30", 100, 0, 0.2);
-    h_baseline_topoetcone20 = new TH1F("h_baseline_topoetcone20", "topoetcone20", 100, 0, 0.2);
+    //h_baseline_d0pvtx       = new TH1F("h_baseline_d0pvtx", "d0pvtx", 100, -0.15, 0.15);
+    //h_baseline_sigd0        = new TH1F("h_baseline_sigd0", "sigd0", 100, 0, 10);
+    //h_baseline_d0err        = new TH1F("h_baseline_d0err", "d0err", 100, -0.1, 0.1);
+    //h_baseline_z0sinTheta   = new TH1F("h_baseline_z0SinTheta", "fabs(z0sinTheta)", 100, 0, 0.5);
+    //h_baseline_ptvarcone20  = new TH1F("h_baseline_ptvarcone20", "ptvarcone20", 100, 0, 0.2);
+    //h_baseline_ptvarcone30  = new TH1F("h_baseline_ptvarcone30", "ptvarcone30", 100, 0, 0.2);
+    //h_baseline_topoetcone20 = new TH1F("h_baseline_topoetcone20", "topoetcone20", 100, 0, 0.2);
     h_baseline_nJets        = new TH1F("h_baseline_nJets", "NJet", n_NJet_bins, &m_NJet_bins[0]);
     //h_baseline_dRjet        = new TH1F("h_baseline_dRjet", "dRjet", n_deltaR_bins, &m_deltaR_bins[0]);
-    h_baseline_Etmiss       = new TH1F("h_baseline_Etmiss", "Etmiss", n_Etmiss_bins, &m_Etmiss_bins[0]);
+    //h_baseline_Etmiss       = new TH1F("h_baseline_Etmiss", "Etmiss", n_Etmiss_bins, &m_Etmiss_bins[0]);
     //h_baseline_meff         = new TH1F("h_baseline_meff", "meff", n_meff_bins, &m_meff_bins[0]);
 
     h_baseline_mll->Sumw2();
     h_baseline_pt->Sumw2();
     h_baseline_eta->Sumw2();
-    h_baseline_d0pvtx->Sumw2();
-    h_baseline_sigd0->Sumw2();
-    h_baseline_d0err->Sumw2();
-    h_baseline_z0sinTheta->Sumw2();
-    h_baseline_ptvarcone20->Sumw2();
-    h_baseline_ptvarcone30->Sumw2();
-    h_baseline_topoetcone20->Sumw2();
+    //h_baseline_d0pvtx->Sumw2();
+    //h_baseline_sigd0->Sumw2();
+    //h_baseline_d0err->Sumw2();
+    //h_baseline_z0sinTheta->Sumw2();
+    //h_baseline_ptvarcone20->Sumw2();
+    //h_baseline_ptvarcone30->Sumw2();
+    //h_baseline_topoetcone20->Sumw2();
     h_baseline_nJets->Sumw2();
     //h_baseline_dRjet->Sumw2();
-    h_baseline_Etmiss->Sumw2();
+    //h_baseline_Etmiss->Sumw2();
     //h_baseline_meff->Sumw2();
 
     wk()->addOutput(h_baseline_mll);
     wk()->addOutput(h_baseline_pt);
     wk()->addOutput(h_baseline_eta);
-    wk()->addOutput(h_baseline_d0pvtx);
-    wk()->addOutput(h_baseline_sigd0);
-    wk()->addOutput(h_baseline_d0err);
-    wk()->addOutput(h_baseline_z0sinTheta);
-    wk()->addOutput(h_baseline_ptvarcone20);
-    wk()->addOutput(h_baseline_ptvarcone30);
-    wk()->addOutput(h_baseline_topoetcone20);
+    //wk()->addOutput(h_baseline_d0pvtx);
+    //wk()->addOutput(h_baseline_sigd0);
+    //wk()->addOutput(h_baseline_d0err);
+    //wk()->addOutput(h_baseline_z0sinTheta);
+    //wk()->addOutput(h_baseline_ptvarcone20);
+    //wk()->addOutput(h_baseline_ptvarcone30);
+    //wk()->addOutput(h_baseline_topoetcone20);
     wk()->addOutput(h_baseline_nJets);
     //wk()->addOutput(h_baseline_dRjet);
-    wk()->addOutput(h_baseline_Etmiss);
+    //wk()->addOutput(h_baseline_Etmiss);
     //wk()->addOutput(h_baseline_meff);
 
     h_baseline_LooseAndBLayerLLH_to_MediumLLH_cut = new TH1F("h_baseline_LooseAndBLayerLLH_to_MediumLLH_cut", "LooseAndBLayerLLH_to_MediumLLH_cut;p_{T} [GeV];Events", n_pt_bins, &m_pt_bins[0]);
@@ -309,19 +311,19 @@ EL::StatusCode ytRealLeptonsEfficiency::histInitialize ()
     h_baseline_pt_eta       = new TH2F("h_baseline_pt_eta", "p_{T} vs #eta;p_{T} [GeV];#eta", n_pt_bins, &m_pt_bins[0], n_eta_bins, &m_eta_bins[0]);
     h_baseline_pt_nJets     = new TH2F("h_baseline_pt_nJets", "p_{T} vs NJet;p_{T} [GeV];NJet", n_pt_bins, &m_pt_bins[0], n_NJet_bins, &m_NJet_bins[0]);
     //h_baseline_pt_dRjet     = new TH2F("h_baseline_pt_dRjet", "p_{T} vs dRjet;p_{T} [GeV];dRjet", n_pt_bins, &m_pt_bins[0], n_deltaR_bins, &m_deltaR_bins[0]);
-    h_baseline_pt_Etmiss    = new TH2F("h_baseline_pt_Etmiss", "p_{T} vs Etmiss;p_{T} [GeV];Etmiss", n_pt_bins, &m_pt_bins[0], n_Etmiss_bins, &m_Etmiss_bins[0]);
+    //h_baseline_pt_Etmiss    = new TH2F("h_baseline_pt_Etmiss", "p_{T} vs Etmiss;p_{T} [GeV];Etmiss", n_pt_bins, &m_pt_bins[0], n_Etmiss_bins, &m_Etmiss_bins[0]);
     //h_baseline_pt_meff      = new TH2F("h_baseline_pt_meff", "p_{T} vs meff;p_{T} [GeV];meff", n_pt_bins, &m_pt_bins[0], n_meff_bins, &m_meff_bins[0]);
 
     h_baseline_pt_eta->Sumw2();
     h_baseline_pt_nJets->Sumw2();
     //h_baseline_pt_dRjet->Sumw2();
-    h_baseline_pt_Etmiss->Sumw2();
+    //h_baseline_pt_Etmiss->Sumw2();
     //h_baseline_pt_meff->Sumw2();
 
     wk()->addOutput(h_baseline_pt_eta);
     wk()->addOutput(h_baseline_pt_nJets);
     //wk()->addOutput(h_baseline_pt_dRjet);
-    wk()->addOutput(h_baseline_pt_Etmiss);
+    //wk()->addOutput(h_baseline_pt_Etmiss);
     //wk()->addOutput(h_baseline_pt_meff);
 
     // 3-dim histograms
@@ -342,65 +344,65 @@ EL::StatusCode ytRealLeptonsEfficiency::histInitialize ()
     h_signal_mll            = new TH1F("h_signal_mll", "mll;M_{ll} [GeV];Events;", n_mll_bins, &m_mll_bins[0]);
     h_signal_pt             = new TH1F("h_signal_pt", "pt;p_{T} [GeV];Events;", n_pt_bins, &m_pt_bins[0]);
     h_signal_eta            = new TH1F("h_signal_eta", "eta;#eta;Events", n_eta_bins, &m_eta_bins[0]);
-    h_signal_d0pvtx         = new TH1F("h_signal_d0pvtx", "d0pvtx", 100, -0.15, 0.15);
-    h_signal_sigd0          = new TH1F("h_signal_sigd0", "sigd0", 100, 0, 10);
-    h_signal_d0err          = new TH1F("h_signal_d0err", "d0err", 100, -0.1, 0.1);
-    h_signal_z0sinTheta     = new TH1F("h_signal_z0SinTheta", "fabs(z0sinTheta)", 100, 0, 0.5);
-    h_signal_ptvarcone20    = new TH1F("h_signal_ptvarcone20", "ptvarcone20", 100, 0, 0.2);
-    h_signal_ptvarcone30    = new TH1F("h_signal_ptvarcone30", "ptvarcone30", 100, 0, 0.2);
-    h_signal_topoetcone20   = new TH1F("h_signal_topoetcone20", "topoetcone20", 100, 0, 0.2);
+    //h_signal_d0pvtx         = new TH1F("h_signal_d0pvtx", "d0pvtx", 100, -0.15, 0.15);
+    //h_signal_sigd0          = new TH1F("h_signal_sigd0", "sigd0", 100, 0, 10);
+    //h_signal_d0err          = new TH1F("h_signal_d0err", "d0err", 100, -0.1, 0.1);
+    //h_signal_z0sinTheta     = new TH1F("h_signal_z0SinTheta", "fabs(z0sinTheta)", 100, 0, 0.5);
+    //h_signal_ptvarcone20    = new TH1F("h_signal_ptvarcone20", "ptvarcone20", 100, 0, 0.2);
+    //h_signal_ptvarcone30    = new TH1F("h_signal_ptvarcone30", "ptvarcone30", 100, 0, 0.2);
+    //h_signal_topoetcone20   = new TH1F("h_signal_topoetcone20", "topoetcone20", 100, 0, 0.2);
     h_signal_nJets          = new TH1F("h_signal_nJets", "NJet", n_NJet_bins, &m_NJet_bins[0]);
     //h_signal_dRjet          = new TH1F("h_signal_dRjet", "dRjet", n_deltaR_bins, &m_deltaR_bins[0]);
-    h_signal_Etmiss         = new TH1F("h_signal_Etmiss", "Etmiss", n_Etmiss_bins, &m_Etmiss_bins[0]);
+    //h_signal_Etmiss         = new TH1F("h_signal_Etmiss", "Etmiss", n_Etmiss_bins, &m_Etmiss_bins[0]);
     //h_signal_meff           = new TH1F("h_signal_meff", "meff", n_meff_bins, &m_meff_bins[0]);
 
     h_signal_mll->Sumw2();
     h_signal_pt->Sumw2();
     h_signal_eta->Sumw2();
-    h_signal_d0pvtx->Sumw2();
-    h_signal_sigd0->Sumw2();
-    h_signal_d0err->Sumw2();
-    h_signal_z0sinTheta->Sumw2();
-    h_signal_ptvarcone20->Sumw2();
-    h_signal_ptvarcone30->Sumw2();
-    h_signal_topoetcone20->Sumw2();
+    //h_signal_d0pvtx->Sumw2();
+    //h_signal_sigd0->Sumw2();
+    //h_signal_d0err->Sumw2();
+    //h_signal_z0sinTheta->Sumw2();
+    //h_signal_ptvarcone20->Sumw2();
+    //h_signal_ptvarcone30->Sumw2();
+    //h_signal_topoetcone20->Sumw2();
     h_signal_nJets->Sumw2();
     //h_signal_dRjet->Sumw2();
-    h_signal_Etmiss->Sumw2();
+    //h_signal_Etmiss->Sumw2();
     //h_signal_meff->Sumw2();
 
     wk()->addOutput(h_signal_mll);
     wk()->addOutput(h_signal_pt);
     wk()->addOutput(h_signal_eta);
-    wk()->addOutput(h_signal_d0pvtx);
-    wk()->addOutput(h_signal_sigd0);
-    wk()->addOutput(h_signal_d0err);
-    wk()->addOutput(h_signal_z0sinTheta);
-    wk()->addOutput(h_signal_ptvarcone20);
-    wk()->addOutput(h_signal_ptvarcone30);
-    wk()->addOutput(h_signal_topoetcone20);
+    //wk()->addOutput(h_signal_d0pvtx);
+    //wk()->addOutput(h_signal_sigd0);
+    //wk()->addOutput(h_signal_d0err);
+    //wk()->addOutput(h_signal_z0sinTheta);
+    //wk()->addOutput(h_signal_ptvarcone20);
+    //wk()->addOutput(h_signal_ptvarcone30);
+    //wk()->addOutput(h_signal_topoetcone20);
     wk()->addOutput(h_signal_nJets);
     //wk()->addOutput(h_signal_dRjet);
-    wk()->addOutput(h_signal_Etmiss);
+    //wk()->addOutput(h_signal_Etmiss);
     //wk()->addOutput(h_signal_meff);
    
     // 2-dim histograms
     h_signal_pt_eta     = new TH2F("h_signal_pt_eta", "p_{T} vs #eta;p_{T} [GeV];#eta", n_pt_bins, &m_pt_bins[0], n_eta_bins, &m_eta_bins[0]);
     h_signal_pt_nJets   = new TH2F("h_signal_pt_nJets", "p_{T} vs NJet;p_{T} [GeV];NJet", n_pt_bins, &m_pt_bins[0], n_NJet_bins, &m_NJet_bins[0]);
     //h_signal_pt_dRjet   = new TH2F("h_signal_pt_dRjet", "p_{T} vs dRjet;p_{T} [GeV];dRjet", n_pt_bins, &m_pt_bins[0], n_deltaR_bins, &m_deltaR_bins[0]);
-    h_signal_pt_Etmiss  = new TH2F("h_signal_pt_Etmiss", "p_{T} vs Etmiss;p_{T} [GeV];Etmiss", n_pt_bins, &m_pt_bins[0], n_Etmiss_bins, &m_Etmiss_bins[0]);
+    //h_signal_pt_Etmiss  = new TH2F("h_signal_pt_Etmiss", "p_{T} vs Etmiss;p_{T} [GeV];Etmiss", n_pt_bins, &m_pt_bins[0], n_Etmiss_bins, &m_Etmiss_bins[0]);
     //h_signal_pt_meff    = new TH2F("h_signal_pt_meff", "p_{T} vs meff;p_{T} [GeV];meff", n_pt_bins, &m_pt_bins[0], n_meff_bins, &m_meff_bins[0]);
 
     h_signal_pt_eta->Sumw2();
     h_signal_pt_nJets->Sumw2();
     //h_signal_pt_dRjet->Sumw2();
-    h_signal_pt_Etmiss->Sumw2();
+    //h_signal_pt_Etmiss->Sumw2();
     //h_signal_pt_meff->Sumw2();
 
     wk()->addOutput(h_signal_pt_eta);
     wk()->addOutput(h_signal_pt_nJets);
     //wk()->addOutput(h_signal_pt_dRjet);
-    wk()->addOutput(h_signal_pt_Etmiss);
+    //wk()->addOutput(h_signal_pt_Etmiss);
     //wk()->addOutput(h_signal_pt_meff);
 
     // 3-dim histograms
@@ -424,6 +426,13 @@ EL::StatusCode ytRealLeptonsEfficiency::histInitialize ()
     h_cut_eff_z0        = new TH1F("h_cut_eff_z0", "z0;p_{T} [GeV];Efficiency", n_pt_bins, &m_pt_bins[0]);
     h_cut_eff_sigd0     = new TH1F("h_cut_eff_sigd0", "sigd0;p_{T} [GeV];Efficiency", n_pt_bins, &m_pt_bins[0]);
 
+    h_cut_eff_LooseAndBLayerLLH_to_MediumLLH->Sumw2();
+    h_cut_eff_CaloIso->Sumw2();
+    h_cut_eff_TrackIso->Sumw2();
+    h_cut_eff_Iso->Sumw2();
+    h_cut_eff_z0->Sumw2();
+    h_cut_eff_sigd0->Sumw2();
+
     wk()->addOutput(h_cut_eff_LooseAndBLayerLLH_to_MediumLLH);
     wk()->addOutput(h_cut_eff_CaloIso);
     wk()->addOutput(h_cut_eff_TrackIso);
@@ -441,6 +450,16 @@ EL::StatusCode ytRealLeptonsEfficiency::histInitialize ()
     h_bkg_template_fail_id_and_CaloIso_and_TrackIso         = new TH1F("h_bkg_template_fail_id_and_CaloIso_and_TrackIso", "mll;M_{ll} [GeV];Events;", n_mll_bins, &m_mll_bins[0]);
     h_bkg_template_fail_id_and_CaloIso_and_TrackIso_tight   = new TH1F("h_bkg_template_fail_id_and_CaloIso_and_TrackIso_tight", "mll;M_{ll} [GeV];Events;", n_mll_bins, &m_mll_bins[0]);
     h_bkg_template_fail_CaloIso_and_TrackIso                = new TH1F("h_bkg_template_fail_CaloIso_and_TrackIso", "mll;M_{ll} [GeV];Events;", n_mll_bins, &m_mll_bins[0]);
+
+    h_bkg_template_fail_truth->Sumw2();
+    h_bkg_template_fail_id_only->Sumw2();
+    h_bkg_template_fail_CaloIso_only->Sumw2();
+    h_bkg_template_fail_TrackIso_only->Sumw2();
+    h_bkg_template_fail_id_and_CaloIso->Sumw2();
+    h_bkg_template_fail_id_and_TrackIso->Sumw2();
+    h_bkg_template_fail_id_and_CaloIso_and_TrackIso->Sumw2();
+    h_bkg_template_fail_id_and_CaloIso_and_TrackIso_tight->Sumw2();
+    h_bkg_template_fail_CaloIso_and_TrackIso->Sumw2();
 
     wk()->addOutput(h_bkg_template_fail_truth);
     wk()->addOutput(h_bkg_template_fail_id_only);
@@ -462,6 +481,16 @@ EL::StatusCode ytRealLeptonsEfficiency::histInitialize ()
     h_bkg_template_fail_id_and_CaloIso_and_TrackIso_tight_pt_eta_mll = new TH3F("h_bkg_template_fail_id_and_CaloIso_and_TrackIso_tight_pt_eta_mll", "mll;p_{T} [GeV];#eta;M_{ll} [GeV]", n_pt_bins, &m_pt_bins[0], n_eta_bins, &m_eta_bins[0], n_mll_bins, &m_mll_bins[0]);
     h_bkg_template_fail_CaloIso_and_TrackIso_pt_eta_mll = new TH3F("h_bkg_template_fail_CaloIso_and_TrackIso_pt_eta_mll", "mll;p_{T} [GeV];#eta;M_{ll} [GeV]", n_pt_bins, &m_pt_bins[0], n_eta_bins, &m_eta_bins[0], n_mll_bins, &m_mll_bins[0]);
 
+    h_bkg_template_fail_truth_pt_eta_mll->Sumw2();
+    h_bkg_template_fail_id_only_pt_eta_mll->Sumw2();
+    h_bkg_template_fail_CaloIso_only_pt_eta_mll->Sumw2();
+    h_bkg_template_fail_TrackIso_only_pt_eta_mll->Sumw2();
+    h_bkg_template_fail_id_and_CaloIso_pt_eta_mll->Sumw2();
+    h_bkg_template_fail_id_and_TrackIso_pt_eta_mll->Sumw2();
+    h_bkg_template_fail_id_and_CaloIso_and_TrackIso_pt_eta_mll->Sumw2();
+    h_bkg_template_fail_id_and_CaloIso_and_TrackIso_tight_pt_eta_mll->Sumw2();
+    h_bkg_template_fail_CaloIso_and_TrackIso_pt_eta_mll->Sumw2();
+
     wk()->addOutput(h_bkg_template_fail_truth_pt_eta_mll);
     wk()->addOutput(h_bkg_template_fail_id_only_pt_eta_mll);
     wk()->addOutput(h_bkg_template_fail_CaloIso_only_pt_eta_mll);
@@ -478,27 +507,34 @@ EL::StatusCode ytRealLeptonsEfficiency::histInitialize ()
     h_eff_eta       = new TH1F("h_eff_eta", "eff_eta;|#eta|;Efficiency", n_eta_bins, &m_eta_bins[0]);
     h_eff_nJets     = new TH1F("h_eff_nJets", "eff_nJet;NJet;Efficiency", n_NJet_bins, &m_NJet_bins[0]);
     //h_eff_dRjet     = new TH1F("h_eff_dRjet", "eff_dRjet;dRjet;Efficiency", n_deltaR_bins, &m_deltaR_bins[0]);
-    h_eff_Etmiss    = new TH1F("h_eff_Etmiss", "eff_Etmiss;Etmiss;Efficiency", n_Etmiss_bins, &m_Etmiss_bins[0]);
+    //h_eff_Etmiss    = new TH1F("h_eff_Etmiss", "eff_Etmiss;Etmiss;Efficiency", n_Etmiss_bins, &m_Etmiss_bins[0]);
     //h_eff_meff      = new TH1F("h_eff_meff", "eff_meff;meff;Efficiency", n_meff_bins, &m_meff_bins[0]);
+
+    h_eff_pt->Sumw2();
+    h_eff_eta->Sumw2();
+    h_eff_nJets->Sumw2();
 
     wk()->addOutput(h_eff_pt);
     wk()->addOutput(h_eff_eta);
     wk()->addOutput(h_eff_nJets);
     //wk()->addOutput(h_eff_dRjet);
-    wk()->addOutput(h_eff_Etmiss);
+    //wk()->addOutput(h_eff_Etmiss);
     //wk()->addOutput(h_eff_meff);
 
     // 2-dim histograms
     h_2d_eff_pt_eta     = new TH2F("h_2d_eff_pt_eta", "eff_pt_eta;p_{T} [GeV];#eta;Efficiency", n_pt_bins, &m_pt_bins[0], n_eta_bins, &m_eta_bins[0]);
     h_2d_eff_pt_nJets   = new TH2F("h_2d_eff_pt_nJets", "eff_pt_nJets;p_{T} [GeV];NJet;Efficiency", n_pt_bins, &m_pt_bins[0], n_NJet_bins, &m_NJet_bins[0]);
     //h_2d_eff_pt_dRjet   = new TH2F("h_2d_eff_pt_dRjet", "eff_pt_dRjet;p_{T} [GeV];dRjet;Efficiency", n_pt_bins, &m_pt_bins[0], n_deltaR_bins, &m_deltaR_bins[0]);
-    h_2d_eff_pt_Etmiss  = new TH2F("h_2d_eff_pt_Etmiss", "eff_pt_Etmiss;p_{T} [GeV];Etmiss;Efficiency", n_pt_bins, &m_pt_bins[0], n_Etmiss_bins, &m_Etmiss_bins[0]);
+    //h_2d_eff_pt_Etmiss  = new TH2F("h_2d_eff_pt_Etmiss", "eff_pt_Etmiss;p_{T} [GeV];Etmiss;Efficiency", n_pt_bins, &m_pt_bins[0], n_Etmiss_bins, &m_Etmiss_bins[0]);
     //h_2d_eff_pt_meff    = new TH2F("h_2d_eff_pt_meff", "eff_pt_meff;p_{T} [GeV];meff;Efficiency", n_pt_bins, &m_pt_bins[0], n_meff_bins, &m_meff_bins[0]);
+
+    h_2d_eff_pt_eta->Sumw2();
+    h_2d_eff_pt_nJets->Sumw2();
 
     wk()->addOutput(h_2d_eff_pt_eta);
     wk()->addOutput(h_2d_eff_pt_nJets);
     //wk()->addOutput(h_2d_eff_pt_dRjet);
-    wk()->addOutput(h_2d_eff_pt_Etmiss);
+    //wk()->addOutput(h_2d_eff_pt_Etmiss);
     //wk()->addOutput(h_2d_eff_pt_meff);
 
     return EL::StatusCode::SUCCESS;
@@ -623,10 +659,14 @@ EL::StatusCode ytRealLeptonsEfficiency::initialize ()
     El_isTightLH = 0;
     El_nBLayerHits = 0;
     El_expectBLayerHit = 0;
-    El_type = 0;
-    El_origin = 0;
+    El_truthType = 0;
+    El_truthOrigin = 0;
+    El_bkgTruthType = 0;
+    El_bkgTruthOrigin = 0;
     El_bkgMotherPdgId = 0;
-    El_bkgOrigin = 0;
+    El_firstEgMotherTruthType = 0;
+    El_firstEgMotherTruthOrigin = 0;
+    El_firstEgMotherPdgId = 0;
     El_chFlip = 0;
     El_ptcone20 = 0;
     El_ptcone30 = 0;
@@ -658,6 +698,8 @@ EL::StatusCode ytRealLeptonsEfficiency::initialize ()
     El_TrigMatch_e24_lhmedium_nod0_ivarloose = 0;
     El_TrigMatch_e24_lhtight_nod0_ivarloose = 0;
     El_TrigMatch_e60_lhmedium_nod0 = 0;
+    El_passChargeFlipTagger = 0;
+    El_passChargeFlipTaggerBDT = 0;
     Jet_eta = 0;
     Jet_phi = 0;
     Jet_pT = 0;
@@ -745,16 +787,16 @@ EL::StatusCode ytRealLeptonsEfficiency::initialize ()
     fChain->SetBranchAddress("HLT_xe80_mht_L1XE50", &HLT_xe80_mht_L1XE50, &b_HLT_xe80_mht_L1XE50);
     fChain->SetBranchAddress("HLT_xe90_mht_L1XE50", &HLT_xe90_mht_L1XE50, &b_HLT_xe90_mht_L1XE50);
     fChain->SetBranchAddress("HLT_xe100_mht_L1XE50", &HLT_xe100_mht_L1XE50, &b_HLT_xe100_mht_L1XE50);
-    fChain->SetBranchAddress("HLT_xe110_pueta_L1XE50", &HLT_xe110_pueta_L1XE50, &b_HLT_xe110_pueta_L1XE50);
-    fChain->SetBranchAddress("HLT_xe110_pufit_L1XE50", &HLT_xe110_pufit_L1XE50, &b_HLT_xe110_pufit_L1XE50);
     fChain->SetBranchAddress("HLT_xe100_tc_em_L1XE50", &HLT_xe100_tc_em_L1XE50, &b_HLT_xe100_tc_em_L1XE50);
+    fChain->SetBranchAddress("HLT_xe110_mht_L1XE50", &HLT_xe110_mht_L1XE50, &b_HLT_xe110_mht_L1XE50);
     fChain->SetBranchAddress("HLT_xe80_tc_lcw_L1XE50", &HLT_xe80_tc_lcw_L1XE50, &b_HLT_xe80_tc_lcw_L1XE50);
     fChain->SetBranchAddress("HLT_xe90_tc_lcw_L1XE50", &HLT_xe90_tc_lcw_L1XE50, &b_HLT_xe90_tc_lcw_L1XE50);
     fChain->SetBranchAddress("HLT_xe80_tc_lcw_wEFMu_L1XE50", &HLT_xe80_tc_lcw_wEFMu_L1XE50, &b_HLT_xe80_tc_lcw_wEFMu_L1XE50);
     fChain->SetBranchAddress("HLT_e7_lhmedium_mu24", &HLT_e7_lhmedium_mu24, &b_HLT_e7_lhmedium_mu24);
+    fChain->SetBranchAddress("HLT_e7_lhmedium_nod0_mu24", &HLT_e7_lhmedium_nod0_mu24, &b_HLT_e7_lhmedium_nod0_mu24);
     fChain->SetBranchAddress("HLT_e17_lhloose_nod0_mu14", &HLT_e17_lhloose_nod0_mu14, &b_HLT_e17_lhloose_nod0_mu14);
     fChain->SetBranchAddress("HLT_e26_lhmedium_nod0_L1EM22VHI_mu8noL1", &HLT_e26_lhmedium_nod0_L1EM22VHI_mu8noL1, &b_HLT_e26_lhmedium_nod0_L1EM22VHI_mu8noL1);
-    fChain->SetBranchAddress("HLT_e24_lhmedium_nod0_L1EM22VHI_mu8noL1", &HLT_e24_lhmedium_nod0_L1EM22VHI_mu8noL1, &b_HLT_e24_lhmedium_nod0_L1EM22VHI_mu8noL1);
+    fChain->SetBranchAddress("HLT_e24_lhmedium_nod0_L1EM20VHI_mu8noL1", &HLT_e24_lhmedium_nod0_L1EM20VHI_mu8noL1, &b_HLT_e24_lhmedium_nod0_L1EM20VHI_mu8noL1);
     fChain->SetBranchAddress("HLT_2e12_lhloose_L12EM10VH", &HLT_2e12_lhloose_L12EM10VH, &b_HLT_2e12_lhloose_L12EM10VH);
     fChain->SetBranchAddress("HLT_e17_lhloose_mu14", &HLT_e17_lhloose_mu14, &b_HLT_e17_lhloose_mu14);
     fChain->SetBranchAddress("HLT_mu18_mu8noL1", &HLT_mu18_mu8noL1, &b_HLT_mu18_mu8noL1);
@@ -843,10 +885,14 @@ EL::StatusCode ytRealLeptonsEfficiency::initialize ()
     fChain->SetBranchAddress("El_isTightLH", &El_isTightLH, &b_El_isTightLH);
     fChain->SetBranchAddress("El_nBLayerHits", &El_nBLayerHits, &b_El_nBLayerHits);
     fChain->SetBranchAddress("El_expectBLayerHit", &El_expectBLayerHit, &b_El_expectBLayerHit);
-    fChain->SetBranchAddress("El_type", &El_type, &b_El_type);
-    fChain->SetBranchAddress("El_origin", &El_origin, &b_El_origin);
+    fChain->SetBranchAddress("El_truthType", &El_truthType, &b_El_truthType);
+    fChain->SetBranchAddress("El_truthOrigin", &El_truthOrigin, &b_El_truthOrigin);
+    fChain->SetBranchAddress("El_bkgTruthType", &El_bkgTruthType, &b_El_bkgTruthType);
+    fChain->SetBranchAddress("El_bkgTruthOrigin", &El_bkgTruthOrigin, &b_El_bkgTruthOrigin);
     fChain->SetBranchAddress("El_bkgMotherPdgId", &El_bkgMotherPdgId, &b_El_bkgMotherPdgId);
-    fChain->SetBranchAddress("El_bkgOrigin", &El_bkgOrigin, &b_El_bkgOrigin);
+    fChain->SetBranchAddress("El_firstEgMotherTruthType", &El_firstEgMotherTruthType, &b_El_firstEgMotherTruthType);
+    fChain->SetBranchAddress("El_firstEgMotherTruthOrigin", &El_firstEgMotherTruthOrigin, &b_El_firstEgMotherTruthOrigin);
+    fChain->SetBranchAddress("El_firstEgMotherPdgId", &El_firstEgMotherPdgId, &b_El_firstEgMotherPdgId);
     fChain->SetBranchAddress("El_chFlip", &El_chFlip, &b_El_chFlip);
     fChain->SetBranchAddress("El_ptcone20", &El_ptcone20, &b_El_ptcone20);
     fChain->SetBranchAddress("El_ptcone30", &El_ptcone30, &b_El_ptcone30);
@@ -878,6 +924,8 @@ EL::StatusCode ytRealLeptonsEfficiency::initialize ()
     fChain->SetBranchAddress("El_TrigMatch_e24_lhmedium_nod0_ivarloose", &El_TrigMatch_e24_lhmedium_nod0_ivarloose, &b_El_TrigMatch_e24_lhmedium_nod0_ivarloose);
     fChain->SetBranchAddress("El_TrigMatch_e24_lhtight_nod0_ivarloose", &El_TrigMatch_e24_lhtight_nod0_ivarloose, &b_El_TrigMatch_e24_lhtight_nod0_ivarloose);
     fChain->SetBranchAddress("El_TrigMatch_e60_lhmedium_nod0", &El_TrigMatch_e60_lhmedium_nod0, &b_El_TrigMatch_e60_lhmedium_nod0);
+    fChain->SetBranchAddress("El_passChargeFlipTagger", &El_passChargeFlipTagger, &b_El_passChargeFlipTagger);
+    fChain->SetBranchAddress("El_passChargeFlipTaggerBDT", &El_passChargeFlipTaggerBDT, &b_El_passChargeFlipTaggerBDT);
     fChain->SetBranchAddress("NJet", &NJet, &b_NJet);
     fChain->SetBranchAddress("Jet_eta", &Jet_eta, &b_Jet_eta);
     fChain->SetBranchAddress("Jet_phi", &Jet_phi, &b_Jet_phi);
@@ -945,6 +993,7 @@ EL::StatusCode ytRealLeptonsEfficiency::initialize ()
     fChain->SetBranchAddress("baseline_weight", &baseline_weight, &b_baseline_weight);
     fChain->SetBranchAddress("signal_weight", &signal_weight, &b_signal_weight);
     fChain->SetBranchAddress("run_number", &run_number, &b_run_number);
+    fChain->SetBranchAddress("new_AvgMu", &new_AvgMu, &b_new_AvgMu);
     fChain->SetBranchAddress("El_isBaseline", &El_isBaseline, &b_El_isBaseline);
     fChain->SetBranchAddress("El_isSignal", &El_isSignal, &b_El_isSignal);
     fChain->SetBranchAddress("El_isZTag", &El_isZTag, &b_El_isZTag);
@@ -980,8 +1029,38 @@ EL::StatusCode ytRealLeptonsEfficiency::execute ()
     // Dump histograms
     if (isData) {
         h_Nvtx->Fill(Nvtx);
-        h_AvgMu->Fill(AvgMu * 1.0 / 1.16);
+        h_AvgMu->Fill(new_AvgMu * 1.0 / 1.09);
         h_zPV->Fill(PV_z);
+
+        TLorentzVector tlv_lept0, tlv_lept1;
+        if (NEl == 2 &&
+            El_charge->at(0) * El_charge->at(1) == -1) {
+            // OSee
+            h_AvgMu_OSee->Fill(new_AvgMu * 1.0 / 1.09);
+
+            tlv_lept0.SetPtEtaPhiE(El_pT->at(0), El_eta->at(0), El_phi->at(0), El_E->at(0));
+            tlv_lept1.SetPtEtaPhiE(El_pT->at(1), El_eta->at(1), El_phi->at(1), El_E->at(1));
+            double mll = (tlv_lept0 + tlv_lept1).M();
+            if (El_isBaseline->at(0) == 1 && El_isBaseline->at(1) == 1)
+                h_baseline_OSee_mll->Fill(mll / 1000.);
+            if (El_isSignal->at(0) == 1 && El_isSignal->at(1) == 1)
+                h_signal_OSee_mll->Fill(mll / 1000.);
+        }
+        if (NMu == 2 &&
+            Mu_charge->at(0) * Mu_charge->at(1) == -1) {
+            // OSmumu
+            h_AvgMu_OSmumu->Fill(new_AvgMu * 1.0 / 1.09);
+
+            float Mu_Mass = 105.6583715;
+            tlv_lept0.SetPtEtaPhiM(Mu_pT->at(0), Mu_eta->at(0), Mu_phi->at(0), Mu_Mass);
+            tlv_lept1.SetPtEtaPhiM(Mu_pT->at(1), Mu_eta->at(1), Mu_phi->at(1), Mu_Mass);
+            double mll = (tlv_lept0 + tlv_lept1).M();
+            if (Mu_isBaseline->at(0) == 1 && Mu_isBaseline->at(1) == 1)
+                h_baseline_OSmumu_mll->Fill(mll / 1000.);
+            if (Mu_isSignal->at(0) == 1 && Mu_isSignal->at(1) == 1)
+                h_signal_OSmumu_mll->Fill(mll / 1000.);
+        }
+
 /*
         if (vec_lept.size() > 0)
             h_NLepts->Fill(vec_lept.at(0).get_number());
@@ -998,8 +1077,38 @@ EL::StatusCode ytRealLeptonsEfficiency::execute ()
         //double weight = luminosity * cross_section_kfactor_efficiency * 1000. * EventWeight * pileup_weight /*PRWWeight*/ / derivation_stat_weights;
         double weight = normalization;
         h_Nvtx_weighted->Fill(Nvtx, weight);
-        h_AvgMu_weighted->Fill(AvgMu, weight);
+        h_AvgMu_weighted->Fill(new_AvgMu, weight);
         h_zPV_weighted->Fill(PV_z, weight);
+
+        TLorentzVector tlv_lept0, tlv_lept1;
+        if (NEl == 2 &&
+            El_charge->at(0) * El_charge->at(1) == -1) {
+            // OSee
+            h_AvgMu_OSee_weighted->Fill(new_AvgMu, weight);
+
+            tlv_lept0.SetPtEtaPhiE(El_pT->at(0), El_eta->at(0), El_phi->at(0), El_E->at(0));
+            tlv_lept1.SetPtEtaPhiE(El_pT->at(1), El_eta->at(1), El_phi->at(1), El_E->at(1));
+            double mll = (tlv_lept0 + tlv_lept1).M();
+            if (El_isBaseline->at(0) == 1 && El_isBaseline->at(1) == 1)
+                h_baseline_OSee_mll_weighted->Fill(mll / 1000., weight);
+            if (El_isSignal->at(0) == 1 && El_isSignal->at(1) == 1)
+                h_signal_OSee_mll_weighted->Fill(mll / 1000., weight);
+        }
+        if (NMu == 2 &&
+            Mu_charge->at(0) * Mu_charge->at(1) == -1) {
+            // OSmumu
+            h_AvgMu_OSmumu_weighted->Fill(new_AvgMu, weight);
+
+            float Mu_Mass = 105.6583715;
+            tlv_lept0.SetPtEtaPhiM(Mu_pT->at(0), Mu_eta->at(0), Mu_phi->at(0), Mu_Mass);
+            tlv_lept1.SetPtEtaPhiM(Mu_pT->at(1), Mu_eta->at(1), Mu_phi->at(1), Mu_Mass);
+            double mll = (tlv_lept0 + tlv_lept1).M();
+            if (Mu_isBaseline->at(0) == 1 && Mu_isBaseline->at(1) == 1)
+                h_baseline_OSmumu_mll_weighted->Fill(mll / 1000., weight);
+            if (Mu_isSignal->at(0) == 1 && Mu_isSignal->at(1) == 1)
+                h_signal_OSmumu_mll_weighted->Fill(mll / 1000., weight);
+        }
+
 /*
         if (vec_lept.size() > 0)
             h_NLepts_weighted->Fill(vec_lept.at(0).get_number(), weight);
@@ -1027,10 +1136,11 @@ EL::StatusCode ytRealLeptonsEfficiency::execute ()
                     return EL::StatusCode::SUCCESS; // Go to next event
             }
             else if (RunNb > 290000) { // 2016 data
-                if (!HLT_e24_lhtight_nod0_ivarloose)
+                if (!HLT_e26_lhtight_nod0_ivarloose)
                     return EL::StatusCode::SUCCESS; // Go to next event
             }
         }
+/*
         else if (trigger == "dilepton_trigger") {
             // do something here.
         }
@@ -1040,6 +1150,7 @@ EL::StatusCode ytRealLeptonsEfficiency::execute ()
         else if (trigger == "other_trigger") {
             // do something here.
         }
+*/
         this->loop_over_electrons();
     }
     else if (lepton == "muon") {
@@ -1053,10 +1164,11 @@ EL::StatusCode ytRealLeptonsEfficiency::execute ()
                     return EL::StatusCode::SUCCESS; // Go to next event
             }
             else if (RunNb > 290000) { // 2016 data
-                if (!HLT_mu24_ivarmedium)
+                if (!HLT_mu26_ivarmedium)
                     return EL::StatusCode::SUCCESS; // Go to next event
             }
         }
+/*
         else if (trigger == "dilepton_trigger") {
             // do something here.
         }
@@ -1066,6 +1178,7 @@ EL::StatusCode ytRealLeptonsEfficiency::execute ()
         else if(trigger == "other_trigger") {
             // do something here.
         }
+*/
         this->loop_over_muons();
     }
 
@@ -1083,13 +1196,13 @@ EL::StatusCode ytRealLeptonsEfficiency::execute ()
     h_eff_eta->Divide(h_signal_eta, h_baseline_eta, 1, 1, "B");
     h_eff_nJets->Divide(h_signal_nJets, h_baseline_nJets, 1, 1, "B");
     //h_eff_dRjet->Divide(h_signal_dRjet, h_baseline_dRjet, 1, 1, "B");
-    h_eff_Etmiss->Divide(h_signal_Etmiss, h_baseline_Etmiss, 1, 1, "B");
+    //h_eff_Etmiss->Divide(h_signal_Etmiss, h_baseline_Etmiss, 1, 1, "B");
     //h_eff_meff->Divide(h_signal_meff, h_baseline_meff, 1, 1, "B");
 
     h_2d_eff_pt_eta->Divide(h_signal_pt_eta, h_baseline_pt_eta,1, 1, "B");
     h_2d_eff_pt_nJets->Divide(h_signal_pt_nJets, h_baseline_pt_nJets,1, 1, "B");
     //h_2d_eff_pt_dRjet->Divide(h_signal_pt_dRjet, h_baseline_pt_dRjet,1, 1, "B");
-    h_2d_eff_pt_Etmiss->Divide(h_signal_pt_Etmiss, h_baseline_pt_Etmiss,1, 1, "B");
+    //h_2d_eff_pt_Etmiss->Divide(h_signal_pt_Etmiss, h_baseline_pt_Etmiss,1, 1, "B");
     //_2d_eff_pt_meff->Divide(h_signal_pt_meff, h_baseline_pt_meff,1, 1, "B");
 
     return EL::StatusCode::SUCCESS;
@@ -1168,10 +1281,10 @@ void ytRealLeptonsEfficiency::set_binning_default()
     m_mll_bins      = vector<float> (m_default_mll_bins, m_default_mll_bins + sizeof(m_default_mll_bins) / sizeof(float));
     m_pt_bins       = vector<float> (m_default_pt_bins, m_default_pt_bins + sizeof(m_default_pt_bins) / sizeof(float));
     m_eta_bins      = vector<float> (m_default_eta_bins, m_default_eta_bins + sizeof(m_default_eta_bins) / sizeof(float));
-    m_deltaR_bins   = vector<float> (m_default_deltaR_bins, m_default_deltaR_bins + sizeof(m_default_deltaR_bins) / sizeof(float));
+    //m_deltaR_bins   = vector<float> (m_default_deltaR_bins, m_default_deltaR_bins + sizeof(m_default_deltaR_bins) / sizeof(float));
     m_NJet_bins     = vector<float> (m_default_NJet_bins, m_default_NJet_bins + sizeof(m_default_NJet_bins) / sizeof(float));
-    m_Etmiss_bins   = vector<float> (m_default_Etmiss_bins, m_default_Etmiss_bins + sizeof(m_default_Etmiss_bins) / sizeof(float));
-    m_meff_bins     = vector<float> (m_default_meff_bins, m_default_meff_bins + sizeof(m_default_meff_bins) / sizeof(float));
+    //m_Etmiss_bins   = vector<float> (m_default_Etmiss_bins, m_default_Etmiss_bins + sizeof(m_default_Etmiss_bins) / sizeof(float));
+    //m_meff_bins     = vector<float> (m_default_meff_bins, m_default_meff_bins + sizeof(m_default_meff_bins) / sizeof(float));
 }
 
 
@@ -1198,20 +1311,21 @@ void ytRealLeptonsEfficiency::loop_over_electrons()
         bool truth_match = false;
         if (isMC) {
             if (process == "GG_ttn1") {
-                if (El_type->at(n_el) == 2 ||
-                    (El_type->at(n_el) == 4 && (El_bkgOrigin->at(n_el) == 10 || El_bkgOrigin->at(n_el) == 12 || El_bkgOrigin->at(n_el) == 13 || El_bkgOrigin->at(n_el) == 40)))
+                if (El_truthType->at(n_el) == 2 ||
+                    (El_truthType->at(n_el) == 4 && (El_bkgTruthOrigin->at(n_el) == 10 || El_bkgTruthOrigin->at(n_el) == 12 || El_bkgTruthOrigin->at(n_el) == 13 || El_bkgTruthOrigin->at(n_el) == 40)))
                     // the bkgOriginal is related charge filp. Ximo said just add the requirements at here.
                     truth_match = true;
             }
             else { // process != GG_ttn1
-                if ((El_type->at(n_el) == 2 && (El_origin->at(n_el) == 10 || El_origin->at(n_el) == 12 || El_origin->at(n_el) == 13)) ||
-                    (El_type->at(n_el) == 4 && (El_bkgOrigin->at(n_el) == 10 || El_bkgOrigin->at(n_el) == 12 || El_bkgOrigin->at(n_el) == 13 || El_bkgOrigin->at(n_el) == 40)))
+                if ((El_truthType->at(n_el) == 2 && (El_truthOrigin->at(n_el) == 10 || El_truthOrigin->at(n_el) == 12 || El_truthOrigin->at(n_el) == 13)) ||
+                    (El_truthType->at(n_el) == 4 && (El_bkgTruthOrigin->at(n_el) == 10 || El_bkgTruthOrigin->at(n_el) == 12 || El_bkgTruthOrigin->at(n_el) == 13 || El_bkgTruthOrigin->at(n_el) == 40)))
                     // the bkgOriginal is related charge filp. Ximo said just add the requirements at here.
                     truth_match = true;
             }
         }
 
         // Trigger matching
+        // do something here
 
         // Background template
         double calo_isolation = El_topoetcone20->at(n_el) / El_pT->at(n_el);
@@ -1319,22 +1433,22 @@ void ytRealLeptonsEfficiency::loop_over_electrons()
         //h_baseline_mll->Fill(El_ZTandP_mll->at(n_el) / 1000.);
         h_baseline_pt->Fill(El_pT->at(n_el) / 1000., weight);
         h_baseline_eta->Fill(fabs(El_eta->at(n_el)), weight);
-        h_baseline_d0pvtx->Fill(El_d0pvtx->at(n_el), weight);
-        h_baseline_sigd0->Fill(El_sigd0->at(n_el), weight);
-        h_baseline_d0err->Fill(El_d0pvtx->at(n_el) / El_sigd0->at(n_el), weight);
-        h_baseline_z0sinTheta->Fill(El_z0sinTheta->at(n_el), weight);
-        h_baseline_ptvarcone20->Fill(El_ptvarcone20->at(n_el) / 1000., weight);
-        h_baseline_ptvarcone30->Fill(El_ptvarcone30->at(n_el) / 1000., weight);
-        h_baseline_topoetcone20->Fill(El_topoetcone20->at(n_el) / 1000., weight);
+        //h_baseline_d0pvtx->Fill(El_d0pvtx->at(n_el), weight);
+        //h_baseline_sigd0->Fill(El_sigd0->at(n_el), weight);
+        //h_baseline_d0err->Fill(El_d0pvtx->at(n_el) / El_sigd0->at(n_el), weight);
+        //h_baseline_z0sinTheta->Fill(El_z0sinTheta->at(n_el), weight);
+        //h_baseline_ptvarcone20->Fill(El_ptvarcone20->at(n_el) / 1000., weight);
+        //h_baseline_ptvarcone30->Fill(El_ptvarcone30->at(n_el) / 1000., weight);
+        //h_baseline_topoetcone20->Fill(El_topoetcone20->at(n_el) / 1000., weight);
         h_baseline_nJets->Fill(NJet, weight);
         //h_baseline_dRjet->Fill(El_DR_closest_Jet->at(n_el), weight);
-        h_baseline_Etmiss->Fill(Etmiss_TST_Et / 1000., weight);
+        //h_baseline_Etmiss->Fill(Etmiss_TST_Et / 1000., weight);
         //h_baseline_meff->Fill(meff / 1000., weight);
         // 2-dim histograms
         h_baseline_pt_eta->Fill(El_pT->at(n_el) / 1000., fabs(El_eta->at(n_el)), weight);
         h_baseline_pt_nJets->Fill(El_pT->at(n_el) / 1000., NJet, weight);
         //h_baseline_pt_dRjet->Fill(El_pT->at(n_el) / 1000., El_DR_closest_Jet->at(n_el), weight);
-        h_baseline_pt_Etmiss->Fill(El_pT->at(n_el) / 1000., Etmiss_TST_Et / 1000., weight);
+        //h_baseline_pt_Etmiss->Fill(El_pT->at(n_el) / 1000., Etmiss_TST_Et / 1000., weight);
         //h_baseline_pt_meff->Fill(El_pT->at(n_el) / 1000., meff / 1000., weight);
         // 3-dim histograms
         h_baseline_pt_eta_mll->Fill(El_pT->at(n_el) / 1000., El_eta->at(n_el), El_ZTandP_mll->at(n_el) / 1000., weight);
@@ -1373,22 +1487,22 @@ void ytRealLeptonsEfficiency::loop_over_electrons()
             //h_signal_mll->Fill(El_ZTandP_mll->at(n_el) / 1000.);
             h_signal_pt->Fill(El_pT->at(n_el) / 1000., weight);
             h_signal_eta->Fill(fabs(El_eta->at(n_el)), weight);
-            h_signal_d0pvtx->Fill(El_d0pvtx->at(n_el), weight);
-            h_signal_sigd0->Fill(El_sigd0->at(n_el), weight);
-            h_signal_d0err->Fill(El_d0pvtx->at(n_el) / El_sigd0->at(n_el), weight);
-            h_signal_z0sinTheta->Fill(El_z0sinTheta->at(n_el), weight);
-            h_signal_ptvarcone20->Fill(El_ptvarcone20->at(n_el) / 1000., weight);
-            h_signal_ptvarcone30->Fill(El_ptvarcone30->at(n_el) / 1000., weight);
-            h_signal_topoetcone20->Fill(El_topoetcone20->at(n_el) / 1000., weight);
+            //h_signal_d0pvtx->Fill(El_d0pvtx->at(n_el), weight);
+            //h_signal_sigd0->Fill(El_sigd0->at(n_el), weight);
+            //h_signal_d0err->Fill(El_d0pvtx->at(n_el) / El_sigd0->at(n_el), weight);
+            //h_signal_z0sinTheta->Fill(El_z0sinTheta->at(n_el), weight);
+            //h_signal_ptvarcone20->Fill(El_ptvarcone20->at(n_el) / 1000., weight);
+            //h_signal_ptvarcone30->Fill(El_ptvarcone30->at(n_el) / 1000., weight);
+            //h_signal_topoetcone20->Fill(El_topoetcone20->at(n_el) / 1000., weight);
             h_signal_nJets->Fill(NJet, weight);
             //h_signal_dRjet->Fill(El_DR_closest_Jet->at(n_el), weight);
-            h_signal_Etmiss->Fill(Etmiss_TST_Et / 1000., weight);
+            //h_signal_Etmiss->Fill(Etmiss_TST_Et / 1000., weight);
             //h_signal_meff->Fill(meff / 1000., weight);
             // 2-dim histograms
             h_signal_pt_eta->Fill(El_pT->at(n_el) / 1000., fabs(El_eta->at(n_el)), weight);
             h_signal_pt_nJets->Fill(El_pT->at(n_el) / 1000., NJet, weight);
             //h_signal_pt_dRjet->Fill(El_pT->at(n_el) / 1000., El_DR_closest_Jet->at(n_el), weight);
-            h_signal_pt_Etmiss->Fill(El_pT->at(n_el) / 1000.,Etmiss_TST_Et / 1000., weight);
+            //h_signal_pt_Etmiss->Fill(El_pT->at(n_el) / 1000.,Etmiss_TST_Et / 1000., weight);
             //h_signal_pt_meff->Fill(El_pT->at(n_el) / 1000., meff / 1000., weight);
             // 3-dim histograms
             h_signal_pt_eta_mll->Fill(El_pT->at(n_el) / 1000., El_eta->at(n_el), El_ZTandP_mll->at(n_el) / 1000., weight);
@@ -1423,6 +1537,7 @@ void ytRealLeptonsEfficiency :: loop_over_muons()
         }
 
         // Trigger matching
+        // do something here
 
         float weight = 1.;
         if (isData) {
@@ -1479,22 +1594,22 @@ void ytRealLeptonsEfficiency :: loop_over_muons()
         //h_baseline_mll->Fill(Mu_ZTandP_mll->at(n_mu) / 1000.);
         h_baseline_pt->Fill(Mu_pT->at(n_mu) / 1000., weight);
         h_baseline_eta->Fill(fabs(Mu_eta->at(n_mu)), weight);
-        h_baseline_d0pvtx->Fill(Mu_d0pvtx->at(n_mu), weight);
-        h_baseline_sigd0->Fill(Mu_sigd0->at(n_mu), weight);
-        h_baseline_d0err->Fill(Mu_d0pvtx->at(n_mu) / Mu_sigd0->at(n_mu), weight);
-        h_baseline_z0sinTheta->Fill(Mu_z0sinTheta->at(n_mu), weight);
-        h_baseline_ptvarcone20->Fill(Mu_ptvarcone20->at(n_mu) / 1000., weight);
-        h_baseline_ptvarcone30->Fill(Mu_ptvarcone30->at(n_mu) / 1000., weight);
-        h_baseline_topoetcone20->Fill(Mu_topoetcone20->at(n_mu) / 1000., weight);
+        //h_baseline_d0pvtx->Fill(Mu_d0pvtx->at(n_mu), weight);
+        //h_baseline_sigd0->Fill(Mu_sigd0->at(n_mu), weight);
+        //h_baseline_d0err->Fill(Mu_d0pvtx->at(n_mu) / Mu_sigd0->at(n_mu), weight);
+        //h_baseline_z0sinTheta->Fill(Mu_z0sinTheta->at(n_mu), weight);
+        //h_baseline_ptvarcone20->Fill(Mu_ptvarcone20->at(n_mu) / 1000., weight);
+        //h_baseline_ptvarcone30->Fill(Mu_ptvarcone30->at(n_mu) / 1000., weight);
+        //h_baseline_topoetcone20->Fill(Mu_topoetcone20->at(n_mu) / 1000., weight);
         h_baseline_nJets->Fill(NJet, weight);
         //h_baseline_dRjet->Fill(Mu_DR_closest_Jet->at(n_mu), weight);
-        h_baseline_Etmiss->Fill(Etmiss_TST_Et / 1000., weight);
+        //h_baseline_Etmiss->Fill(Etmiss_TST_Et / 1000., weight);
         //h_baseline_meff->Fill(meff / 1000., weight);
         // 2-dim histograms
         h_baseline_pt_eta->Fill(Mu_pT->at(n_mu) / 1000., fabs(Mu_eta->at(n_mu)), weight);
         h_baseline_pt_nJets->Fill(Mu_pT->at(n_mu) / 1000., NJet, weight);
         //h_baseline_pt_dRjet->Fill(Mu_pT->at(n_mu) / 1000., Mu_DR_closest_Jet->at(n_mu), weight);
-        h_baseline_pt_Etmiss->Fill(Mu_pT->at(n_mu) / 1000.,Etmiss_TST_Et / 1000., weight);
+        //h_baseline_pt_Etmiss->Fill(Mu_pT->at(n_mu) / 1000.,Etmiss_TST_Et / 1000., weight);
         //h_baseline_pt_meff->Fill(Mu_pT->at(n_mu) / 1000., meff / 1000., weight);
         // 3-dim histograms
         h_baseline_pt_eta_mll->Fill(Mu_pT->at(n_mu) / 1000., Mu_eta->at(n_mu), Mu_ZTandP_mll->at(n_mu) / 1000., weight);
@@ -1524,22 +1639,22 @@ void ytRealLeptonsEfficiency :: loop_over_muons()
             h_signal_mll->Fill(Mu_ZTandP_mll->at(n_mu) / 1000., weight);
             h_signal_pt->Fill(Mu_pT->at(n_mu) / 1000., weight);
             h_signal_eta->Fill(fabs(Mu_eta->at(n_mu)), weight);
-            h_signal_d0pvtx->Fill(Mu_d0pvtx->at(n_mu), weight);
-            h_signal_sigd0->Fill(Mu_sigd0->at(n_mu), weight);
-            h_signal_d0err->Fill(Mu_d0pvtx->at(n_mu) / Mu_sigd0->at(n_mu), weight);
-            h_signal_z0sinTheta->Fill(Mu_z0sinTheta->at(n_mu), weight);
-            h_signal_ptvarcone20->Fill(Mu_ptvarcone20->at(n_mu) / 1000., weight);
-            h_signal_ptvarcone30->Fill(Mu_ptvarcone30->at(n_mu) / 1000., weight);
-            h_signal_topoetcone20->Fill(Mu_topoetcone20->at(n_mu) / 1000., weight);
+            //h_signal_d0pvtx->Fill(Mu_d0pvtx->at(n_mu), weight);
+            //h_signal_sigd0->Fill(Mu_sigd0->at(n_mu), weight);
+            //h_signal_d0err->Fill(Mu_d0pvtx->at(n_mu) / Mu_sigd0->at(n_mu), weight);
+            //h_signal_z0sinTheta->Fill(Mu_z0sinTheta->at(n_mu), weight);
+            //h_signal_ptvarcone20->Fill(Mu_ptvarcone20->at(n_mu) / 1000., weight);
+            //h_signal_ptvarcone30->Fill(Mu_ptvarcone30->at(n_mu) / 1000., weight);
+            //h_signal_topoetcone20->Fill(Mu_topoetcone20->at(n_mu) / 1000., weight);
             h_signal_nJets->Fill(NJet, weight);
             //h_signal_dRjet->Fill(Mu_DR_closest_Jet->at(n_mu), weight);
-            h_signal_Etmiss->Fill(Etmiss_TST_Et / 1000., weight);
+            //h_signal_Etmiss->Fill(Etmiss_TST_Et / 1000., weight);
             //h_signal_meff->Fill(meff / 1000., weight);
             // 2-dim histograms
             h_signal_pt_eta->Fill(Mu_pT->at(n_mu) / 1000., fabs(Mu_eta->at(n_mu)), weight);
             h_signal_pt_nJets->Fill(Mu_pT->at(n_mu) / 1000., NJet, weight);
             //h_signal_pt_dRjet->Fill(Mu_pT->at(n_mu) / 1000., Mu_DR_closest_Jet->at(n_mu), weight);
-            h_signal_pt_Etmiss->Fill(Mu_pT->at(n_mu) / 1000.,Etmiss_TST_Et / 1000., weight);
+            //h_signal_pt_Etmiss->Fill(Mu_pT->at(n_mu) / 1000.,Etmiss_TST_Et / 1000., weight);
             //h_signal_pt_meff->Fill(Mu_pT->at(n_mu) / 1000., meff / 1000., weight);
             // 3-dim histograms
             h_signal_pt_eta_mll->Fill(Mu_pT->at(n_mu) / 1000., Mu_eta->at(n_mu), Mu_ZTandP_mll->at(n_mu) / 1000., weight);
