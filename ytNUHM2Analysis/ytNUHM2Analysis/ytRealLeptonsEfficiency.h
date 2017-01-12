@@ -309,12 +309,14 @@ public:
     vector<bool>    *El_isZProbe; //!
     vector<double>  *El_ZTandP_mll; //!
     vector<bool>    *El_isZProbe_TriggerMatched; //!
+    vector<double>  *El_DR_closest_Jet; //!
     vector<bool>    *Mu_isBaseline; //!
     vector<bool>    *Mu_isSignal; //!
     vector<bool>    *Mu_isZTag; //!
     vector<bool>    *Mu_isZProbe; //!
     vector<double>  *Mu_ZTandP_mll; //!
     vector<bool>    *Mu_isZProbe_TriggerMatched; //!
+    vector<double>  *Mu_DR_closest_Jet; //!
     Double_t        baseline_mll; //!
     Double_t        signal_mll; //!
 
@@ -585,12 +587,14 @@ public:
     TBranch        *b_El_isZProbe; //!
     TBranch        *b_El_ZTandP_mll; //!
     TBranch        *b_El_isZProbe_TriggerMatched; //!
+    TBranch        *b_El_DR_closest_Jet; //!
     TBranch        *b_Mu_isBaseline; //!
     TBranch        *b_Mu_isSignal; //!
     TBranch        *b_Mu_isZTag; //!
     TBranch        *b_Mu_isZProbe; //!
     TBranch        *b_Mu_ZTandP_mll; //!
     TBranch        *b_Mu_isZProbe_TriggerMatched; //!
+    TBranch        *b_Mu_DR_closest_Jet; //!
     TBranch        *b_baseline_mll; //!
     TBranch        *b_signal_mll; //!
 
@@ -636,7 +640,7 @@ public:
     //TH1F *h_baseline_ptvarcone30; //!
     //TH1F *h_baseline_topoetcone20; //!
     TH1F *h_baseline_nJets; //!
-    //TH1F *h_baseline_dRjet; //!
+    TH1F *h_baseline_dRjet; //!
     //TH1F *h_baseline_Etmiss; //!
     //TH1F *h_baseline_meff; //!
 
@@ -650,14 +654,14 @@ public:
     // 2-dim histograms
     TH2F *h_baseline_pt_eta; //! x: pt, y: eta
     TH2F *h_baseline_pt_nJets; //! x: pt, y: nJets
-    //TH2F *h_baseline_pt_dRjet; //! x: pt, y: dRjet
+    TH2F *h_baseline_pt_dRjet; //! x: pt, y: dRjet
     //TH2F *h_baseline_pt_Etmiss; //! x: pt, y: Etmiss
     //TH2F *h_baseline_pt_meff; //! x: pt, y: meff
 
     // 3-dim histograms
     TH3F *h_baseline_pt_eta_mll; //! x: pt, y: eta, z: mll
-    //TH3F *h_baseline_pt_eta_dRjet; //! x: pt, y: eta, z: dRjet
-    //TH3F *h_baseline_pt_dRjet_mll; //! x: pt, y: dRjet, z: mll
+    TH3F *h_baseline_pt_eta_dRjet; //! x: pt, y: eta, z: dRjet
+    TH3F *h_baseline_pt_dRjet_mll; //! x: pt, y: dRjet, z: mll
 
     // Signal histograms
     // 1-dim histograms
@@ -672,21 +676,21 @@ public:
     //TH1F *h_signal_ptvarcone30; //!
     //TH1F *h_signal_topoetcone20; //!
     TH1F *h_signal_nJets; //!
-    //TH1F *h_signal_dRjet; //!
+    TH1F *h_signal_dRjet; //!
     //TH1F *h_signal_Etmiss; //!
     //TH1F *h_signal_meff; //!
 
     // 2-dim histograms
     TH2F *h_signal_pt_eta; //! x: pt, y: eta
     TH2F *h_signal_pt_nJets; //! x: pt, y: nJets
-    //TH2F *h_signal_pt_dRjet; //! x: pt, y: dRjet
+    TH2F *h_signal_pt_dRjet; //! x: pt, y: dRjet
     //TH2F *h_signal_pt_Etmiss; //! x: pt, y: Etmiss
     //TH2F *h_signal_pt_meff; //! x: pt, y: meff
 
     // 3-dim histograms
     TH3F *h_signal_pt_eta_mll; //! x: pt, y: eta, z: mll
-    //TH3F *h_signal_pt_eta_dRjet; //! x: pt, y: eta, z: dRjet
-    //TH3F *h_signal_pt_dRjet_mll; //! x: pt, y: dRjet, z: mll
+    TH3F *h_signal_pt_eta_dRjet; //! x: pt, y: eta, z: dRjet
+    TH3F *h_signal_pt_dRjet_mll; //! x: pt, y: dRjet, z: mll
 
     // Cut efficiency histograms
     TH1F *h_cut_eff_LooseAndBLayerLLH_to_MediumLLH; //!
@@ -723,14 +727,14 @@ public:
     TH1F *h_eff_pt; //!
     TH1F *h_eff_eta; //!
     TH1F *h_eff_nJets; //!
-    //TH1F *h_eff_dRjet; //!
+    TH1F *h_eff_dRjet; //!
     //TH1F *h_eff_Etmiss; //!
     //TH1F *h_eff_meff; //!
 
     // 2-dim histograms
     TH2F *h_2d_eff_pt_eta; //!
     TH2F *h_2d_eff_pt_nJets; //!
-    //TH2F *h_2d_eff_pt_dRjet; //!
+    TH2F *h_2d_eff_pt_dRjet; //!
     //TH2F *h_2d_eff_pt_Etmiss; //!
     //TH2F *h_2d_eff_pt_meff; //!
 
@@ -744,7 +748,7 @@ public:
     vector<float> m_mll_bins; //!
     vector<float> m_pt_bins; //!
     vector<float> m_eta_bins; //!
-    //vector<float> m_deltaR_bins; //!
+    vector<float> m_deltaR_bins; //!
     vector<float> m_NJet_bins; //!
     //vector<float> m_Etmiss_bins; //!
     //vector<float> m_meff_bins; //!
@@ -752,7 +756,7 @@ public:
     int n_mll_bins; //!
     int n_pt_bins; //!
     int n_eta_bins; //!
-    //int n_deltaR_bins; //!
+    int n_deltaR_bins; //!
     int n_NJet_bins; //!
     //int n_Etmiss_bins; //!
     //int n_meff_bins; //!
@@ -760,7 +764,7 @@ public:
     static const float m_default_mll_bins[91]; //
     static const float m_default_pt_bins[14]; //!
     static const float m_default_eta_bins[21]; //!
-    //static const float m_default_deltaR_bins[21]; //!
+    static const float m_default_deltaR_bins[21]; //!
     static const float m_default_NJet_bins[11]; //!
     //static const float m_default_Etmiss_bins[9]; //!
     //static const float m_default_meff_bins[7]; //!

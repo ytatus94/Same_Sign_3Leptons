@@ -107,7 +107,7 @@ public:
     vector<bool>    *El_isZProbe;
     vector<double>  *El_ZTandP_mll;
     vector<bool>    *El_isZProbe_TriggerMatched;
-    //vector<double>  *El_DR_closest_Jet;
+    vector<double>  *El_DR_closest_Jet;
 
     vector<bool>    *Mu_isBaseline;
     vector<bool>    *Mu_isSignal;
@@ -115,7 +115,7 @@ public:
     vector<bool>    *Mu_isZProbe;
     vector<double>  *Mu_ZTandP_mll;
     vector<bool>    *Mu_isZProbe_TriggerMatched;
-    //vector<double>  *Mu_DR_closest_Jet;
+    vector<double>  *Mu_DR_closest_Jet;
 
     //vector<bool>    *Jet_isBaseline;
     //vector<bool>    *Jet_isSignal;
@@ -185,7 +185,7 @@ public:
     //double calculate_mjj(vector<Jet> jets);
     //double calculate_Ht(vector<Lepton> leptons, vector<Jet> jets);
     //double calculate_Meff(double Ht, double Etmiss);
-    //double calculate_deltaR(Lepton lept, vector<Jet> jets);
+    double calculate_deltaR(Lepton lept, vector<Jet> jets);
 
     void debug_print();
 

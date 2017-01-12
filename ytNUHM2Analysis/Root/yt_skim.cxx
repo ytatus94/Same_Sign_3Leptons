@@ -13,7 +13,7 @@ yt_skim::yt_skim()
     El_isZProbe     = new vector<bool>();
     El_ZTandP_mll   = new vector<double>();
     El_isZProbe_TriggerMatched = new vector<bool>();
-    //El_DR_closest_Jet = new vector<double>();
+    El_DR_closest_Jet = new vector<double>();
 
     Mu_isBaseline   = new vector<bool>();
     Mu_isSignal     = new vector<bool>();
@@ -21,7 +21,7 @@ yt_skim::yt_skim()
     Mu_isZProbe     = new vector<bool>();
     Mu_ZTandP_mll   = new vector<double>();
     Mu_isZProbe_TriggerMatched = new vector<bool>();
-    //Mu_DR_closest_Jet = new vector<double>();
+    Mu_DR_closest_Jet = new vector<double>();
 
     //Jet_isBaseline  = new vector<bool>();
     //Jet_isSignal    = new vector<bool>();
@@ -188,7 +188,7 @@ void yt_skim::initialize(TTree *tree)
     output_tree->Branch("El_isZProbe",                  &El_isZProbe);
     output_tree->Branch("El_ZTandP_mll",                &El_ZTandP_mll);
     output_tree->Branch("El_isZProbe_TriggerMatched",   &El_isZProbe_TriggerMatched);
-    //output_tree->Branch("El_DR_closest_Jet",          &El_DR_closest_Jet);
+    output_tree->Branch("El_DR_closest_Jet",            &El_DR_closest_Jet);
 
     output_tree->Branch("Mu_isBaseline",                &Mu_isBaseline);
     output_tree->Branch("Mu_isSignal",                  &Mu_isSignal);
@@ -196,7 +196,7 @@ void yt_skim::initialize(TTree *tree)
     output_tree->Branch("Mu_isZProbe",                  &Mu_isZProbe);
     output_tree->Branch("Mu_ZTandP_mll",                &Mu_ZTandP_mll);
     output_tree->Branch("Mu_isZProbe_TriggerMatched",   &Mu_isZProbe_TriggerMatched);
-    //output_tree->Branch("Mu_DR_closest_Jet",          &Mu_DR_closest_Jet);
+    output_tree->Branch("Mu_DR_closest_Jet",            &Mu_DR_closest_Jet);
 
     //output_tree->Branch("Jet_isBaseline",     &Jet_isBaseline);
     //output_tree->Branch("Jet_isSignal",   &Jet_isSignal);
@@ -301,7 +301,7 @@ void yt_skim::reset_vectors()
     El_isZProbe->clear();
     El_ZTandP_mll->clear();
     El_isZProbe_TriggerMatched->clear();
-    //El_DR_closest_Jet->clear();
+    El_DR_closest_Jet->clear();
 
     Mu_isBaseline->clear();
     Mu_isSignal->clear();
@@ -309,7 +309,7 @@ void yt_skim::reset_vectors()
     Mu_isZProbe->clear();
     Mu_ZTandP_mll->clear();
     Mu_isZProbe_TriggerMatched->clear();
-    //Mu_DR_closest_Jet->clear();
+    Mu_DR_closest_Jet->clear();
 
     //Jet_isBaseline->clear();
     //Jet_isSignal->clear();
@@ -322,7 +322,7 @@ void yt_skim::reset_vectors()
         El_isZProbe->push_back(false);
         El_ZTandP_mll->push_back(0);
         El_isZProbe_TriggerMatched->push_back(false);
-        //El_DR_closest_Jet->push_back(100);
+        El_DR_closest_Jet->push_back(100);
     }
 
 
@@ -333,7 +333,7 @@ void yt_skim::reset_vectors()
         Mu_isZProbe->push_back(false);
         Mu_ZTandP_mll->push_back(0);
         Mu_isZProbe_TriggerMatched->push_back(false);
-        //Mu_DR_closest_Jet->push_back(100);
+        Mu_DR_closest_Jet->push_back(100);
     }
 
 /*
@@ -357,13 +357,13 @@ void yt_skim::calculate_new_variables()
     for (auto & elec_itr : vec_baseline_elec) {
         int current_index = elec_itr.get_index();
         El_isBaseline->at(current_index) = true;
-        //El_DR_closest_Jet->at(current_index) = calculate_deltaR(elec_itr, vec_signal_jets_no_eta_cut);
+        El_DR_closest_Jet->at(current_index) = calculate_deltaR(elec_itr, vec_signal_jets_no_eta_cut);
     }
 
     for (auto & muon_itr : vec_baseline_muon) {
         int current_index = muon_itr.get_index();
         Mu_isBaseline->at(current_index) = true;
-        //Mu_DR_closest_Jet->at(current_index) = calculate_deltaR(muon_itr, vec_signal_jets_no_eta_cut);
+        Mu_DR_closest_Jet->at(current_index) = calculate_deltaR(muon_itr, vec_signal_jets_no_eta_cut);
     }
 
     for (auto & elec_itr : vec_signal_elec) {
@@ -440,7 +440,7 @@ double yt_skim::calculate_Meff(double Ht, double Etmiss)
     // the scalar sum of the signal leptons pT, all signal jets pT, and ETmiss
     return  Ht + Etmiss;
 }
-
+*/
 double yt_skim::calculate_deltaR(Lepton lept, vector<Jet> jets)
 {
     // Get the deltaR between the considered lepton and the closest jet
@@ -471,7 +471,7 @@ double yt_skim::calculate_deltaR(Lepton lept, vector<Jet> jets)
 
     return deltaR;
 }
-*/
+
 void yt_skim::Z_tag_and_probe()
 {
     // Z T&P method

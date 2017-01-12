@@ -7,8 +7,14 @@ This is SS/3L+jet cutflows study v44.
 ### Setting:
 
 
-### v01-15-07. (newskim branch) fix bug for filling `h_baseline_pt_eat_mll` twice.
-1. In `ytNUHM2Analysis/Root/ytRealLeptonsEfficiency.cxx`: only fill the `h_baseline_pt_eat_mll` in the mll window. 
+### v01-15-08. (newskim branch) Add deltaR part back to the framework
+1. Add new codes for `Skimmed_MC` and `Skimmed_Data`
+2. Turn on deltaR part in `yt_skim` and in `ytRealLeptonsEfficiency`.
+
+
+### v01-15-07. (newskim branch) fix bug for filling `h_baseline_pt_eat_mll` & `h_signal_pt_eta_mll` twice.
+1. Only fill `h_baseline_pt_eat_mll` & `h_signal_pt_eta_mll` once.
+
 
 ### v01-15-06. (newskim branch) Add `Avg_Mu` and  baseline/signal OSee/OSmumu mll histograms
 1. Add histograms after skimming and can compare with the results before applying skim.

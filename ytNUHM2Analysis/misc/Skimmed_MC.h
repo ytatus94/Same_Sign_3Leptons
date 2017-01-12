@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Thu Dec 15 12:21:29 2016 by ROOT version 6.04/16
+// Thu Jan 12 07:11:06 2017 by ROOT version 6.04/16
 // from TTree AnaNtup/AnaNtup
 // found on file: MC_probes_Zee.root
 //////////////////////////////////////////////////////////
@@ -284,12 +284,14 @@ public :
    vector<bool>    *El_isZProbe;
    vector<double>  *El_ZTandP_mll;
    vector<bool>    *El_isZProbe_TriggerMatched;
+   vector<double>  *El_DR_closest_Jet;
    vector<bool>    *Mu_isBaseline;
    vector<bool>    *Mu_isSignal;
    vector<bool>    *Mu_isZTag;
    vector<bool>    *Mu_isZProbe;
    vector<double>  *Mu_ZTandP_mll;
    vector<bool>    *Mu_isZProbe_TriggerMatched;
+   vector<double>  *Mu_DR_closest_Jet;
    Double_t        baseline_mll;
    Double_t        signal_mll;
 
@@ -551,12 +553,14 @@ public :
    TBranch        *b_El_isZProbe;   //!
    TBranch        *b_El_ZTandP_mll;   //!
    TBranch        *b_El_isZProbe_TriggerMatched;   //!
+   TBranch        *b_El_DR_closest_Jet;   //!
    TBranch        *b_Mu_isBaseline;   //!
    TBranch        *b_Mu_isSignal;   //!
    TBranch        *b_Mu_isZTag;   //!
    TBranch        *b_Mu_isZProbe;   //!
    TBranch        *b_Mu_ZTandP_mll;   //!
    TBranch        *b_Mu_isZProbe_TriggerMatched;   //!
+   TBranch        *b_Mu_DR_closest_Jet;   //!
    TBranch        *b_baseline_mll;   //!
    TBranch        *b_signal_mll;   //!
 
@@ -737,12 +741,14 @@ void Skimmed_MC::Init(TTree *tree)
    El_isZProbe = 0;
    El_ZTandP_mll = 0;
    El_isZProbe_TriggerMatched = 0;
+   El_DR_closest_Jet = 0;
    Mu_isBaseline = 0;
    Mu_isSignal = 0;
    Mu_isZTag = 0;
    Mu_isZProbe = 0;
    Mu_ZTandP_mll = 0;
    Mu_isZProbe_TriggerMatched = 0;
+   Mu_DR_closest_Jet = 0;
    // Set branch addresses and branch pointers
    if (!tree) return;
    fChain = tree;
@@ -1005,12 +1011,14 @@ void Skimmed_MC::Init(TTree *tree)
    fChain->SetBranchAddress("El_isZProbe", &El_isZProbe, &b_El_isZProbe);
    fChain->SetBranchAddress("El_ZTandP_mll", &El_ZTandP_mll, &b_El_ZTandP_mll);
    fChain->SetBranchAddress("El_isZProbe_TriggerMatched", &El_isZProbe_TriggerMatched, &b_El_isZProbe_TriggerMatched);
+   fChain->SetBranchAddress("El_DR_closest_Jet", &El_DR_closest_Jet, &b_El_DR_closest_Jet);
    fChain->SetBranchAddress("Mu_isBaseline", &Mu_isBaseline, &b_Mu_isBaseline);
    fChain->SetBranchAddress("Mu_isSignal", &Mu_isSignal, &b_Mu_isSignal);
    fChain->SetBranchAddress("Mu_isZTag", &Mu_isZTag, &b_Mu_isZTag);
    fChain->SetBranchAddress("Mu_isZProbe", &Mu_isZProbe, &b_Mu_isZProbe);
    fChain->SetBranchAddress("Mu_ZTandP_mll", &Mu_ZTandP_mll, &b_Mu_ZTandP_mll);
    fChain->SetBranchAddress("Mu_isZProbe_TriggerMatched", &Mu_isZProbe_TriggerMatched, &b_Mu_isZProbe_TriggerMatched);
+   fChain->SetBranchAddress("Mu_DR_closest_Jet", &Mu_DR_closest_Jet, &b_Mu_DR_closest_Jet);
    fChain->SetBranchAddress("baseline_mll", &baseline_mll, &b_baseline_mll);
    fChain->SetBranchAddress("signal_mll", &signal_mll, &b_signal_mll);
 }
