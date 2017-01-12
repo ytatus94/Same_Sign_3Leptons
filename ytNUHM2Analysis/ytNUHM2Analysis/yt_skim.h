@@ -167,8 +167,8 @@ public:
     void copy_raw_object_vectors(vector<Electron> elec, vector<Muon> muon, vector<Lepton> lept, vector<Jet> jets);
     void copy_baseline_object_vectors(vector<Electron> elec, vector<Muon> muon, vector<Lepton> lept, vector<Jet> jets);
     void copy_signal_object_vectors(vector<Electron> elec, vector<Muon> muon, vector<Lepton> lept, vector<Jet> jets);
-    //void fill_signal_jets_no_eta_cut(vector<Jet> jets);
-    //void fill_signal_bjet(vector<Jet> signal_jets);
+    void fill_signal_jets_no_eta_cut(vector<Jet> jets);
+    void fill_signal_bjet(vector<Jet> signal_jets);
 
     void initialize(TTree *tree);
     void execute(vector<Electron> elec, vector<Muon> muon, vector<Lepton> lept, vector<Jet> jets,

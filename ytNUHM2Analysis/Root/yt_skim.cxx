@@ -76,8 +76,8 @@ void yt_skim::fill_all_object_vectors(vector<Electron> elec, vector<Muon> muon, 
     this->copy_raw_object_vectors(elec, muon, lept, jets);
     this->copy_baseline_object_vectors(baseline_elec, baseline_muon, baseline_lept, baseline_jets);
     this->copy_signal_object_vectors(signal_elec, signal_muon, signal_lept, signal_jets);
-    //this->fill_signal_jets_no_eta_cut(jets);
-    //this->fill_signal_bjet(signal_jets);
+    this->fill_signal_jets_no_eta_cut(jets);
+    this->fill_signal_bjet(signal_jets);
 }
 
 void yt_skim::copy_raw_object_vectors(vector<Electron> elec, vector<Muon> muon, vector<Lepton> lept, vector<Jet> jets)
@@ -103,7 +103,7 @@ void yt_skim::copy_signal_object_vectors(vector<Electron> elec, vector<Muon> muo
     vec_signal_lept = lept;
     vec_signal_jets = jets;
 }
-/*
+
 void yt_skim::fill_signal_jets_no_eta_cut(vector<Jet> jets)
 {
     for (auto & jet_itr : jets) {
@@ -129,7 +129,7 @@ void yt_skim::fill_signal_bjet(vector<Jet> signal_jets)
             vec_signal_bjet.push_back(signal_jets_itr);
     }
 }
-*/
+
 void yt_skim::initialize(TTree *tree)
 {
     // Declare the output
@@ -203,7 +203,6 @@ void yt_skim::initialize(TTree *tree)
     //output_tree->Branch("bJet_isSignal",  &bJet_isSignal);
 
     // Events numbers variables
-    //output_tree->Branch("normalization", &normalization);
     output_tree->Branch("baseline_mll", &baseline_mll);
     output_tree->Branch("signal_mll",   &signal_mll);
     //output_tree->Branch("jets_mll",   &jets_mll);

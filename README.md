@@ -7,6 +7,9 @@ This is SS/3L+jet cutflows study v44.
 ### Setting:
 
 
+### v01-15-10. (newskim branch) Fixed the bugs for `El_DR_closest_Jet` and `Mu_DR_closest_Jet` for skim
+
+
 ### v01-15-09. (newskim branch) Change the input file path for the RLE
 
 
