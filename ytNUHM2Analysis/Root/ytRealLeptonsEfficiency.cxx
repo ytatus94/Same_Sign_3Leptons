@@ -513,6 +513,7 @@ EL::StatusCode ytRealLeptonsEfficiency::histInitialize ()
     h_eff_pt->Sumw2();
     h_eff_eta->Sumw2();
     h_eff_nJets->Sumw2();
+    h_eff_dRjet->Sumw2();
 
     wk()->addOutput(h_eff_pt);
     wk()->addOutput(h_eff_eta);
