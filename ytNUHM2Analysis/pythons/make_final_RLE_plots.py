@@ -83,6 +83,8 @@ def make_real_electron_efficiency_total_systematic_plot():
     eta_bin_3_err = array.array("d", total_uncertainty_eta_bin3)
 
     canvas = ROOT.TCanvas("c_ee", "Real electron efficiency", 600, 600)
+    canvas.SetLeftMargin(0.12)
+    #canvas.SetGrid()
     mg = ROOT.TMultiGraph()
     mg.SetTitle("")
 
@@ -110,11 +112,13 @@ def make_real_electron_efficiency_total_systematic_plot():
     mg.Draw("AP")
     mg.GetXaxis().SetTitle("p_{T} [GeV]")
     mg.GetYaxis().SetTitle("Electron Real Efficiency")
+    mg.GetYaxis().SetTitleOffset(1.5)
     mg.GetXaxis().SetLimits(10, 200);
     mg.SetMinimum(0.5)
     mg.SetMaximum(1.1)
 
-    leg = ROOT.TLegend(0.6, 0.2, 0.9, 0.6)
+    leg = ROOT.TLegend(0.5, 0.2, 0.9, 0.5)
+    leg.SetHeader("Data 2015 + 2016: 36.5 fb^{-1}", "C")
     leg.AddEntry("gr1", "0. < |#eta| < 0.8", "LP")
     leg.AddEntry("gr2", "0.8 < |#eta| < 1.37", "LP")
     leg.AddEntry("gr3", "1.52 < |#eta| < 2.01", "LP")
@@ -176,6 +180,8 @@ def make_real_muon_efficiency_total_systematic_plot():
     eta_bin_4_err = array.array("d", total_uncertainty_eta_bin4)
 
     canvas = ROOT.TCanvas("c_mumu", "Real muon efficiency", 600, 600)
+    canvas.SetLeftMargin(0.12)
+    #canvas.SetGrid()
     mg = ROOT.TMultiGraph()
     mg.SetTitle("")
 
@@ -210,11 +216,13 @@ def make_real_muon_efficiency_total_systematic_plot():
     mg.Draw("AP")
     mg.GetXaxis().SetTitle("p_{T} [GeV]")
     mg.GetYaxis().SetTitle("Muon Real Efficiency")
+    mg.GetYaxis().SetTitleOffset(1.5)
     mg.GetXaxis().SetLimits(10, 200);
     mg.SetMinimum(0.5)
     mg.SetMaximum(1.1)
 
-    leg = ROOT.TLegend(0.6, 0.2, 0.9, 0.6)
+    leg = ROOT.TLegend(0.5, 0.2, 0.9, 0.5)
+    leg.SetHeader("Data 2015 + 2016: 36.5 fb^{-1}", "C")
     leg.AddEntry("gr1", "0. < |#eta| < 0.6", "LP")
     leg.AddEntry("gr2", "0.6 < |#eta| < 1.2", "LP")
     leg.AddEntry("gr3", "1.2 < |#eta| < 1.8", "LP")

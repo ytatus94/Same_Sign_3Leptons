@@ -72,6 +72,14 @@ const float ytRealLeptonsEfficiency::m_coarse_deltaR_bins[7] = {
     0, 0.2, 0.4, 0.6, 1.0, 2.0, 4.0
 };
 */
+const float ytRealLeptonsEfficiency::m_fine_deltaR_bins[36] = {
+    0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95,
+    1.0, 1.2, 1.4, 1.6, 1.8,
+    2.0, 2.2, 2.4, 2.6, 2.8,
+    3.0, 3.2, 3.4, 3.6, 3.8,
+    4.0
+};
+
 ytRealLeptonsEfficiency::ytRealLeptonsEfficiency ()
 {
     // Here you put any code for the base initialization of variables,
@@ -135,6 +143,10 @@ EL::StatusCode ytRealLeptonsEfficiency::histInitialize ()
 
     //const char * function_name = "histInitialize()";
     //Info(function_name, "Function calls");
+
+    // Use fine deltaR binning
+    this->set_binning_deltaR(sizeof(m_fine_deltaR_bins) / sizeof(m_fine_deltaR_bins[0]), m_fine_deltaR_bins);
+    n_deltaR_bins = m_deltaR_bins.size() - 1;
 
     if (lepton == "electron") {
         this->set_binning_eta(sizeof(m_abs_eta_bins) / sizeof(m_abs_eta_bins[0]), m_abs_eta_bins);

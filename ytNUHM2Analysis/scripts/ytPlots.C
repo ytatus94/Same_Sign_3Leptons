@@ -17,8 +17,7 @@
 #include <sstream>
 using namespace std;
 
-//TString path = "/raid05/users/shen/Ximo_ntuples/v47/Cutflow/Results/20170112/";
-TString path = "~/Desktop/skim/Results/20170112/";
+TString path = "~/Desktop/skim/Results/20170118/";
 
 TString electron = "hist-RLE-merged-data-elec.root";
 TString muon = "hist-RLE-merged-data-muon.root";
@@ -33,6 +32,13 @@ TString ttbar_muon_root = "RLE_MC_ttbar_muon/hist-20170112.root";
 TString Gtt_elec_root = "RLE_MC_GG_ttn1_electron/hist-20170112.root";
 TString Gtt_muon_root = "RLE_MC_GG_ttn1_muon/hist-20170112.root";
 
+TString Gtt_elec_all_signal_root = "RLE_MC_GG_ttn1_electron_all_signal/hist-20170118.root";
+TString Gtt_elec_Medium_only_root = "RLE_MC_GG_ttn1_electron_medium_only/hist-20170118.root";
+TString Gtt_elec_track_iso_only_root = "RLE_MC_GG_ttn1_electron_Track_iso_only/hist-20170118.root";
+TString Gtt_elec_calo_iso_only_root = "RLE_MC_GG_ttn1_electron_Calo_iso_only/hist-20170118.root";
+TString Gtt_elec_z0_only_root = "RLE_MC_GG_ttn1_electron_z0_cut_only/hist-20170118.root";
+TString Gtt_elec_eta_only_root = "RLE_MC_GG_ttn1_electron_eta_cut_only/hist-20170118.root";
+
 //
 // Mll plots
 //
@@ -43,7 +49,6 @@ TString Gtt_muon_root = "RLE_MC_GG_ttn1_muon/hist-20170112.root";
 // Set truth_match = true to turn on truth match on the plot.
 void yt_mll_plots()
 {
-
     TFile *data_elec = TFile::Open(path + electron);
     TFile *data_muon = TFile::Open(path + muon);
     TFile *Zee_TandP = TFile::Open(path + Zee_root);
@@ -77,39 +82,45 @@ void yt_mll_plots()
     TCanvas *c_ee = new TCanvas("c_ee", "M_{ee}", 600, 600);
     c_ee->SetGrid();
     c_ee->SetLogy();
+    c_ee->SetTickx();
+    c_ee->SetTicky();
+    c_ee->SetLeftMargin(0.12); //12 per cent of pad for left margin, default is 10%
 
     data_elec_baseline_mll->SetTitle("");
     data_elec_baseline_mll->SetXTitle("M_{ee} [GeV]");
-    data_elec_baseline_mll->SetYTitle("Events / 4 GeV");
+    data_elec_baseline_mll->SetYTitle("Events / 2 GeV");
+    data_elec_baseline_mll->SetYTitle("Number of leptons / 2 GeV / 36.5 fb^{-1}");
+    data_elec_baseline_mll->GetYaxis()->SetTitleOffset(1.5);
     data_elec_baseline_mll->SetStats(kFALSE);
     data_elec_baseline_mll->SetMaximum(elec_max * 10);
     data_elec_baseline_mll->SetMinimum(1000.);
     data_elec_baseline_mll->SetLineColor(kBlack);
     data_elec_baseline_mll->SetMarkerColor(kBlack);
     data_elec_baseline_mll->SetMarkerStyle(kFullCircle);
-    data_elec_baseline_mll->Rebin(4);
+    data_elec_baseline_mll->Rebin(2);
     data_elec_baseline_mll->Draw();
 
     data_elec_signal_mll->SetLineColor(kRed);
     data_elec_signal_mll->SetMarkerColor(kRed);
     data_elec_signal_mll->SetMarkerStyle(kFullTriangleUp);
-    data_elec_signal_mll->Rebin(4);
+    data_elec_signal_mll->Rebin(2);
     data_elec_signal_mll->Draw("same");
 
     h_80_100->Fill(90, elec_max * 10);
-    //h_80_100->Draw("hist,same");
+    h_80_100->Draw("hist,same");
 
     Zee_TandP_mll->SetLineColor(kAzure);
     Zee_TandP_mll->SetFillColor(kAzure);
     //Zee_TandP_mll->SetFillStyle(1001);
     Zee_TandP_mll->SetFillStyle(3004);
-    Zee_TandP_mll->Rebin(4);
+    Zee_TandP_mll->Rebin(2);
     Zee_TandP_mll->Draw("hist,same");
 
-    TLegend *leg_ee = new TLegend(0.6, 0.7, 0.85, 0.85);
-    leg_ee->AddEntry(data_elec_baseline_mll, "Baseline", "p");
-    leg_ee->AddEntry(data_elec_signal_mll, "Signal", "p");
-    leg_ee->AddEntry(Zee_TandP_mll, "Z #rightarrow ee", "l");
+    TLegend *leg_ee = new TLegend(0.48, 0.75, 0.9, 0.9);
+    leg_ee->SetHeader("Data 2015 + 2016: 36.5 fb^{-1}", "C");
+    leg_ee->AddEntry(data_elec_baseline_mll, "pass baseline cut", "p");
+    leg_ee->AddEntry(data_elec_signal_mll, "pass signal cut", "p");
+    leg_ee->AddEntry(Zee_TandP_mll, "Z #rightarrow ee, pass baseline cut", "l");
     //leg_ee->SetBorderSize(0);
     leg_ee->SetTextFont(42);
     leg_ee->SetTextSize(0.03);
@@ -122,40 +133,46 @@ void yt_mll_plots()
     TCanvas *c_mumu = new TCanvas("c_mumu", "M_{#mu#mu}", 600, 600);
     c_mumu->SetGrid();
     c_mumu->SetLogy();
+    c_mumu->SetTickx();
+    c_mumu->SetTicky();
+    c_mumu->SetLeftMargin(0.12); //12 per cent of pad for left margin, default is 10%
 
     data_muon_baseline_mll->SetTitle("");
     data_muon_baseline_mll->SetXTitle("M_{#mu#mu} [GeV]");
-    data_muon_baseline_mll->SetYTitle("Events / 4 GeV");
+    data_muon_baseline_mll->SetYTitle("Events / 2 GeV");
+    data_muon_baseline_mll->SetYTitle("Number of leptons / 2 GeV / 36.5 fb^{-1}");
+    data_muon_baseline_mll->GetYaxis()->SetTitleOffset(1.5);
     data_muon_baseline_mll->SetStats(kFALSE);
     data_muon_baseline_mll->SetMaximum(muon_max * 10);
     data_muon_baseline_mll->SetMinimum(1000.);
     data_muon_baseline_mll->SetLineColor(kBlack);
     data_muon_baseline_mll->SetMarkerColor(kBlack);
     data_muon_baseline_mll->SetMarkerStyle(kFullCircle);
-    data_muon_baseline_mll->Rebin(4);
+    data_muon_baseline_mll->Rebin(2);
     data_muon_baseline_mll->Draw();
 
     data_muon_signal_mll->SetLineColor(kRed);
     data_muon_signal_mll->SetMarkerColor(kRed);
     data_muon_signal_mll->SetMarkerStyle(kFullTriangleUp);
-    data_muon_signal_mll->Rebin(4);
+    data_muon_signal_mll->Rebin(2);
     data_muon_signal_mll->Draw("same");
 
     h_80_100->Reset();
     h_80_100->Fill(90, muon_max * 10);
-    //h_80_100->Draw("hist,same");
+    h_80_100->Draw("hist,same");
 
     Zmumu_TandP_mll->SetLineColor(kAzure);
     Zmumu_TandP_mll->SetFillColor(kAzure);
     //Zmumu_TandP_mll->SetFillStyle(1001);
     Zmumu_TandP_mll->SetFillStyle(3004);
-    Zmumu_TandP_mll->Rebin(4);
+    Zmumu_TandP_mll->Rebin(2);
     Zmumu_TandP_mll->Draw("hist,same");
 
-    TLegend *leg_mumu = new TLegend(0.6, 0.7, 0.85, 0.85);
-    leg_mumu->AddEntry(data_muon_baseline_mll, "Baseline", "p");
-    leg_mumu->AddEntry(data_muon_signal_mll, "Signal", "p");
-    leg_mumu->AddEntry(Zmumu_TandP_mll, "Z #rightarrow #mu#mu", "l");
+    TLegend *leg_mumu = new TLegend(0.48, 0.75, 0.9, 0.9);
+    leg_mumu->SetHeader("Data 2015 + 2016: 36.5 fb^{-1}", "C");
+    leg_mumu->AddEntry(data_muon_baseline_mll, "pass baseline cut", "p");
+    leg_mumu->AddEntry(data_muon_signal_mll, "pass signal cut", "p");
+    leg_mumu->AddEntry(Zmumu_TandP_mll, "Z #rightarrow #mu#mu, pass baseline cut", "l");
     //leg_mumu->SetBorderSize(0);
     leg_mumu->SetTextFont(42);
     leg_mumu->SetTextSize(0.03);
@@ -172,8 +189,6 @@ void yt_baseline_mll_plots(int pt_bin_low = 0, int pt_bin_up = -1, bool truth_ma
     // 10, 15, 20, 25, 30, 35, 40, 50, 60, 70, 80, 120, 150, 200
 
     bool debug = false;
-
-    //TString path = "/Users/ytshen/Desktop/skim/Results/1015/";
 
     TFile *data_elec = TFile::Open(path + electron);
     TFile *data_muon = TFile::Open(path + muon);
@@ -259,6 +274,7 @@ void yt_baseline_mll_plots(int pt_bin_low = 0, int pt_bin_up = -1, bool truth_ma
     sstream_pt_up << pt_bin_up_value;
 
     TCanvas *Mee_plot = new TCanvas("Mee_plot", "Baseline level M_{ee} plot", 500, 500);
+    Mee_plot->SetLeftMargin(0.12);
 
     double data_elec_value = data_elec_mll->GetMaximum();
     double Zee_TandP_max_value = Zee_TandP_mll->GetMaximum();
@@ -269,6 +285,7 @@ void yt_baseline_mll_plots(int pt_bin_low = 0, int pt_bin_up = -1, bool truth_ma
     data_elec_mll->SetTitle("");
     data_elec_mll->SetXTitle("M_{ee} [GeV]");
     data_elec_mll->SetYTitle("Events / 1 GeV");
+    data_elec_mll->GetYaxis()->SetTitleOffset(1.5);
     data_elec_mll->SetMaximum(max(data_elec_value, Zee_TandP_max_value) * 1.05);
     data_elec_mll->SetMinimum(0.);
     data_elec_mll->SetStats(kFALSE);
@@ -314,6 +331,7 @@ void yt_baseline_mll_plots(int pt_bin_low = 0, int pt_bin_up = -1, bool truth_ma
     Mee_plot->SaveAs(filename1.c_str(), "pdf");
 
     TCanvas *Mmumu_plot = new TCanvas("Mmumu_plot", "Baseline level M_{#mu#mu} plot", 500, 500);
+    Mmumu_plot->SetLeftMargin(0.12);
 
     double data_muon_value = data_muon_mll->GetMaximum();
     double Zmumu_TandP_max_value = Zmumu_TandP_mll->GetMaximum();
@@ -324,6 +342,7 @@ void yt_baseline_mll_plots(int pt_bin_low = 0, int pt_bin_up = -1, bool truth_ma
     data_muon_mll->SetTitle("");
     data_muon_mll->SetXTitle("M_{#mu#mu} [GeV]");
     data_muon_mll->SetYTitle("Events / 1 GeV");
+    data_muon_mll->GetYaxis()->SetTitleOffset(1.5);
     data_muon_mll->SetMaximum(max(data_muon_value, Zmumu_TandP_max_value) * 1.05);
     data_muon_mll->SetMinimum(0.);
     data_muon_mll->SetStats(kFALSE);
@@ -375,8 +394,6 @@ void yt_baseline_mll_ratio_plots(int pt_bin_low = 0, int pt_bin_up = -1, bool tr
     // 10, 15, 20, 25, 30, 35, 40, 50, 60, 70, 80, 120, 150, 200
 
     bool debug = false;
-
-    //TString path = "/Users/ytshen/Desktop/skim/Results/1015/";
 
     TFile *data_elec = TFile::Open(path + electron);
     TFile *data_muon = TFile::Open(path + muon);
@@ -735,8 +752,6 @@ void yt_signal_mll_plots(int pt_bin_low = 0, int pt_bin_up = -1, bool truth_matc
 
     bool debug = false;
 
-    //TString path = "/Users/ytshen/Desktop/skim/Results/1015/";
-
     TFile *data_elec = TFile::Open(path + electron);
     TFile *data_muon = TFile::Open(path + muon);
     TFile *Zee_TandP = TFile::Open(path + Zee_root);
@@ -821,6 +836,7 @@ void yt_signal_mll_plots(int pt_bin_low = 0, int pt_bin_up = -1, bool truth_matc
     sstream_pt_up << pt_bin_up_value;
 
     TCanvas *Mee_plot = new TCanvas("Mee_plot", "Signal level M_{ee} plot", 500, 500);
+    Mee_plot->SetLeftMargin(0.12);
 
     double data_elec_value = data_elec_mll->GetMaximum();
     double Zee_TandP_max_value = Zee_TandP_mll->GetMaximum();
@@ -831,6 +847,7 @@ void yt_signal_mll_plots(int pt_bin_low = 0, int pt_bin_up = -1, bool truth_matc
     data_elec_mll->SetTitle("");
     data_elec_mll->SetXTitle("M_{ee} [GeV]");
     data_elec_mll->SetYTitle("Events / 1 GeV");
+    data_elec_mll->GetYaxis()->SetTitleOffset(1.5);
     data_elec_mll->SetMaximum(max(data_elec_value, Zee_TandP_max_value) * 1.05);
     data_elec_mll->SetMinimum(0.);
     data_elec_mll->SetStats(kFALSE);
@@ -876,6 +893,7 @@ void yt_signal_mll_plots(int pt_bin_low = 0, int pt_bin_up = -1, bool truth_matc
     Mee_plot->SaveAs(filename1.c_str(), "pdf");
 
     TCanvas *Mmumu_plot = new TCanvas("Mmumu_plot", "Signal level M_{#mu#mu} plot", 500, 500);
+    Mmumu_plot->SetLeftMargin(0.12);
 
     double data_muon_value = data_muon_mll->GetMaximum();
     double Zmumu_TandP_max_value = Zmumu_TandP_mll->GetMaximum();
@@ -886,6 +904,7 @@ void yt_signal_mll_plots(int pt_bin_low = 0, int pt_bin_up = -1, bool truth_matc
     data_muon_mll->SetTitle("");
     data_muon_mll->SetXTitle("M_{#mu#mu} [GeV]");
     data_muon_mll->SetYTitle("Events / 1 GeV");
+    data_muon_mll->GetYaxis()->SetTitleOffset(1.5);
     data_muon_mll->SetMaximum(max(data_muon_value, Zmumu_TandP_max_value) * 1.05);
     data_muon_mll->SetMinimum(0.);
     data_muon_mll->SetStats(kFALSE);
@@ -935,11 +954,9 @@ void yt_signal_mll_ratio_plots(int pt_bin_low = 0, int pt_bin_up = -1, bool trut
 {
     // default pt bins are:
     // 10, 15, 20, 25, 30, 35, 40, 50, 60, 70, 80, 120, 150, 200
-    
+
     bool debug = false;
-    
-    //TString path = "/Users/ytshen/Desktop/skim/Results/1015/";
-    
+
     TFile *data_elec = TFile::Open(path + electron);
     TFile *data_muon = TFile::Open(path + muon);
     TFile *Zee_TandP = TFile::Open(path + Zee_root);
@@ -951,7 +968,7 @@ void yt_signal_mll_ratio_plots(int pt_bin_low = 0, int pt_bin_up = -1, bool trut
         Zee_truth = TFile::Open(path + Zee_truth_root);
         Zmumu_truth = TFile::Open(path + Zmumu_truth_root);
     }
-    
+
     if (debug) {
         cout << data_elec << endl;
         cout << data_muon << endl;
@@ -962,12 +979,12 @@ void yt_signal_mll_ratio_plots(int pt_bin_low = 0, int pt_bin_up = -1, bool trut
             cout << Zmumu_truth << endl;
         }
     }
-    
+
     TH3F *data_elec_signal_pt_eta_mll = (TH3F *)data_elec->Get("h_signal_pt_eta_mll");
     TH3F *data_muon_signal_pt_eta_mll = (TH3F *)data_muon->Get("h_signal_pt_eta_mll");
     TH3F *Zee_TandP_signal_pt_eta_mll = (TH3F *)Zee_TandP->Get("h_signal_pt_eta_mll");
     TH3F *Zmumu_TandP_signal_pt_eta_mll = (TH3F *)Zmumu_TandP->Get("h_signal_pt_eta_mll");
-    
+
     TH3F *Zee_truth_signal_pt_eta_mll;
     TH3F *Zmumu_truth_signal_pt_eta_mll;
     if (truth_match) {
@@ -984,12 +1001,12 @@ void yt_signal_mll_ratio_plots(int pt_bin_low = 0, int pt_bin_up = -1, bool trut
             cout << Zmumu_truth_signal_pt_eta_mll << endl;
         }
     }
-    
+
     TH1D *data_elec_mll = (TH1D *)data_elec_signal_pt_eta_mll->ProjectionZ("data_elec_mll", pt_bin_low, pt_bin_up);
     TH1D *data_muon_mll = (TH1D *)data_muon_signal_pt_eta_mll->ProjectionZ("data_muon_mll", pt_bin_low, pt_bin_up);
     TH1D *Zee_TandP_mll = (TH1D *)Zee_TandP_signal_pt_eta_mll->ProjectionZ("Zee_TandP_mll", pt_bin_low, pt_bin_up);
     TH1D *Zmumu_TandP_mll = (TH1D *)Zmumu_TandP_signal_pt_eta_mll->ProjectionZ("Zmumu_TandP_mll", pt_bin_low, pt_bin_up);
-    
+
     TH1D *Zee_truth_mll;
     TH1D *Zmumu_truth_mll;
     if (truth_match) {
@@ -1006,7 +1023,7 @@ void yt_signal_mll_ratio_plots(int pt_bin_low = 0, int pt_bin_up = -1, bool trut
             cout << Zmumu_truth_mll << endl;
         }
     }
-    
+
     double pt_bin_low_value;
     double pt_bin_up_value;
     if (pt_bin_low != 0 && pt_bin_up != -1) {
@@ -1031,13 +1048,13 @@ void yt_signal_mll_ratio_plots(int pt_bin_low = 0, int pt_bin_up = -1, bool trut
     //cout << func_ee->Integral(85., 95.) << endl;  // function integral uses values as arguments.
     //cout << data_elec_mll->Integral(data_elec_mll->GetXaxis()->FindBin(85. + 0.01), data_elec_mll->GetXaxis()->FindBin(95. - 0.01)) << endl; // histogram integral uses bins as argument.
     double data_elec_mll_peak_area = func_ee->Integral(85., 95.);
-    
+
     data_muon_mll->Fit("gaus", "0", "", 85, 95);
     TF1 *func_mumu = data_muon_mll->GetFunction("gaus");
     //cout << func_mumu->Integral(85., 95.) << endl;  // function integral uses values as arguments.
     //cout << data_muon_mll->Integral(data_muon_mll->GetXaxis()->FindBin(85. + 0.01), data_muon_mll->GetXaxis()->FindBin(95. - 0.01)) << endl; // histogram integral uses bins as argument.
     double data_muon_mll_peak_area = func_mumu->Integral(85., 95.);
-    
+
     if (norm) {
         double Zee_TandP_mll_peak_area = Zee_TandP_mll->Integral(Zee_TandP_mll->GetXaxis()->FindBin(85. + 0.01), Zee_TandP_mll->GetXaxis()->FindBin(95. - 0.01));
         double Zmumu_TandP_mll_peak_area = Zmumu_TandP_mll->Integral(Zmumu_TandP_mll->GetXaxis()->FindBin(85. + 0.01), Zmumu_TandP_mll->GetXaxis()->FindBin(95. - 0.01));
@@ -1050,12 +1067,12 @@ void yt_signal_mll_ratio_plots(int pt_bin_low = 0, int pt_bin_up = -1, bool trut
             Zmumu_truth_mll->Scale(data_muon_mll_peak_area / Zmumu_truth_mll_peak_area);
         }
     }
-    
+
     //
     // For Mee
     //
     TCanvas *Mee_plot = new TCanvas("Mee_plot", "Signal level M_{ee} ratio plot", 600, 600);
-    
+
     //Upper plot will be in pad1
     TPad *pad1_Mee = new TPad("pad1_Mee", "pad1_Mee", 0, 0.35, 1, 1.0);
     pad1_Mee->SetBottomMargin(0); // Upper and lower plot are joined
@@ -1063,7 +1080,7 @@ void yt_signal_mll_ratio_plots(int pt_bin_low = 0, int pt_bin_up = -1, bool trut
     //pad1_Mee->SetGridy(); // grid lines
     //pad1_Mee->SetLogx();
     pad1_Mee->Draw();
-    
+
     // lower plot will be in pad
     TPad *pad2_Mee = new TPad("pad2_Mee", "pad2_Mee", 0, 0.05, 1, 0.35);
     pad2_Mee->SetTopMargin(0);
@@ -1072,15 +1089,15 @@ void yt_signal_mll_ratio_plots(int pt_bin_low = 0, int pt_bin_up = -1, bool trut
     pad2_Mee->SetGridy(); // grid lines
     //pad2_Mee->SetLogx();
     pad2_Mee->Draw();
-    
+
     pad1_Mee->cd(); // pad1 becomes the current pad
     //pad1_Mee->SetFrameLineWidth(2);
-    
+
     // Draw curve here
-    
+
     double data_elec_value = data_elec_mll->GetMaximum();
     double Zee_TandP_max_value = Zee_TandP_mll->GetMaximum();
-    
+
     data_elec_mll->SetMarkerColor(kBlack);
     data_elec_mll->SetMarkerStyle(kFullCircle);
     data_elec_mll->SetLineColor(kBlack);
@@ -1096,7 +1113,7 @@ void yt_signal_mll_ratio_plots(int pt_bin_low = 0, int pt_bin_up = -1, bool trut
     Zee_TandP_mll->SetFillColor(kRed);
     Zee_TandP_mll->SetFillStyle(3004);
     Zee_TandP_mll->Draw("hist,same");
-    
+
     if (truth_match) {
         //Zee_truth_mll->SetMarkerColor(kBlue);
         //Zee_truth_mll->SetMarkerStyle(kFullTriangleUp);
@@ -1105,22 +1122,22 @@ void yt_signal_mll_ratio_plots(int pt_bin_low = 0, int pt_bin_up = -1, bool trut
         Zee_truth_mll->SetFillStyle(3005);
         Zee_truth_mll->Draw("hist,same");
     }
-    
+
     TLegend *leg1 = new TLegend(0.5, 0.6, 0.9, 0.8);
     leg1->AddEntry(data_elec_mll, "Data");
     leg1->AddEntry(Zee_TandP_mll, "Zee Tag and Probe", "f");
-    
+
     if (truth_match) {
         leg1->AddEntry(Zee_truth_mll, "Zee truth match", "f");
     }
-    
+
     leg1->SetBorderSize(0);
     leg1->SetTextFont(42);
     leg1->SetTextSize(0.05);
     leg1->SetFillColor(0);
     leg1->SetFillStyle(0);
     leg1->Draw("same");
-    
+
     TPaveText *text1 = new TPaveText(0.5, 0.8, 0.9, 0.89, "NDC");
     text1->SetTextSize(0.05);
     text1->SetBorderSize(0);
@@ -1130,7 +1147,7 @@ void yt_signal_mll_ratio_plots(int pt_bin_low = 0, int pt_bin_up = -1, bool trut
     text1->Draw("same");
 
     pad2_Mee->cd(); // pad2 becomes the current pad
-    
+
     TH1F *frame_Mee = pad2_Mee->DrawFrame(60, 0.8, 150, 1.19);
     frame_Mee->GetXaxis()->SetNdivisions(510);
     frame_Mee->GetYaxis()->SetNdivisions(405);
@@ -1148,7 +1165,7 @@ void yt_signal_mll_ratio_plots(int pt_bin_low = 0, int pt_bin_up = -1, bool trut
     frame_Mee->GetYaxis()->SetLabelFont(43); // Absolute font size in pixel (precision 3)
     frame_Mee->GetYaxis()->SetLabelSize(16);
     frame_Mee->Draw();
-    
+
     TH1F *ratio_Mee_TandP = (TH1F *)data_elec_mll->Clone();
     ratio_Mee_TandP->Sumw2();
     ratio_Mee_TandP->Divide(Zee_TandP_mll);
@@ -1156,7 +1173,7 @@ void yt_signal_mll_ratio_plots(int pt_bin_low = 0, int pt_bin_up = -1, bool trut
     ratio_Mee_TandP->SetMarkerStyle(kFullTriangleUp);
     ratio_Mee_TandP->SetLineColor(kRed);
     ratio_Mee_TandP->Draw("same");
-    
+
     if (truth_match) {
         TH1F *ratio_Mee_truth = (TH1F *)data_elec_mll->Clone();
         ratio_Mee_truth->Sumw2();
@@ -1166,7 +1183,7 @@ void yt_signal_mll_ratio_plots(int pt_bin_low = 0, int pt_bin_up = -1, bool trut
         ratio_Mee_truth->SetLineColor(kBlue);
         ratio_Mee_truth->Draw("same");
     }
-    
+
     string filename1 = "signal_level_Mee_pt" + sstream_pt_low.str() + sstream_pt_up.str() + "_ratio_plot.pdf";
     Mee_plot->SaveAs(filename1.c_str(), "pdf");
 
@@ -1174,7 +1191,7 @@ void yt_signal_mll_ratio_plots(int pt_bin_low = 0, int pt_bin_up = -1, bool trut
     // For Mmumu
     //
     TCanvas *Mmumu_plot = new TCanvas("Mmumu_plot", "Signal level M_{#mu#mu} ratio plot", 600, 600);
-    
+
     //Upper plot will be in pad1
     TPad *pad1_Mmumu = new TPad("pad1_Mmumu", "pad1_Mmumu", 0, 0.35, 1, 1.0);
     pad1_Mmumu->SetBottomMargin(0); // Upper and lower plot are joined
@@ -1182,7 +1199,7 @@ void yt_signal_mll_ratio_plots(int pt_bin_low = 0, int pt_bin_up = -1, bool trut
     //pad1_Mmumu->SetGridy(); // grid lines
     //pad1_Mmumu->SetLogx();
     pad1_Mmumu->Draw();
-    
+
     // lower plot will be in pad
     TPad *pad2_Mmumu = new TPad("pad2_Mmumu", "pad2_Mmumu", 0, 0.05, 1, 0.35);
     pad2_Mmumu->SetTopMargin(0);
@@ -1191,15 +1208,15 @@ void yt_signal_mll_ratio_plots(int pt_bin_low = 0, int pt_bin_up = -1, bool trut
     pad2_Mmumu->SetGridy(); // grid lines
     //pad2_Mmumu->SetLogx();
     pad2_Mmumu->Draw();
-    
+
     pad1_Mmumu->cd(); // pad1 becomes the current pad
     //pad1_Mmumu->SetFrameLineWidth(2);
-    
+
     // Draw curve here
-    
+
     double data_muon_value = data_muon_mll->GetMaximum();
     double Zmumu_TandP_max_value = Zmumu_TandP_mll->GetMaximum();
-    
+
     data_muon_mll->SetMarkerColor(kBlack);
     data_muon_mll->SetMarkerStyle(kFullCircle);
     data_muon_mll->SetLineColor(kBlack);
@@ -1215,7 +1232,7 @@ void yt_signal_mll_ratio_plots(int pt_bin_low = 0, int pt_bin_up = -1, bool trut
     Zmumu_TandP_mll->SetFillColor(kRed);
     Zmumu_TandP_mll->SetFillStyle(3004);
     Zmumu_TandP_mll->Draw("hist,same");
-    
+
     if (truth_match) {
         //Zmumu_truth_mll->SetMarkerColor(kBlue);
         //Zmumu_truth_mll->SetMarkerStyle(kFullTriangleUp);
@@ -1224,22 +1241,22 @@ void yt_signal_mll_ratio_plots(int pt_bin_low = 0, int pt_bin_up = -1, bool trut
         Zmumu_truth_mll->SetFillStyle(3005);
         Zmumu_truth_mll->Draw("hist,same");
     }
-    
+
     TLegend *leg2 = new TLegend(0.5, 0.6, 0.9, 0.8);
     leg2->AddEntry(data_muon_mll, "Data");
     leg2->AddEntry(Zmumu_TandP_mll, "Z#mu#mu Tag and Probe", "f");
-    
+
     if (truth_match) {
         leg2->AddEntry(Zmumu_truth_mll, "Z#mu#mu truth match", "f");
     }
-    
+
     leg2->SetBorderSize(0);
     leg2->SetTextFont(42);
     leg2->SetTextSize(0.05);
     leg2->SetFillColor(0);
     leg2->SetFillStyle(0);
     leg2->Draw("same");
-    
+
     TPaveText *text2 = new TPaveText(0.5, 0.8, 0.9, 0.89, "NDC");
     text2->SetTextSize(0.05);
     text2->SetBorderSize(0);
@@ -1249,7 +1266,7 @@ void yt_signal_mll_ratio_plots(int pt_bin_low = 0, int pt_bin_up = -1, bool trut
     text2->Draw("same");
 
     pad2_Mmumu->cd(); // pad2 becomes the current pad
-    
+
     TH1F *frame_Mmumu = pad2_Mmumu->DrawFrame(60, 0.8, 150, 1.19);
     frame_Mmumu->GetXaxis()->SetNdivisions(510);
     frame_Mmumu->GetYaxis()->SetNdivisions(405);
@@ -1267,7 +1284,7 @@ void yt_signal_mll_ratio_plots(int pt_bin_low = 0, int pt_bin_up = -1, bool trut
     frame_Mmumu->GetYaxis()->SetLabelFont(43); // Absolute font size in pixel (precision 3)
     frame_Mmumu->GetYaxis()->SetLabelSize(16);
     frame_Mmumu->Draw();
-    
+
     TH1F *ratio_Mmumu_TandP = (TH1F *)data_muon_mll->Clone();
     ratio_Mmumu_TandP->Sumw2();
     ratio_Mmumu_TandP->Divide(Zmumu_TandP_mll);
@@ -1275,7 +1292,7 @@ void yt_signal_mll_ratio_plots(int pt_bin_low = 0, int pt_bin_up = -1, bool trut
     ratio_Mmumu_TandP->SetMarkerStyle(kFullTriangleUp);
     ratio_Mmumu_TandP->SetLineColor(kRed);
     ratio_Mmumu_TandP->Draw("same");
-    
+
     if (truth_match) {
         TH1F *ratio_Mmumu_truth = (TH1F *)data_muon_mll->Clone();
         ratio_Mmumu_truth->Sumw2();
@@ -1308,21 +1325,22 @@ void yt_make_cut_efficiency_plot(TString filename, TString lepton)
         h_cut_eff_CaloIso = (TH1F *)file->Get("h_cut_eff_CaloIso");
     } 
     TH1F *h_cut_eff_TrackIso = (TH1F *)file->Get("h_cut_eff_TrackIso");
-    //TH1F *h_cut_eff_Iso = (TH1F *)file->Get("h_cut_eff_Iso");
     TH1F *h_cut_eff_z0 = (TH1F *)file->Get("h_cut_eff_z0");
     TH1F *h_cut_eff_sigd0;
     if (lepton == "muon") {
         h_cut_eff_sigd0 = (TH1F *)file->Get("h_cut_eff_sigd0");
     }
- 
+
     //
     // The following part are the same as ytRealLeptonEfficiency_Data::make_cut_efficiency_plot()
     //
 
     TCanvas *cut_efficiency_plot = new TCanvas("cut_efficiency", "Cut efficiency comparison", 500, 500);
+    cut_efficiency_plot->SetLeftMargin(0.12);
     cut_efficiency_plot->cd();
     //gStyle->SetOptStat(0);
 
+    h_eff_pt->GetYaxis()->SetTitleOffset(1.5);
     h_eff_pt->SetLineColor(kBlack);
     h_eff_pt->SetMarkerColor(kBlack);
     h_eff_pt->SetMarkerStyle(kFullCircle);
@@ -1393,7 +1411,7 @@ void yt_make_cut_efficiency_plot(TString filename, TString lepton)
 void yt_make_cut_efficiency_plot_2(TString filename, TString lepton)
 {
     TFile *file = TFile::Open(filename);
-
+/*
     TH1F *h_baseline_pt = (TH1F *)file->Get("h_baseline_pt");
     TH1F *h_signal_pt = (TH1F *)file->Get("h_signal_pt");
 
@@ -1409,7 +1427,25 @@ void yt_make_cut_efficiency_plot_2(TString filename, TString lepton)
     if (lepton == "muon") {
         h_baseline_sigd0_cut = (TH1F *)file->Get("h_baseline_sigd0_cut");
     }
+*/
+    TH1F *h_cut_eff_LooseAndBLayerLLH_to_MediumLLH_pt_eta_mll; // electron only
+    TH1F *h_cut_eff_CaloIso_pt_eta_mll; // electron only
+    TH1F *h_cut_eff_TrackIso_pt_eta_mll;
+    TH1F *h_cut_eff_z0_pt_eta_mll;
+    TH1F *h_cut_eff_sigd0_pt_eta_mll; // muon only
 
+    if (lepton == "electron") {
+        TH3F *h_baseline_pt_eta_mll = (TH3F *)file->Get("h_baseline_pt_eta_mll");
+        TH3F *h_cut_eff_LooseAndBLayerLLH_to_MediumLLH_pt_eta_mll = (TH3F *)file->Get("h_cut_eff_LooseAndBLayerLLH_to_MediumLLH_pt_eta_mll");
+        TH3F *h_cut_eff_CaloIso_pt_eta_mll = (TH3F *)file->Get("h_cut_eff_CaloIso_pt_eta_mll");
+        TH3F *h_cut_eff_sigd0_pt_eta_mll = (TH3F *)file->Get("h_cut_eff_sigd0_pt_eta_mll");
+    }
+    else if (lepton == "muon") {
+        TH3F *h_cut_eff_TrackIso_pt_eta_mll = (TH3F *)file->Get("h_cut_eff_TrackIso_pt_eta_mll");
+        TH3F *h_cut_eff_z0_pt_eta_mll = (TH3F *)file->Get("h_cut_eff_z0_pt_eta_mll");
+        TH3F *h_cut_eff_sigd0_pt_eta_mll = (TH3F *)file->Get("h_cut_eff_sigd0_pt_eta_mll");
+    }
+/*
     //
     static const float m_default_pt_bins[14] = {
       10, 15, 20, 25, 30, 35, 40, 50, 60, 70, 80, 120, 150, 200
@@ -1424,7 +1460,7 @@ void yt_make_cut_efficiency_plot_2(TString filename, TString lepton)
     TH1F *h_cut_eff_TrackIso  = new TH1F("h_cut_eff_TrackIso", "TrackIso;p_{T} [GeV];Efficiency", n_pt_bins, &m_pt_bins[0]);
     TH1F *h_cut_eff_z0        = new TH1F("h_cut_eff_z0", "z0;p_{T} [GeV];Efficiency", n_pt_bins, &m_pt_bins[0]);
     TH1F *h_cut_eff_sigd0     = new TH1F("h_cut_eff_sigd0", "sigd0;p_{T} [GeV];Efficiency", n_pt_bins, &m_pt_bins[0]);
-
+*/
     // Calculate the cut efficiency
     // option="B": Binomial errors are computed
     h_eff_pt->Divide(h_signal_pt, h_baseline_pt, 1, 1, "B");
@@ -1556,6 +1592,7 @@ void yt_make_electron_real_efficiency_plot(TString filename)
     ratio_3->Divide(h_baseline_eta_range_3);
 
     TCanvas *real_efficiency_plot = new TCanvas("real_efficiency_plot", "Electron Real Efficiency", 500, 500);
+    real_efficiency_plot->SetLeftMargin(0.12);
     real_efficiency_plot->cd();
 
     ratio_1->SetLineColor(kBlack);
@@ -1563,6 +1600,7 @@ void yt_make_electron_real_efficiency_plot(TString filename)
     ratio_1->SetMarkerStyle(kFullCircle);
     ratio_1->SetXTitle("p_{T} [GeV]");
     ratio_1->SetYTitle("Electron Real Efficiency");
+    ratio_1->GetYaxis()->SetTitleOffset(1.5);
     ratio_1->SetStats(kFALSE);
     ratio_1->SetMaximum(1.1);
     ratio_1->SetMinimum(0.5);
@@ -1649,6 +1687,7 @@ void yt_make_muon_real_efficiency_plot(TString filename)
     ratio_4->Divide(h_baseline_eta_range_4);
 
     TCanvas *real_efficiency_plot = new TCanvas("real_efficiency_plot", "Muon Real Efficiency", 500, 500);
+    real_efficiency_plot->SetLeftMargin(0.12);
     real_efficiency_plot->cd();
 
     ratio_1->SetLineColor(kBlack);
@@ -1656,6 +1695,7 @@ void yt_make_muon_real_efficiency_plot(TString filename)
     ratio_1->SetMarkerStyle(kFullCircle);
     ratio_1->SetXTitle("p_{T} [GeV]");
     ratio_1->SetYTitle("Muon Real Efficiency");
+    ratio_1->GetYaxis()->SetTitleOffset(1.5);
     ratio_1->SetStats(kFALSE);
     ratio_1->SetMaximum(1.1);
     ratio_1->SetMinimum(0.5);
@@ -1751,8 +1791,17 @@ void yt_make_real_efficiency_plots(bool truth_match = false, bool ttbar = false,
     static const float m_muon_coarse_eta_bins[5] = {
         0, 0.6, 1.2, 1.8, 2.5
     };
+/*
     static const float m_default_deltaR_bins[21] = {
         0, 0.2, 0.4, 0.6, 0.8,
+        1.0, 1.2, 1.4, 1.6, 1.8,
+        2.0, 2.2, 2.4, 2.6, 2.8,
+        3.0, 3.2, 3.4, 3.6, 3.8,
+        4.0
+    };
+*/
+    static const float m_fine_deltaR_bins[36] = {
+        0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95,
         1.0, 1.2, 1.4, 1.6, 1.8,
         2.0, 2.2, 2.4, 2.6, 2.8,
         3.0, 3.2, 3.4, 3.6, 3.8,
@@ -1762,7 +1811,8 @@ void yt_make_real_efficiency_plots(bool truth_match = false, bool ttbar = false,
     vector<float> m_pt_bins = vector<float> (m_default_pt_bins, m_default_pt_bins + sizeof(m_default_pt_bins) / sizeof(float));
     vector<float> m_elec_eta_bins = vector<float> (m_electron_abs_eta_bins, m_electron_abs_eta_bins + sizeof(m_electron_abs_eta_bins) / sizeof(float));
     vector<float> m_muon_eta_bins = vector<float> (m_muon_coarse_eta_bins, m_muon_coarse_eta_bins + sizeof(m_muon_coarse_eta_bins) / sizeof(float));
-    vector<float> m_deltaR_bins = vector<float> (m_default_deltaR_bins, m_default_deltaR_bins + sizeof(m_default_deltaR_bins) / sizeof(float));
+    //vector<float> m_deltaR_bins = vector<float> (m_default_deltaR_bins, m_default_deltaR_bins + sizeof(m_default_deltaR_bins) / sizeof(float));
+    vector<float> m_deltaR_bins = vector<float> (m_fine_deltaR_bins, m_fine_deltaR_bins + sizeof(m_fine_deltaR_bins) / sizeof(float));
 
     int n_pt_bins = m_pt_bins.size() - 1;
     int n_elec_eta_bins = m_elec_eta_bins.size() - 1;
@@ -1906,6 +1956,7 @@ void yt_make_real_efficiency_plots(bool truth_match = false, bool ttbar = false,
     real_efficiency_plot->Divide(3, 2);
 
     real_efficiency_plot->cd(1);
+    gPad->SetLeftMargin(0.12);
     h_elec_eff_pt->SetMarkerColor(kBlack);
     h_elec_eff_pt->SetMarkerStyle(kFullCircle);
     h_elec_eff_pt->SetLineColor(kBlack);
@@ -1914,6 +1965,7 @@ void yt_make_real_efficiency_plots(bool truth_match = false, bool ttbar = false,
     h_elec_eff_pt->SetTitle("");
     h_elec_eff_pt->SetXTitle("p_{T} [GeV]");
     h_elec_eff_pt->SetYTitle("Real electron efficiency");
+    h_elec_eff_pt->GetYaxis()->SetTitleOffset(1.5);
     h_elec_eff_pt->SetStats(kFALSE);
     h_elec_eff_pt->Draw();
 
@@ -1961,6 +2013,7 @@ void yt_make_real_efficiency_plots(bool truth_match = false, bool ttbar = false,
     leg1->Draw();
 
     real_efficiency_plot->cd(2);
+    gPad->SetLeftMargin(0.12);
     h_elec_eff_eta->SetMarkerColor(kBlack);
     h_elec_eff_eta->SetMarkerStyle(kFullCircle);
     h_elec_eff_eta->SetLineColor(kBlack);
@@ -1970,6 +2023,7 @@ void yt_make_real_efficiency_plots(bool truth_match = false, bool ttbar = false,
     h_elec_eff_eta->SetTitle("");
     h_elec_eff_eta->SetXTitle("|#eta|");
     h_elec_eff_eta->SetYTitle("Real electron efficiency");
+    h_elec_eff_eta->GetYaxis()->SetTitleOffset(1.5);
     h_elec_eff_eta->SetStats(kFALSE);
     h_elec_eff_eta->Draw();
 
@@ -2017,6 +2071,7 @@ void yt_make_real_efficiency_plots(bool truth_match = false, bool ttbar = false,
     leg2->Draw();
 
     real_efficiency_plot->cd(3);
+    gPad->SetLeftMargin(0.12);
     h_elec_eff_dRjet->SetMarkerColor(kBlack);
     h_elec_eff_dRjet->SetMarkerStyle(kFullCircle);
     h_elec_eff_dRjet->SetLineColor(kBlack);
@@ -2025,6 +2080,7 @@ void yt_make_real_efficiency_plots(bool truth_match = false, bool ttbar = false,
     h_elec_eff_dRjet->SetTitle("");
     h_elec_eff_dRjet->SetXTitle("#Delta R(e, jet)");
     h_elec_eff_dRjet->SetYTitle("Real electron efficiency");
+    h_elec_eff_dRjet->GetYaxis()->SetTitleOffset(1.5);
     h_elec_eff_dRjet->SetStats(kFALSE);
     h_elec_eff_dRjet->Draw();
 
@@ -2072,6 +2128,7 @@ void yt_make_real_efficiency_plots(bool truth_match = false, bool ttbar = false,
     leg3->Draw();
 
     real_efficiency_plot->cd(4);
+    gPad->SetLeftMargin(0.12);
     h_muon_eff_pt->SetMarkerColor(kBlack);
     h_muon_eff_pt->SetMarkerStyle(kFullCircle);
     h_muon_eff_pt->SetLineColor(kBlack);
@@ -2079,6 +2136,7 @@ void yt_make_real_efficiency_plots(bool truth_match = false, bool ttbar = false,
     h_muon_eff_pt->SetMinimum(0);
     h_muon_eff_pt->SetTitle("");
     h_muon_eff_pt->SetYTitle("Real muon efficiency");
+    h_muon_eff_pt->GetYaxis()->SetTitleOffset(1.5);
     h_muon_eff_pt->SetStats(kFALSE);
     h_muon_eff_pt->Draw();
 
@@ -2126,6 +2184,7 @@ void yt_make_real_efficiency_plots(bool truth_match = false, bool ttbar = false,
     leg4->Draw();
 
     real_efficiency_plot->cd(5);
+    gPad->SetLeftMargin(0.12);
     h_muon_eff_eta->SetMarkerColor(kBlack);
     h_muon_eff_eta->SetMarkerStyle(kFullCircle);
     h_muon_eff_eta->SetLineColor(kBlack);
@@ -2134,6 +2193,7 @@ void yt_make_real_efficiency_plots(bool truth_match = false, bool ttbar = false,
     h_muon_eff_eta->SetTitle("");
     h_muon_eff_eta->SetXTitle("|#eta|");
     h_muon_eff_eta->SetYTitle("Real muon efficiency");
+    h_muon_eff_eta->GetYaxis()->SetTitleOffset(1.5);
     h_muon_eff_eta->SetStats(kFALSE);
     h_muon_eff_eta->Draw();
 
@@ -2181,6 +2241,7 @@ void yt_make_real_efficiency_plots(bool truth_match = false, bool ttbar = false,
     leg5->Draw();
 
     real_efficiency_plot->cd(6);
+    gPad->SetLeftMargin(0.12);
     h_muon_eff_dRjet->SetMarkerColor(kBlack);
     h_muon_eff_dRjet->SetMarkerStyle(kFullCircle);
     h_muon_eff_dRjet->SetLineColor(kBlack);
@@ -2189,6 +2250,7 @@ void yt_make_real_efficiency_plots(bool truth_match = false, bool ttbar = false,
     h_muon_eff_dRjet->SetTitle("");
     h_muon_eff_dRjet->SetXTitle("#Delta R(#mu, jet)");
     h_muon_eff_dRjet->SetYTitle("Real muon efficiency");
+    h_muon_eff_dRjet->GetYaxis()->SetTitleOffset(1.5);
     h_muon_eff_dRjet->SetStats(kFALSE);
     h_muon_eff_dRjet->Draw();
 
@@ -2244,13 +2306,13 @@ void yt_Gtt_electron_real_efficiency_individual_cut_study()
     TFile *Zee_TandP = TFile::Open(path + Zee_root);
     TFile *Zee_truth = TFile::Open(path + Zee_truth_root);
   
-    TFile *Gtt_elec_all_signal = TFile::Open(path + Gtt_elec_root);
-    TFile *Gtt_elec_Medium_only = TFile::Open(path + "submitDir_MC_GG_ttn1_electron/hist-1025_Medium_only.root");
-    TFile *Gtt_elec_track_iso_only = TFile::Open(path + "submitDir_MC_GG_ttn1_electron/hist-1025_track_iso_only.root");
-    TFile *Gtt_elec_calo_iso_only = TFile::Open(path + "submitDir_MC_GG_ttn1_electron/hist-1025_calo_iso_only.root");
-    TFile *Gtt_elec_z0_only = TFile::Open(path + "submitDir_MC_GG_ttn1_electron/hist-1025_z0_only.root");
-    TFile *Gtt_elec_eta_only = TFile::Open(path + "submitDir_MC_GG_ttn1_electron/hist-1025_eta_only.root");
-    TFile *Gtt_elec_all_cuts = TFile::Open(path + "submitDir_MC_GG_ttn1_electron/hist-20161206.root");
+    TFile *Gtt_elec_all_signal = TFile::Open(path + Gtt_elec_all_signal_root);
+    TFile *Gtt_elec_Medium_only = TFile::Open(path + Gtt_elec_Medium_only_root);
+    TFile *Gtt_elec_track_iso_only = TFile::Open(path + Gtt_elec_track_iso_only_root);
+    TFile *Gtt_elec_calo_iso_only = TFile::Open(path + Gtt_elec_calo_iso_only_root);
+    TFile *Gtt_elec_z0_only = TFile::Open(path + Gtt_elec_z0_only_root);
+    TFile *Gtt_elec_eta_only = TFile::Open(path + Gtt_elec_eta_only_root);
+    TFile *Gtt_elec_all_cuts = TFile::Open(path + Gtt_elec_root);
 
     TH1F *h_elec_eff_dRjet = (TH1F *)data_elec->Get("h_eff_dRjet");
     TH1F *h_Zee_eff_dRjet = (TH1F *)Zee_TandP->Get("h_eff_dRjet");
@@ -2275,6 +2337,7 @@ void yt_Gtt_electron_real_efficiency_individual_cut_study()
     h_Gtt_elec_all_cuts_dRjet->SetName("h_Gtt_elec_all_cuts_dRjet");
 
     TCanvas *Gtt_electron_real_efficiency_study = new TCanvas("real_efficiency_plot", "Real Efficiency", 600, 600);
+    Gtt_electron_real_efficiency_study->SetLeftMargin(0.12);
 
     h_elec_eff_dRjet->SetMarkerColor(kBlack);
     h_elec_eff_dRjet->SetMarkerStyle(kFullCircle);
@@ -2284,6 +2347,7 @@ void yt_Gtt_electron_real_efficiency_individual_cut_study()
     h_elec_eff_dRjet->SetTitle("");
     h_elec_eff_dRjet->SetXTitle("#Delta R(e, jet)");
     h_elec_eff_dRjet->SetYTitle("Real electron efficiency");
+    h_elec_eff_dRjet->GetYaxis()->SetTitleOffset(1.5);
     h_elec_eff_dRjet->SetStats(kFALSE);
     h_elec_eff_dRjet->Draw();
 
@@ -2382,6 +2446,7 @@ void yt_Gtt_electron_real_efficiency_combine_cuts_study()
     h_Gtt_elec_all_cuts_dRjet->SetName("h_Gtt_elec_all_cuts_dRjet");
 
     TCanvas *Gtt_electron_real_efficiency_study = new TCanvas("real_efficiency_plot", "Real Efficiency", 600, 600);
+    Gtt_electron_real_efficiency_study->SetLeftMargin(0.12);
 
     h_elec_eff_dRjet->SetMarkerColor(kBlack);
     h_elec_eff_dRjet->SetMarkerStyle(kFullCircle);
@@ -2391,6 +2456,7 @@ void yt_Gtt_electron_real_efficiency_combine_cuts_study()
     h_elec_eff_dRjet->SetTitle("");
     h_elec_eff_dRjet->SetXTitle("#Delta R(e, jet)");
     h_elec_eff_dRjet->SetYTitle("Real electron efficiency");
+    h_elec_eff_dRjet->GetYaxis()->SetTitleOffset(1.5);
     h_elec_eff_dRjet->SetStats(kFALSE);
     h_elec_eff_dRjet->Draw();
 
@@ -2493,6 +2559,7 @@ void yt_Gtt_electron_real_efficiency_comparison()
     real_efficiency->Divide(3, 1);
 
     real_efficiency->cd(1);
+    gPad->SetLeftMargin(0.12);
     h_Gtt_elec_eff_pt->SetMarkerColor(kOrange);
     h_Gtt_elec_eff_pt->SetMarkerStyle(kFullCross);
     h_Gtt_elec_eff_pt->SetLineColor(kOrange);
@@ -2501,6 +2568,7 @@ void yt_Gtt_electron_real_efficiency_comparison()
     h_Gtt_elec_eff_pt->SetTitle("");
     h_Gtt_elec_eff_pt->SetXTitle("p_{T} [GeV]");
     h_Gtt_elec_eff_pt->SetYTitle("Real electron efficiency");
+    h_Gtt_elec_eff_pt->GetYaxis()->SetTitleOffset(1.5);
     h_Gtt_elec_eff_pt->SetStats(kFALSE);
     h_Gtt_elec_eff_pt->Draw();
 
@@ -2518,6 +2586,7 @@ void yt_Gtt_electron_real_efficiency_comparison()
     leg1->Draw();
 
     real_efficiency->cd(2);
+    gPad->SetLeftMargin(0.12);
     h_Gtt_elec_eff_eta->SetMarkerColor(kOrange);
     h_Gtt_elec_eff_eta->SetMarkerStyle(kFullCross);
     h_Gtt_elec_eff_eta->SetLineColor(kOrange);
@@ -2527,6 +2596,7 @@ void yt_Gtt_electron_real_efficiency_comparison()
     h_Gtt_elec_eff_eta->SetTitle("");
     h_Gtt_elec_eff_eta->SetXTitle("|#eta|");
     h_Gtt_elec_eff_eta->SetYTitle("Real electron efficiency");
+    h_Gtt_elec_eff_eta->GetYaxis()->SetTitleOffset(1.5);
     h_Gtt_elec_eff_eta->SetStats(kFALSE);
     h_Gtt_elec_eff_eta->Draw();
 
@@ -2544,6 +2614,7 @@ void yt_Gtt_electron_real_efficiency_comparison()
     leg2->Draw();
 
     real_efficiency->cd(3);
+    gPad->SetLeftMargin(0.12);
     h_Gtt_elec_eff_dRjet->SetMarkerColor(kOrange);
     h_Gtt_elec_eff_dRjet->SetMarkerStyle(kFullCross);
     h_Gtt_elec_eff_dRjet->SetLineColor(kOrange);
@@ -2552,6 +2623,7 @@ void yt_Gtt_electron_real_efficiency_comparison()
     h_Gtt_elec_eff_dRjet->SetTitle("");
     h_Gtt_elec_eff_dRjet->SetXTitle("#Delta R(e, jet)");
     h_Gtt_elec_eff_dRjet->SetYTitle("Real electron efficiency");
+    h_Gtt_elec_eff_dRjet->GetYaxis()->SetTitleOffset(1.5);
     h_Gtt_elec_eff_dRjet->SetStats(kFALSE);
     h_Gtt_elec_eff_dRjet->Draw();
 
@@ -2671,7 +2743,7 @@ void yt_real_efficiency_vs_dR_electron()
     leg1->AddEntry("h_elec_eff_dRjet", "Data");
     leg1->AddEntry("h_Zee_eff_dRjet", "Z #rightarrow ee T&P MC");
     leg1->AddEntry("h_Zee_truth_eff_dRjet", "Z #rightarrow ee truth matched MC");
-    leg1->AddEntry("h_ttbar_elec_eff_dRjet", "ttbar MC");
+    leg1->AddEntry("h_ttbar_elec_eff_dRjet", "ttbar MC (0 < |#eta| < 2.0)");
     leg1->AddEntry("h_Gtt_elec_eff_dRjet", "Gtt MC (0 < |#eta| < 2.0)");
     leg1->Draw();
 
@@ -2683,8 +2755,6 @@ void yt_real_efficiency_vs_dR_electron()
 // x: pt, eta, dRjet
 void yt_truth_match_TandP_comparison(TString lepton, TString x, bool TandP_truth_match = false)
 {
-    //TString path = "/Users/ytshen/Desktop/skim/Results/1015/";
-
     TFile *TandP_file;
     TFile *truth_match_file;
     TFile *TandP_truth_match_file;
@@ -2878,8 +2948,6 @@ void yt_truth_match_TandP_comparison(TString lepton, TString x, bool TandP_truth
 
 void yt_background_subtraction_illustration()
 {
-    //TString path = "/Users/ytshen/Desktop/skim/Results/1015/";
-
     TFile *data_elec = TFile::Open(path + electron);
     TH3F *data_elec_baseline_pt_eta_mll = (TH3F *)data_elec->Get("h_baseline_pt_eta_mll");
     TH1D *data_elec_mll = (TH1D *)data_elec_baseline_pt_eta_mll->ProjectionZ("data_elec_mll");
@@ -3013,10 +3081,12 @@ void yt_background_template_mll_plot(int pt_bin_low = 0, int pt_bin_up = -1, int
     c_ee->SaveAs(output_filename.c_str(), "pdf");
 }
 
+//
+// distributions
+//
+
 void yt_kinematics_distribution()
 {
-    //TString path = "/Users/ytshen/Desktop/skim/Results/1015/";
-
     TFile *data_elec = TFile::Open(path + electron);
     TFile *data_muon = TFile::Open(path + muon);
 
@@ -3126,9 +3196,11 @@ void yt_kinematics_distribution()
     kinematics->Divide(2, 2);
 
     kinematics->cd(1);
+    gPad->SetLeftMargin(0.12);
     h_baseline_pt_data_elec->SetTitle("");
     h_baseline_pt_data_elec->SetXTitle("p_{T} [GeV]");
     h_baseline_pt_data_elec->SetYTitle("Normalized number of probe electrons");
+    h_baseline_pt_data_elec->GetYaxis()->SetTitleOffset(1.5);
     h_baseline_pt_data_elec->SetMaximum(h_baseline_pt_data_elec->GetMaximum() * 1.1);
     h_baseline_pt_data_elec->SetMarkerStyle(kFullCircle);
     h_baseline_pt_data_elec->SetMarkerColor(kBlack);
@@ -3164,9 +3236,11 @@ void yt_kinematics_distribution()
     leg1->Draw();
 
     kinematics->cd(2);
+    gPad->SetLeftMargin(0.12);
     h_baseline_pt_data_muon->SetTitle("");
     h_baseline_pt_data_muon->SetXTitle("p_{T} [GeV]");
     h_baseline_pt_data_muon->SetYTitle("Normalized number of probe muons");
+    h_baseline_pt_data_muon->GetYaxis()->SetTitleOffset(1.5);
     h_baseline_pt_data_muon->SetMaximum(h_baseline_pt_data_muon->GetMaximum() * 1.1);
     h_baseline_pt_data_muon->SetMarkerStyle(kFullCircle);
     h_baseline_pt_data_muon->SetMarkerColor(kBlack);
@@ -3202,9 +3276,11 @@ void yt_kinematics_distribution()
     leg2->Draw("same");
 
     kinematics->cd(3);
+    gPad->SetLeftMargin(0.12);
     h_baseline_eta_data_elec->SetTitle("");
     h_baseline_eta_data_elec->SetXTitle("|#eta|");
     h_baseline_eta_data_elec->SetYTitle("Normalized number of probe electrons");
+    h_baseline_eta_data_elec->GetYaxis()->SetTitleOffset(1.5);
     h_baseline_eta_data_elec->SetMaximum(h_baseline_eta_data_elec->GetMaximum() * 1.1);
     h_baseline_eta_data_elec->SetMarkerStyle(kFullCircle);
     h_baseline_eta_data_elec->SetMarkerColor(kBlack);
@@ -3240,9 +3316,11 @@ void yt_kinematics_distribution()
     leg3->Draw("same");
 
     kinematics->cd(4);
+    gPad->SetLeftMargin(0.12);
     h_baseline_eta_data_muon->SetTitle("");
     h_baseline_eta_data_muon->SetXTitle("|#eta|");
     h_baseline_eta_data_muon->SetYTitle("Normalized number of probe muons");
+    h_baseline_eta_data_muon->GetYaxis()->SetTitleOffset(1.5);
     h_baseline_eta_data_muon->SetMaximum(h_baseline_eta_Gtt_muon->GetMaximum() * 1.1);
     h_baseline_eta_data_muon->SetMarkerStyle(kFullCircle);
     h_baseline_eta_data_muon->SetMarkerColor(kBlack);
@@ -3280,10 +3358,8 @@ void yt_kinematics_distribution()
     kinematics->SaveAs("baseline_kinematics.pdf", "pdf");
 }
 
-void yt_deltaR_and_NJets_distribution()
+void yt_deltaR_and_NJets_distributions()
 {
-    //TString path = "/Users/ytshen/Desktop/skim/Results/1015/";
-
     TFile *data_elec = TFile::Open(path + electron);
     TFile *data_muon = TFile::Open(path + muon);
 
@@ -3302,6 +3378,7 @@ void yt_deltaR_and_NJets_distribution()
     TFile *Gtt_elec = TFile::Open(path + Gtt_elec_root);
     TFile *Gtt_muon = TFile::Open(path + Gtt_muon_root);
 
+    // baseline
     TH1F *h_baseline_dRjet_data_elec = (TH1F *)data_elec->Get("h_baseline_dRjet");
     TH1F *h_baseline_nJets_data_elec = (TH1F *)data_elec->Get("h_baseline_nJets");
 
@@ -3387,16 +3464,109 @@ void yt_deltaR_and_NJets_distribution()
     h_baseline_nJets_Gtt_elec->Scale(1. / h_baseline_nJets_Gtt_elec->Integral());
     h_baseline_dRjet_Gtt_muon->Scale(1. / h_baseline_dRjet_Gtt_muon->Integral());
     h_baseline_nJets_Gtt_muon->Scale(1. / h_baseline_nJets_Gtt_muon->Integral());
+/*
+    // signal
+    TH1F *h_signal_dRjet_data_elec = (TH1F *)data_elec->Get("h_signal_dRjet");
+    TH1F *h_signal_nJets_data_elec = (TH1F *)data_elec->Get("h_signal_nJets");
 
+    TH1F *h_signal_dRjet_data_muon = (TH1F *)data_muon->Get("h_signal_dRjet");
+    TH1F *h_signal_nJets_data_muon = (TH1F *)data_muon->Get("h_signal_nJets");
+
+    TH1F *h_signal_dRjet_TandP_elec = (TH1F *)TandP_elec->Get("h_signal_dRjet");
+    TH1F *h_signal_nJets_TandP_elec = (TH1F *)TandP_elec->Get("h_signal_nJets");
+
+    TH1F *h_signal_dRjet_TandP_muon = (TH1F *)TandP_muon->Get("h_signal_dRjet");
+    TH1F *h_signal_nJets_TandP_muon = (TH1F *)TandP_muon->Get("h_signal_nJets");
+
+    TH1F *h_signal_dRjet_truth_match_elec = (TH1F *)truth_match_elec->Get("h_signal_dRjet");
+    TH1F *h_signal_nJets_truth_match_elec = (TH1F *)truth_match_elec->Get("h_signal_nJets");
+
+    TH1F *h_signal_dRjet_truth_match_muon = (TH1F *)truth_match_muon->Get("h_signal_dRjet");
+    TH1F *h_signal_nJets_truth_match_muon = (TH1F *)truth_match_muon->Get("h_signal_nJets");
+
+    TH1F *h_signal_dRjet_TandP_truth_match_elec = (TH1F *)TandP_truth_match_elec->Get("h_signal_dRjet");
+    TH1F *h_signal_nJets_TandP_truth_match_elec = (TH1F *)TandP_truth_match_elec->Get("h_signal_nJets");
+
+    TH1F *h_signal_dRjet_TandP_truth_match_muon = (TH1F *)TandP_truth_match_muon->Get("h_signal_dRjet");
+    TH1F *h_signal_nJets_TandP_truth_match_muon = (TH1F *)TandP_truth_match_muon->Get("h_signal_nJets");
+
+    TH1F *h_signal_dRjet_ttbar_elec = (TH1F *)ttbar_elec->Get("h_signal_dRjet");
+    TH1F *h_signal_nJets_ttbar_elec = (TH1F *)ttbar_elec->Get("h_signal_nJets");
+
+    TH1F *h_signal_dRjet_ttbar_muon = (TH1F *)ttbar_muon->Get("h_signal_dRjet");
+    TH1F *h_signal_nJets_ttbar_muon = (TH1F *)ttbar_muon->Get("h_signal_nJets");
+
+    TH1F *h_signal_dRjet_Gtt_elec = (TH1F *)Gtt_elec->Get("h_signal_dRjet");
+    TH1F *h_signal_nJets_Gtt_elec = (TH1F *)Gtt_elec->Get("h_signal_nJets");
+
+    TH1F *h_signal_dRjet_Gtt_muon = (TH1F *)Gtt_muon->Get("h_signal_dRjet");
+    TH1F *h_signal_nJets_Gtt_muon = (TH1F *)Gtt_muon->Get("h_signal_nJets");
+
+    h_signal_dRjet_data_elec->Sumw2();
+    h_signal_nJets_data_elec->Sumw2();
+    h_signal_dRjet_data_muon->Sumw2();
+    h_signal_nJets_data_muon->Sumw2();
+    h_signal_dRjet_TandP_elec->Sumw2();
+    h_signal_nJets_TandP_elec->Sumw2();
+    h_signal_dRjet_TandP_muon->Sumw2();
+    h_signal_nJets_TandP_muon->Sumw2();
+    h_signal_dRjet_truth_match_elec->Sumw2();
+    h_signal_nJets_truth_match_elec->Sumw2();
+    h_signal_dRjet_truth_match_muon->Sumw2();
+    h_signal_nJets_truth_match_muon->Sumw2();
+    h_signal_dRjet_TandP_truth_match_elec->Sumw2();
+    h_signal_nJets_TandP_truth_match_elec->Sumw2();
+    h_signal_dRjet_TandP_truth_match_muon->Sumw2();
+    h_signal_nJets_TandP_truth_match_muon->Sumw2();
+    h_signal_dRjet_ttbar_elec->Sumw2();
+    h_signal_nJets_ttbar_elec->Sumw2();
+    h_signal_dRjet_ttbar_muon->Sumw2();
+    h_signal_nJets_ttbar_muon->Sumw2();
+    h_signal_dRjet_Gtt_elec->Sumw2();
+    h_signal_nJets_Gtt_elec->Sumw2();
+    h_signal_dRjet_Gtt_muon->Sumw2();
+    h_signal_nJets_Gtt_muon->Sumw2();
+
+    h_signal_dRjet_data_elec->Scale(1. / h_signal_dRjet_data_elec->Integral());
+    h_signal_nJets_data_elec->Scale(1. / h_signal_nJets_data_elec->Integral());
+    h_signal_dRjet_data_muon->Scale(1. / h_signal_dRjet_data_muon->Integral());
+    h_signal_nJets_data_muon->Scale(1. / h_signal_nJets_data_muon->Integral());
+    h_signal_dRjet_TandP_elec->Scale(1. / h_signal_dRjet_TandP_elec->Integral());
+    h_signal_nJets_TandP_elec->Scale(1. / h_signal_nJets_TandP_elec->Integral());
+    h_signal_dRjet_TandP_muon->Scale(1. / h_signal_dRjet_TandP_muon->Integral());
+    h_signal_nJets_TandP_muon->Scale(1. / h_signal_nJets_TandP_muon->Integral());
+    h_signal_dRjet_truth_match_elec->Scale(1. / h_signal_dRjet_truth_match_elec->Integral());
+    h_signal_nJets_truth_match_elec->Scale(1. / h_signal_nJets_truth_match_elec->Integral());
+    h_signal_dRjet_truth_match_muon->Scale(1. / h_signal_dRjet_truth_match_muon->Integral());
+    h_signal_nJets_truth_match_muon->Scale(1. / h_signal_nJets_truth_match_muon->Integral());
+    h_signal_dRjet_TandP_truth_match_elec->Scale(1. / h_signal_dRjet_TandP_truth_match_elec->Integral());
+    h_signal_nJets_TandP_truth_match_elec->Scale(1. / h_signal_nJets_TandP_truth_match_elec->Integral());
+    h_signal_dRjet_TandP_truth_match_muon->Scale(1. / h_signal_dRjet_TandP_truth_match_muon->Integral());
+    h_signal_nJets_TandP_truth_match_muon->Scale(1. / h_signal_nJets_TandP_truth_match_muon->Integral());
+    h_signal_dRjet_ttbar_elec->Scale(1. / h_signal_dRjet_ttbar_elec->Integral());
+    h_signal_nJets_ttbar_elec->Scale(1. / h_signal_nJets_ttbar_elec->Integral());
+    h_signal_dRjet_ttbar_muon->Scale(1. / h_signal_dRjet_ttbar_muon->Integral());
+    h_signal_nJets_ttbar_muon->Scale(1. / h_signal_nJets_ttbar_muon->Integral());
+    h_signal_dRjet_Gtt_elec->Scale(1. / h_signal_dRjet_Gtt_elec->Integral());
+    h_signal_nJets_Gtt_elec->Scale(1. / h_signal_nJets_Gtt_elec->Integral());
+    h_signal_dRjet_Gtt_muon->Scale(1. / h_signal_dRjet_Gtt_muon->Integral());
+    h_signal_nJets_Gtt_muon->Scale(1. / h_signal_nJets_Gtt_muon->Integral());
+*/
     TCanvas *distributions = new TCanvas("distributions", "distributions", 1200, 1200);
+    //TCanvas *distributions = new TCanvas("distributions", "distributions", 1200, 600); // zoom in dR region
     gStyle->SetOptStat(0);
     distributions->Divide(2, 2);
+    //distributions->Divide(2, 1); // zoom in dR region
 
     distributions->cd(1);
+    gPad->SetLeftMargin(0.12);
     h_baseline_dRjet_data_elec->SetTitle("");
     h_baseline_dRjet_data_elec->SetXTitle("#Delta R(e, jet)");
     h_baseline_dRjet_data_elec->SetYTitle("Normalized number of probe electrons");
-    h_baseline_dRjet_data_elec->SetMaximum(h_baseline_dRjet_Gtt_elec->GetMaximum() * 1.1);
+    h_baseline_dRjet_data_elec->GetYaxis()->SetTitleOffset(1.5);
+    //h_baseline_dRjet_data_elec->SetMaximum(h_baseline_dRjet_Gtt_elec->GetMaximum() * 1.1);
+    h_baseline_dRjet_data_elec->SetMaximum(h_baseline_dRjet_ttbar_elec->GetMaximum() * 1.1);
+    h_baseline_dRjet_data_elec->GetXaxis()->SetRangeUser(0, 1);
     h_baseline_dRjet_data_elec->SetMarkerStyle(kFullCircle);
     h_baseline_dRjet_data_elec->SetMarkerColor(kBlack);
     h_baseline_dRjet_data_elec->SetLineColor(kBlack);
@@ -3431,10 +3601,14 @@ void yt_deltaR_and_NJets_distribution()
     leg1->Draw();
 
     distributions->cd(2);
+    gPad->SetLeftMargin(0.12);
     h_baseline_dRjet_data_muon->SetTitle("");
     h_baseline_dRjet_data_muon->SetXTitle("#Delta R(#mu, jet)");
     h_baseline_dRjet_data_muon->SetYTitle("Normalized number of probe muons");
-    h_baseline_dRjet_data_muon->SetMaximum(h_baseline_dRjet_Gtt_muon->GetMaximum() * 1.1);
+    h_baseline_dRjet_data_muon->GetYaxis()->SetTitleOffset(1.5);
+    //h_baseline_dRjet_data_muon->SetMaximum(h_baseline_dRjet_Gtt_muon->GetMaximum() * 1.1);
+    h_baseline_dRjet_data_muon->SetMaximum(h_baseline_dRjet_ttbar_muon->GetMaximum() * 1.1);
+    h_baseline_dRjet_data_muon->GetXaxis()->SetRangeUser(0, 1);
     h_baseline_dRjet_data_muon->SetMarkerStyle(kFullCircle);
     h_baseline_dRjet_data_muon->SetMarkerColor(kBlack);
     h_baseline_dRjet_data_muon->SetLineColor(kBlack);
@@ -3469,9 +3643,11 @@ void yt_deltaR_and_NJets_distribution()
     leg2->Draw("same");
 
     distributions->cd(3);
+    gPad->SetLeftMargin(0.12);
     h_baseline_nJets_data_elec->SetTitle("");
     h_baseline_nJets_data_elec->SetXTitle("N_{jets}");
     h_baseline_nJets_data_elec->SetYTitle("Normalized number of probe electrons");
+    h_baseline_nJets_data_elec->GetYaxis()->SetTitleOffset(1.5);
     h_baseline_nJets_data_elec->SetMaximum(h_baseline_nJets_Gtt_elec->GetMaximum() * 1.1);
     h_baseline_nJets_data_elec->SetMarkerStyle(kFullCircle);
     h_baseline_nJets_data_elec->SetMarkerColor(kBlack);
@@ -3507,9 +3683,11 @@ void yt_deltaR_and_NJets_distribution()
     leg3->Draw("same");
 
     distributions->cd(4);
+    gPad->SetLeftMargin(0.12);
     h_baseline_nJets_data_muon->SetTitle("");
     h_baseline_nJets_data_muon->SetXTitle("N_{jets}");
     h_baseline_nJets_data_muon->SetYTitle("Normalized number of probe muons");
+    h_baseline_nJets_data_muon->GetYaxis()->SetTitleOffset(1.5);
     h_baseline_nJets_data_muon->SetMaximum(h_baseline_nJets_Gtt_muon->GetMaximum() * 1.1);
     h_baseline_nJets_data_muon->SetMarkerStyle(kFullCircle);
     h_baseline_nJets_data_muon->SetMarkerColor(kBlack);
@@ -3545,4 +3723,281 @@ void yt_deltaR_and_NJets_distribution()
     leg4->Draw("same");
 
     distributions->SaveAs("baseline_deltaR_and_NJets.pdf", "pdf");
+}
+
+void yt_deltaR_baseline_and_signal_distributions()
+{
+    TFile *data_elec = TFile::Open(path + electron);
+    TFile *data_muon = TFile::Open(path + muon);
+
+    TFile *TandP_elec = TFile::Open(path + Zee_root);
+    TFile *TandP_muon = TFile::Open(path + Zmumu_root);
+
+    TFile *truth_match_elec = TFile::Open(path + Zee_truth_root);
+    TFile *truth_match_muon = TFile::Open(path + Zmumu_truth_root);
+
+    TFile *TandP_truth_match_elec = TFile::Open(path + Zee_TP_truth_root);
+    TFile *TandP_truth_match_muon = TFile::Open(path + Zmumu_TP_truth_root);
+
+    TFile *ttbar_elec = TFile::Open(path + ttbar_elec_root);
+    TFile *ttbar_muon = TFile::Open(path + ttbar_muon_root);
+
+    TFile *Gtt_elec = TFile::Open(path + Gtt_elec_root);
+    TFile *Gtt_muon = TFile::Open(path + Gtt_muon_root);
+
+    // For electron case, we only use |eta| < 2.0 to calculate the efficiency
+    int eta_low_bin = ((TH1F *)data_elec->Get("h_baseline_pt_eta_dRjet"))->GetYaxis()->FindBin(0+0.01);
+    int eta_up_bin = ((TH1F *)data_elec->Get("h_baseline_pt_eta_dRjet"))->GetYaxis()->FindBin(2-0.01);
+
+    // baseline
+    // We use baseline electron with |eta| < 2 to calculate efficiency
+    TH1F *h_baseline_dRjet_data_elec = (TH1F *)((TH3F *)data_elec->Get("h_baseline_pt_eta_dRjet"))->ProjectionZ("h_baseline_dRjet_data_elec", 0, -1, eta_low_bin, eta_up_bin);
+    TH1F *h_baseline_dRjet_TandP_elec = (TH1F *)((TH3F *)TandP_elec->Get("h_baseline_pt_eta_dRjet"))->ProjectionZ("h_baseline_dRjet_TandP_elec", 0, -1, eta_low_bin, eta_up_bin);
+    TH1F *h_baseline_dRjet_truth_match_elec = (TH1F *)((TH3F *)truth_match_elec->Get("h_baseline_pt_eta_dRjet"))->ProjectionZ("h_baseline_dRjet_truth_match_elec", 0, -1, eta_low_bin, eta_up_bin);
+    TH1F *h_baseline_dRjet_TandP_truth_match_elec = (TH1F *)((TH3F *)TandP_truth_match_elec->Get("h_baseline_pt_eta_dRjet"))->ProjectionZ("h_baseline_dRjet_TandP_truth_match_elec", 0, -1, eta_low_bin, eta_up_bin);
+    TH1F *h_baseline_dRjet_ttbar_elec = (TH1F *)((TH3F *)ttbar_elec->Get("h_baseline_pt_eta_dRjet"))->ProjectionZ("h_baseline_dRjet_ttbar_elec", 0, -1, eta_low_bin, eta_up_bin);
+    TH1F *h_baseline_dRjet_Gtt_elec = (TH1F *)((TH3F *)Gtt_elec->Get("h_baseline_pt_eta_dRjet"))->ProjectionZ("h_baseline_dRjet_Gtt_elec", 0, -1, eta_low_bin, eta_up_bin);
+    // No |eta| requirement on muon cases
+    TH1F *h_baseline_dRjet_data_muon = (TH1F *)data_muon->Get("h_baseline_dRjet");
+    TH1F *h_baseline_dRjet_TandP_muon = (TH1F *)TandP_muon->Get("h_baseline_dRjet");
+    TH1F *h_baseline_dRjet_truth_match_muon = (TH1F *)truth_match_muon->Get("h_baseline_dRjet");
+    TH1F *h_baseline_dRjet_TandP_truth_match_muon = (TH1F *)TandP_truth_match_muon->Get("h_baseline_dRjet");
+    TH1F *h_baseline_dRjet_ttbar_muon = (TH1F *)ttbar_muon->Get("h_baseline_dRjet");
+    TH1F *h_baseline_dRjet_Gtt_muon = (TH1F *)Gtt_muon->Get("h_baseline_dRjet");
+
+    h_baseline_dRjet_data_elec->Sumw2();
+    h_baseline_dRjet_data_muon->Sumw2();
+    h_baseline_dRjet_TandP_elec->Sumw2();
+    h_baseline_dRjet_TandP_muon->Sumw2();
+    h_baseline_dRjet_truth_match_elec->Sumw2();
+    h_baseline_dRjet_truth_match_muon->Sumw2();
+    h_baseline_dRjet_TandP_truth_match_elec->Sumw2();
+    h_baseline_dRjet_TandP_truth_match_muon->Sumw2();
+    h_baseline_dRjet_ttbar_elec->Sumw2();
+    h_baseline_dRjet_ttbar_muon->Sumw2();
+    h_baseline_dRjet_Gtt_elec->Sumw2();
+    h_baseline_dRjet_Gtt_muon->Sumw2();
+
+    h_baseline_dRjet_data_elec->Scale(1. / h_baseline_dRjet_data_elec->Integral());
+    h_baseline_dRjet_data_muon->Scale(1. / h_baseline_dRjet_data_muon->Integral());
+    h_baseline_dRjet_TandP_elec->Scale(1. / h_baseline_dRjet_TandP_elec->Integral());
+    h_baseline_dRjet_TandP_muon->Scale(1. / h_baseline_dRjet_TandP_muon->Integral());
+    h_baseline_dRjet_truth_match_elec->Scale(1. / h_baseline_dRjet_truth_match_elec->Integral());
+    h_baseline_dRjet_truth_match_muon->Scale(1. / h_baseline_dRjet_truth_match_muon->Integral());
+    h_baseline_dRjet_TandP_truth_match_elec->Scale(1. / h_baseline_dRjet_TandP_truth_match_elec->Integral());
+    h_baseline_dRjet_TandP_truth_match_muon->Scale(1. / h_baseline_dRjet_TandP_truth_match_muon->Integral());
+    h_baseline_dRjet_ttbar_elec->Scale(1. / h_baseline_dRjet_ttbar_elec->Integral());
+    h_baseline_dRjet_ttbar_muon->Scale(1. / h_baseline_dRjet_ttbar_muon->Integral());
+    h_baseline_dRjet_Gtt_elec->Scale(1. / h_baseline_dRjet_Gtt_elec->Integral());
+    h_baseline_dRjet_Gtt_muon->Scale(1. / h_baseline_dRjet_Gtt_muon->Integral());
+
+    // signal
+    TH1F *h_signal_dRjet_data_elec = (TH1F *)data_elec->Get("h_signal_dRjet");
+    TH1F *h_signal_dRjet_data_muon = (TH1F *)data_muon->Get("h_signal_dRjet");
+    TH1F *h_signal_dRjet_TandP_elec = (TH1F *)TandP_elec->Get("h_signal_dRjet");
+    TH1F *h_signal_dRjet_TandP_muon = (TH1F *)TandP_muon->Get("h_signal_dRjet");
+    TH1F *h_signal_dRjet_truth_match_elec = (TH1F *)truth_match_elec->Get("h_signal_dRjet");
+    TH1F *h_signal_dRjet_truth_match_muon = (TH1F *)truth_match_muon->Get("h_signal_dRjet");
+    TH1F *h_signal_dRjet_TandP_truth_match_elec = (TH1F *)TandP_truth_match_elec->Get("h_signal_dRjet");
+    TH1F *h_signal_dRjet_TandP_truth_match_muon = (TH1F *)TandP_truth_match_muon->Get("h_signal_dRjet");
+    TH1F *h_signal_dRjet_ttbar_elec = (TH1F *)ttbar_elec->Get("h_signal_dRjet");
+    TH1F *h_signal_dRjet_ttbar_muon = (TH1F *)ttbar_muon->Get("h_signal_dRjet");
+    TH1F *h_signal_dRjet_Gtt_elec = (TH1F *)Gtt_elec->Get("h_signal_dRjet");
+    TH1F *h_signal_dRjet_Gtt_muon = (TH1F *)Gtt_muon->Get("h_signal_dRjet");
+
+    h_signal_dRjet_data_elec->Sumw2();
+    h_signal_dRjet_data_muon->Sumw2();
+    h_signal_dRjet_TandP_elec->Sumw2();
+    h_signal_dRjet_TandP_muon->Sumw2();
+    h_signal_dRjet_truth_match_elec->Sumw2();
+    h_signal_dRjet_truth_match_muon->Sumw2();
+    h_signal_dRjet_TandP_truth_match_elec->Sumw2();
+    h_signal_dRjet_TandP_truth_match_muon->Sumw2();
+    h_signal_dRjet_ttbar_elec->Sumw2();
+    h_signal_dRjet_ttbar_muon->Sumw2();
+    h_signal_dRjet_Gtt_elec->Sumw2();
+    h_signal_dRjet_Gtt_muon->Sumw2();
+
+    h_signal_dRjet_data_elec->Scale(1. / h_signal_dRjet_data_elec->Integral());
+    h_signal_dRjet_data_muon->Scale(1. / h_signal_dRjet_data_muon->Integral());
+    h_signal_dRjet_TandP_elec->Scale(1. / h_signal_dRjet_TandP_elec->Integral());
+    h_signal_dRjet_TandP_muon->Scale(1. / h_signal_dRjet_TandP_muon->Integral());
+    h_signal_dRjet_truth_match_elec->Scale(1. / h_signal_dRjet_truth_match_elec->Integral());
+    h_signal_dRjet_truth_match_muon->Scale(1. / h_signal_dRjet_truth_match_muon->Integral());
+    h_signal_dRjet_TandP_truth_match_elec->Scale(1. / h_signal_dRjet_TandP_truth_match_elec->Integral());
+    h_signal_dRjet_TandP_truth_match_muon->Scale(1. / h_signal_dRjet_TandP_truth_match_muon->Integral());
+    h_signal_dRjet_ttbar_elec->Scale(1. / h_signal_dRjet_ttbar_elec->Integral());
+    h_signal_dRjet_ttbar_muon->Scale(1. / h_signal_dRjet_ttbar_muon->Integral());
+    h_signal_dRjet_Gtt_elec->Scale(1. / h_signal_dRjet_Gtt_elec->Integral());
+    h_signal_dRjet_Gtt_muon->Scale(1. / h_signal_dRjet_Gtt_muon->Integral());
+
+    TCanvas *distributions = new TCanvas("distributions", "distributions", 1200, 1200);
+    gStyle->SetOptStat(0);
+    distributions->Divide(2, 2);
+
+    distributions->cd(1);
+    gPad->SetLeftMargin(0.12);
+    h_baseline_dRjet_data_elec->SetTitle("");
+    h_baseline_dRjet_data_elec->SetXTitle("#Delta R(e, jet)");
+    h_baseline_dRjet_data_elec->SetYTitle("Normalized number of baseline probe electrons");
+    h_baseline_dRjet_data_elec->GetYaxis()->SetTitleOffset(1.5);
+    h_baseline_dRjet_data_elec->SetMaximum(h_baseline_dRjet_ttbar_elec->GetMaximum() * 1.1);
+    h_baseline_dRjet_data_elec->GetXaxis()->SetRangeUser(0, 1);
+    h_baseline_dRjet_data_elec->SetMarkerStyle(kFullCircle);
+    h_baseline_dRjet_data_elec->SetMarkerColor(kBlack);
+    h_baseline_dRjet_data_elec->SetLineColor(kBlack);
+    h_baseline_dRjet_data_elec->Draw("E1");
+    h_baseline_dRjet_TandP_elec->SetMarkerStyle(kFullSquare);
+    h_baseline_dRjet_TandP_elec->SetMarkerColor(kRed);
+    h_baseline_dRjet_TandP_elec->SetLineColor(kRed);
+    h_baseline_dRjet_TandP_elec->Draw("hist,same");
+    h_baseline_dRjet_truth_match_elec->SetMarkerStyle(kFullTriangleUp);
+    h_baseline_dRjet_truth_match_elec->SetMarkerColor(kBlue);
+    h_baseline_dRjet_truth_match_elec->SetLineColor(kBlue);
+    h_baseline_dRjet_truth_match_elec->Draw("hist,same");
+    h_baseline_dRjet_ttbar_elec->SetMarkerStyle(kFullDiamond);
+    h_baseline_dRjet_ttbar_elec->SetMarkerColor(kMagenta);
+    h_baseline_dRjet_ttbar_elec->SetLineColor(kMagenta);
+    h_baseline_dRjet_ttbar_elec->Draw("hist,same");
+    h_baseline_dRjet_Gtt_elec->SetMarkerStyle(kFullCross);
+    h_baseline_dRjet_Gtt_elec->SetMarkerColor(kOrange);
+    h_baseline_dRjet_Gtt_elec->SetLineColor(kOrange);
+    h_baseline_dRjet_Gtt_elec->Draw("hist,same");
+
+    TLegend *leg1 = new TLegend(0.4, 0.6, 0.9, 0.9);
+    leg1->SetBorderSize(0);
+    leg1->SetFillColor(0);
+    leg1->SetFillStyle(0);
+    leg1->SetTextSize(0.03);
+    leg1->AddEntry(h_baseline_dRjet_data_elec, "Data");
+    leg1->AddEntry(h_baseline_dRjet_TandP_elec, "Z #rightarrow ee T&P MC", "l");
+    leg1->AddEntry(h_baseline_dRjet_truth_match_elec, "Z #rightarrow ee truth matched MC", "l");
+    leg1->AddEntry(h_baseline_dRjet_ttbar_elec, "ttbar MC", "l");
+    leg1->AddEntry(h_baseline_dRjet_Gtt_elec, "Gtt MC", "l");
+    leg1->Draw();
+
+    distributions->cd(2);
+    gPad->SetLeftMargin(0.12);
+    h_baseline_dRjet_data_muon->SetTitle("");
+    h_baseline_dRjet_data_muon->SetXTitle("#Delta R(#mu, jet)");
+    h_baseline_dRjet_data_muon->SetYTitle("Normalized number of baseline probe muons");
+    h_baseline_dRjet_data_muon->GetYaxis()->SetTitleOffset(1.5);
+    h_baseline_dRjet_data_muon->SetMaximum(h_baseline_dRjet_ttbar_muon->GetMaximum() * 1.1);
+    h_baseline_dRjet_data_muon->GetXaxis()->SetRangeUser(0, 1);
+    h_baseline_dRjet_data_muon->SetMarkerStyle(kFullCircle);
+    h_baseline_dRjet_data_muon->SetMarkerColor(kBlack);
+    h_baseline_dRjet_data_muon->SetLineColor(kBlack);
+    h_baseline_dRjet_data_muon->Draw("E1");
+    h_baseline_dRjet_TandP_muon->SetMarkerStyle(kFullSquare);
+    h_baseline_dRjet_TandP_muon->SetMarkerColor(kRed);
+    h_baseline_dRjet_TandP_muon->SetLineColor(kRed);
+    h_baseline_dRjet_TandP_muon->Draw("hist,same");
+    h_baseline_dRjet_truth_match_muon->SetMarkerStyle(kFullTriangleUp);
+    h_baseline_dRjet_truth_match_muon->SetMarkerColor(kBlue);
+    h_baseline_dRjet_truth_match_muon->SetLineColor(kBlue);
+    h_baseline_dRjet_truth_match_muon->Draw("hist,same");
+    h_baseline_dRjet_ttbar_muon->SetMarkerStyle(kFullDiamond);
+    h_baseline_dRjet_ttbar_muon->SetMarkerColor(kMagenta);
+    h_baseline_dRjet_ttbar_muon->SetLineColor(kMagenta);
+    h_baseline_dRjet_ttbar_muon->Draw("hist,same");
+    h_baseline_dRjet_Gtt_muon->SetMarkerStyle(kFullCross);
+    h_baseline_dRjet_Gtt_muon->SetMarkerColor(kOrange);
+    h_baseline_dRjet_Gtt_muon->SetLineColor(kOrange);
+    h_baseline_dRjet_Gtt_muon->Draw("hist,same");
+
+    TLegend *leg2 = new TLegend(0.4, 0.6, 0.9, 0.9);
+    leg2->SetBorderSize(0);
+    leg2->SetFillColor(0);
+    leg2->SetFillStyle(0);
+    leg2->SetTextSize(0.03);
+    leg2->AddEntry(h_baseline_dRjet_data_muon, "Data");
+    leg2->AddEntry(h_baseline_dRjet_TandP_muon, "Z #rightarrow #mu#mu T&P MC", "l");
+    leg2->AddEntry(h_baseline_dRjet_truth_match_muon, "Z #rightarrow #mu#mu truth matched MC", "l");
+    leg2->AddEntry(h_baseline_dRjet_ttbar_muon, "ttbar MC", "l");
+    leg2->AddEntry(h_baseline_dRjet_Gtt_muon, "Gtt MC", "l");
+    leg2->Draw("same");
+
+    distributions->cd(3);
+    gPad->SetLeftMargin(0.12);
+    h_signal_dRjet_data_elec->SetTitle("");
+    h_signal_dRjet_data_elec->SetXTitle("#Delta R(e, jet)");
+    h_signal_dRjet_data_elec->SetYTitle("Normalized number of signal probe electrons");
+    h_signal_dRjet_data_elec->GetYaxis()->SetTitleOffset(1.5);
+    h_signal_dRjet_data_elec->SetMaximum(h_signal_dRjet_ttbar_elec->GetMaximum() * 1.1);
+    h_signal_dRjet_data_elec->GetXaxis()->SetRangeUser(0, 1);
+    h_signal_dRjet_data_elec->SetMarkerStyle(kFullCircle);
+    h_signal_dRjet_data_elec->SetMarkerColor(kBlack);
+    h_signal_dRjet_data_elec->SetLineColor(kBlack);
+    h_signal_dRjet_data_elec->Draw("E1");
+    h_signal_dRjet_TandP_elec->SetMarkerStyle(kFullSquare);
+    h_signal_dRjet_TandP_elec->SetMarkerColor(kRed);
+    h_signal_dRjet_TandP_elec->SetLineColor(kRed);
+    h_signal_dRjet_TandP_elec->Draw("hist,same");
+    h_signal_dRjet_truth_match_elec->SetMarkerStyle(kFullTriangleUp);
+    h_signal_dRjet_truth_match_elec->SetMarkerColor(kBlue);
+    h_signal_dRjet_truth_match_elec->SetLineColor(kBlue);
+    h_signal_dRjet_truth_match_elec->Draw("hist,same");
+    h_signal_dRjet_ttbar_elec->SetMarkerStyle(kFullDiamond);
+    h_signal_dRjet_ttbar_elec->SetMarkerColor(kMagenta);
+    h_signal_dRjet_ttbar_elec->SetLineColor(kMagenta);
+    h_signal_dRjet_ttbar_elec->Draw("hist,same");
+    h_signal_dRjet_Gtt_elec->SetMarkerStyle(kFullCross);
+    h_signal_dRjet_Gtt_elec->SetMarkerColor(kOrange);
+    h_signal_dRjet_Gtt_elec->SetLineColor(kOrange);
+    h_signal_dRjet_Gtt_elec->Draw("hist,same");
+
+    TLegend *leg3 = new TLegend(0.4, 0.6, 0.9, 0.9);
+    leg3->SetBorderSize(0);
+    leg3->SetFillColor(0);
+    leg3->SetFillStyle(0);
+    leg3->SetTextSize(0.03);
+    leg3->AddEntry(h_signal_dRjet_data_elec, "Data");
+    leg3->AddEntry(h_signal_dRjet_TandP_elec, "Z #rightarrow ee T&P MC", "l");
+    leg3->AddEntry(h_signal_dRjet_truth_match_elec, "Z #rightarrow ee truth matched MC", "l");
+    leg3->AddEntry(h_signal_dRjet_ttbar_elec, "ttbar MC", "l");
+    leg3->AddEntry(h_signal_dRjet_Gtt_elec, "Gtt MC", "l");
+    leg3->Draw();
+
+    distributions->cd(4);
+    gPad->SetLeftMargin(0.12);
+    h_signal_dRjet_data_muon->SetTitle("");
+    h_signal_dRjet_data_muon->SetXTitle("#Delta R(#mu, jet)");
+    h_signal_dRjet_data_muon->SetYTitle("Normalized number of signal probe muons");
+    h_signal_dRjet_data_muon->GetYaxis()->SetTitleOffset(1.5);
+    h_signal_dRjet_data_muon->SetMaximum(h_signal_dRjet_ttbar_muon->GetMaximum() * 1.1);
+    h_signal_dRjet_data_muon->GetXaxis()->SetRangeUser(0, 1);
+    h_signal_dRjet_data_muon->SetMarkerStyle(kFullCircle);
+    h_signal_dRjet_data_muon->SetMarkerColor(kBlack);
+    h_signal_dRjet_data_muon->SetLineColor(kBlack);
+    h_signal_dRjet_data_muon->Draw("E1");
+    h_signal_dRjet_TandP_muon->SetMarkerStyle(kFullSquare);
+    h_signal_dRjet_TandP_muon->SetMarkerColor(kRed);
+    h_signal_dRjet_TandP_muon->SetLineColor(kRed);
+    h_signal_dRjet_TandP_muon->Draw("hist,same");
+    h_signal_dRjet_truth_match_muon->SetMarkerStyle(kFullTriangleUp);
+    h_signal_dRjet_truth_match_muon->SetMarkerColor(kBlue);
+    h_signal_dRjet_truth_match_muon->SetLineColor(kBlue);
+    h_signal_dRjet_truth_match_muon->Draw("hist,same");
+    h_signal_dRjet_ttbar_muon->SetMarkerStyle(kFullDiamond);
+    h_signal_dRjet_ttbar_muon->SetMarkerColor(kMagenta);
+    h_signal_dRjet_ttbar_muon->SetLineColor(kMagenta);
+    h_signal_dRjet_ttbar_muon->Draw("hist,same");
+    h_signal_dRjet_Gtt_muon->SetMarkerStyle(kFullCross);
+    h_signal_dRjet_Gtt_muon->SetMarkerColor(kOrange);
+    h_signal_dRjet_Gtt_muon->SetLineColor(kOrange);
+    h_signal_dRjet_Gtt_muon->Draw("hist,same");
+
+    TLegend *leg4 = new TLegend(0.4, 0.6, 0.9, 0.9);
+    leg4->SetBorderSize(0);
+    leg4->SetFillColor(0);
+    leg4->SetFillStyle(0);
+    leg4->SetTextSize(0.03);
+    leg4->AddEntry(h_signal_dRjet_data_muon, "Data");
+    leg4->AddEntry(h_signal_dRjet_TandP_muon, "Z #rightarrow #mu#mu T&P MC", "l");
+    leg4->AddEntry(h_signal_dRjet_truth_match_muon, "Z #rightarrow #mu#mu truth matched MC", "l");
+    leg4->AddEntry(h_signal_dRjet_ttbar_muon, "ttbar MC", "l");
+    leg4->AddEntry(h_signal_dRjet_Gtt_muon, "Gtt MC", "l");
+    leg4->Draw("same");
+
+    distributions->SaveAs("dR_baseline_and_signal_distributions.pdf", "pdf");
 }

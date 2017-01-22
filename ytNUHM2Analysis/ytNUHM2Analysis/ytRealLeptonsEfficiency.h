@@ -644,12 +644,12 @@ public:
     //TH1F *h_baseline_Etmiss; //!
     //TH1F *h_baseline_meff; //!
 
-    TH1F *h_baseline_LooseAndBLayerLLH_to_MediumLLH_cut; //!
-    TH1F *h_baseline_CaloIso_cut; //!
-    TH1F *h_baseline_TrackIso_cut; //!
-    TH1F *h_baseline_Iso_cut; //!
-    TH1F *h_baseline_z0_cut; //!
-    TH1F *h_baseline_sigd0_cut; //!
+    // TH1F *h_baseline_LooseAndBLayerLLH_to_MediumLLH_cut; //!
+    // TH1F *h_baseline_CaloIso_cut; //!
+    // TH1F *h_baseline_TrackIso_cut; //!
+    // TH1F *h_baseline_Iso_cut; //!
+    // TH1F *h_baseline_z0_cut; //!
+    // TH1F *h_baseline_sigd0_cut; //!
 
     // 2-dim histograms
     TH2F *h_baseline_pt_eta; //! x: pt, y: eta
@@ -662,6 +662,13 @@ public:
     TH3F *h_baseline_pt_eta_mll; //! x: pt, y: eta, z: mll
     TH3F *h_baseline_pt_eta_dRjet; //! x: pt, y: eta, z: dRjet
     TH3F *h_baseline_pt_dRjet_mll; //! x: pt, y: dRjet, z: mll
+
+    TH3F *h_baseline_LooseAndBLayerLLH_to_MediumLLH_cut_pt_eta_mll; //!
+    TH3F *h_baseline_CaloIso_cut_pt_eta_mll; //!
+    TH3F *h_baseline_TrackIso_cut_pt_eta_mll; //!
+    TH3F *h_baseline_Iso_cut_pt_eta_mll; //!
+    TH3F *h_baseline_z0_cut_pt_eta_mll; //!
+    TH3F *h_baseline_sigd0_cut_pt_eta_mll; //!
 
     // Signal histograms
     // 1-dim histograms
@@ -691,6 +698,13 @@ public:
     TH3F *h_signal_pt_eta_mll; //! x: pt, y: eta, z: mll
     TH3F *h_signal_pt_eta_dRjet; //! x: pt, y: eta, z: dRjet
     TH3F *h_signal_pt_dRjet_mll; //! x: pt, y: dRjet, z: mll
+
+    TH3F *h_signal_LooseAndBLayerLLH_to_MediumLLH_cut_pt_eta_mll; //!
+    TH3F *h_signal_CaloIso_cut_pt_eta_mll; //!
+    TH3F *h_signal_TrackIso_cut_pt_eta_mll; //!
+    TH3F *h_signal_Iso_cut_pt_eta_mll; //!
+    TH3F *h_signal_z0_cut_pt_eta_mll; //!
+    TH3F *h_signal_sigd0_cut_pt_eta_mll; //!
 
     // Cut efficiency histograms
     TH1F *h_cut_eff_LooseAndBLayerLLH_to_MediumLLH; //!
@@ -778,6 +792,7 @@ public:
     static const float m_muon_coarse_pt_bins[12]; //!
     static const float m_muon_coarse_eta_bins[5]; //!
     //static const float m_coarse_deltaR_bins[7]; //!
+    static const float m_fine_deltaR_bins[36]; //!
 
     // this is a standard constructor
     ytRealLeptonsEfficiency ();
@@ -805,6 +820,7 @@ public:
     void set_binning_pt(int i, const float *bins) { set_binning(i, bins, m_pt_bins); }
     void set_binning_eta(int i, const float *bins) { set_binning(i, bins, m_eta_bins); }
     void set_binning_mll(int i, const float *bins) { set_binning(i, bins, m_mll_bins); }
+    void set_binning_deltaR(int i, const float *bins) { set_binning(i, bins, m_deltaR_bins); }
 
     // Background subtraction methods
     void do_background_subtraction() { /* Need to be implemented */ }

@@ -7,6 +7,18 @@ This is SS/3L+jet cutflows study v44.
 ### Setting:
 
 
+### v01-15-12. (newskim branch) Add fine deltaR binnings
+1. Add 3-dim baseline and signal cut efficiency histograms and add fine deltaR binnings in `ytRealLeptonsEfficiency.h`.
+2. Add deltaR binnings related part in `ytRealLeptonsEfficiency.cxx`
+3. Change the spacings in `ytRelative_difference_of_efficiency.C` and `ytBackground_subtraction.C`
+4. Add more dR and pt bins in `run_relative_differences_of_efficiency.py`
+5. Change cosmetics in `make_final_RLE_plots.py`
+6. In `ytPlots.C`:
+ *. Change cosmetics.
+ *. Re-calculate the cut efficiency in `yt_make_cut_efficiency_plot_2()`
+ *. Add new function `yt_deltaR_baseline_and_signal_distributions()`
+
+
 ### v01-15-11. (newskim branch) Add python scripts
 1. Change the `inputFilePath` in `RLE.cxx`
 2. Add `h_eff_dRjet->Sumw2()` in `ytRealLeptonsEfficiency.cxx`

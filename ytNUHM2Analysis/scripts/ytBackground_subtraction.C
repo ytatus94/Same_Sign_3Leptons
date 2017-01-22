@@ -19,31 +19,31 @@ using namespace std;
 // Using a exponential function to fit: baseline: [60, 80]U[100, 120]
 Double_t fit_exp_base(double *x, double *par)
 {
-	if (x[0] > 80. && x[0] < 100.) {
-		TF1::RejectPoint();
-		return 0;
-	}
-	return par[0]*TMath::Exp(-par[1]*(x[0]-60.));
+    if (x[0] > 80. && x[0] < 100.) {
+        TF1::RejectPoint();
+        return 0;
+    }
+    return par[0]*TMath::Exp(-par[1]*(x[0]-60.));
 }
 
 // Using a exponential function to fit: range1: [60, 70]U[100, 120]
 Double_t fit_exp_var1(double *x, double *par)
 {
-	if (x[0] > 70. && x[0] < 100.) {
-		TF1::RejectPoint();
-		return 0;
-	}
-	return par[0]*TMath::Exp(-par[1]*(x[0]-60.));
+    if (x[0] > 70. && x[0] < 100.) {
+        TF1::RejectPoint();
+        return 0;
+    }
+    return par[0]*TMath::Exp(-par[1]*(x[0]-60.));
 }
 
 // Using a exponential function to fit: range2: [65, 75]U[100, 120]
 Double_t fit_exp_var2(double *x, double *par)
 {
-	if (x[0] > 75. && x[0] < 100.) {
-		TF1::RejectPoint();
-		return 0;
-	}
-	return par[0]*TMath::Exp(-par[1]*(x[0]-60.));
+    if (x[0] > 75. && x[0] < 100.) {
+        TF1::RejectPoint();
+        return 0;
+    }
+    return par[0]*TMath::Exp(-par[1]*(x[0]-60.));
 }
 
 // Because we exclude the Z mass peak in the fitting function, we need to define a new function including Z mass peak.
@@ -78,7 +78,7 @@ void ytBackground_subtraction(TString template_type = "baseline", // baseline, t
 
     cout << "Current template = " << template_type << endl;
 
-    TString path = "/Users/ytshen/Desktop/skim/Results/20170112/";
+    TString path = "/Users/ytshen/Desktop/skim/Results/20170118/";
     TFile *data_file = TFile::Open(path + "hist-RLE-merged-data-elec.root");
     TFile *mc_file;
     if (!truth_match)  // T&P
@@ -293,7 +293,7 @@ void ytBackground_subtraction(TString template_type = "baseline", // baseline, t
         fit_function = new TF1("fit_range1", fit_exp_var1, fitting_range_low, fitting_range_up, 2);
     else if (fitting_range == "range2")
         fit_function = new TF1("fit_range2", fit_exp_var2, fitting_range_low, fitting_range_up, 2);
-	fit_function->SetParLimits(0, 0, 100000); // force the par[0] to be positive ranging from 0 to 10^5.
+    fit_function->SetParLimits(0, 0, 100000); // force the par[0] to be positive ranging from 0 to 10^5.
     // func_Z_peak is used to make plot and calculate Z peak region.
     // Because fit_function excludes the Z peak region, we need build a new function include Z peak region.
     TF1 *func_Z_peak = new TF1("func_Z_peak", fit_exp, fitting_range_low, tail_up, 2);
@@ -421,14 +421,14 @@ void ytBackground_subtraction(TString template_type = "baseline", // baseline, t
     // calculate the norm
     // If I use template2 and 10 GeV < pT < 15 GeV and 0.8 < eta < 1.37, the norm is very large. So I also use the
     // 100 < mll < 120 tail region to calculate the norm.
-	if (norm < 0 || norm > 20) {
+    if (norm < 0 || norm > 20) {
         int special_tail_low_bin = data_baseline_mll->FindBin(60. + 0.01);
         int special_tail_up_bin = data_baseline_mll->FindBin(70. - 0.01);
-		double a = data_baseline_mll->Integral(special_tail_low_bin, special_tail_up_bin);
-		double b = mc_baseline_mll->Integral(special_tail_low_bin, special_tail_up_bin);
-		double c = fit_function->Integral(60., 70.);
+        double a = data_baseline_mll->Integral(special_tail_low_bin, special_tail_up_bin);
+        double b = mc_baseline_mll->Integral(special_tail_low_bin, special_tail_up_bin);
+        double c = fit_function->Integral(60., 70.);
         
-		norm = (a - b) / c;
+        norm = (a - b) / c;
         // uncertainty of a - b: da = sqrt(a), db = sqrt(b)
         double a_minus_b = a - b;
         double d_a_minus_b = sqrt(a + b);
@@ -439,7 +439,7 @@ void ytBackground_subtraction(TString template_type = "baseline", // baseline, t
             cout << "mc_baseline_mll_events_in_the_60_mll_70_region=" << b << endl;
             cout << "fit_data_bkg_template_in_the_60_mll_70_region=" << c << endl;
         }
-	}
+    }
 
     if (debug) {
         cout << "norm = " << norm << endl;
