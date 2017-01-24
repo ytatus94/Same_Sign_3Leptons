@@ -136,7 +136,7 @@ int main( int argc, char* argv[] ) {
     //SH::ScanDir().filePattern("data_probes_all_periods.root").scan(sh, inputFilePath);
     const char* inputFilePath;
     if (isMC) {
-        inputFilePath = "/raid05/users/shen/Ximo_ntuples/v47/Skimmed/20170112";
+        inputFilePath = "/raid05/users/shen/Ximo_ntuples/v47/Skimmed/20170124";
         if (process == "Zee" ||
             process == "Zee_truth_match" ||
             process == "Zee_TandP_truth_match") {
@@ -163,7 +163,7 @@ int main( int argc, char* argv[] ) {
         }
     }
     else if (isData) {
-        inputFilePath = "/raid05/users/shen/Ximo_ntuples/v47/Skimmed/20170112";
+        inputFilePath = "/raid05/users/shen/Ximo_ntuples/v47/Skimmed/20170124";
         SH::ScanDir().filePattern("data_probes_" + process + ".root").scan(sh, inputFilePath);
     }
 

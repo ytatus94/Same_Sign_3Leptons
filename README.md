@@ -7,6 +7,15 @@ This is SS/3L+jet cutflows study v44.
 ### Setting:
 
 
+### v01-15-13. (newskim branch) Remove the weighted histograms and modify the corresponding codes.:
+1. Remove the weighted histograms in `make_AvgMu_and_mll.py` and `ytEventSelection`
+2. In `ytRealLeptonsEfficiency`:
+ *. Remove the weighted histograms
+ *. Add 3-dim histograms for cut efficiency study and for AvgMu
+ *. Comment 2-dim efficiency and cut eff histograms
+ *. Add AvgMu binnings
+3. Change the path for the skimmed files in `RLE.cxx`
+
 ### v01-15-12. (newskim branch) Add fine deltaR binnings
 1. Add 3-dim baseline and signal cut efficiency histograms and add fine deltaR binnings in `ytRealLeptonsEfficiency.h`.
 2. Add deltaR binnings related part in `ytRealLeptonsEfficiency.cxx`

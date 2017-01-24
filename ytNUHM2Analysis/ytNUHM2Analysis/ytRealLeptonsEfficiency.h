@@ -614,18 +614,18 @@ public:
     TH1F *h_signal_OSmumu_mll; //!
 
     // Weighted histograms are for MC
-    TH1F *h_Nvtx_weighted; //!
-    TH1F *h_AvgMu_weighted; //!
-    TH1F *h_AvgMu_OSee_weighted; //!
-    TH1F *h_AvgMu_OSmumu_weighted; //!
-    TH1F *h_zPV_weighted; //!
+    //TH1F *h_Nvtx_weighted; //!
+    //TH1F *h_AvgMu_weighted; //!
+    //TH1F *h_AvgMu_OSee_weighted; //!
+    //TH1F *h_AvgMu_OSmumu_weighted; //!
+    //TH1F *h_zPV_weighted; //!
     //TH1F *h_NLepts_weighted; //!
     //TH1F *h_NJets_weighted; //!
 
-    TH1F *h_baseline_OSee_mll_weighted; //!
-    TH1F *h_baseline_OSmumu_mll_weighted; //!
-    TH1F *h_signal_OSee_mll_weighted; //!
-    TH1F *h_signal_OSmumu_mll_weighted; //!
+    //TH1F *h_baseline_OSee_mll_weighted; //!
+    //TH1F *h_baseline_OSmumu_mll_weighted; //!
+    //TH1F *h_signal_OSee_mll_weighted; //!
+    //TH1F *h_signal_OSmumu_mll_weighted; //!
 
     // Baseline histograms
     // 1-dim histograms
@@ -644,12 +644,12 @@ public:
     //TH1F *h_baseline_Etmiss; //!
     //TH1F *h_baseline_meff; //!
 
-    // TH1F *h_baseline_LooseAndBLayerLLH_to_MediumLLH_cut; //!
-    // TH1F *h_baseline_CaloIso_cut; //!
-    // TH1F *h_baseline_TrackIso_cut; //!
-    // TH1F *h_baseline_Iso_cut; //!
-    // TH1F *h_baseline_z0_cut; //!
-    // TH1F *h_baseline_sigd0_cut; //!
+    TH1F *h_baseline_LooseAndBLayerLLH_to_MediumLLH_cut; //!
+    TH1F *h_baseline_CaloIso_cut; //!
+    TH1F *h_baseline_TrackIso_cut; //!
+    TH1F *h_baseline_Iso_cut; //!
+    TH1F *h_baseline_z0_cut; //!
+    TH1F *h_baseline_sigd0_cut; //!
 
     // 2-dim histograms
     TH2F *h_baseline_pt_eta; //! x: pt, y: eta
@@ -662,13 +662,18 @@ public:
     TH3F *h_baseline_pt_eta_mll; //! x: pt, y: eta, z: mll
     TH3F *h_baseline_pt_eta_dRjet; //! x: pt, y: eta, z: dRjet
     TH3F *h_baseline_pt_dRjet_mll; //! x: pt, y: dRjet, z: mll
+    TH3F *h_baseline_eta_dRjet_mll; //! x: eta, y: dRjet, z: mll
 
-    TH3F *h_baseline_LooseAndBLayerLLH_to_MediumLLH_cut_pt_eta_mll; //!
-    TH3F *h_baseline_CaloIso_cut_pt_eta_mll; //!
-    TH3F *h_baseline_TrackIso_cut_pt_eta_mll; //!
-    TH3F *h_baseline_Iso_cut_pt_eta_mll; //!
-    TH3F *h_baseline_z0_cut_pt_eta_mll; //!
-    TH3F *h_baseline_sigd0_cut_pt_eta_mll; //!
+    TH3F *h_baseline_LooseAndBLayerLLH_to_MediumLLH_cut_pt_eta_mll; //! x: pt, y: eta, z: mll
+    TH3F *h_baseline_CaloIso_cut_pt_eta_mll; //! x: pt, y: eta, z: mll
+    TH3F *h_baseline_TrackIso_cut_pt_eta_mll; //! x: pt, y: eta, z: mll
+    TH3F *h_baseline_Iso_cut_pt_eta_mll; //! x: pt, y: eta, z: mll
+    TH3F *h_baseline_z0_cut_pt_eta_mll; //! x: pt, y: eta, z: mll
+    TH3F *h_baseline_sigd0_cut_pt_eta_mll; //! x: pt, y: eta, z: mll
+
+    TH3F *h_baseline_pt_eta_AvgMu; //! x: pt, y: eta, z: AvgMu
+    TH3F *h_baseline_pt_dRjet_AvgMu; //! x: pt, y: dRjet, z: AvgMu
+    TH3F *h_baseline_eta_dRjet_AvgMu; //! x: eta, y: dRjet, z: AvgMu
 
     // Signal histograms
     // 1-dim histograms
@@ -698,21 +703,19 @@ public:
     TH3F *h_signal_pt_eta_mll; //! x: pt, y: eta, z: mll
     TH3F *h_signal_pt_eta_dRjet; //! x: pt, y: eta, z: dRjet
     TH3F *h_signal_pt_dRjet_mll; //! x: pt, y: dRjet, z: mll
+    TH3F *h_signal_eta_dRjet_mll; //! x: eta, y: dRjet, z: mll
 
-    TH3F *h_signal_LooseAndBLayerLLH_to_MediumLLH_cut_pt_eta_mll; //!
-    TH3F *h_signal_CaloIso_cut_pt_eta_mll; //!
-    TH3F *h_signal_TrackIso_cut_pt_eta_mll; //!
-    TH3F *h_signal_Iso_cut_pt_eta_mll; //!
-    TH3F *h_signal_z0_cut_pt_eta_mll; //!
-    TH3F *h_signal_sigd0_cut_pt_eta_mll; //!
+    TH3F *h_signal_pt_eta_AvgMu; //! x: pt, y: eta, z: AvgMu
+    TH3F *h_signal_pt_dRjet_AvgMu; //! x: pt, y: dRjet, z: AvgMu
+    TH3F *h_signal_eta_dRjet_AvgMu; //! x: eta, y: dRjet, z: AvgMu
 
     // Cut efficiency histograms
-    TH1F *h_cut_eff_LooseAndBLayerLLH_to_MediumLLH; //!
-    TH1F *h_cut_eff_CaloIso; //!
-    TH1F *h_cut_eff_TrackIso; //!
-    TH1F *h_cut_eff_Iso; //!
-    TH1F *h_cut_eff_z0; //!
-    TH1F *h_cut_eff_sigd0; //!
+    // TH1F *h_cut_eff_LooseAndBLayerLLH_to_MediumLLH; //!
+    // TH1F *h_cut_eff_CaloIso; //!
+    // TH1F *h_cut_eff_TrackIso; //!
+    // TH1F *h_cut_eff_Iso; //!
+    // TH1F *h_cut_eff_z0; //!
+    // TH1F *h_cut_eff_sigd0; //!
 
     // Background template histograms
     TH1F *h_bkg_template_fail_truth; //!
@@ -746,9 +749,9 @@ public:
     //TH1F *h_eff_meff; //!
 
     // 2-dim histograms
-    TH2F *h_2d_eff_pt_eta; //!
-    TH2F *h_2d_eff_pt_nJets; //!
-    TH2F *h_2d_eff_pt_dRjet; //!
+    //TH2F *h_2d_eff_pt_eta; //!
+    //TH2F *h_2d_eff_pt_nJets; //!
+    //TH2F *h_2d_eff_pt_dRjet; //!
     //TH2F *h_2d_eff_pt_Etmiss; //!
     //TH2F *h_2d_eff_pt_meff; //!
 
@@ -766,6 +769,7 @@ public:
     vector<float> m_NJet_bins; //!
     //vector<float> m_Etmiss_bins; //!
     //vector<float> m_meff_bins; //!
+    vector<float> m_AvgMu_bins; //!
 
     int n_mll_bins; //!
     int n_pt_bins; //!
@@ -774,6 +778,7 @@ public:
     int n_NJet_bins; //!
     //int n_Etmiss_bins; //!
     //int n_meff_bins; //!
+    int n_AvgMu_bins; //!
 
     static const float m_default_mll_bins[91]; //
     static const float m_default_pt_bins[14]; //!
@@ -782,6 +787,7 @@ public:
     static const float m_default_NJet_bins[11]; //!
     //static const float m_default_Etmiss_bins[9]; //!
     //static const float m_default_meff_bins[7]; //!
+    static const float m_default_AvgMu_bins[51]; //!
 
     static const float m_muon_eta_bins[21]; //!
     static const float m_abs_eta_bins[11]; //!
@@ -821,6 +827,7 @@ public:
     void set_binning_eta(int i, const float *bins) { set_binning(i, bins, m_eta_bins); }
     void set_binning_mll(int i, const float *bins) { set_binning(i, bins, m_mll_bins); }
     void set_binning_deltaR(int i, const float *bins) { set_binning(i, bins, m_deltaR_bins); }
+    void set_binning_AvgMu(int i, const float *bins) { set_binning(i, bins, m_AvgMu_bins); }
 
     // Background subtraction methods
     void do_background_subtraction() { /* Need to be implemented */ }

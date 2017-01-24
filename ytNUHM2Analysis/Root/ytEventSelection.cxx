@@ -77,65 +77,65 @@ EL::StatusCode ytEventSelection::histInitialize ()
     wk()->addOutput(h_NLepts);
     wk()->addOutput(h_NJets);
 
-    h_Nvtx_weighted      = new TH1F("h_Nvtx_weighted", "Nvtx (weighted);Nvtx;Events", 50, 0 , 50);
-    h_AvgMu_weighted     = new TH1F("h_AvgMu_weighted", "AvgMu (weighted);<#mu>;Events", 50, 0 , 50);
-    h_NLepts_weighted    = new TH1F("h_NLepts_weighted", "Number of leptons (weighted);N_{leptons};Events",10, 0, 10);
-    h_NJets_weighted     = new TH1F("h_NJets_weighted", "Number of jets (weighted);N_{jets};Events", 40, 0, 40);
+    // h_Nvtx_weighted      = new TH1F("h_Nvtx_weighted", "Nvtx (weighted);Nvtx;Events", 50, 0 , 50);
+    // h_AvgMu_weighted     = new TH1F("h_AvgMu_weighted", "AvgMu (weighted);<#mu>;Events", 50, 0 , 50);
+    // h_NLepts_weighted    = new TH1F("h_NLepts_weighted", "Number of leptons (weighted);N_{leptons};Events",10, 0, 10);
+    // h_NJets_weighted     = new TH1F("h_NJets_weighted", "Number of jets (weighted);N_{jets};Events", 40, 0, 40);
     
-    h_Nvtx_weighted->Sumw2();
-    h_AvgMu_weighted->Sumw2();
-    h_NLepts_weighted->Sumw2();
-    h_NJets_weighted->Sumw2();
+    // h_Nvtx_weighted->Sumw2();
+    // h_AvgMu_weighted->Sumw2();
+    // h_NLepts_weighted->Sumw2();
+    // h_NJets_weighted->Sumw2();
 
-    wk()->addOutput(h_Nvtx_weighted);
-    wk()->addOutput(h_AvgMu_weighted);
-    wk()->addOutput(h_NLepts_weighted);
-    wk()->addOutput(h_NJets_weighted);
+    // wk()->addOutput(h_Nvtx_weighted);
+    // wk()->addOutput(h_AvgMu_weighted);
+    // wk()->addOutput(h_NLepts_weighted);
+    // wk()->addOutput(h_NJets_weighted);
 
     h_AvgMu_OSee            = new TH1F("h_AvgMu_OSee", "AvgMu;<#mu>;Events", 50, 0 , 50);
     h_AvgMu_OSmumu          = new TH1F("h_AvgMu_OSmumu", "AvgMu;<#mu>;Events", 50, 0 , 50);
-    h_AvgMu_OSee_weighted   = new TH1F("h_AvgMu_OSee_weighted", "AvgMu (weighted);<#mu>;Events", 50, 0 , 50);
-    h_AvgMu_OSmumu_weighted = new TH1F("h_AvgMu_OSmumu_weighted", "AvgMu (weighted);<#mu>;Events", 50, 0 , 50);
+    // h_AvgMu_OSee_weighted   = new TH1F("h_AvgMu_OSee_weighted", "AvgMu (weighted);<#mu>;Events", 50, 0 , 50);
+    // h_AvgMu_OSmumu_weighted = new TH1F("h_AvgMu_OSmumu_weighted", "AvgMu (weighted);<#mu>;Events", 50, 0 , 50);
 
     h_AvgMu_OSee->Sumw2();
     h_AvgMu_OSmumu->Sumw2();
-    h_AvgMu_OSee_weighted->Sumw2();
-    h_AvgMu_OSmumu_weighted->Sumw2();
+    // h_AvgMu_OSee_weighted->Sumw2();
+    // h_AvgMu_OSmumu_weighted->Sumw2();
 
     wk()->addOutput(h_AvgMu_OSee);
     wk()->addOutput(h_AvgMu_OSmumu);
-    wk()->addOutput(h_AvgMu_OSee_weighted);
-    wk()->addOutput(h_AvgMu_OSmumu_weighted);
+    // wk()->addOutput(h_AvgMu_OSee_weighted);
+    // wk()->addOutput(h_AvgMu_OSmumu_weighted);
 
     h_baseline_OSee_mll = new TH1F("h_baseline_OSee_mll", "mll;M_{ll} [GeV];Events", 90, 60, 150);
     h_baseline_OSmumu_mll = new TH1F("h_baseline_OSmumu_mll", "mll;M_{ll} [GeV];Events", 90, 60, 150);
-    h_baseline_OSee_mll_weighted = new TH1F("h_baseline_OSee_mll_weighted", "mll;M_{ll} [GeV];Events", 90, 60, 150);
-    h_baseline_OSmumu_mll_weighted = new TH1F("h_baseline_OSmumu_mll_weighted", "mll;M_{ll} [GeV];Events", 90, 60, 150);
+    // h_baseline_OSee_mll_weighted = new TH1F("h_baseline_OSee_mll_weighted", "mll;M_{ll} [GeV];Events", 90, 60, 150);
+    // h_baseline_OSmumu_mll_weighted = new TH1F("h_baseline_OSmumu_mll_weighted", "mll;M_{ll} [GeV];Events", 90, 60, 150);
 
     h_baseline_OSee_mll->Sumw2();
     h_baseline_OSmumu_mll->Sumw2();
-    h_baseline_OSee_mll_weighted->Sumw2();
-    h_baseline_OSmumu_mll_weighted->Sumw2();
+    // h_baseline_OSee_mll_weighted->Sumw2();
+    // h_baseline_OSmumu_mll_weighted->Sumw2();
 
     wk()->addOutput(h_baseline_OSee_mll);
     wk()->addOutput(h_baseline_OSmumu_mll);
-    wk()->addOutput(h_baseline_OSee_mll_weighted);
-    wk()->addOutput(h_baseline_OSmumu_mll_weighted);
+    // wk()->addOutput(h_baseline_OSee_mll_weighted);
+    // wk()->addOutput(h_baseline_OSmumu_mll_weighted);
 
     h_signal_OSee_mll = new TH1F("h_signal_OSee_mll", "mll;M_{ll} [GeV];Events", 90, 60, 150);
     h_signal_OSmumu_mll = new TH1F("h_signal_OSmumu_mll", "mll;M_{ll} [GeV];Events", 90, 60, 150);
-    h_signal_OSee_mll_weighted = new TH1F("h_signal_OSee_mll_weighted", "mll;M_{ll} [GeV];Events", 90, 60, 150);
-    h_signal_OSmumu_mll_weighted = new TH1F("h_signal_OSmumu_mll_weighted", "mll;M_{ll} [GeV];Events", 90, 60, 150);
+    // h_signal_OSee_mll_weighted = new TH1F("h_signal_OSee_mll_weighted", "mll;M_{ll} [GeV];Events", 90, 60, 150);
+    // h_signal_OSmumu_mll_weighted = new TH1F("h_signal_OSmumu_mll_weighted", "mll;M_{ll} [GeV];Events", 90, 60, 150);
 
     h_signal_OSee_mll->Sumw2();
     h_signal_OSmumu_mll->Sumw2();
-    h_signal_OSee_mll_weighted->Sumw2();
-    h_signal_OSmumu_mll_weighted->Sumw2();
+    // h_signal_OSee_mll_weighted->Sumw2();
+    // h_signal_OSmumu_mll_weighted->Sumw2();
 
     wk()->addOutput(h_signal_OSee_mll);
     wk()->addOutput(h_signal_OSmumu_mll);
-    wk()->addOutput(h_signal_OSee_mll_weighted);
-    wk()->addOutput(h_signal_OSmumu_mll_weighted);
+    // wk()->addOutput(h_signal_OSee_mll_weighted);
+    // wk()->addOutput(h_signal_OSmumu_mll_weighted);
 
     return EL::StatusCode::SUCCESS;
 }
@@ -643,6 +643,13 @@ EL::StatusCode ytEventSelection::execute ()
             filter_efficiency = m_XsecDB->efficiency(ChannelNumber);
             cross_section_kfactor_efficiency = m_XsecDB->xsectTimesEff(ChannelNumber);
         }
+        // If SUSYTools can't find the process, then it return -1
+        // We need to convert the results to +1
+        // For example, the merged root file for Gtt
+        if (cross_section < 0) cross_section = fabs(cross_section);
+        if (k_factor < 0) k_factor = fabs(k_factor);
+        if (filter_efficiency < 0) filter_efficiency = fabs(filter_efficiency);
+        if (cross_section_kfactor_efficiency < 0) cross_section_kfactor_efficiency = fabs(cross_section_kfactor_efficiency);
     }
     else if (isData) {
         cross_section = 1.;
@@ -1009,7 +1016,28 @@ EL::StatusCode ytEventSelection::execute ()
     float pileup_weight = 1.;
     pileup_weight = m_cutflow->get_pileup_weight();
 
+    double weight = 1.;
+    if (isMC)
+        weight = luminosity * cross_section_kfactor_efficiency * 1000. * EventWeight * pileup_weight / derivation_stat_weights;
+
     // Dump histograms
+    h_Nvtx->Fill(Nvtx, weight);
+
+    if (isData)
+        h_AvgMu->Fill(m_cutflow->get_AvgMu() * 1.0/1.09);
+    else if (isMC)
+        h_AvgMu->Fill(m_cutflow->get_AvgMu(), weight);
+
+    if (vec_lept.size() > 0)
+        h_NLepts->Fill(vec_lept.at(0).get_number(), weight);
+    else
+        h_NLepts->Fill(0., weight);
+
+    if (vec_jets.size() > 0)
+        h_NJets->Fill(vec_jets.at(0).get_number(), weight);
+    else
+        h_NJets->Fill(0., weight);
+/*
     if (isData) {
         h_Nvtx->Fill(Nvtx);
         h_AvgMu->Fill(m_cutflow->get_AvgMu() * 1.0/1.09);
@@ -1039,7 +1067,7 @@ EL::StatusCode ytEventSelection::execute ()
         else
             h_NJets_weighted->Fill(0., weight);
     }
-
+*/
     //----------------------------------//
     // Apply cuts
     //----------------------------------//
@@ -1148,6 +1176,12 @@ EL::StatusCode ytEventSelection::execute ()
 
         if (sign == -1 && channel == 121) {
             // OS ee
+            if (isData)
+                h_AvgMu_OSee->Fill(m_cutflow->get_AvgMu() * 1.0 / 1.09);
+            else if (isMC)
+                h_AvgMu_OSee->Fill(m_cutflow->get_AvgMu(), weight);
+            h_baseline_OSee_mll->Fill(mll / 1000., weight);
+/*
             if (isData) {
                 h_AvgMu_OSee->Fill(m_cutflow->get_AvgMu() * 1.0 / 1.09);
                 h_baseline_OSee_mll->Fill(mll / 1000.);
@@ -1157,9 +1191,16 @@ EL::StatusCode ytEventSelection::execute ()
                 h_AvgMu_OSee_weighted->Fill(m_cutflow->get_AvgMu(), weight);
                 h_baseline_OSee_mll_weighted->Fill(mll / 1000., weight);
             }
+*/
         }
         else if (sign == -1 && channel == 169) {
             // OS mumu
+            if (isData)
+                h_AvgMu_OSmumu->Fill(m_cutflow->get_AvgMu() * 1.0 / 1.09);
+            else if (isMC)
+                h_AvgMu_OSmumu->Fill(m_cutflow->get_AvgMu(), weight);
+            h_baseline_OSmumu_mll->Fill(mll / 1000., weight);
+/*
             if (isData) {
                 h_AvgMu_OSmumu->Fill(m_cutflow->get_AvgMu() * 1.0 / 1.09);
                 h_baseline_OSmumu_mll->Fill(mll / 1000.);
@@ -1169,6 +1210,7 @@ EL::StatusCode ytEventSelection::execute ()
                 h_AvgMu_OSmumu_weighted->Fill(m_cutflow->get_AvgMu(), weight);
                 h_baseline_OSmumu_mll_weighted->Fill(mll / 1000., weight);
             }
+*/
         }
     }
 
@@ -1244,6 +1286,8 @@ EL::StatusCode ytEventSelection::execute ()
 
         if (sign == -1 && channel == 121) {
             // OS ee
+            h_signal_OSee_mll->Fill(mll / 1000., weight);
+/*
             if (isData) {
                 //h_AvgMu_OSee->Fill(m_cutflow->get_AvgMu() * 1.0 / 1.16);
                 h_signal_OSee_mll->Fill(mll / 1000.);
@@ -1253,9 +1297,12 @@ EL::StatusCode ytEventSelection::execute ()
                 //h_AvgMu_OSee_weighted->Fill(m_cutflow->get_AvgMu(), weight);
                 h_signal_OSee_mll_weighted->Fill(mll / 1000., weight);
             }
+*/
         }
         else if (sign == -1 && channel == 169) {
             // OS mumu
+            h_signal_OSmumu_mll->Fill(mll / 1000., weight);
+/*
             if (isData) {
                 //h_AvgMu_OSmumu->Fill(m_cutflow->get_AvgMu() * 1.0 / 1.16);
                 h_signal_OSmumu_mll->Fill(mll / 1000.);
@@ -1265,6 +1312,7 @@ EL::StatusCode ytEventSelection::execute ()
                 //h_AvgMu_OSmumu_weighted->Fill(m_cutflow->get_AvgMu(), weight);
                 h_signal_OSmumu_mll_weighted->Fill(mll / 1000., weight);
             }
+*/
         }
     }
 

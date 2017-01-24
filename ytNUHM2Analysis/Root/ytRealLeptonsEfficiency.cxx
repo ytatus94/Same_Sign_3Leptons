@@ -19,9 +19,11 @@ const float ytRealLeptonsEfficiency::m_default_mll_bins[91] = {
     140., 141., 142., 143., 144., 145., 146., 147., 148., 149.,
     150.
 };
+
 const float ytRealLeptonsEfficiency::m_default_pt_bins[14] = {
     10, 15, 20, 25, 30, 35, 40, 50, 60, 70, 80, 120, 150, 200
 };
+
 const float ytRealLeptonsEfficiency::m_default_eta_bins[21]  = {
     -2.47, -2.37, -2.01, -1.81, -1.52, -1.37, -1.15, -0.8, -0.6, -0.1, 0., 0.1, 0.6, 0.8, 1.15, 1.37, 1.52, 1.81, 2.01, 2.37, 2.47
 };
@@ -45,24 +47,39 @@ const float ytRealLeptonsEfficiency::m_default_meff_bins[7] = {
     0., 250., 500., 750., 1000., 1250., 1500.
 };
 */
+const float ytRealLeptonsEfficiency::m_default_AvgMu_bins[51] = {
+    0., 1., 2., 3., 4., 5., 6., 7., 8., 9.,
+    10., 11., 12., 13., 14., 15., 16., 17., 18., 19.,
+    20., 21., 22., 23., 24., 25., 26., 27., 28., 29.,
+    30., 31., 32., 33., 34., 35., 36., 37., 38., 39.,
+    40., 41., 42., 43., 44., 45., 46., 47., 48., 49.,
+    50.
+};
+
 const float ytRealLeptonsEfficiency::m_muon_eta_bins[21] = {
     -2.5, -2.25, -2., -1.75, -1.5, -1.25, -1., -0.75, -0.5, -0.25, 0, 0.25, 0.5, 0.75, 1., 1.25, 1.5, 1.75, 2., 2.25, 2.5
 };
+
 const float ytRealLeptonsEfficiency::m_abs_eta_bins[11] = {
     0., 0.1, 0.6, 0.8, 1.15, 1.37, 1.52, 1.81, 2.01, 2.37, 2.47
 };
+
 const float ytRealLeptonsEfficiency::m_muon_abs_eta_bins[11] = {
     0, 0.25, 0.5, 0.75, 1., 1.25, 1.5, 1.75, 2., 2.25, 2.5
 };
+
 const float ytRealLeptonsEfficiency::m_electron_coarse_pt_bins[12] = {
     10, 15, 20, 25, 30, 35, 40, 50, 60, 80, 150, 200
 };
+
 const float ytRealLeptonsEfficiency::m_electron_coarse_eta_bins[6] = {
     0, 0.8, 1.37, 1.52, 2.01, 2.47
 };
+
 const float ytRealLeptonsEfficiency::m_muon_coarse_pt_bins[12] = {
     10, 15, 20, 25, 30, 35, 40, 50, 60, 80, 150, 200
 };
+
 const float ytRealLeptonsEfficiency::m_muon_coarse_eta_bins[5] = {
     //0, 0.5, 1.25 , 1.75 , 2.5
     0, 0.6, 1.2, 1.8, 2.5
@@ -101,6 +118,7 @@ ytRealLeptonsEfficiency::ytRealLeptonsEfficiency ()
     n_NJet_bins = m_NJet_bins.size() - 1;
     //n_Etmiss_bins = m_Etmiss_bins.size() - 1;
     //n_meff_bins = m_meff_bins.size() - 1;
+    n_AvgMu_bins = m_AvgMu_bins.size() - 1;
 /*
     // For debug
     cout << "n_mll_bins=" << n_mll_bins << endl;
@@ -172,6 +190,11 @@ EL::StatusCode ytRealLeptonsEfficiency::histInitialize ()
         cout << m_eta_bins[i] << endl;
     }
     cout << "n_eta_bins=" << n_eta_bins << endl;
+    cout << "m_deltaR_bins are" << endl;
+    for (unsigned int i = 0; i < m_deltaR_bins.size(); i++) {
+        cout << m_deltaR_bins[i] << endl;
+    }
+    cout << "n_deltaR_bins=" << n_deltaR_bins << endl;
 */
     h_Nvtx          = new TH1F("h_Nvtx", "Nvtx;Nvtx;Events", 50, 0 , 50);
     h_AvgMu         = new TH1F("h_AvgMu", "AvgMu;<#mu>;Events", 50, 0 , 50);
@@ -212,44 +235,44 @@ EL::StatusCode ytRealLeptonsEfficiency::histInitialize ()
     wk()->addOutput(h_signal_OSee_mll);
     wk()->addOutput(h_signal_OSmumu_mll);
 
-    h_Nvtx_weighted         = new TH1F("h_Nvtx_weighted", "Nvtx (weighted);Nvtx;Events", 50, 0 , 50);
-    h_AvgMu_weighted        = new TH1F("h_AvgMu_weighted", "AvgMu (weighted);<#mu>;Events", 50, 0 , 50);
-    h_AvgMu_OSee_weighted   = new TH1F("h_AvgMu_OSee_weighted", "AvgMu (weighted);<#mu>;Events", 50, 0 , 50);
-    h_AvgMu_OSmumu_weighted = new TH1F("h_AvgMu_OSmumu_weighted", "AvgMu (weighted);<#mu>;Events", 50, 0 , 50);
-    h_zPV_weighted          = new TH1F("h_zPV_weighted", "zPV (weighted)", 200, -200, 200);
+    //h_Nvtx_weighted         = new TH1F("h_Nvtx_weighted", "Nvtx (weighted);Nvtx;Events", 50, 0 , 50);
+    //h_AvgMu_weighted        = new TH1F("h_AvgMu_weighted", "AvgMu (weighted);<#mu>;Events", 50, 0 , 50);
+    //h_AvgMu_OSee_weighted   = new TH1F("h_AvgMu_OSee_weighted", "AvgMu (weighted);<#mu>;Events", 50, 0 , 50);
+    //h_AvgMu_OSmumu_weighted = new TH1F("h_AvgMu_OSmumu_weighted", "AvgMu (weighted);<#mu>;Events", 50, 0 , 50);
+    //h_zPV_weighted          = new TH1F("h_zPV_weighted", "zPV (weighted)", 200, -200, 200);
     //h_NLepts_weighted    = new TH1F("h_NLepts_weighted", "Number of leptons (weighted);N_{leptons};Events",10, 0, 10);
     //h_NJets_weighted     = new TH1F("h_NJets_weighted", "Number of jets (weighted);N_{jets};Events", 40, 0, 40);
 
-    h_Nvtx_weighted->Sumw2();
-    h_AvgMu_weighted->Sumw2();
-    h_AvgMu_OSee_weighted->Sumw2();
-    h_AvgMu_OSmumu_weighted->Sumw2();
-    h_zPV_weighted->Sumw2();
+    //h_Nvtx_weighted->Sumw2();
+    //h_AvgMu_weighted->Sumw2();
+    //h_AvgMu_OSee_weighted->Sumw2();
+    //h_AvgMu_OSmumu_weighted->Sumw2();
+    //h_zPV_weighted->Sumw2();
     //h_NLepts_weighted->Sumw2();
     //h_NJets_weighted->Sumw2();
 
-    wk()->addOutput(h_Nvtx_weighted);
-    wk()->addOutput(h_AvgMu_weighted);
-    wk()->addOutput(h_AvgMu_OSee_weighted);
-    wk()->addOutput(h_AvgMu_OSmumu_weighted);
-    wk()->addOutput(h_zPV_weighted);
+    //wk()->addOutput(h_Nvtx_weighted);
+    //wk()->addOutput(h_AvgMu_weighted);
+    //wk()->addOutput(h_AvgMu_OSee_weighted);
+    //wk()->addOutput(h_AvgMu_OSmumu_weighted);
+    //wk()->addOutput(h_zPV_weighted);
     //wk()->addOutput(h_NLepts_weighted);
     //wk()->addOutput(h_NJets_weighted);
 
-    h_baseline_OSee_mll_weighted    = new TH1F("h_baseline_OSee_mll_weighted", "mll;M_{ll} [GeV];Events", 90, 60, 150);
-    h_baseline_OSmumu_mll_weighted  = new TH1F("h_baseline_OSmumu_mll_weighted", "mll;M_{ll} [GeV];Events", 90, 60, 150);
-    h_signal_OSee_mll_weighted      = new TH1F("h_signal_OSee_mll_weighted", "mll;M_{ll} [GeV];Events", 90, 60, 150);
-    h_signal_OSmumu_mll_weighted    = new TH1F("h_signal_OSmumu_mll_weighted", "mll;M_{ll} [GeV];Events", 90, 60, 150);
+    //h_baseline_OSee_mll_weighted    = new TH1F("h_baseline_OSee_mll_weighted", "mll;M_{ll} [GeV];Events", 90, 60, 150);
+    //h_baseline_OSmumu_mll_weighted  = new TH1F("h_baseline_OSmumu_mll_weighted", "mll;M_{ll} [GeV];Events", 90, 60, 150);
+    //h_signal_OSee_mll_weighted      = new TH1F("h_signal_OSee_mll_weighted", "mll;M_{ll} [GeV];Events", 90, 60, 150);
+    //h_signal_OSmumu_mll_weighted    = new TH1F("h_signal_OSmumu_mll_weighted", "mll;M_{ll} [GeV];Events", 90, 60, 150);
 
-    h_baseline_OSee_mll_weighted->Sumw2();
-    h_baseline_OSmumu_mll_weighted->Sumw2();
-    h_signal_OSee_mll_weighted->Sumw2();
-    h_signal_OSmumu_mll_weighted->Sumw2();
+    //h_baseline_OSee_mll_weighted->Sumw2();
+    //h_baseline_OSmumu_mll_weighted->Sumw2();
+    //h_signal_OSee_mll_weighted->Sumw2();
+    //h_signal_OSmumu_mll_weighted->Sumw2();
 
-    wk()->addOutput(h_baseline_OSee_mll_weighted);
-    wk()->addOutput(h_baseline_OSmumu_mll_weighted);
-    wk()->addOutput(h_signal_OSee_mll_weighted);
-    wk()->addOutput(h_signal_OSmumu_mll_weighted);
+    //wk()->addOutput(h_baseline_OSee_mll_weighted);
+    //wk()->addOutput(h_baseline_OSmumu_mll_weighted);
+    //wk()->addOutput(h_signal_OSee_mll_weighted);
+    //wk()->addOutput(h_signal_OSmumu_mll_weighted);
 
     // Baseline histograms
     // 1-dim histograms
@@ -297,7 +320,7 @@ EL::StatusCode ytRealLeptonsEfficiency::histInitialize ()
     wk()->addOutput(h_baseline_dRjet);
     //wk()->addOutput(h_baseline_Etmiss);
     //wk()->addOutput(h_baseline_meff);
-
+/*
     h_baseline_LooseAndBLayerLLH_to_MediumLLH_cut = new TH1F("h_baseline_LooseAndBLayerLLH_to_MediumLLH_cut", "LooseAndBLayerLLH_to_MediumLLH_cut;p_{T} [GeV];Events", n_pt_bins, &m_pt_bins[0]);
     h_baseline_CaloIso_cut  = new TH1F("h_baseline_CaloIso_cut", "CaloIso_cut;p_{T} [GeV];Events", n_pt_bins, &m_pt_bins[0]);
     h_baseline_TrackIso_cut = new TH1F("h_baseline_TrackIso_cut", "TrackIso_cut;p_{T} [GeV];Events", n_pt_bins, &m_pt_bins[0]);
@@ -318,7 +341,7 @@ EL::StatusCode ytRealLeptonsEfficiency::histInitialize ()
     wk()->addOutput(h_baseline_Iso_cut);
     wk()->addOutput(h_baseline_z0_cut);
     wk()->addOutput(h_baseline_sigd0_cut);
-
+*/
     // 2-dim histograms
     h_baseline_pt_eta       = new TH2F("h_baseline_pt_eta", "p_{T} vs #eta;p_{T} [GeV];#eta", n_pt_bins, &m_pt_bins[0], n_eta_bins, &m_eta_bins[0]);
     h_baseline_pt_nJets     = new TH2F("h_baseline_pt_nJets", "p_{T} vs NJet;p_{T} [GeV];NJet", n_pt_bins, &m_pt_bins[0], n_NJet_bins, &m_NJet_bins[0]);
@@ -342,14 +365,50 @@ EL::StatusCode ytRealLeptonsEfficiency::histInitialize ()
     h_baseline_pt_eta_mll   = new TH3F("h_baseline_pt_eta_mll", "Baseline 3-dim;p_{T} [GeV];#eta;M_{ll} [GeV]", n_pt_bins, &m_pt_bins[0], n_eta_bins, &m_eta_bins[0], n_mll_bins, &m_mll_bins[0]);
     h_baseline_pt_eta_dRjet = new TH3F("h_baseline_pt_eta_dRjet", "Baseline 3-dim;p_{T} [GeV];#eta;#Delta R(#ell, jet)", n_pt_bins, &m_pt_bins[0], n_eta_bins, &m_eta_bins[0], n_deltaR_bins, &m_deltaR_bins[0]);
     h_baseline_pt_dRjet_mll = new TH3F("h_baseline_pt_dRjet_mll", "Baseline 3-dim;p_{T} [GeV];#Delta R(#ell, jet);M_{ll} [GeV]", n_pt_bins, &m_pt_bins[0], n_deltaR_bins, &m_deltaR_bins[0], n_mll_bins, &m_mll_bins[0]);
+    h_baseline_eta_dRjet_mll = new TH3F("h_baseline_eta_dRjet_mll", "Baseline 3-dim;#eta;#Delta R(#ell, jet);M_{ll} [GeV]", n_eta_bins, &m_eta_bins[0], n_deltaR_bins, &m_deltaR_bins[0], n_mll_bins, &m_mll_bins[0]);
 
     h_baseline_pt_eta_mll->Sumw2();
     h_baseline_pt_eta_dRjet->Sumw2();
     h_baseline_pt_dRjet_mll->Sumw2();
+    h_baseline_eta_dRjet_mll->Sumw2();
 
     wk()->addOutput(h_baseline_pt_eta_mll);
     wk()->addOutput(h_baseline_pt_eta_dRjet);
     wk()->addOutput(h_baseline_pt_dRjet_mll);
+    wk()->addOutput(h_baseline_eta_dRjet_mll);
+
+    h_baseline_LooseAndBLayerLLH_to_MediumLLH_cut_pt_eta_mll = new TH3F("h_baseline_LooseAndBLayerLLH_to_MediumLLH_cut_pt_eta_mll", "LooseAndBLayerLLH_to_MediumLLH_cut;p_{T} [GeV];#eta;M_{ll} [GeV]", n_pt_bins, &m_pt_bins[0], n_eta_bins, &m_eta_bins[0], n_mll_bins, &m_mll_bins[0]);
+    h_baseline_CaloIso_cut_pt_eta_mll  = new TH3F("h_baseline_CaloIso_cut_pt_eta_mll", "CaloIso_cut;p_{T} [GeV];#eta;M_{ll} [GeV]", n_pt_bins, &m_pt_bins[0], n_eta_bins, &m_eta_bins[0], n_mll_bins, &m_mll_bins[0]);
+    h_baseline_TrackIso_cut_pt_eta_mll = new TH3F("h_baseline_TrackIso_cut_pt_eta_mll", "TrackIso_cut;p_{T} [GeV];#eta;M_{ll} [GeV]", n_pt_bins, &m_pt_bins[0], n_eta_bins, &m_eta_bins[0], n_mll_bins, &m_mll_bins[0]);
+    h_baseline_Iso_cut_pt_eta_mll      = new TH3F("h_baseline_Iso_cut_pt_eta_mll", "Iso_cut;p_{T} [GeV];#eta;M_{ll} [GeV]", n_pt_bins, &m_pt_bins[0], n_eta_bins, &m_eta_bins[0], n_mll_bins, &m_mll_bins[0]);
+    h_baseline_z0_cut_pt_eta_mll       = new TH3F("h_baseline_z0_cut_pt_eta_mll", "z0_cut;p_{T} [GeV];#eta;M_{ll} [GeV]", n_pt_bins, &m_pt_bins[0], n_eta_bins, &m_eta_bins[0], n_mll_bins, &m_mll_bins[0]);
+    h_baseline_sigd0_cut_pt_eta_mll    = new TH3F("h_baseline_sigd0_cut_pt_eta_mll", "sigd0_cut;p_{T} [GeV];#eta;M_{ll} [GeV]", n_pt_bins, &m_pt_bins[0], n_eta_bins, &m_eta_bins[0], n_mll_bins, &m_mll_bins[0]);
+
+    h_baseline_LooseAndBLayerLLH_to_MediumLLH_cut_pt_eta_mll->Sumw2();
+    h_baseline_CaloIso_cut_pt_eta_mll->Sumw2();
+    h_baseline_TrackIso_cut_pt_eta_mll->Sumw2();
+    h_baseline_Iso_cut_pt_eta_mll->Sumw2();
+    h_baseline_z0_cut_pt_eta_mll->Sumw2();
+    h_baseline_sigd0_cut_pt_eta_mll->Sumw2();
+
+    wk()->addOutput(h_baseline_LooseAndBLayerLLH_to_MediumLLH_cut_pt_eta_mll);
+    wk()->addOutput(h_baseline_CaloIso_cut_pt_eta_mll);
+    wk()->addOutput(h_baseline_TrackIso_cut_pt_eta_mll);
+    wk()->addOutput(h_baseline_Iso_cut_pt_eta_mll);
+    wk()->addOutput(h_baseline_z0_cut_pt_eta_mll);
+    wk()->addOutput(h_baseline_sigd0_cut_pt_eta_mll);
+
+    h_baseline_pt_eta_AvgMu = new TH3F("h_baseline_pt_eta_AvgMu", "AvgMu;p_{T} [GeV];#eta;<#mu>", n_pt_bins, &m_pt_bins[0], n_eta_bins, &m_eta_bins[0], n_AvgMu_bins, &m_AvgMu_bins[0]);
+    h_baseline_pt_dRjet_AvgMu = new TH3F("h_baseline_pt_dRjet_AvgMu", "AvgMu;p_{T} [GeV];#Delta R(#ell, jet);<#mu>", n_pt_bins, &m_pt_bins[0], n_deltaR_bins, &m_deltaR_bins[0], n_AvgMu_bins, &m_AvgMu_bins[0]);
+    h_baseline_eta_dRjet_AvgMu = new TH3F("h_baseline_eta_dRjet_AvgMu", "AvgMu;#eta;#Delta R(#ell, jet);<#mu>", n_eta_bins, &m_eta_bins[0], n_deltaR_bins, &m_deltaR_bins[0], n_AvgMu_bins, &m_AvgMu_bins[0]);
+
+    h_baseline_pt_eta_AvgMu->Sumw2();
+    h_baseline_pt_dRjet_AvgMu->Sumw2();
+    h_baseline_eta_dRjet_AvgMu->Sumw2();
+
+    wk()->addOutput(h_baseline_pt_eta_AvgMu);
+    wk()->addOutput(h_baseline_pt_dRjet_AvgMu);
+    wk()->addOutput(h_baseline_eta_dRjet_AvgMu);
 
     // Signal histograms
     // 1-dim histograms
@@ -421,36 +480,51 @@ EL::StatusCode ytRealLeptonsEfficiency::histInitialize ()
     h_signal_pt_eta_mll = new TH3F("h_signal_pt_eta_mll", "Signal 3-dim;p_{T} [GeV];#eta;M_{ll} [GeV]", n_pt_bins, &m_pt_bins[0], n_eta_bins, &m_eta_bins[0], n_mll_bins, &m_mll_bins[0]);
     h_signal_pt_eta_dRjet = new TH3F("h_signal_pt_eta_dRjet", "Signal 3-dim;p_{T} [GeV];#eta;#Delta R(#ell, jet)", n_pt_bins, &m_pt_bins[0], n_eta_bins, &m_eta_bins[0], n_deltaR_bins, &m_deltaR_bins[0]);
     h_signal_pt_dRjet_mll = new TH3F("h_signal_pt_dRjet_mll", "Signal 3-dim;p_{T} [GeV];#Delta R(#ell, jet);M_{ll} [GeV]", n_pt_bins, &m_pt_bins[0], n_deltaR_bins, &m_deltaR_bins[0], n_mll_bins, &m_mll_bins[0]);
-    
+    h_signal_eta_dRjet_mll = new TH3F("h_signal_eta_dRjet_mll", "Signal 3-dim;#eta;#Delta R(#ell, jet);M_{ll} [GeV]", n_eta_bins, &m_eta_bins[0], n_deltaR_bins, &m_deltaR_bins[0], n_mll_bins, &m_mll_bins[0]);
+
     h_signal_pt_eta_mll->Sumw2();
     h_signal_pt_eta_dRjet->Sumw2();
     h_signal_pt_dRjet_mll->Sumw2();
+    h_signal_eta_dRjet_mll->Sumw2();
 
     wk()->addOutput(h_signal_pt_eta_mll);
     wk()->addOutput(h_signal_pt_eta_dRjet);
     wk()->addOutput(h_signal_pt_dRjet_mll);
+    wk()->addOutput(h_signal_eta_dRjet_mll);
 
     // Cut efficiency histograms
-    h_cut_eff_LooseAndBLayerLLH_to_MediumLLH = new TH1F("h_cut_eff_LooseAndBLayerLLH_to_MediumLLH", "LooseAndBLayerLLH_to_MediumLLH;p_{T} [GeV];Efficiency", n_pt_bins, &m_pt_bins[0]);
-    h_cut_eff_CaloIso   = new TH1F("h_cut_eff_CaloIso", "CaloIso;p_{T} [GeV];Efficiency", n_pt_bins, &m_pt_bins[0]);
-    h_cut_eff_TrackIso  = new TH1F("h_cut_eff_TrackIso", "TrackIso;p_{T} [GeV];Efficiency", n_pt_bins, &m_pt_bins[0]);
-    h_cut_eff_Iso       = new TH1F("h_cut_eff_Iso", "Iso;p_{T} [GeV];Efficiency", n_pt_bins, &m_pt_bins[0]);
-    h_cut_eff_z0        = new TH1F("h_cut_eff_z0", "z0;p_{T} [GeV];Efficiency", n_pt_bins, &m_pt_bins[0]);
-    h_cut_eff_sigd0     = new TH1F("h_cut_eff_sigd0", "sigd0;p_{T} [GeV];Efficiency", n_pt_bins, &m_pt_bins[0]);
+    // h_cut_eff_LooseAndBLayerLLH_to_MediumLLH = new TH1F("h_cut_eff_LooseAndBLayerLLH_to_MediumLLH", "LooseAndBLayerLLH_to_MediumLLH;p_{T} [GeV];Efficiency", n_pt_bins, &m_pt_bins[0]);
+    // h_cut_eff_CaloIso   = new TH1F("h_cut_eff_CaloIso", "CaloIso;p_{T} [GeV];Efficiency", n_pt_bins, &m_pt_bins[0]);
+    // h_cut_eff_TrackIso  = new TH1F("h_cut_eff_TrackIso", "TrackIso;p_{T} [GeV];Efficiency", n_pt_bins, &m_pt_bins[0]);
+    // h_cut_eff_Iso       = new TH1F("h_cut_eff_Iso", "Iso;p_{T} [GeV];Efficiency", n_pt_bins, &m_pt_bins[0]);
+    // h_cut_eff_z0        = new TH1F("h_cut_eff_z0", "z0;p_{T} [GeV];Efficiency", n_pt_bins, &m_pt_bins[0]);
+    // h_cut_eff_sigd0     = new TH1F("h_cut_eff_sigd0", "sigd0;p_{T} [GeV];Efficiency", n_pt_bins, &m_pt_bins[0]);
 
-    h_cut_eff_LooseAndBLayerLLH_to_MediumLLH->Sumw2();
-    h_cut_eff_CaloIso->Sumw2();
-    h_cut_eff_TrackIso->Sumw2();
-    h_cut_eff_Iso->Sumw2();
-    h_cut_eff_z0->Sumw2();
-    h_cut_eff_sigd0->Sumw2();
+    // h_cut_eff_LooseAndBLayerLLH_to_MediumLLH->Sumw2();
+    // h_cut_eff_CaloIso->Sumw2();
+    // h_cut_eff_TrackIso->Sumw2();
+    // h_cut_eff_Iso->Sumw2();
+    // h_cut_eff_z0->Sumw2();
+    // h_cut_eff_sigd0->Sumw2();
 
-    wk()->addOutput(h_cut_eff_LooseAndBLayerLLH_to_MediumLLH);
-    wk()->addOutput(h_cut_eff_CaloIso);
-    wk()->addOutput(h_cut_eff_TrackIso);
-    wk()->addOutput(h_cut_eff_Iso);
-    wk()->addOutput(h_cut_eff_z0);
-    wk()->addOutput(h_cut_eff_sigd0);
+    // wk()->addOutput(h_cut_eff_LooseAndBLayerLLH_to_MediumLLH);
+    // wk()->addOutput(h_cut_eff_CaloIso);
+    // wk()->addOutput(h_cut_eff_TrackIso);
+    // wk()->addOutput(h_cut_eff_Iso);
+    // wk()->addOutput(h_cut_eff_z0);
+    // wk()->addOutput(h_cut_eff_sigd0);
+
+    h_signal_pt_eta_AvgMu = new TH3F("h_signal_pt_eta_AvgMu", "AvgMu;p_{T} [GeV];#eta;<#mu>", n_pt_bins, &m_pt_bins[0], n_eta_bins, &m_eta_bins[0], n_AvgMu_bins, &m_AvgMu_bins[0]);
+    h_signal_pt_dRjet_AvgMu = new TH3F("h_signal_pt_dRjet_AvgMu", "AvgMu;p_{T} [GeV];#Delta R(#ell, jet);<#mu>", n_pt_bins, &m_pt_bins[0], n_deltaR_bins, &m_deltaR_bins[0], n_AvgMu_bins, &m_AvgMu_bins[0]);
+    h_signal_eta_dRjet_AvgMu = new TH3F("h_signal_eta_dRjet_AvgMu", "AvgMu;#eta;#Delta R(#ell, jet);<#mu>", n_eta_bins, &m_eta_bins[0], n_deltaR_bins, &m_deltaR_bins[0], n_AvgMu_bins, &m_AvgMu_bins[0]);
+
+    h_signal_pt_eta_AvgMu->Sumw2();
+    h_signal_pt_dRjet_AvgMu->Sumw2();
+    h_signal_eta_dRjet_AvgMu->Sumw2();
+
+    wk()->addOutput(h_signal_pt_eta_AvgMu);
+    wk()->addOutput(h_signal_pt_dRjet_AvgMu);
+    wk()->addOutput(h_signal_eta_dRjet_AvgMu);
 
     // Background template histograms
     h_bkg_template_fail_truth           = new TH1F("h_bkg_template_fail_truth", "mll;M_{ll} [GeV];Events;", n_mll_bins, &m_mll_bins[0]);
@@ -535,18 +609,18 @@ EL::StatusCode ytRealLeptonsEfficiency::histInitialize ()
     //wk()->addOutput(h_eff_meff);
 
     // 2-dim histograms
-    h_2d_eff_pt_eta     = new TH2F("h_2d_eff_pt_eta", "eff_pt_eta;p_{T} [GeV];#eta;Efficiency", n_pt_bins, &m_pt_bins[0], n_eta_bins, &m_eta_bins[0]);
-    h_2d_eff_pt_nJets   = new TH2F("h_2d_eff_pt_nJets", "eff_pt_nJets;p_{T} [GeV];NJet;Efficiency", n_pt_bins, &m_pt_bins[0], n_NJet_bins, &m_NJet_bins[0]);
-    h_2d_eff_pt_dRjet   = new TH2F("h_2d_eff_pt_dRjet", "eff_pt_dRjet;p_{T} [GeV];dRjet;Efficiency", n_pt_bins, &m_pt_bins[0], n_deltaR_bins, &m_deltaR_bins[0]);
+    //h_2d_eff_pt_eta     = new TH2F("h_2d_eff_pt_eta", "eff_pt_eta;p_{T} [GeV];#eta;Efficiency", n_pt_bins, &m_pt_bins[0], n_eta_bins, &m_eta_bins[0]);
+    //h_2d_eff_pt_nJets   = new TH2F("h_2d_eff_pt_nJets", "eff_pt_nJets;p_{T} [GeV];NJet;Efficiency", n_pt_bins, &m_pt_bins[0], n_NJet_bins, &m_NJet_bins[0]);
+    //h_2d_eff_pt_dRjet   = new TH2F("h_2d_eff_pt_dRjet", "eff_pt_dRjet;p_{T} [GeV];dRjet;Efficiency", n_pt_bins, &m_pt_bins[0], n_deltaR_bins, &m_deltaR_bins[0]);
     //h_2d_eff_pt_Etmiss  = new TH2F("h_2d_eff_pt_Etmiss", "eff_pt_Etmiss;p_{T} [GeV];Etmiss;Efficiency", n_pt_bins, &m_pt_bins[0], n_Etmiss_bins, &m_Etmiss_bins[0]);
     //h_2d_eff_pt_meff    = new TH2F("h_2d_eff_pt_meff", "eff_pt_meff;p_{T} [GeV];meff;Efficiency", n_pt_bins, &m_pt_bins[0], n_meff_bins, &m_meff_bins[0]);
 
-    h_2d_eff_pt_eta->Sumw2();
-    h_2d_eff_pt_nJets->Sumw2();
+    //h_2d_eff_pt_eta->Sumw2();
+    //h_2d_eff_pt_nJets->Sumw2();
 
-    wk()->addOutput(h_2d_eff_pt_eta);
-    wk()->addOutput(h_2d_eff_pt_nJets);
-    wk()->addOutput(h_2d_eff_pt_dRjet);
+    //wk()->addOutput(h_2d_eff_pt_eta);
+    //wk()->addOutput(h_2d_eff_pt_nJets);
+    //wk()->addOutput(h_2d_eff_pt_dRjet);
     //wk()->addOutput(h_2d_eff_pt_Etmiss);
     //wk()->addOutput(h_2d_eff_pt_meff);
 
@@ -1044,6 +1118,74 @@ EL::StatusCode ytRealLeptonsEfficiency::execute ()
     wk()->tree()->GetEntry(wk()->treeEntry());
 
     // Dump histograms
+    double weight = 1.;
+    if (isData) {
+        weight = 1.;
+    }
+    else if (isMC) {
+        weight = normalization;
+    }
+
+    h_Nvtx->Fill(Nvtx, weight);
+    if (isData) {  // for Data: weight = 1.;
+        h_AvgMu->Fill(new_AvgMu * 1.0 / 1.09, weight);
+    }
+    else if (isMC) {
+        h_AvgMu->Fill(new_AvgMu, weight);
+    }
+    h_zPV->Fill(PV_z, weight);
+
+    TLorentzVector tlv_lept0, tlv_lept1;
+    if (NEl == 2 &&
+        El_charge->at(0) * El_charge->at(1) == -1) {
+        // OSee
+        if (isData) {  // for Data: weight = 1.;
+            h_AvgMu_OSee->Fill(new_AvgMu * 1.0 / 1.09, weight);
+        }
+        else if (isMC) {
+            h_AvgMu_OSee->Fill(new_AvgMu, weight);
+        }
+
+        tlv_lept0.SetPtEtaPhiE(El_pT->at(0), El_eta->at(0), El_phi->at(0), El_E->at(0));
+        tlv_lept1.SetPtEtaPhiE(El_pT->at(1), El_eta->at(1), El_phi->at(1), El_E->at(1));
+        double mll = (tlv_lept0 + tlv_lept1).M();
+        if (El_isBaseline->at(0) == 1 && El_isBaseline->at(1) == 1)
+            h_baseline_OSee_mll->Fill(mll / 1000., weight);
+        if (El_isSignal->at(0) == 1 && El_isSignal->at(1) == 1)
+            h_signal_OSee_mll->Fill(mll / 1000., weight);
+    }
+    if (NMu == 2 &&
+        Mu_charge->at(0) * Mu_charge->at(1) == -1) {
+        // OSmumu
+        if (isData) { // for Data: weight = 1.;
+            h_AvgMu_OSmumu->Fill(new_AvgMu * 1.0 / 1.09, weight);
+        }
+        else if (isMC) {
+            h_AvgMu_OSmumu->Fill(new_AvgMu, weight);
+        }
+
+        float Mu_Mass = 105.6583715;
+        tlv_lept0.SetPtEtaPhiM(Mu_pT->at(0), Mu_eta->at(0), Mu_phi->at(0), Mu_Mass);
+        tlv_lept1.SetPtEtaPhiM(Mu_pT->at(1), Mu_eta->at(1), Mu_phi->at(1), Mu_Mass);
+        double mll = (tlv_lept0 + tlv_lept1).M();
+        if (Mu_isBaseline->at(0) == 1 && Mu_isBaseline->at(1) == 1)
+            h_baseline_OSmumu_mll->Fill(mll / 1000., weight);
+        if (Mu_isSignal->at(0) == 1 && Mu_isSignal->at(1) == 1)
+            h_signal_OSmumu_mll->Fill(mll / 1000., weight);
+    }
+/*
+    if (vec_lept.size() > 0)
+        h_NLepts->Fill(vec_lept.at(0).get_number(), weight);
+    else
+        h_NLepts->Fill(0., weight);
+
+    if (vec_jets.size() > 0)
+        h_NJets->Fill(vec_jets.at(0).get_number(), weight);
+    else
+        h_NJets->Fill(0., weight);
+*/
+
+/*
     if (isData) {
         h_Nvtx->Fill(Nvtx);
         h_AvgMu->Fill(new_AvgMu * 1.0 / 1.09);
@@ -1077,8 +1219,7 @@ EL::StatusCode ytRealLeptonsEfficiency::execute ()
             if (Mu_isSignal->at(0) == 1 && Mu_isSignal->at(1) == 1)
                 h_signal_OSmumu_mll->Fill(mll / 1000.);
         }
-
-/*
+//
         if (vec_lept.size() > 0)
             h_NLepts->Fill(vec_lept.at(0).get_number());
         else
@@ -1088,10 +1229,10 @@ EL::StatusCode ytRealLeptonsEfficiency::execute ()
             h_NJets->Fill(vec_jets.at(0).get_number());
         else
             h_NJets->Fill(0.);
-*/
+//
     }
     else if (isMC) {
-        //double weight = luminosity * cross_section_kfactor_efficiency * 1000. * EventWeight * pileup_weight /*PRWWeight*/ / derivation_stat_weights;
+        //double weight = luminosity * cross_section_kfactor_efficiency * 1000. * EventWeight * pileup_weight / derivation_stat_weights;
         double weight = normalization;
         h_Nvtx_weighted->Fill(Nvtx, weight);
         h_AvgMu_weighted->Fill(new_AvgMu, weight);
@@ -1125,8 +1266,7 @@ EL::StatusCode ytRealLeptonsEfficiency::execute ()
             if (Mu_isSignal->at(0) == 1 && Mu_isSignal->at(1) == 1)
                 h_signal_OSmumu_mll_weighted->Fill(mll / 1000., weight);
         }
-
-/*
+//
         if (vec_lept.size() > 0)
             h_NLepts_weighted->Fill(vec_lept.at(0).get_number(), weight);
         else
@@ -1136,10 +1276,9 @@ EL::StatusCode ytRealLeptonsEfficiency::execute ()
             h_NJets_weighted->Fill(vec_jets.at(0).get_number(), weight);
         else
             h_NJets_weighted->Fill(0., weight);
-*/
+//
     }
-
-
+*/
 
     // Loop over all leptons
     if (lepton == "electron") {
@@ -1201,12 +1340,12 @@ EL::StatusCode ytRealLeptonsEfficiency::execute ()
 
     // Calculate the cut efficiency
     // option="B": Binomial errors are computed
-    h_cut_eff_LooseAndBLayerLLH_to_MediumLLH->Divide(h_baseline_LooseAndBLayerLLH_to_MediumLLH_cut, h_baseline_pt, 1, 1, "B");
-    h_cut_eff_CaloIso->Divide(h_baseline_CaloIso_cut, h_baseline_pt, 1, 1, "B");
-    h_cut_eff_TrackIso->Divide(h_baseline_TrackIso_cut, h_baseline_pt, 1, 1, "B");
-    h_cut_eff_Iso->Divide(h_baseline_Iso_cut, h_baseline_pt, 1, 1, "B");
-    h_cut_eff_z0->Divide(h_baseline_z0_cut, h_baseline_pt, 1, 1, "B");
-    h_cut_eff_sigd0->Divide(h_baseline_sigd0_cut, h_baseline_pt, 1, 1, "B");
+    // h_cut_eff_LooseAndBLayerLLH_to_MediumLLH->Divide(h_baseline_LooseAndBLayerLLH_to_MediumLLH_cut, h_baseline_pt, 1, 1, "B");
+    // h_cut_eff_CaloIso->Divide(h_baseline_CaloIso_cut, h_baseline_pt, 1, 1, "B");
+    // h_cut_eff_TrackIso->Divide(h_baseline_TrackIso_cut, h_baseline_pt, 1, 1, "B");
+    // h_cut_eff_Iso->Divide(h_baseline_Iso_cut, h_baseline_pt, 1, 1, "B");
+    // h_cut_eff_z0->Divide(h_baseline_z0_cut, h_baseline_pt, 1, 1, "B");
+    // h_cut_eff_sigd0->Divide(h_baseline_sigd0_cut, h_baseline_pt, 1, 1, "B");
 
     // Calculate the real lepton efficiency
     h_eff_pt->Divide(h_signal_pt, h_baseline_pt, 1, 1, "B");
@@ -1216,9 +1355,9 @@ EL::StatusCode ytRealLeptonsEfficiency::execute ()
     //h_eff_Etmiss->Divide(h_signal_Etmiss, h_baseline_Etmiss, 1, 1, "B");
     //h_eff_meff->Divide(h_signal_meff, h_baseline_meff, 1, 1, "B");
 
-    h_2d_eff_pt_eta->Divide(h_signal_pt_eta, h_baseline_pt_eta,1, 1, "B");
-    h_2d_eff_pt_nJets->Divide(h_signal_pt_nJets, h_baseline_pt_nJets,1, 1, "B");
-    h_2d_eff_pt_dRjet->Divide(h_signal_pt_dRjet, h_baseline_pt_dRjet,1, 1, "B");
+    //h_2d_eff_pt_eta->Divide(h_signal_pt_eta, h_baseline_pt_eta,1, 1, "B");
+    //h_2d_eff_pt_nJets->Divide(h_signal_pt_nJets, h_baseline_pt_nJets,1, 1, "B");
+    //h_2d_eff_pt_dRjet->Divide(h_signal_pt_dRjet, h_baseline_pt_dRjet,1, 1, "B");
     //h_2d_eff_pt_Etmiss->Divide(h_signal_pt_Etmiss, h_baseline_pt_Etmiss,1, 1, "B");
     //_2d_eff_pt_meff->Divide(h_signal_pt_meff, h_baseline_pt_meff,1, 1, "B");
 
@@ -1279,7 +1418,7 @@ EL::StatusCode ytRealLeptonsEfficiency::histFinalize ()
     //Info(function_name, "Function calls");
 
     this->make_baseline_mll_plot();
-    this->make_cut_efficiency_plot();
+    //this->make_cut_efficiency_plot();
 
     if (lepton == "electron") {
         this->make_electron_real_efficiency_plot();
@@ -1302,6 +1441,7 @@ void ytRealLeptonsEfficiency::set_binning_default()
     m_NJet_bins     = vector<float> (m_default_NJet_bins, m_default_NJet_bins + sizeof(m_default_NJet_bins) / sizeof(float));
     //m_Etmiss_bins   = vector<float> (m_default_Etmiss_bins, m_default_Etmiss_bins + sizeof(m_default_Etmiss_bins) / sizeof(float));
     //m_meff_bins     = vector<float> (m_default_meff_bins, m_default_meff_bins + sizeof(m_default_meff_bins) / sizeof(float));
+    m_AvgMu_bins    = vector<float> (m_default_AvgMu_bins, m_default_AvgMu_bins + sizeof(m_default_AvgMu_bins) / sizeof(float));
 }
 
 
@@ -1348,11 +1488,8 @@ void ytRealLeptonsEfficiency::loop_over_electrons()
         double calo_isolation = El_topoetcone20->at(n_el) / El_pT->at(n_el);
         double track_isolation = El_ptvarcone20->at(n_el) / El_pT->at(n_el);
 
-        float weight = 1.;
-        if (isData) {
-            weight = 1.;
-        }
-        else if (isMC) {
+        float weight = 1.; // Data weight = 1.
+        if (isMC) {
             weight = normalization * baseline_weight;
         }
 
@@ -1403,7 +1540,67 @@ void ytRealLeptonsEfficiency::loop_over_electrons()
             h_bkg_template_fail_CaloIso_and_TrackIso_pt_eta_mll->Fill(El_pT->at(n_el) / 1000., fabs(El_eta->at(n_el)), El_ZTandP_mll->at(n_el) / 1000., weight);
         }
 
-        // mll window
+        // 3-dim Cut efficiency
+        // Apply MediumLLH
+        // if (El_isMediumLH->at(n_el)) {
+        //     h_baseline_LooseAndBLayerLLH_to_MediumLLH_cut_pt_eta_mll->Fill(El_pT->at(n_el) / 1000., fabs(El_eta->at(n_el)), El_ZTandP_mll->at(n_el) / 1000., weight);
+        // }
+        // Apply topoetcone20/pt < 0.06
+        // if ((El_topoetcone20->at(n_el) /  El_pT->at(n_el)) < 0.06) {
+        //     h_baseline_CaloIso_cut_pt_eta_mll->Fill(El_pT->at(n_el) / 1000., fabs(El_eta->at(n_el)), El_ZTandP_mll->at(n_el) / 1000., weight);
+        // }
+        // Apply ptvarcone20/pt < 0.06
+        // if ((El_ptvarcone20->at(n_el) / El_pT->at(n_el)) < 0.06) {
+        //     h_baseline_TrackIso_cut_pt_eta_mll->Fill(El_pT->at(n_el) / 1000., fabs(El_eta->at(n_el)), El_ZTandP_mll->at(n_el) / 1000., weight);
+        // }
+        // Apply topoetcone20/pt < 0.06 && ptvarcone20/pt < 0.06 at the same time
+        // if ((El_topoetcone20->at(n_el) /  El_pT->at(n_el)) < 0.06 &&
+        //     (El_ptvarcone20->at(n_el) / El_pT->at(n_el)) < 0.06) {
+        //     h_baseline_Iso_cut_pt_eta_mll->Fill(El_pT->at(n_el) / 1000., fabs(El_eta->at(n_el)), El_ZTandP_mll->at(n_el) / 1000., weight);
+        // }
+        // Apply |z0*sin(theta)| < 0.5
+        // if (fabs(El_z0sinTheta->at(n_el)) < 0.5) {
+        //     h_baseline_z0_cut_pt_eta_mll->Fill(El_pT->at(n_el) / 1000., fabs(El_eta->at(n_el)), El_ZTandP_mll->at(n_el) / 1000., weight);
+        // }
+
+        // mll window: 60 < mll < 150
+        h_baseline_mll->Fill(El_ZTandP_mll->at(n_el) / 1000., weight);
+        h_baseline_pt_eta_mll->Fill(El_pT->at(n_el) / 1000., fabs(El_eta->at(n_el)), El_ZTandP_mll->at(n_el) / 1000., weight);
+        // Reset weight for signal leptons
+        if (isMC) {
+            weight = normalization * signal_weight;
+        }
+        if (El_isSignal->at(n_el)) {
+            h_signal_mll->Fill(El_ZTandP_mll->at(n_el) / 1000., weight);
+            h_signal_pt_eta_mll->Fill(El_pT->at(n_el) / 1000., fabs(El_eta->at(n_el)), El_ZTandP_mll->at(n_el) / 1000., weight);
+        }
+
+        if (isData) {
+            // Use probe electrons only
+            if (!El_isZProbe->at(n_el))
+                continue;
+        }
+        else if (isMC) {
+            if (process == "Zee") {
+                // Use probe electron only
+                if (!El_isZProbe->at(n_el))
+                    continue;
+            }
+            else if (process == "Zee_TandP_truth_matched") {
+                // Use truth match on top of probe electron
+                if (!El_isZProbe->at(n_el))
+                    continue;
+                if (!truth_match)
+                    continue;
+            }
+            else { // process == "GG_ttn1" || process == "ttbar" || process == "Zee_truth_match" || process == "Zmumu_truth_match"
+                // Use truth match
+                //cout << "process is " << process << endl;
+                if (!truth_match)
+                    continue;
+            }
+        }
+/*
         if (isData) {
             h_baseline_mll->Fill(El_ZTandP_mll->at(n_el) / 1000.);
             h_baseline_pt_eta_mll->Fill(El_pT->at(n_el) / 1000., fabs(El_eta->at(n_el)), El_ZTandP_mll->at(n_el) / 1000.);
@@ -1445,9 +1642,18 @@ void ytRealLeptonsEfficiency::loop_over_electrons()
                     continue;
             }
         }
+*/
+        // Reset weight for signal leptons
+        if (isMC) {
+            weight = normalization * baseline_weight;
+        }
+
+        // We use |eta| < 2 for electrons
+        if (fabs(El_eta->at(n_el)) > 2.)
+            continue;
 
         // 1-dim histograms
-        //h_baseline_mll->Fill(El_ZTandP_mll->at(n_el) / 1000.);
+        //h_baseline_mll->Fill(El_ZTandP_mll->at(n_el) / 1000.); // only dump 80 < mll < 100
         h_baseline_pt->Fill(El_pT->at(n_el) / 1000., weight);
         h_baseline_eta->Fill(fabs(El_eta->at(n_el)), weight);
         //h_baseline_d0pvtx->Fill(El_d0pvtx->at(n_el), weight);
@@ -1468,9 +1674,22 @@ void ytRealLeptonsEfficiency::loop_over_electrons()
         //h_baseline_pt_Etmiss->Fill(El_pT->at(n_el) / 1000., Etmiss_TST_Et / 1000., weight);
         //h_baseline_pt_meff->Fill(El_pT->at(n_el) / 1000., meff / 1000., weight);
         // 3-dim histograms
-        //h_baseline_pt_eta_mll->Fill(El_pT->at(n_el) / 1000., El_eta->at(n_el), El_ZTandP_mll->at(n_el) / 1000., weight);
+        //h_baseline_pt_eta_mll->Fill(El_pT->at(n_el) / 1000., fabs(El_eta->at(n_el)), El_ZTandP_mll->at(n_el) / 1000., weight);  // only dump 80 < mll < 100
         h_baseline_pt_eta_dRjet->Fill(El_pT->at(n_el) / 1000., fabs(El_eta->at(n_el)), El_DR_closest_Jet->at(n_el), weight);
         h_baseline_pt_dRjet_mll->Fill(El_pT->at(n_el) / 1000., El_DR_closest_Jet->at(n_el), El_ZTandP_mll->at(n_el) / 1000., weight);
+        h_baseline_eta_dRjet_mll->Fill(fabs(El_eta->at(n_el)), El_DR_closest_Jet->at(n_el), El_ZTandP_mll->at(n_el) / 1000., weight);
+        if (isData) {
+            h_baseline_pt_eta_AvgMu->Fill(El_pT->at(n_el) / 1000., fabs(El_eta->at(n_el)), new_AvgMu * 1.0 / 1.09, weight);
+            h_baseline_pt_dRjet_AvgMu->Fill(El_pT->at(n_el) / 1000., El_DR_closest_Jet->at(n_el), new_AvgMu * 1.0 / 1.09, weight);
+            h_baseline_eta_dRjet_AvgMu->Fill(fabs(El_eta->at(n_el)), El_DR_closest_Jet->at(n_el), new_AvgMu * 1.0 / 1.09, weight);
+        }
+        else if (isMC) {
+            h_baseline_pt_eta_AvgMu->Fill(El_pT->at(n_el) / 1000., fabs(El_eta->at(n_el)), new_AvgMu, weight);
+            h_baseline_pt_dRjet_AvgMu->Fill(El_pT->at(n_el) / 1000., El_DR_closest_Jet->at(n_el), new_AvgMu, weight);
+            h_baseline_eta_dRjet_AvgMu->Fill(fabs(El_eta->at(n_el)), El_DR_closest_Jet->at(n_el), new_AvgMu, weight);
+        }
+/*
+        // Cut efficiency
         // Apply MediumLLH
         if (El_isMediumLH->at(n_el)) {
             h_baseline_LooseAndBLayerLLH_to_MediumLLH_cut->Fill(El_pT->at(n_el) / 1000., weight);
@@ -1492,16 +1711,38 @@ void ytRealLeptonsEfficiency::loop_over_electrons()
         if (fabs(El_z0sinTheta->at(n_el)) < 0.5) {
             h_baseline_z0_cut->Fill(El_pT->at(n_el) / 1000., weight);
         }
+*/
+        // 3-dim Cut efficiency
+        // Apply MediumLLH
+        if (El_isMediumLH->at(n_el)) {
+            h_baseline_LooseAndBLayerLLH_to_MediumLLH_cut_pt_eta_mll->Fill(El_pT->at(n_el) / 1000., fabs(El_eta->at(n_el)), El_ZTandP_mll->at(n_el) / 1000., weight);
+        }
+        // Apply topoetcone20/pt < 0.06
+        if ((El_topoetcone20->at(n_el) /  El_pT->at(n_el)) < 0.06) {
+            h_baseline_CaloIso_cut_pt_eta_mll->Fill(El_pT->at(n_el) / 1000., fabs(El_eta->at(n_el)), El_ZTandP_mll->at(n_el) / 1000., weight);
+        }
+        // Apply ptvarcone20/pt < 0.06
+        if ((El_ptvarcone20->at(n_el) / El_pT->at(n_el)) < 0.06) {
+            h_baseline_TrackIso_cut_pt_eta_mll->Fill(El_pT->at(n_el) / 1000., fabs(El_eta->at(n_el)), El_ZTandP_mll->at(n_el) / 1000., weight);
+        }
+        // Apply topoetcone20/pt < 0.06 && ptvarcone20/pt < 0.06 at the same time
+        if ((El_topoetcone20->at(n_el) /  El_pT->at(n_el)) < 0.06 &&
+            (El_ptvarcone20->at(n_el) / El_pT->at(n_el)) < 0.06) {
+            h_baseline_Iso_cut_pt_eta_mll->Fill(El_pT->at(n_el) / 1000., fabs(El_eta->at(n_el)), El_ZTandP_mll->at(n_el) / 1000., weight);
+        }
+        // Apply |z0*sin(theta)| < 0.5
+        if (fabs(El_z0sinTheta->at(n_el)) < 0.5) {
+            h_baseline_z0_cut_pt_eta_mll->Fill(El_pT->at(n_el) / 1000., fabs(El_eta->at(n_el)), El_ZTandP_mll->at(n_el) / 1000., weight);
+        }
 
         // Reset weight for signal leptons
-        weight = 1.;
         if (isMC) {
             weight = normalization * signal_weight;
         }
         // All the electrons here are signal electrons
         if (El_isSignal->at(n_el)) {
             // 1-dim histograms
-            //h_signal_mll->Fill(El_ZTandP_mll->at(n_el) / 1000.);
+            //h_signal_mll->Fill(El_ZTandP_mll->at(n_el) / 1000., weight); // only dump 80 < mll < 100
             h_signal_pt->Fill(El_pT->at(n_el) / 1000., weight);
             h_signal_eta->Fill(fabs(El_eta->at(n_el)), weight);
             //h_signal_d0pvtx->Fill(El_d0pvtx->at(n_el), weight);
@@ -1522,9 +1763,20 @@ void ytRealLeptonsEfficiency::loop_over_electrons()
             //h_signal_pt_Etmiss->Fill(El_pT->at(n_el) / 1000.,Etmiss_TST_Et / 1000., weight);
             //h_signal_pt_meff->Fill(El_pT->at(n_el) / 1000., meff / 1000., weight);
             // 3-dim histograms
-            //h_signal_pt_eta_mll->Fill(El_pT->at(n_el) / 1000., El_eta->at(n_el), El_ZTandP_mll->at(n_el) / 1000., weight);
+            //h_signal_pt_eta_mll->Fill(El_pT->at(n_el) / 1000., fabs(El_eta->at(n_el)), El_ZTandP_mll->at(n_el) / 1000., weight); // only dump 80 < mll < 100
             h_signal_pt_eta_dRjet->Fill(El_pT->at(n_el) / 1000., fabs(El_eta->at(n_el)), El_DR_closest_Jet->at(n_el), weight);
             h_signal_pt_dRjet_mll->Fill(El_pT->at(n_el) / 1000., El_DR_closest_Jet->at(n_el), El_ZTandP_mll->at(n_el) / 1000., weight);
+            h_signal_eta_dRjet_mll->Fill(fabs(El_eta->at(n_el)), El_DR_closest_Jet->at(n_el), El_ZTandP_mll->at(n_el) / 1000., weight);
+            if (isData) {
+                h_signal_pt_eta_AvgMu->Fill(El_pT->at(n_el) / 1000., fabs(El_eta->at(n_el)), new_AvgMu * 1.0 / 1.09, weight);
+                h_signal_pt_dRjet_AvgMu->Fill(El_pT->at(n_el) / 1000., El_DR_closest_Jet->at(n_el), new_AvgMu * 1.0 / 1.09, weight);
+                h_signal_eta_dRjet_AvgMu->Fill(fabs(El_eta->at(n_el)), El_DR_closest_Jet->at(n_el), new_AvgMu * 1.0 / 1.09, weight);
+            }
+            else if (isMC) {
+                h_signal_pt_eta_AvgMu->Fill(El_pT->at(n_el) / 1000., fabs(El_eta->at(n_el)), new_AvgMu, weight);
+                h_signal_pt_dRjet_AvgMu->Fill(El_pT->at(n_el) / 1000., El_DR_closest_Jet->at(n_el), new_AvgMu, weight);
+                h_signal_eta_dRjet_AvgMu->Fill(fabs(El_eta->at(n_el)), El_DR_closest_Jet->at(n_el), new_AvgMu, weight);
+            }
         }
     }
 }
@@ -1556,15 +1808,49 @@ void ytRealLeptonsEfficiency :: loop_over_muons()
         // Trigger matching
         // do something here
 
-        float weight = 1.;
-        if (isData) {
-            weight = 1.;
-        }
-        else if (isMC) {
+        float weight = 1.; // Data weight = 1.
+        if (isMC) {
             weight = normalization * baseline_weight;
         }
 
-        // mll window
+        // mll window: 60 < mll < 150
+        h_baseline_mll->Fill(Mu_ZTandP_mll->at(n_mu) / 1000., weight);
+        h_baseline_pt_eta_mll->Fill(Mu_pT->at(n_mu) / 1000., fabs(Mu_eta->at(n_mu)), Mu_ZTandP_mll->at(n_mu) / 1000., weight);
+        // Reset weight for signal leptons
+        if (isMC) {
+            weight = normalization * signal_weight;
+        }
+        if (Mu_isSignal->at(n_mu)) {
+            h_signal_mll->Fill(Mu_ZTandP_mll->at(n_mu) / 1000., weight);
+            h_signal_pt_eta_mll->Fill(Mu_pT->at(n_mu) / 1000., fabs(Mu_eta->at(n_mu)), Mu_ZTandP_mll->at(n_mu) / 1000., weight);
+        }
+
+        if (isData) {
+            // Use probe muons only
+            if (!Mu_isZProbe->at(n_mu))
+                continue;
+        }
+        else if (isMC) {
+            if (process == "Zmumu") {
+                // Use probe muons only
+                if (!Mu_isZProbe->at(n_mu))
+                    continue;
+            }
+            else if (process == "Zmumu_TandP_truth_matched") {
+                // Use truth match on top of probe electron
+                if (!Mu_isZProbe->at(n_mu))
+                    continue;
+                if (!truth_match)
+                    continue;
+            }
+            else { // process == "GG_ttn1" || process == "ttbar" || process == "Zee_truth_match" || process == "Zmumu_truth_match"
+                // Use truth match
+                //cout << "process is " << process << endl;
+                if (!truth_match)
+                    continue;
+            }
+        }
+/*
         if (isData) {
             h_baseline_mll->Fill(Mu_ZTandP_mll->at(n_mu) / 1000.);
             h_baseline_pt_eta_mll->Fill(Mu_pT->at(n_mu) / 1000., fabs(Mu_eta->at(n_mu)), Mu_ZTandP_mll->at(n_mu) / 1000.);
@@ -1606,9 +1892,14 @@ void ytRealLeptonsEfficiency :: loop_over_muons()
                     continue;
             }
         }
+*/
+        // Reset weight for signal leptons
+        if (isMC) {
+            weight = normalization * baseline_weight;
+        }
 
         // 1-dim histograms
-        //h_baseline_mll->Fill(Mu_ZTandP_mll->at(n_mu) / 1000.);
+        //h_baseline_mll->Fill(Mu_ZTandP_mll->at(n_mu) / 1000., weight); // only dump 80 < mll < 100
         h_baseline_pt->Fill(Mu_pT->at(n_mu) / 1000., weight);
         h_baseline_eta->Fill(fabs(Mu_eta->at(n_mu)), weight);
         //h_baseline_d0pvtx->Fill(Mu_d0pvtx->at(n_mu), weight);
@@ -1629,9 +1920,22 @@ void ytRealLeptonsEfficiency :: loop_over_muons()
         //h_baseline_pt_Etmiss->Fill(Mu_pT->at(n_mu) / 1000.,Etmiss_TST_Et / 1000., weight);
         //h_baseline_pt_meff->Fill(Mu_pT->at(n_mu) / 1000., meff / 1000., weight);
         // 3-dim histograms
-        //h_baseline_pt_eta_mll->Fill(Mu_pT->at(n_mu) / 1000., Mu_eta->at(n_mu), Mu_ZTandP_mll->at(n_mu) / 1000., weight);
+        //h_baseline_pt_eta_mll->Fill(Mu_pT->at(n_mu) / 1000., fabs(Mu_eta->at(n_mu)), Mu_ZTandP_mll->at(n_mu) / 1000., weight); // only dump 80 < mll < 100
         h_baseline_pt_eta_dRjet->Fill(Mu_pT->at(n_mu) / 1000., fabs(Mu_eta->at(n_mu)), Mu_DR_closest_Jet->at(n_mu), weight);
         h_baseline_pt_dRjet_mll->Fill(Mu_pT->at(n_mu) / 1000., Mu_DR_closest_Jet->at(n_mu), Mu_ZTandP_mll->at(n_mu) / 1000., weight);
+        h_baseline_eta_dRjet_mll->Fill(fabs(Mu_eta->at(n_mu)), Mu_DR_closest_Jet->at(n_mu), Mu_ZTandP_mll->at(n_mu) / 1000., weight);
+        if (isData) {
+            h_baseline_pt_eta_AvgMu->Fill(Mu_pT->at(n_mu) / 1000., fabs(Mu_eta->at(n_mu)), new_AvgMu * 1.0 / 1.09, weight);
+            h_baseline_pt_dRjet_AvgMu->Fill(Mu_pT->at(n_mu) / 1000., Mu_DR_closest_Jet->at(n_mu), new_AvgMu * 1.0 / 1.09, weight);
+            h_baseline_eta_dRjet_AvgMu->Fill(fabs(Mu_eta->at(n_mu)), Mu_DR_closest_Jet->at(n_mu), new_AvgMu * 1.0 / 1.09, weight);
+        }
+        else if (isMC) {
+            h_baseline_pt_eta_AvgMu->Fill(Mu_pT->at(n_mu) / 1000., fabs(Mu_eta->at(n_mu)), new_AvgMu, weight);
+            h_baseline_pt_dRjet_AvgMu->Fill(Mu_pT->at(n_mu) / 1000., Mu_DR_closest_Jet->at(n_mu), new_AvgMu, weight);
+            h_baseline_eta_dRjet_AvgMu->Fill(fabs(Mu_eta->at(n_mu)), Mu_DR_closest_Jet->at(n_mu), new_AvgMu, weight);
+        }
+/*
+        // cut efficiency
         // Apply ptvarcone30/pt < 0.06
         if ((Mu_ptvarcone30->at(n_mu) / Mu_pT->at(n_mu)) < 0.06) {
             h_baseline_TrackIso_cut->Fill(Mu_pT->at(n_mu) / 1000., weight);
@@ -1644,16 +1948,29 @@ void ytRealLeptonsEfficiency :: loop_over_muons()
         if (fabs(Mu_sigd0->at(n_mu)) < 3) {
             h_baseline_sigd0_cut->Fill(Mu_pT->at(n_mu) / 1000., weight);
         }
+*/
+        // 3-dim cut efficiency
+        // Apply ptvarcone30/pt < 0.06
+        if ((Mu_ptvarcone30->at(n_mu) / Mu_pT->at(n_mu)) < 0.06) {
+            h_baseline_TrackIso_cut_pt_eta_mll->Fill(Mu_pT->at(n_mu) / 1000., fabs(Mu_eta->at(n_mu)), Mu_ZTandP_mll->at(n_mu) / 1000., weight);
+        }
+        // Apply |z0*sin(theta)| < 0.5
+        if (fabs(Mu_z0sinTheta->at(n_mu)) < 0.5) {
+            h_baseline_z0_cut_pt_eta_mll->Fill(Mu_pT->at(n_mu) / 1000., fabs(Mu_eta->at(n_mu)), Mu_ZTandP_mll->at(n_mu) / 1000., weight);
+        }
+        // Apply |d0sig| < 3
+        if (fabs(Mu_sigd0->at(n_mu)) < 3) {
+            h_baseline_sigd0_cut_pt_eta_mll->Fill(Mu_pT->at(n_mu) / 1000., fabs(Mu_eta->at(n_mu)), Mu_ZTandP_mll->at(n_mu) / 1000., weight);
+        }
 
         // Reset weight for signal leptons
-        weight = 1.;
         if (isMC) {
             weight = normalization * signal_weight;
         }
         // All the muons here are signal muons
         if (Mu_isSignal->at(n_mu)) {
             // 1-dim histograms
-            h_signal_mll->Fill(Mu_ZTandP_mll->at(n_mu) / 1000., weight);
+            //h_signal_mll->Fill(Mu_ZTandP_mll->at(n_mu) / 1000., weight); // only dump 80 < mll < 100
             h_signal_pt->Fill(Mu_pT->at(n_mu) / 1000., weight);
             h_signal_eta->Fill(fabs(Mu_eta->at(n_mu)), weight);
             //h_signal_d0pvtx->Fill(Mu_d0pvtx->at(n_mu), weight);
@@ -1674,9 +1991,20 @@ void ytRealLeptonsEfficiency :: loop_over_muons()
             //h_signal_pt_Etmiss->Fill(Mu_pT->at(n_mu) / 1000.,Etmiss_TST_Et / 1000., weight);
             //h_signal_pt_meff->Fill(Mu_pT->at(n_mu) / 1000., meff / 1000., weight);
             // 3-dim histograms
-            //h_signal_pt_eta_mll->Fill(Mu_pT->at(n_mu) / 1000., Mu_eta->at(n_mu), Mu_ZTandP_mll->at(n_mu) / 1000., weight);
+            //h_signal_pt_eta_mll->Fill(Mu_pT->at(n_mu) / 1000., fabs(Mu_eta->at(n_mu)), Mu_ZTandP_mll->at(n_mu) / 1000., weight); // only dump 80 < mll < 100
             h_signal_pt_eta_dRjet->Fill(Mu_pT->at(n_mu) / 1000., fabs(Mu_eta->at(n_mu)), Mu_DR_closest_Jet->at(n_mu), weight);
             h_signal_pt_dRjet_mll->Fill(Mu_pT->at(n_mu) / 1000., Mu_DR_closest_Jet->at(n_mu), Mu_ZTandP_mll->at(n_mu) / 1000., weight);
+            h_signal_eta_dRjet_mll->Fill(fabs(Mu_eta->at(n_mu)), Mu_DR_closest_Jet->at(n_mu), Mu_ZTandP_mll->at(n_mu) / 1000., weight);
+            if (isData) {
+                h_signal_pt_eta_AvgMu->Fill(Mu_pT->at(n_mu) / 1000., fabs(Mu_eta->at(n_mu)), new_AvgMu * 1.0 / 1.09, weight);
+                h_signal_pt_dRjet_AvgMu->Fill(Mu_pT->at(n_mu) / 1000., Mu_DR_closest_Jet->at(n_mu), new_AvgMu * 1.0 / 1.09, weight);
+                h_signal_eta_dRjet_AvgMu->Fill(fabs(Mu_eta->at(n_mu)), Mu_DR_closest_Jet->at(n_mu), new_AvgMu * 1.0 / 1.09, weight);
+            }
+            else if (isMC) {
+                h_signal_pt_eta_AvgMu->Fill(Mu_pT->at(n_mu) / 1000., fabs(Mu_eta->at(n_mu)), new_AvgMu, weight);
+                h_signal_pt_dRjet_AvgMu->Fill(Mu_pT->at(n_mu) / 1000., Mu_DR_closest_Jet->at(n_mu), new_AvgMu, weight);
+                h_signal_eta_dRjet_AvgMu->Fill(fabs(Mu_eta->at(n_mu)), Mu_DR_closest_Jet->at(n_mu), new_AvgMu, weight);
+            }
         }
     }
 }
@@ -1686,6 +2014,7 @@ void ytRealLeptonsEfficiency :: loop_over_muons()
 void ytRealLeptonsEfficiency::make_baseline_mll_plot()
 {
     baseline_mll_plot = new TCanvas("baseline_mll", "Baseline M_{ll}", 500, 500);
+    baseline_mll_plot->SetLeftMargin(0.12);
     baseline_mll_plot->cd();
 
     TH1F *h_mll = (TH1F *)h_baseline_pt_eta_mll->ProjectionZ("");
@@ -1697,6 +2026,7 @@ void ytRealLeptonsEfficiency::make_baseline_mll_plot()
     h_mll->SetTitle("");
     h_mll->SetXTitle("M_{ll}");
     h_mll->SetYTitle("Number of probe leptos");
+    h_mll->GetYaxis()->SetTitleOffset(1.5);
     h_mll->Draw();
 
     wk()->addOutput(baseline_mll_plot);

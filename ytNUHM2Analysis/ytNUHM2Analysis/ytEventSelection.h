@@ -612,25 +612,25 @@ public:
     TH1F *h_NLepts; //!
     TH1F *h_NJets; //!
 
-    TH1F *h_Nvtx_weighted; //!
-    TH1F *h_AvgMu_weighted; //!
-    TH1F *h_NLepts_weighted; //!
-    TH1F *h_NJets_weighted; //!
+    // TH1F *h_Nvtx_weighted; //!
+    // TH1F *h_AvgMu_weighted; //!
+    // TH1F *h_NLepts_weighted; //!
+    // TH1F *h_NJets_weighted; //!
 
     TH1F *h_AvgMu_OSee; //!
     TH1F *h_AvgMu_OSmumu; //!
-    TH1F *h_AvgMu_OSee_weighted; //!
-    TH1F *h_AvgMu_OSmumu_weighted; //!
+    // TH1F *h_AvgMu_OSee_weighted; //!
+    // TH1F *h_AvgMu_OSmumu_weighted; //!
 
     TH1F *h_baseline_OSee_mll; //!
     TH1F *h_baseline_OSmumu_mll; //!
-    TH1F *h_baseline_OSee_mll_weighted; //!
-    TH1F *h_baseline_OSmumu_mll_weighted; //!
+    // TH1F *h_baseline_OSee_mll_weighted; //!
+    // TH1F *h_baseline_OSmumu_mll_weighted; //!
 
     TH1F *h_signal_OSee_mll; //!
     TH1F *h_signal_OSmumu_mll; //!
-    TH1F *h_signal_OSee_mll_weighted; //!
-    TH1F *h_signal_OSmumu_mll_weighted; //!
+    // TH1F *h_signal_OSee_mll_weighted; //!
+    // TH1F *h_signal_OSmumu_mll_weighted; //!
 
     // this is a standard constructor
     ytEventSelection ();
