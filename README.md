@@ -7,13 +7,24 @@ This is SS/3L+jet cutflows study v44.
 ### Setting:
 
 
+### v01-15-14. (newskim branch) Add trigger systematic uncertainties
+1. `run_all_RLE.sh`: Add dilepton trigger and dilepton trigger but fail single lepton trigger
+2. `RLE.cxx`: comment the Sherpa part, add trigger selection
+3. `ytRealLeptonsEfficiency.h`: uncomment the cut efficiency histograms, append `_pt` to the 1-dim cut hisgotrams.
+4. `ytRealLeptonsEfficiency.cxx`: 
+   * Uncomment the cut efficiency histograms
+   * Append `_pt` to the 1-dim cut histograms
+   * Add trigger study
+   * Modify the plotting functions
+   * Add |eta| < 2 for electron 1-dim cut histograms  
+
 ### v01-15-13. (newskim branch) Remove the weighted histograms and modify the corresponding codes.:
-1. Remove the weighted histograms in `make_AvgMu_and_mll.py` and `ytEventSelection`
-2. In `ytRealLeptonsEfficiency`:
- *. Remove the weighted histograms
- *. Add 3-dim histograms for cut efficiency study and for AvgMu
- *. Comment 2-dim efficiency and cut eff histograms
- *. Add AvgMu binnings
+1. `make_AvgMu_and_mll.py` and `ytEventSelection`: remove the weighted histograms
+2. `ytRealLeptonsEfficiency`:
+   * Remove the weighted histograms
+   * Add 3-dim histograms for cut efficiency study and for AvgMu
+   * Comment 2-dim efficiency and cut eff histograms
+   * Add AvgMu binnings
 3. Change the path for the skimmed files in `RLE.cxx`
 
 ### v01-15-12. (newskim branch) Add fine deltaR binnings
@@ -23,22 +34,22 @@ This is SS/3L+jet cutflows study v44.
 4. Add more dR and pt bins in `run_relative_differences_of_efficiency.py`
 5. Change cosmetics in `make_final_RLE_plots.py`
 6. In `ytPlots.C`:
- *. Change cosmetics.
- *. Re-calculate the cut efficiency in `yt_make_cut_efficiency_plot_2()`
- *. Add new function `yt_deltaR_baseline_and_signal_distributions()`
+   * Change cosmetics.
+   * Re-calculate the cut efficiency in `yt_make_cut_efficiency_plot_2()`
+   * Add new function `yt_deltaR_baseline_and_signal_distributions()`
 
 
 ### v01-15-11. (newskim branch) Add python scripts
-1. Change the `inputFilePath` in `RLE.cxx`
-2. Add `h_eff_dRjet->Sumw2()` in `ytRealLeptonsEfficiency.cxx`
+1. `RLE.cxx`: change the `inputFilePath`
+2. `ytRealLeptonsEfficiency.cxx`: add `h_eff_dRjet->Sumw2()`
 3. Add `ytBackground_subtraction.C` and `ytRelative_difference_of_efficiency.C` in `scripts/`
-4. In `ytPlots.C`:
- *. Change the input file and path in 
- *. Save the figures of `baseline_and_signal_mll_distribution` for Mee and Mmumu
- *. Add one new function `yt_make_cut_efficiency_plot_2()`
- *. Re-calculate the efficiency for data in `yt_make_real_efficiency_plots()`
- *. Change the tab to space.
- *. Modify the cosmatic of figures.
+4. `ytPlots.C`:
+   * Change the input file and path
+   * Save the figures of `baseline_and_signal_mll_distribution` for Mee and Mmumu
+   * Add one new function `yt_make_cut_efficiency_plot_2()`
+   * Re-calculate the efficiency for data in `yt_make_real_efficiency_plots()`
+   * Change the tab to space.
+   * Modify the cosmatic of figures.
 5. Add python scripts
 
 
@@ -71,18 +82,18 @@ This is SS/3L+jet cutflows study v44.
 
 
 ### v01-15-03. (newskim branch) Modify `ytEventSelection.cxx` to let skim works
-1. In `yt_skim`: Change `initialize(TTree *tree, string process)` to `initialize(TTree *tree)`.
-2. In `yt_optimization`: Change the type of variables related to normalization from `double` to `float`.
+1. `yt_skim`: Change `initialize(TTree *tree, string process)` to `initialize(TTree *tree)`.
+2. `yt_optimization`: Change the type of variables related to normalization from `double` to `float`.
 3. Change space in `Run.cxx`, `run_all_skim.sh`, and `yt_optimization.cxx`
-4. In `ytEventSelection.cxx`:
+4. `ytEventSelection.cxx`:
    * Add the derivation weight back to the weight calculation.
    * Move `m_skim->set_isMC(isMC)`, `m_skim->set_isData(isData)`, and `m_skim->set_process(process)` from `execute ()` to `initialize ()`
    * Modify the method to fill `TLorentzVector` for electrons and muons.
 5. Move `ytRealLeptonsEfficiency_Data` and `ytRealLeptonsEfficiency_MC` to `misc/`.
 6. Add `ytRealLeptonsEfficiency`. So need to modify `LinkDef.h` and `RLE.cxx`.
 7. Move common methods in `ytEventSelection`, `yt_optimization`, and `yt_skim` to `yt_useful_functions`.
-8. In `yt_useful_functions`: modify the method to fill `TLorentzVector` for electrons and muons.
-9. In `yt_skim.cxx` comment `calculate_mll()`.
+8. `yt_useful_functions`: modify the method to fill `TLorentzVector` for electrons and muons.
+9. `yt_skim.cxx` comment `calculate_mll()`.
 
 
 ### v01-15-02. (newskim branch) Add raw vectors back
@@ -135,7 +146,6 @@ The lumi for 2015 + 2016 data is 3.2 + 33.3 = 36.5 fb-1
 * new file:   `ytNUHM2Analysis/util/RLE.cxx`
 * new file:   `ytNUHM2Analysis/ytNUHM2Analysis/ytRealLeptonsEfficiency_Data.h`
 * new file:   `ytNUHM2Analysis/ytNUHM2Analysis/ytRealLeptonsEfficiency_MC.h`
-
 
 
 ### v01-05. (oldskim branch) Modify skim code so it can run over different dataset now.

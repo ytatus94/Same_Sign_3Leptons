@@ -320,28 +320,28 @@ EL::StatusCode ytRealLeptonsEfficiency::histInitialize ()
     wk()->addOutput(h_baseline_dRjet);
     //wk()->addOutput(h_baseline_Etmiss);
     //wk()->addOutput(h_baseline_meff);
-/*
-    h_baseline_LooseAndBLayerLLH_to_MediumLLH_cut = new TH1F("h_baseline_LooseAndBLayerLLH_to_MediumLLH_cut", "LooseAndBLayerLLH_to_MediumLLH_cut;p_{T} [GeV];Events", n_pt_bins, &m_pt_bins[0]);
-    h_baseline_CaloIso_cut  = new TH1F("h_baseline_CaloIso_cut", "CaloIso_cut;p_{T} [GeV];Events", n_pt_bins, &m_pt_bins[0]);
-    h_baseline_TrackIso_cut = new TH1F("h_baseline_TrackIso_cut", "TrackIso_cut;p_{T} [GeV];Events", n_pt_bins, &m_pt_bins[0]);
-    h_baseline_Iso_cut      = new TH1F("h_baseline_Iso_cut", "Iso_cut;p_{T} [GeV];Events", n_pt_bins, &m_pt_bins[0]);
-    h_baseline_z0_cut       = new TH1F("h_baseline_z0_cut", "z0_cut;p_{T} [GeV];Events", n_pt_bins, &m_pt_bins[0]);
-    h_baseline_sigd0_cut    = new TH1F("h_baseline_sigd0_cut", "sigd0_cut;p_{T} [GeV];Events", n_pt_bins, &m_pt_bins[0]);
 
-    h_baseline_LooseAndBLayerLLH_to_MediumLLH_cut->Sumw2();
-    h_baseline_CaloIso_cut->Sumw2();
-    h_baseline_TrackIso_cut->Sumw2();
-    h_baseline_Iso_cut->Sumw2();
-    h_baseline_z0_cut->Sumw2();
-    h_baseline_sigd0_cut->Sumw2();
+    h_baseline_LooseAndBLayerLLH_to_MediumLLH_cut_pt = new TH1F("h_baseline_LooseAndBLayerLLH_to_MediumLLH_cut_pt", "LooseAndBLayerLLH_to_MediumLLH_cut;p_{T} [GeV];Events", n_pt_bins, &m_pt_bins[0]);
+    h_baseline_CaloIso_cut_pt  = new TH1F("h_baseline_CaloIso_cut_pt", "CaloIso_cut;p_{T} [GeV];Events", n_pt_bins, &m_pt_bins[0]);
+    h_baseline_TrackIso_cut_pt = new TH1F("h_baseline_TrackIso_cut_pt", "TrackIso_cut;p_{T} [GeV];Events", n_pt_bins, &m_pt_bins[0]);
+    h_baseline_Iso_cut_pt      = new TH1F("h_baseline_Iso_cut_pt", "Iso_cut;p_{T} [GeV];Events", n_pt_bins, &m_pt_bins[0]);
+    h_baseline_z0_cut_pt       = new TH1F("h_baseline_z0_cut_pt", "z0_cut;p_{T} [GeV];Events", n_pt_bins, &m_pt_bins[0]);
+    h_baseline_sigd0_cut_pt    = new TH1F("h_baseline_sigd0_cut_pt", "sigd0_cut;p_{T} [GeV];Events", n_pt_bins, &m_pt_bins[0]);
 
-    wk()->addOutput(h_baseline_LooseAndBLayerLLH_to_MediumLLH_cut);
-    wk()->addOutput(h_baseline_CaloIso_cut);
-    wk()->addOutput(h_baseline_TrackIso_cut);
-    wk()->addOutput(h_baseline_Iso_cut);
-    wk()->addOutput(h_baseline_z0_cut);
-    wk()->addOutput(h_baseline_sigd0_cut);
-*/
+    h_baseline_LooseAndBLayerLLH_to_MediumLLH_cut_pt->Sumw2();
+    h_baseline_CaloIso_cut_pt->Sumw2();
+    h_baseline_TrackIso_cut_pt->Sumw2();
+    h_baseline_Iso_cut_pt->Sumw2();
+    h_baseline_z0_cut_pt->Sumw2();
+    h_baseline_sigd0_cut_pt->Sumw2();
+
+    wk()->addOutput(h_baseline_LooseAndBLayerLLH_to_MediumLLH_cut_pt);
+    wk()->addOutput(h_baseline_CaloIso_cut_pt);
+    wk()->addOutput(h_baseline_TrackIso_cut_pt);
+    wk()->addOutput(h_baseline_Iso_cut_pt);
+    wk()->addOutput(h_baseline_z0_cut_pt);
+    wk()->addOutput(h_baseline_sigd0_cut_pt);
+
     // 2-dim histograms
     h_baseline_pt_eta       = new TH2F("h_baseline_pt_eta", "p_{T} vs #eta;p_{T} [GeV];#eta", n_pt_bins, &m_pt_bins[0], n_eta_bins, &m_eta_bins[0]);
     h_baseline_pt_nJets     = new TH2F("h_baseline_pt_nJets", "p_{T} vs NJet;p_{T} [GeV];NJet", n_pt_bins, &m_pt_bins[0], n_NJet_bins, &m_NJet_bins[0]);
@@ -493,26 +493,26 @@ EL::StatusCode ytRealLeptonsEfficiency::histInitialize ()
     wk()->addOutput(h_signal_eta_dRjet_mll);
 
     // Cut efficiency histograms
-    // h_cut_eff_LooseAndBLayerLLH_to_MediumLLH = new TH1F("h_cut_eff_LooseAndBLayerLLH_to_MediumLLH", "LooseAndBLayerLLH_to_MediumLLH;p_{T} [GeV];Efficiency", n_pt_bins, &m_pt_bins[0]);
-    // h_cut_eff_CaloIso   = new TH1F("h_cut_eff_CaloIso", "CaloIso;p_{T} [GeV];Efficiency", n_pt_bins, &m_pt_bins[0]);
-    // h_cut_eff_TrackIso  = new TH1F("h_cut_eff_TrackIso", "TrackIso;p_{T} [GeV];Efficiency", n_pt_bins, &m_pt_bins[0]);
-    // h_cut_eff_Iso       = new TH1F("h_cut_eff_Iso", "Iso;p_{T} [GeV];Efficiency", n_pt_bins, &m_pt_bins[0]);
-    // h_cut_eff_z0        = new TH1F("h_cut_eff_z0", "z0;p_{T} [GeV];Efficiency", n_pt_bins, &m_pt_bins[0]);
-    // h_cut_eff_sigd0     = new TH1F("h_cut_eff_sigd0", "sigd0;p_{T} [GeV];Efficiency", n_pt_bins, &m_pt_bins[0]);
+    h_cut_eff_LooseAndBLayerLLH_to_MediumLLH = new TH1F("h_cut_eff_LooseAndBLayerLLH_to_MediumLLH", "LooseAndBLayerLLH_to_MediumLLH;p_{T} [GeV];Efficiency", n_pt_bins, &m_pt_bins[0]);
+    h_cut_eff_CaloIso   = new TH1F("h_cut_eff_CaloIso", "CaloIso;p_{T} [GeV];Efficiency", n_pt_bins, &m_pt_bins[0]);
+    h_cut_eff_TrackIso  = new TH1F("h_cut_eff_TrackIso", "TrackIso;p_{T} [GeV];Efficiency", n_pt_bins, &m_pt_bins[0]);
+    h_cut_eff_Iso       = new TH1F("h_cut_eff_Iso", "Iso;p_{T} [GeV];Efficiency", n_pt_bins, &m_pt_bins[0]);
+    h_cut_eff_z0        = new TH1F("h_cut_eff_z0", "z0;p_{T} [GeV];Efficiency", n_pt_bins, &m_pt_bins[0]);
+    h_cut_eff_sigd0     = new TH1F("h_cut_eff_sigd0", "sigd0;p_{T} [GeV];Efficiency", n_pt_bins, &m_pt_bins[0]);
 
-    // h_cut_eff_LooseAndBLayerLLH_to_MediumLLH->Sumw2();
-    // h_cut_eff_CaloIso->Sumw2();
-    // h_cut_eff_TrackIso->Sumw2();
-    // h_cut_eff_Iso->Sumw2();
-    // h_cut_eff_z0->Sumw2();
-    // h_cut_eff_sigd0->Sumw2();
+    h_cut_eff_LooseAndBLayerLLH_to_MediumLLH->Sumw2();
+    h_cut_eff_CaloIso->Sumw2();
+    h_cut_eff_TrackIso->Sumw2();
+    h_cut_eff_Iso->Sumw2();
+    h_cut_eff_z0->Sumw2();
+    h_cut_eff_sigd0->Sumw2();
 
-    // wk()->addOutput(h_cut_eff_LooseAndBLayerLLH_to_MediumLLH);
-    // wk()->addOutput(h_cut_eff_CaloIso);
-    // wk()->addOutput(h_cut_eff_TrackIso);
-    // wk()->addOutput(h_cut_eff_Iso);
-    // wk()->addOutput(h_cut_eff_z0);
-    // wk()->addOutput(h_cut_eff_sigd0);
+    wk()->addOutput(h_cut_eff_LooseAndBLayerLLH_to_MediumLLH);
+    wk()->addOutput(h_cut_eff_CaloIso);
+    wk()->addOutput(h_cut_eff_TrackIso);
+    wk()->addOutput(h_cut_eff_Iso);
+    wk()->addOutput(h_cut_eff_z0);
+    wk()->addOutput(h_cut_eff_sigd0);
 
     h_signal_pt_eta_AvgMu = new TH3F("h_signal_pt_eta_AvgMu", "AvgMu;p_{T} [GeV];#eta;<#mu>", n_pt_bins, &m_pt_bins[0], n_eta_bins, &m_eta_bins[0], n_AvgMu_bins, &m_AvgMu_bins[0]);
     h_signal_pt_dRjet_AvgMu = new TH3F("h_signal_pt_dRjet_AvgMu", "AvgMu;p_{T} [GeV];#Delta R(#ell, jet);<#mu>", n_pt_bins, &m_pt_bins[0], n_deltaR_bins, &m_deltaR_bins[0], n_AvgMu_bins, &m_AvgMu_bins[0]);
@@ -1296,13 +1296,29 @@ EL::StatusCode ytRealLeptonsEfficiency::execute ()
                     return EL::StatusCode::SUCCESS; // Go to next event
             }
         }
-/*
         else if (trigger == "dilepton_trigger") {
-            // do something here.
+            // Electron: HLT_2e12_lhloose_L12EM10VH (2015)
+            //           HLT_2e17_lhvloose_nod0 (2016)
+            if (RunNb < 290000) { // 2015 data)
+                if (!HLT_2e12_lhloose_L12EM10VH)
+                    return EL::StatusCode::SUCCESS; // Go to next event
+            }
+            else if (RunNb > 290000) { // 2016 data
+                if (!HLT_2e17_lhvloose_nod0)
+                    return EL::StatusCode::SUCCESS; // Go to next event
+            }
         }
         else if (trigger == "dilepton_trigger_but_fail_single_lepton_trigger") {
-            // do something here.
+            if (RunNb < 290000) { // 2015 data)
+                if ( !(HLT_2e12_lhloose_L12EM10VH && !HLT_e24_lhmedium_L1EM20VH) )
+                    return EL::StatusCode::SUCCESS; // Go to next event
+            }
+            else if (RunNb > 290000) { // 2016 data
+                if ( !(HLT_2e17_lhvloose_nod0 && !HLT_e26_lhtight_nod0_ivarloose) )
+                    return EL::StatusCode::SUCCESS; // Go to next event
+            }
         }
+/*
         else if (trigger == "other_trigger") {
             // do something here.
         }
@@ -1324,13 +1340,29 @@ EL::StatusCode ytRealLeptonsEfficiency::execute ()
                     return EL::StatusCode::SUCCESS; // Go to next event
             }
         }
-/*
         else if (trigger == "dilepton_trigger") {
-            // do something here.
+            // Muon: HLT_mu18_mu8noL1 (2015)
+            //       HLT_mu22_mu8noL1 (2016)
+            if (RunNb < 290000) { // 2015 data
+                if (!HLT_mu18_mu8noL1)
+                    return EL::StatusCode::SUCCESS; // Go to next event
+            }
+            else if (RunNb > 290000) { // 2016 data
+                if (!HLT_mu22_mu8noL1)
+                    return EL::StatusCode::SUCCESS; // Go to next event
+            }
         }
         else if (trigger == "dilepton_trigger_but_fail_single_lepton_trigger") {
-            // do something here.
+            if (RunNb < 290000) { // 2015 data
+                if ( !(HLT_mu18_mu8noL1 && !HLT_mu20_iloose_L1MU15) )
+                    return EL::StatusCode::SUCCESS; // Go to next event
+            }
+            else if (RunNb > 290000) { // 2016 data
+                if ( !(HLT_mu22_mu8noL1 && !HLT_mu26_ivarmedium) )
+                    return EL::StatusCode::SUCCESS; // Go to next event
+            }
         }
+/*
         else if(trigger == "other_trigger") {
             // do something here.
         }
@@ -1340,12 +1372,12 @@ EL::StatusCode ytRealLeptonsEfficiency::execute ()
 
     // Calculate the cut efficiency
     // option="B": Binomial errors are computed
-    // h_cut_eff_LooseAndBLayerLLH_to_MediumLLH->Divide(h_baseline_LooseAndBLayerLLH_to_MediumLLH_cut, h_baseline_pt, 1, 1, "B");
-    // h_cut_eff_CaloIso->Divide(h_baseline_CaloIso_cut, h_baseline_pt, 1, 1, "B");
-    // h_cut_eff_TrackIso->Divide(h_baseline_TrackIso_cut, h_baseline_pt, 1, 1, "B");
-    // h_cut_eff_Iso->Divide(h_baseline_Iso_cut, h_baseline_pt, 1, 1, "B");
-    // h_cut_eff_z0->Divide(h_baseline_z0_cut, h_baseline_pt, 1, 1, "B");
-    // h_cut_eff_sigd0->Divide(h_baseline_sigd0_cut, h_baseline_pt, 1, 1, "B");
+    h_cut_eff_LooseAndBLayerLLH_to_MediumLLH->Divide(h_baseline_LooseAndBLayerLLH_to_MediumLLH_cut_pt, h_baseline_pt, 1, 1, "B");
+    h_cut_eff_CaloIso->Divide(h_baseline_CaloIso_cut_pt, h_baseline_pt, 1, 1, "B");
+    h_cut_eff_TrackIso->Divide(h_baseline_TrackIso_cut_pt, h_baseline_pt, 1, 1, "B");
+    h_cut_eff_Iso->Divide(h_baseline_Iso_cut_pt, h_baseline_pt, 1, 1, "B");
+    h_cut_eff_z0->Divide(h_baseline_z0_cut_pt, h_baseline_pt, 1, 1, "B");
+    h_cut_eff_sigd0->Divide(h_baseline_sigd0_cut_pt, h_baseline_pt, 1, 1, "B");
 
     // Calculate the real lepton efficiency
     h_eff_pt->Divide(h_signal_pt, h_baseline_pt, 1, 1, "B");
@@ -1418,7 +1450,7 @@ EL::StatusCode ytRealLeptonsEfficiency::histFinalize ()
     //Info(function_name, "Function calls");
 
     this->make_baseline_mll_plot();
-    //this->make_cut_efficiency_plot();
+    this->make_cut_efficiency_plot();
 
     if (lepton == "electron") {
         this->make_electron_real_efficiency_plot();
@@ -1688,30 +1720,36 @@ void ytRealLeptonsEfficiency::loop_over_electrons()
             h_baseline_pt_dRjet_AvgMu->Fill(El_pT->at(n_el) / 1000., El_DR_closest_Jet->at(n_el), new_AvgMu, weight);
             h_baseline_eta_dRjet_AvgMu->Fill(fabs(El_eta->at(n_el)), El_DR_closest_Jet->at(n_el), new_AvgMu, weight);
         }
-/*
+
         // Cut efficiency
+        // We use |eta| < 2 for electrons
         // Apply MediumLLH
-        if (El_isMediumLH->at(n_el)) {
-            h_baseline_LooseAndBLayerLLH_to_MediumLLH_cut->Fill(El_pT->at(n_el) / 1000., weight);
+        if (El_isMediumLH->at(n_el) &&
+            fabs(El_eta->at(n_el)) < 2.) {
+            h_baseline_LooseAndBLayerLLH_to_MediumLLH_cut_pt->Fill(El_pT->at(n_el) / 1000., weight);
         }
         // Apply topoetcone20/pt < 0.06
-        if ((El_topoetcone20->at(n_el) /  El_pT->at(n_el)) < 0.06) {
-            h_baseline_CaloIso_cut->Fill(El_pT->at(n_el) / 1000., weight);
+        if ((El_topoetcone20->at(n_el) /  El_pT->at(n_el)) < 0.06 &&
+            fabs(El_eta->at(n_el)) < 2.) {
+            h_baseline_CaloIso_cut_pt->Fill(El_pT->at(n_el) / 1000., weight);
         }
         // Apply ptvarcone20/pt < 0.06
-        if ((El_ptvarcone20->at(n_el) / El_pT->at(n_el)) < 0.06) {
-            h_baseline_TrackIso_cut->Fill(El_pT->at(n_el) / 1000., weight);
+        if ((El_ptvarcone20->at(n_el) / El_pT->at(n_el)) < 0.06 &&
+            fabs(El_eta->at(n_el)) < 2.) {
+            h_baseline_TrackIso_cut_pt->Fill(El_pT->at(n_el) / 1000., weight);
         }
         // Apply topoetcone20/pt < 0.06 && ptvarcone20/pt < 0.06 at the same time
         if ((El_topoetcone20->at(n_el) /  El_pT->at(n_el)) < 0.06 &&
-            (El_ptvarcone20->at(n_el) / El_pT->at(n_el)) < 0.06) {
-            h_baseline_Iso_cut->Fill(El_pT->at(n_el) / 1000., weight);
+            (El_ptvarcone20->at(n_el) / El_pT->at(n_el)) < 0.06 &&
+            fabs(El_eta->at(n_el)) < 2.) {
+            h_baseline_Iso_cut_pt->Fill(El_pT->at(n_el) / 1000., weight);
         }
         // Apply |z0*sin(theta)| < 0.5
-        if (fabs(El_z0sinTheta->at(n_el)) < 0.5) {
-            h_baseline_z0_cut->Fill(El_pT->at(n_el) / 1000., weight);
+        if (fabs(El_z0sinTheta->at(n_el)) < 0.5 &&
+            fabs(El_eta->at(n_el)) < 2.) {
+            h_baseline_z0_cut_pt->Fill(El_pT->at(n_el) / 1000., weight);
         }
-*/
+
         // 3-dim Cut efficiency
         // Apply MediumLLH
         if (El_isMediumLH->at(n_el)) {
@@ -1934,21 +1972,21 @@ void ytRealLeptonsEfficiency :: loop_over_muons()
             h_baseline_pt_dRjet_AvgMu->Fill(Mu_pT->at(n_mu) / 1000., Mu_DR_closest_Jet->at(n_mu), new_AvgMu, weight);
             h_baseline_eta_dRjet_AvgMu->Fill(fabs(Mu_eta->at(n_mu)), Mu_DR_closest_Jet->at(n_mu), new_AvgMu, weight);
         }
-/*
+
         // cut efficiency
         // Apply ptvarcone30/pt < 0.06
         if ((Mu_ptvarcone30->at(n_mu) / Mu_pT->at(n_mu)) < 0.06) {
-            h_baseline_TrackIso_cut->Fill(Mu_pT->at(n_mu) / 1000., weight);
+            h_baseline_TrackIso_cut_pt->Fill(Mu_pT->at(n_mu) / 1000., weight);
         }
         // Apply |z0*sin(theta)| < 0.5
         if (fabs(Mu_z0sinTheta->at(n_mu)) < 0.5) {
-            h_baseline_z0_cut->Fill(Mu_pT->at(n_mu) / 1000., weight);
+            h_baseline_z0_cut_pt->Fill(Mu_pT->at(n_mu) / 1000., weight);
         }
         // Apply |d0sig| < 3
         if (fabs(Mu_sigd0->at(n_mu)) < 3) {
-            h_baseline_sigd0_cut->Fill(Mu_pT->at(n_mu) / 1000., weight);
+            h_baseline_sigd0_cut_pt->Fill(Mu_pT->at(n_mu) / 1000., weight);
         }
-*/
+
         // 3-dim cut efficiency
         // Apply ptvarcone30/pt < 0.06
         if ((Mu_ptvarcone30->at(n_mu) / Mu_pT->at(n_mu)) < 0.06) {
@@ -2029,6 +2067,17 @@ void ytRealLeptonsEfficiency::make_baseline_mll_plot()
     h_mll->GetYaxis()->SetTitleOffset(1.5);
     h_mll->Draw();
 
+    double elec_max = h_mll->GetMaximum();
+
+    // Create a dummy histogram in order to fill color between 80 < mll < 100
+    TH1F *h_80_100 = new TH1F("h_80_100", "h_80_100", 1, 80, 100);
+    h_80_100->SetFillColor(kYellow);
+    h_80_100->SetFillColorAlpha(kYellow, 0.35);
+    h_80_100->SetFillStyle(1001); // solid
+    h_80_100->SetLineColor(kYellow);
+    h_80_100->Fill(90, elec_max * 10);
+    h_80_100->Draw("hist,same");
+
     wk()->addOutput(baseline_mll_plot);
 }
 
@@ -2037,6 +2086,7 @@ void ytRealLeptonsEfficiency::make_baseline_mll_plot()
 void ytRealLeptonsEfficiency::make_cut_efficiency_plot()
 {
     cut_efficiency_plot = new TCanvas("cut_efficiency", "Cut efficiency comparison", 500, 500);
+    cut_efficiency_plot->SetLeftMargin(0.12);
     cut_efficiency_plot->cd();
     //gStyle->SetOptStat(0);
 
@@ -2047,6 +2097,7 @@ void ytRealLeptonsEfficiency::make_cut_efficiency_plot()
     h_eff_pt->SetMaximum(1.1);
     h_eff_pt->SetMinimum(0.);
     h_eff_pt->SetTitle("");
+    h_eff_pt->GetYaxis()->SetTitleOffset(1.5);
     h_eff_pt->Draw();
 
     if (lepton == "electron") {
@@ -2134,6 +2185,7 @@ void ytRealLeptonsEfficiency::make_electron_real_efficiency_plot()
     ratio_3->Divide(h_baseline_eta_range_3);
 
     real_efficiency_plot = new TCanvas("real_efficiency_plot", "Electron Real Efficiency", 500, 500);
+    real_efficiency_plot->SetLeftMargin(0.12);
     real_efficiency_plot->cd();
 
     ratio_1->SetLineColor(kBlack);
@@ -2141,6 +2193,7 @@ void ytRealLeptonsEfficiency::make_electron_real_efficiency_plot()
     ratio_1->SetMarkerStyle(kFullCircle);
     ratio_1->SetXTitle("p_{T} [GeV]");
     ratio_1->SetYTitle("Electron Real Efficiency");
+    ratio_1->GetYaxis()->SetTitleOffset(1.5);
     ratio_1->SetStats(kFALSE);
     ratio_1->SetMaximum(1.1);
     ratio_1->SetMinimum(0.);
@@ -2211,6 +2264,7 @@ void ytRealLeptonsEfficiency::make_muon_real_efficiency_plot()
     ratio_4->Divide(h_baseline_eta_range_4);
 
     real_efficiency_plot = new TCanvas("real_efficiency_plot", "Muon Real Efficiency", 500, 500);
+    real_efficiency_plot->SetLeftMargin(0.12);
     real_efficiency_plot->cd();
 
     ratio_1->SetLineColor(kBlack);
@@ -2218,6 +2272,7 @@ void ytRealLeptonsEfficiency::make_muon_real_efficiency_plot()
     ratio_1->SetMarkerStyle(kFullCircle);
     ratio_1->SetXTitle("p_{T} [GeV]");
     ratio_1->SetYTitle("Muon Real Efficiency");
+    ratio_1->GetYaxis()->SetTitleOffset(1.5);
     ratio_1->SetStats(kFALSE);
     ratio_1->SetMaximum(1.1);
     ratio_1->SetMinimum(0.);

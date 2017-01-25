@@ -644,12 +644,12 @@ public:
     //TH1F *h_baseline_Etmiss; //!
     //TH1F *h_baseline_meff; //!
 
-    TH1F *h_baseline_LooseAndBLayerLLH_to_MediumLLH_cut; //!
-    TH1F *h_baseline_CaloIso_cut; //!
-    TH1F *h_baseline_TrackIso_cut; //!
-    TH1F *h_baseline_Iso_cut; //!
-    TH1F *h_baseline_z0_cut; //!
-    TH1F *h_baseline_sigd0_cut; //!
+    TH1F *h_baseline_LooseAndBLayerLLH_to_MediumLLH_cut_pt; //!
+    TH1F *h_baseline_CaloIso_cut_pt; //!
+    TH1F *h_baseline_TrackIso_cut_pt; //!
+    TH1F *h_baseline_Iso_cut_pt; //!
+    TH1F *h_baseline_z0_cut_pt; //!
+    TH1F *h_baseline_sigd0_cut_pt; //!
 
     // 2-dim histograms
     TH2F *h_baseline_pt_eta; //! x: pt, y: eta
@@ -710,12 +710,12 @@ public:
     TH3F *h_signal_eta_dRjet_AvgMu; //! x: eta, y: dRjet, z: AvgMu
 
     // Cut efficiency histograms
-    // TH1F *h_cut_eff_LooseAndBLayerLLH_to_MediumLLH; //!
-    // TH1F *h_cut_eff_CaloIso; //!
-    // TH1F *h_cut_eff_TrackIso; //!
-    // TH1F *h_cut_eff_Iso; //!
-    // TH1F *h_cut_eff_z0; //!
-    // TH1F *h_cut_eff_sigd0; //!
+    TH1F *h_cut_eff_LooseAndBLayerLLH_to_MediumLLH; //!
+    TH1F *h_cut_eff_CaloIso; //!
+    TH1F *h_cut_eff_TrackIso; //!
+    TH1F *h_cut_eff_Iso; //!
+    TH1F *h_cut_eff_z0; //!
+    TH1F *h_cut_eff_sigd0; //!
 
     // Background template histograms
     TH1F *h_bkg_template_fail_truth; //!

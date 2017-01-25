@@ -75,8 +75,8 @@ def main(argv):
             # For RLE
             f_RLE_data_el = ROOT.TFile("hist-RLE-merged-data-elec.root")
             f_RLE_data_mu = ROOT.TFile("hist-RLE-merged-data-muon.root")
-            f_RLE_Zee = ROOT.TFile("RLE_MC_Zee/hist-20170112.root")
-            f_RLE_Zmumu = ROOT.TFile("RLE_MC_Zmumu/hist-20170112.root")
+            f_RLE_Zee = ROOT.TFile("RLE_MC_Zee/hist-20170124.root")
+            f_RLE_Zmumu = ROOT.TFile("RLE_MC_Zmumu/hist-20170124.root")
 
             h_RLE_data_AvgMu_OSee = f_RLE_data_el.Get("h_AvgMu_OSee")
             h_RLE_data_AvgMu_OSmumu = f_RLE_data_mu.Get("h_AvgMu_OSmumu")

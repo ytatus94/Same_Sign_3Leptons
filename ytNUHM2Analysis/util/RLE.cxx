@@ -1,7 +1,7 @@
 // Usage:
 // RLE isMC Zee/Zmumu/Zee_truth_match/Zmumu_truth_match/Zee_TandP_truth_match/Zmumu_TandP_truth_match [PROOF/Condor]
-// RLE isMC ttbar/GG_ttn1 electron/muon [PROOF/Condor]
-// RLE isData electron/muon [PROOF/Condor]
+// RLE isMC ttbar/GG_ttn1 electron/muon trigger="single_lepton_trigger/dilepton_trigger/dilepton_trigger_but_fail_single_lepton_trigger" [PROOF/Condor]
+// RLE isData sample="sample_name" electron/muon [PROOF/Condor]
 
 //#include "xAODRootAccess/Init.h"
 #include "SampleHandler/SampleHandler.h"
@@ -34,6 +34,7 @@ int main( int argc, char* argv[] ) {
     bool use_Condor = false;
     bool use_Grid = false;
     bool use_PROOF = false;
+    string trigger_type = "single_lepton_trigger"; // using single lepton trigger as default
 
     for (int i = 1; i < argc; i++) {
         //const char *key = argv[i];
@@ -66,19 +67,22 @@ int main( int argc, char* argv[] ) {
             process = "Zee_TandP_truth_match";
         else if (strcmp(key, "Zmumu_TandP_truth_match") == 0)
             process = "Zmumu_TandP_truth_match";
-        else if (strcmp(key, "Zee_Sherpa") == 0)
-            process = "Zee_Sherpa";
-        else if (strcmp(key, "Zmumu_Sherpa") == 0)
-            process = "Zmumu_Sherpa";
-        else if (strcmp(key, "Zee_Sherpa_truth_match") == 0)
-            process = "Zee_Sherpa_truth_match";
-        else if (strcmp(key, "Zmumu_Sherpa_truth_match") == 0)
-            process = "Zmumu_Sherpa_truth_match";
+        // else if (strcmp(key, "Zee_Sherpa") == 0)
+        //     process = "Zee_Sherpa";
+        // else if (strcmp(key, "Zmumu_Sherpa") == 0)
+        //     process = "Zmumu_Sherpa";
+        // else if (strcmp(key, "Zee_Sherpa_truth_match") == 0)
+        //     process = "Zee_Sherpa_truth_match";
+        // else if (strcmp(key, "Zmumu_Sherpa_truth_match") == 0)
+        //     process = "Zmumu_Sherpa_truth_match";
         // Choose the lepton type.
         else if (strcmp(key, "electron") == 0)
             lepton_type = "electron";
         else if (strcmp(key, "muon")== 0)
             lepton_type = "muon";
+        // Set the trigger type.
+        else if (strcmp(key, "trigger") == 0)
+            trigger_type = val;
         // Specify the driver to run.
         else if (strcmp(key, "Condor") == 0)
             use_Condor = true;
@@ -109,19 +113,25 @@ int main( int argc, char* argv[] ) {
     else if (isData && !process.empty())
         cout << "process = " << process << endl;
 
+    printf("Trigger type: %s\n", trigger_type.c_str());
+
     if (isMC) {
         if (process == "Zee" || process == "Zmumu" ||
             process == "Zee_truth_match" || process == "Zmumu_truth_match" ||
-            process == "Zee_TandP_truth_match" || process == "Zmumu_TandP_truth_match" ||
-            process == "Zee_Sherpa" || process == "Zmumu_Sherpa" ||
-            process == "Zee_Sherpa_truth_match" || process == "Zmumu_Sherpa_truth_match")
+            process == "Zee_TandP_truth_match" || process == "Zmumu_TandP_truth_match") //||
+            // process == "Zee_Sherpa" || process == "Zmumu_Sherpa" ||
+            // process == "Zee_Sherpa_truth_match" || process == "Zmumu_Sherpa_truth_match")
             submitDir = "RLE_MC_" + process;
         else if (process == "ttbar" || process == "GG_ttn1")
             submitDir = "RLE_MC_" + process + "_" + lepton_type;
     }
     else if (isData) {
-        submitDir = "RLE_Data_" + process + "_" + lepton_type;
+        if (trigger_type == "single_lepton_trigger")
+            submitDir = "RLE_Data_" + process + "_" + lepton_type;
+        else
+            submitDir = "RLE_Data_" + process + "_" + lepton_type + "_" + trigger_type;
     }
+    cout << "submitDir=" << submitDir << endl;
 
     // Set up the job for xAOD access:
     //xAOD::Init().ignore();
@@ -135,8 +145,9 @@ int main( int argc, char* argv[] ) {
     //const char* inputFilePath = "/UserDisk2/yushen/Ximo_ntuples/v44/Skimmed/Data";
     //SH::ScanDir().filePattern("data_probes_all_periods.root").scan(sh, inputFilePath);
     const char* inputFilePath;
+    inputFilePath = "/raid05/users/shen/Ximo_ntuples/v47/Skimmed/20170124";
     if (isMC) {
-        inputFilePath = "/raid05/users/shen/Ximo_ntuples/v47/Skimmed/20170124";
+        //inputFilePath = "/raid05/users/shen/Ximo_ntuples/v47/Skimmed/20170124";
         if (process == "Zee" ||
             process == "Zee_truth_match" ||
             process == "Zee_TandP_truth_match") {
@@ -147,14 +158,14 @@ int main( int argc, char* argv[] ) {
                  process == "Zmumu_TandP_truth_match") {
             SH::ScanDir().filePattern("MC_probes_Zmumu.root").scan(sh, inputFilePath);
         }
-        else if (process == "Zee_Sherpa" ||
-                 process == "Zee_Sherpa_truth_match") {
-            SH::ScanDir().filePattern("MC_probes_Zee_Sherpa.root").scan(sh, inputFilePath);
-        }
-        else if (process == "Zmumu_Sherpa" ||
-                 process == "Zmumu_Sherpa_truth_match") {
-            SH::ScanDir().filePattern("MC_probes_Zmumu_Sherpa.root").scan(sh, inputFilePath);
-        }
+        // else if (process == "Zee_Sherpa" ||
+        //          process == "Zee_Sherpa_truth_match") {
+        //     SH::ScanDir().filePattern("MC_probes_Zee_Sherpa.root").scan(sh, inputFilePath);
+        // }
+        // else if (process == "Zmumu_Sherpa" ||
+        //          process == "Zmumu_Sherpa_truth_match") {
+        //     SH::ScanDir().filePattern("MC_probes_Zmumu_Sherpa.root").scan(sh, inputFilePath);
+        // }
         else if (process == "ttbar") {
             SH::ScanDir().filePattern("MC_probes_ttbar.root").scan(sh, inputFilePath);
         }
@@ -163,7 +174,7 @@ int main( int argc, char* argv[] ) {
         }
     }
     else if (isData) {
-        inputFilePath = "/raid05/users/shen/Ximo_ntuples/v47/Skimmed/20170124";
+        //inputFilePath = "/raid05/users/shen/Ximo_ntuples/v47/Skimmed/20170124";
         SH::ScanDir().filePattern("data_probes_" + process + ".root").scan(sh, inputFilePath);
     }
 
@@ -187,18 +198,21 @@ int main( int argc, char* argv[] ) {
         //ytRealLeptonsEfficiency_MC* alg = new ytRealLeptonsEfficiency_MC();
         alg->set_isMC(true);
         alg->set_isData(false);
-        alg->set_trigger("single_lepton_trigger");
+        alg->set_trigger(trigger_type);
+        //alg->set_trigger("single_lepton_trigger");
+        //alg->set_trigger("dilepton_trigger");
+        //alg->set_trigger("dilepton_trigger_but_fail_single_lepton_trigger");
         if (process == "Zee" ||
             process == "Zee_truth_match" ||
-            process == "Zee_TandP_truth_match" ||
-            process == "Zee_Sherpa" ||
-            process == "Zee_Sherpa_truth_match")
+            process == "Zee_TandP_truth_match") //||
+            // process == "Zee_Sherpa" ||
+            // process == "Zee_Sherpa_truth_match")
             alg->set_lepton("electron");
         else if (process == "Zmumu" ||
                  process == "Zmumu_truth_match" ||
-                 process == "Zmumu_TandP_truth_match" ||
-                 process == "Zmumu_Sherpa" ||
-                 process == "Zmumu_Sherpatruth_match")
+                 process == "Zmumu_TandP_truth_match") //||
+                 // process == "Zmumu_Sherpa" ||
+                 // process == "Zmumu_Sherpatruth_match")
             alg->set_lepton("muon");
         else if (process == "ttbar" || process == "GG_ttn1")
             alg->set_lepton(lepton_type);
@@ -209,7 +223,10 @@ int main( int argc, char* argv[] ) {
         //ytRealLeptonsEfficiency_Data* alg = new ytRealLeptonsEfficiency_Data();
         alg->set_isMC(false);
         alg->set_isData(true);
-        alg->set_trigger("single_lepton_trigger");
+        alg->set_trigger(trigger_type);
+        //alg->set_trigger("single_lepton_trigger");
+        //alg->set_trigger("dilepton_trigger");
+        //alg->set_trigger("dilepton_trigger_but_fail_single_lepton_trigger");
         alg->set_lepton(lepton_type);
         job.algsAdd( alg );
     }
