@@ -33,6 +33,8 @@ public:
     TString lepton;
     TString process;
 
+    bool tag_trigger_matched;
+
     // variables that don't get filled at submission time should be
     // protected from being send from the submission node to the worker
     // node (done by the //!)
@@ -818,6 +820,7 @@ public:
     void set_isMC(bool b) { isMC = b; cout << "isMC=" << isMC << endl; }
     void set_isData(bool b) { isData = b; cout << "isData=" << isData << endl; }
     void set_trigger(TString str) { trigger = str; cout << "trigger=" << trigger << endl; }
+    void set_tag_trigger_matched(bool b) { tag_trigger_matched = b; cout << "tag_trigger_matched=" << tag_trigger_matched << endl; }
     void set_lepton(TString str) { lepton = str; cout << "lepton=" << lepton << endl; }
     void set_process(TString str) { process = str; cout << "process=" << process << endl; }
 

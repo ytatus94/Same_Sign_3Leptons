@@ -78,13 +78,13 @@ void ytBackground_subtraction(TString template_type = "baseline", // baseline, t
 
     cout << "Current template = " << template_type << endl;
 
-    TString path = "/Users/ytshen/Desktop/skim/Results/20170118/";
+    TString path = "/Users/ytshen/Desktop/skim/Results/20170125_2/";
     TFile *data_file = TFile::Open(path + "hist-RLE-merged-data-elec.root");
     TFile *mc_file;
     if (!truth_match)  // T&P
-        mc_file = TFile::Open(path + "RLE_MC_Zee/hist-20170112.root");
+        mc_file = TFile::Open(path + "RLE_MC_Zee/hist-20170124.root");
     else // truth_match
-        mc_file = TFile::Open(path + "RLE_MC_Zee_truth_match/hist-20170112.root");
+        mc_file = TFile::Open(path + "RLE_MC_Zee_truth_match/hist-20170124.root");
         // TandP + truth_match
         //mc_file = TFile::Open(path + "RLE_MC_Zmumu_TandP_truth_match/hist-20170112.root");
 

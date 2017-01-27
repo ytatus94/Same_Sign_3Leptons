@@ -17,14 +17,14 @@ void ytRelative_difference_of_efficiency(float pt_low = 10., float pt_up = 200.,
     ss_pt_up << pt_up;
     string pt_range = ss_pt_low.str() + " GeV < pT < " + ss_pt_up.str() + " GeV";
 
-    TString path = "/Users/ytshen/Desktop/skim/Results/20170118/";
+    TString path = "/Users/ytshen/Desktop/skim/Results/20170125_2/";
 
     TFile *data_Zee = TFile::Open(path + "hist-RLE-merged-data-elec.root");
     TFile *data_Zmumu = TFile::Open(path + "hist-RLE-merged-data-muon.root");
-    TFile *mc_ttbar_elec = TFile::Open(path + "RLE_MC_ttbar_electron/hist-20170112.root");
-    TFile *mc_ttbar_muon = TFile::Open(path + "RLE_MC_ttbar_muon/hist-20170112.root");
-    TFile *mc_GG_ttn1_elec = TFile::Open(path + "RLE_MC_GG_ttn1_electron/hist-20170112.root");
-    TFile *mc_GG_ttn1_muon = TFile::Open(path + "RLE_MC_GG_ttn1_muon/hist-20170112.root");
+    TFile *mc_ttbar_elec = TFile::Open(path + "RLE_MC_ttbar_electron/hist-20170124.root");
+    TFile *mc_ttbar_muon = TFile::Open(path + "RLE_MC_ttbar_muon/hist-20170124.root");
+    TFile *mc_GG_ttn1_elec = TFile::Open(path + "RLE_MC_GG_ttn1_electron/hist-20170124.root");
+    TFile *mc_GG_ttn1_muon = TFile::Open(path + "RLE_MC_GG_ttn1_muon/hist-20170124.root");
 
     // Get 3dim histogrmas
     TH3F *h_baseline_pt_dRjet_mll_Zee = (TH3F *)data_Zee->Get("h_baseline_pt_dRjet_mll");

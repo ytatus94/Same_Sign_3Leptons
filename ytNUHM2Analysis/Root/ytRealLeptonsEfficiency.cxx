@@ -1318,11 +1318,11 @@ EL::StatusCode ytRealLeptonsEfficiency::execute ()
                     return EL::StatusCode::SUCCESS; // Go to next event
             }
         }
-/*
         else if (trigger == "other_trigger") {
             // do something here.
+            cout << "Warning: Neet to implement this." << endl;
         }
-*/
+
         this->loop_over_electrons();
     }
     else if (lepton == "muon") {
@@ -1362,11 +1362,11 @@ EL::StatusCode ytRealLeptonsEfficiency::execute ()
                     return EL::StatusCode::SUCCESS; // Go to next event
             }
         }
-/*
         else if(trigger == "other_trigger") {
             // do something here.
+            cout << "Warning: Neet to implement this." << endl;
         }
-*/
+
         this->loop_over_muons();
     }
 
@@ -1513,8 +1513,11 @@ void ytRealLeptonsEfficiency::loop_over_electrons()
             }
         }
 
-        // Trigger matching
-        // do something here
+        // Tag trigger matching
+        if (tag_trigger_matched) {
+            if (!El_isZProbe_TriggerMatched->at(n_el))
+                continue;
+        }
 
         // Background template
         double calo_isolation = El_topoetcone20->at(n_el) / El_pT->at(n_el);
@@ -1843,8 +1846,11 @@ void ytRealLeptonsEfficiency :: loop_over_muons()
             }
         }
 
-        // Trigger matching
-        // do something here
+        // Tag trigger matching
+        if (tag_trigger_matched) {
+            if (!Mu_isZProbe_TriggerMatched->at(n_mu))
+                continue;
+        }
 
         float weight = 1.; // Data weight = 1.
         if (isMC) {

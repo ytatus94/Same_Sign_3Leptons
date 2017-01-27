@@ -8,9 +8,31 @@ This is SS/3L+jet cutflows study v44.
 
 
 ### v01-15-14. (newskim branch) Add trigger systematic uncertainties
-1. `run_all_RLE.sh`: Add dilepton trigger and dilepton trigger but fail single lepton trigger
-2. `RLE.cxx`: comment the Sherpa part, add trigger selection
-3. `ytRealLeptonsEfficiency.h`: uncomment the cut efficiency histograms, append `_pt` to the 1-dim cut hisgotrams.
+1. `make_AvgMu_and_mll.py` and `merge_data.py`: Add trigger related parts.
+2. `ytRealLeptonsEfficiency` class and `RLE.cxx`: Add tag trigger matching part.
+3. `ytBackground_subtraction.C` and `ytRelative_difference_of_efficiency.C`: Change the inputh files.
+4. `run_making_plots.py`
+   * Modify `yt_make_electron_real_efficiency_plot()` and `yt_make_muon_real_efficiency_plot()`
+   * Add new `yt_real_efficiency_vs_AvgMu()`
+5. `RLE.cxx`: Change the name of `submitDir` depending on `tag_trigger_matched`
+6. `run_all_RLE.sh`: Add tag_trigger_matched jobs.
+7. `run_making_plots.py`:
+   * Add baseline and signal mll plots after scaling MC to data
+   * background template uses 0 < |eta| < 2
+   * Add `yt_real_efficiency_vs_dR_electron()`
+   * Add `yt_deltaR_baseline_and_signal_distributions()`
+8. `ytPlots.C`:
+   * Change input path and files
+   * Rebin baseline mll and add the MC normalized output file name
+   * Re-calculate the cut efficiencies
+   * Add new function `yt_real_efficiency_vs_AvgMu()`
+   * Change the y axis maximum of kinematic plot
+
+
+### v01-15-14. (newskim branch) Add trigger systematic uncertainties
+1. `run_all_RLE.sh`: Add dilepton trigger and dilepton trigger but fail single lepton trigger.
+2. `RLE.cxx`: Comment the Sherpa part, add trigger selection.
+3. `ytRealLeptonsEfficiency.h`: Uncomment the cut efficiency histograms, append `_pt` to the 1-dim cut hisgotrams.
 4. `ytRealLeptonsEfficiency.cxx`: 
    * Uncomment the cut efficiency histograms
    * Append `_pt` to the 1-dim cut histograms
@@ -18,8 +40,9 @@ This is SS/3L+jet cutflows study v44.
    * Modify the plotting functions
    * Add |eta| < 2 for electron 1-dim cut histograms  
 
-### v01-15-13. (newskim branch) Remove the weighted histograms and modify the corresponding codes.:
-1. `make_AvgMu_and_mll.py` and `ytEventSelection`: remove the weighted histograms
+
+### v01-15-13. (newskim branch) Remove the weighted histograms and modify the corresponding codes.
+1. `make_AvgMu_and_mll.py` and `ytEventSelection`: Remove the weighted histograms.
 2. `ytRealLeptonsEfficiency`:
    * Remove the weighted histograms
    * Add 3-dim histograms for cut efficiency study and for AvgMu
@@ -28,20 +51,20 @@ This is SS/3L+jet cutflows study v44.
 3. Change the path for the skimmed files in `RLE.cxx`
 
 ### v01-15-12. (newskim branch) Add fine deltaR binnings
-1. Add 3-dim baseline and signal cut efficiency histograms and add fine deltaR binnings in `ytRealLeptonsEfficiency.h`.
-2. Add deltaR binnings related part in `ytRealLeptonsEfficiency.cxx`
-3. Change the spacings in `ytRelative_difference_of_efficiency.C` and `ytBackground_subtraction.C`
-4. Add more dR and pt bins in `run_relative_differences_of_efficiency.py`
-5. Change cosmetics in `make_final_RLE_plots.py`
-6. In `ytPlots.C`:
+1. `ytRealLeptonsEfficiency.h`: Add 3-dim baseline and signal cut efficiency histograms and add fine deltaR binnings.
+2. `ytRealLeptonsEfficiency.cxx`: Add deltaR binnings related part
+3. `ytRelative_difference_of_efficiency.C` and `ytBackground_subtraction.C`: Change the spacings
+4. `run_relative_differences_of_efficiency.py`: Add more dR and pt bins
+5. `make_final_RLE_plots.py`: Change cosmetics.
+6. `ytPlots.C`:
    * Change cosmetics.
    * Re-calculate the cut efficiency in `yt_make_cut_efficiency_plot_2()`
    * Add new function `yt_deltaR_baseline_and_signal_distributions()`
 
 
 ### v01-15-11. (newskim branch) Add python scripts
-1. `RLE.cxx`: change the `inputFilePath`
-2. `ytRealLeptonsEfficiency.cxx`: add `h_eff_dRjet->Sumw2()`
+1. `RLE.cxx`: Change the `inputFilePath`
+2. `ytRealLeptonsEfficiency.cxx`: Add `h_eff_dRjet->Sumw2()`
 3. Add `ytBackground_subtraction.C` and `ytRelative_difference_of_efficiency.C` in `scripts/`
 4. `ytPlots.C`:
    * Change the input file and path

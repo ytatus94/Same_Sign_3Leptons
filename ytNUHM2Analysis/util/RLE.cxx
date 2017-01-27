@@ -1,7 +1,7 @@
 // Usage:
 // RLE isMC Zee/Zmumu/Zee_truth_match/Zmumu_truth_match/Zee_TandP_truth_match/Zmumu_TandP_truth_match [PROOF/Condor]
-// RLE isMC ttbar/GG_ttn1 electron/muon trigger="single_lepton_trigger/dilepton_trigger/dilepton_trigger_but_fail_single_lepton_trigger" [PROOF/Condor]
-// RLE isData sample="sample_name" electron/muon [PROOF/Condor]
+// RLE isMC ttbar/GG_ttn1 electron/muon [PROOF/Condor]
+// RLE isData sample="sample_name" electron/muon trigger="single_lepton_trigger/dilepton_trigger/dilepton_trigger_but_fail_single_lepton_trigger" tag_trigger_matched [PROOF/Condor]
 
 //#include "xAODRootAccess/Init.h"
 #include "SampleHandler/SampleHandler.h"
@@ -35,6 +35,7 @@ int main( int argc, char* argv[] ) {
     bool use_Grid = false;
     bool use_PROOF = false;
     string trigger_type = "single_lepton_trigger"; // using single lepton trigger as default
+    bool tag_trigger_matched = false;
 
     for (int i = 1; i < argc; i++) {
         //const char *key = argv[i];
@@ -83,6 +84,8 @@ int main( int argc, char* argv[] ) {
         // Set the trigger type.
         else if (strcmp(key, "trigger") == 0)
             trigger_type = val;
+        else if (strcmp(key, "tag_trigger_matched") == 0)
+            tag_trigger_matched = true;
         // Specify the driver to run.
         else if (strcmp(key, "Condor") == 0)
             use_Condor = true;
@@ -113,7 +116,7 @@ int main( int argc, char* argv[] ) {
     else if (isData && !process.empty())
         cout << "process = " << process << endl;
 
-    printf("Trigger type: %s\n", trigger_type.c_str());
+    printf("Trigger type = %s, tag_trigger_matched = %s\n", trigger_type.c_str(), tag_trigger_matched ? "true" : "false");
 
     if (isMC) {
         if (process == "Zee" || process == "Zmumu" ||
@@ -127,9 +130,15 @@ int main( int argc, char* argv[] ) {
     }
     else if (isData) {
         if (trigger_type == "single_lepton_trigger")
-            submitDir = "RLE_Data_" + process + "_" + lepton_type;
+            if (!tag_trigger_matched)
+                submitDir = "RLE_Data_" + process + "_" + lepton_type;
+            else
+                submitDir = "RLE_Data_" + process + "_" + lepton_type + "_tag_trigger_matched";
         else
-            submitDir = "RLE_Data_" + process + "_" + lepton_type + "_" + trigger_type;
+            if (!tag_trigger_matched)
+                submitDir = "RLE_Data_" + process + "_" + lepton_type + "_" + trigger_type;
+            else
+                submitDir = "RLE_Data_" + process + "_" + lepton_type + "_" + trigger_type + "_tag_trigger_matched";
     }
     cout << "submitDir=" << submitDir << endl;
 
@@ -202,6 +211,7 @@ int main( int argc, char* argv[] ) {
         //alg->set_trigger("single_lepton_trigger");
         //alg->set_trigger("dilepton_trigger");
         //alg->set_trigger("dilepton_trigger_but_fail_single_lepton_trigger");
+        alg->set_tag_trigger_matched(tag_trigger_matched);
         if (process == "Zee" ||
             process == "Zee_truth_match" ||
             process == "Zee_TandP_truth_match") //||
@@ -227,6 +237,7 @@ int main( int argc, char* argv[] ) {
         //alg->set_trigger("single_lepton_trigger");
         //alg->set_trigger("dilepton_trigger");
         //alg->set_trigger("dilepton_trigger_but_fail_single_lepton_trigger");
+        alg->set_tag_trigger_matched(tag_trigger_matched);
         alg->set_lepton(lepton_type);
         job.algsAdd( alg );
     }
