@@ -10,8 +10,8 @@ ROOT.gROOT.LoadMacro("/Users/ytshen/Documents/Working/OU/HEP/my_codes/SS_v47/ytN
 
 #RLE_data_elec = "/raid05/users/shen/Ximo_ntuples/v47/Cutflow/Results/20170112/hist-RLE-merged-data-elec.root"
 #RLE_data_muon = "/raid05/users/shen/Ximo_ntuples/v47/Cutflow/Results/20170112/hist-RLE-merged-data-muon.root"
-RLE_data_elec = "/Users/ytshen/Desktop/skim/Results/20170126/hist-RLE-merged-data-elec.root"
-RLE_data_muon = "/Users/ytshen/Desktop/skim/Results/20170126/hist-RLE-merged-data-muon.root"
+RLE_data_elec = "/Users/ytshen/Desktop/skim/Results/20170128/hist-RLE-merged-data-elec.root"
+RLE_data_muon = "/Users/ytshen/Desktop/skim/Results/20170128/hist-RLE-merged-data-muon.root"
 
 ROOT.gROOT.ProcessLine("yt_mll_plots()")
 ROOT.gROOT.ProcessLine("yt_baseline_mll_plots()")
@@ -82,6 +82,18 @@ ROOT.gROOT.ProcessLine("yt_make_cut_efficiency_plot_2(\"RLE_data_muon\",\"muon\"
 ROOT.gROOT.ProcessLine("yt_make_electron_real_efficiency_plot()")
 ROOT.gROOT.ProcessLine("yt_make_muon_real_efficiency_plot()")
 ROOT.gROOT.ProcessLine("yt_make_real_efficiency_plots(true,true,true)")
+
+ROOT.gROOT.ProcessLine("yt_real_efficiency_with_trigger_eta_range(\"electron\", 1, 3)") # 0 < |eta| < 0.8
+ROOT.gROOT.ProcessLine("yt_real_efficiency_with_trigger_eta_range(\"electron\", 4, 5)") # 0.8 < |eta| < 1.37
+ROOT.gROOT.ProcessLine("yt_real_efficiency_with_trigger_eta_range(\"electron\", 7, 8)") # 1.52 < |eta| < 2
+ROOT.gROOT.ProcessLine("yt_real_efficiency_with_trigger_eta_range(\"electron\", 1, 8)") # 0 < |eta| < 2
+
+ROOT.gROOT.ProcessLine("yt_real_efficiency_with_trigger_eta_range(\"muon\", 1, 1)") # 0 < |eta| < 0.6
+ROOT.gROOT.ProcessLine("yt_real_efficiency_with_trigger_eta_range(\"muon\", 2, 2)") # 0.6 < |eta| < 1.2
+ROOT.gROOT.ProcessLine("yt_real_efficiency_with_trigger_eta_range(\"muon\", 3, 3)") # 1.2 < |eta| < 1.8
+ROOT.gROOT.ProcessLine("yt_real_efficiency_with_trigger_eta_range(\"muon\", 4, 4)") # 1.8 < |eta| < 2.5
+ROOT.gROOT.ProcessLine("yt_real_efficiency_with_trigger_eta_range(\"muon\", 1, 4)") # 0 < |eta| < 2.5
+
 ROOT.gROOT.ProcessLine("yt_real_efficiency_vs_AvgMu()")
 ROOT.gROOT.ProcessLine("yt_real_efficiency_vs_dR_electron()")
 
@@ -100,7 +112,7 @@ ROOT.gROOT.ProcessLine("yt_background_subtraction_illustration()")
 ROOT.gROOT.ProcessLine("yt_background_template_mll_plot(1,1,1,8)")
 ROOT.gROOT.ProcessLine("yt_background_template_mll_plot(2,2,1,8)")
 ROOT.gROOT.ProcessLine("yt_kinematics_distribution()")
-ROOT.gROOT.ProcessLine("yt_deltaR_and_NJets_distribution()")
+ROOT.gROOT.ProcessLine("yt_deltaR_and_NJets_distributions()")
 ROOT.gROOT.ProcessLine("yt_deltaR_baseline_and_signal_distributions()")
 
 #os.system("root -q -b '../scripts/ytRelative_difference_of_efficiency.C(10, 20, true, true)' > relative_difference_of_efficiency_pt1020.txt")

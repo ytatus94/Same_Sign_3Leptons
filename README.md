@@ -7,7 +7,27 @@ This is SS/3L+jet cutflows study v44.
 ### Setting:
 
 
-### v01-15-14. (newskim branch) Add trigger systematic uncertainties
+### v01-15-16. (newskim branch) Add trigger systematic uncertainty study
+1. `run_muon_efficiency.py`: Change name to `run_muon_systematics.py`
+2. `run_trigger_systematics.py`: New python script
+3. `run_all_RLE.sh`: Remove `fail_single_lepton_trigger` commands
+4. `run_everything.py` and `run_background_subtraction.py`: Add trigger uncertainty part
+5. `run_elec_systematics.py` and `run_muon_systematics.py`: Save output into files.
+6. `ytRelative_difference_of_efficiency.C`: Change the input path
+7. `ytPlots.C`:
+   * Change the input path and files
+   * Rebin signal mll
+   * Add new function `yt_real_efficiency_with_trigger_eta_range()`
+8. `run_making_plots.py`:
+   * Change the input file path
+   * Add `yt_real_efficiency_with_trigger_eta_range()`
+   * Correct typo of `yt_deltaR_and_NJets_distributions()`
+9. `ytBackground_subtraction.C`:
+   * Add trigger parts
+   * Change output filename
+   
+
+### v01-15-15. (newskim branch) Add trigger systematic uncertainties
 1. `make_AvgMu_and_mll.py` and `merge_data.py`: Add trigger related parts.
 2. `ytRealLeptonsEfficiency` class and `RLE.cxx`: Add tag trigger matching part.
 3. `ytBackground_subtraction.C` and `ytRelative_difference_of_efficiency.C`: Change the inputh files.
@@ -15,7 +35,7 @@ This is SS/3L+jet cutflows study v44.
    * Modify `yt_make_electron_real_efficiency_plot()` and `yt_make_muon_real_efficiency_plot()`
    * Add new `yt_real_efficiency_vs_AvgMu()`
 5. `RLE.cxx`: Change the name of `submitDir` depending on `tag_trigger_matched`
-6. `run_all_RLE.sh`: Add tag_trigger_matched jobs.
+6. `run_all_RLE.sh`: Add `tag_trigger_matched` jobs.
 7. `run_making_plots.py`:
    * Add baseline and signal mll plots after scaling MC to data
    * background template uses 0 < |eta| < 2
@@ -49,6 +69,7 @@ This is SS/3L+jet cutflows study v44.
    * Comment 2-dim efficiency and cut eff histograms
    * Add AvgMu binnings
 3. Change the path for the skimmed files in `RLE.cxx`
+
 
 ### v01-15-12. (newskim branch) Add fine deltaR binnings
 1. `ytRealLeptonsEfficiency.h`: Add 3-dim baseline and signal cut efficiency histograms and add fine deltaR binnings.

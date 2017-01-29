@@ -52,7 +52,8 @@ Double_t fit_exp(double *x, double *par)
     return par[0]*TMath::Exp(-par[1]*(x[0]-60.));
 }
 
-void ytBackground_subtraction(TString template_type = "baseline", // baseline, template1, template2
+void ytBackground_subtraction(TString trigger = "single_lepton_trigger",
+                              TString template_type = "baseline", // baseline, template1, template2
                               TString fitting_range = "range_baseline", // range_baseline, range1, range2
                               bool mc_scale_to_data = false,
                               double fitting_range_low = 60.,
@@ -78,8 +79,17 @@ void ytBackground_subtraction(TString template_type = "baseline", // baseline, t
 
     cout << "Current template = " << template_type << endl;
 
-    TString path = "/Users/ytshen/Desktop/skim/Results/20170125_2/";
-    TFile *data_file = TFile::Open(path + "hist-RLE-merged-data-elec.root");
+    TString path = "/Users/ytshen/Desktop/skim/Results/20170128/";
+    TFile *data_file;
+    if (trigger == "single_lepton_trigger")
+        data_file = TFile::Open(path + "hist-RLE-merged-data-elec.root");
+    else if (trigger == "tag_trigger_matched" || trigger == "single_lepton_trigger_tag_trigger_matched")
+        data_file = TFile::Open(path + "hist-RLE-merged-data-elec_tag_trigger_matched.root");
+    else if (trigger == "dilepton_trigger")
+        data_file = TFile::Open(path + "hist-RLE-merged-data-elec_dilepton_trigger.root");
+    else if (trigger == "dilepton_trigger_tag_trigger_matched")
+        data_file = TFile::Open(path + "hist-RLE-merged-data-elec_dilepton_trigger_tag_trigger_matched.root");
+
     TFile *mc_file;
     if (!truth_match)  // T&P
         mc_file = TFile::Open(path + "RLE_MC_Zee/hist-20170124.root");
@@ -625,9 +635,9 @@ void ytBackground_subtraction(TString template_type = "baseline", // baseline, t
     if (pt_bin_low == 0 && pt_bin_up == -1 &&
         eta_bin_low == 0 && eta_bin_up == -1) {
         if (truth_match)
-            pdf_filename += "_truth.pdf";
-        else
-            pdf_filename += ".pdf";
+            pdf_filename += "_truth";
+        // else
+        //     pdf_filename += ".pdf";
     }
     else if (eta_bin_low == 0 && eta_bin_up == -1) {
         TH3F *data_baseline_mll_3dim = (TH3F *)data_file->Get("h_baseline_pt_eta_mll");
@@ -636,9 +646,9 @@ void ytBackground_subtraction(TString template_type = "baseline", // baseline, t
         TString bin_low_mll = TString::Format("%d", static_cast<int>(mll_window_low));
         TString bin_up_mll = TString::Format("%d", static_cast<int>(mll_window_up));
         if (truth_match)
-            pdf_filename = pdf_filename + "_pt" + bin_low_pt + "_" + bin_up_pt + "_truth.pdf";
+            pdf_filename = pdf_filename + "_pt" + bin_low_pt + "_" + bin_up_pt + "_truth";
         else
-            pdf_filename = pdf_filename + "_pt" + bin_low_pt + "_" + bin_up_pt + ".pdf";
+            pdf_filename = pdf_filename + "_pt" + bin_low_pt + "_" + bin_up_pt;
     }
     else if (pt_bin_low == 0 && pt_bin_up == -1) {
         TH3F *data_baseline_mll_3dim = (TH3F *)data_file->Get("h_baseline_pt_eta_mll");
@@ -647,9 +657,9 @@ void ytBackground_subtraction(TString template_type = "baseline", // baseline, t
         TString bin_low_mll = TString::Format("%d", static_cast<int>(mll_window_low));
         TString bin_up_mll = TString::Format("%d", static_cast<int>(mll_window_up));
         if (truth_match)
-            pdf_filename = pdf_filename + "_eta" + bin_low_eta + "_" + bin_up_eta + "_truth.pdf";
+            pdf_filename = pdf_filename + "_eta" + bin_low_eta + "_" + bin_up_eta + "_truth";
         else
-            pdf_filename = pdf_filename + "_eta" + bin_low_eta + "_" + bin_up_eta + ".pdf";
+            pdf_filename = pdf_filename + "_eta" + bin_low_eta + "_" + bin_up_eta;
     }
     else {
         TH3F *data_baseline_mll_3dim = (TH3F *)data_file->Get("h_baseline_pt_eta_mll");
@@ -660,10 +670,19 @@ void ytBackground_subtraction(TString template_type = "baseline", // baseline, t
         TString bin_low_mll = TString::Format("%d", static_cast<int>(mll_window_low));
         TString bin_up_mll = TString::Format("%d", static_cast<int>(mll_window_up));
         if (truth_match)
-            pdf_filename = pdf_filename + "_mll" + bin_low_mll + "_" + bin_up_mll + "_pt" + bin_low_pt + "_" + bin_up_pt + "_eta" + bin_low_eta + "_" + bin_up_eta + "_truth.pdf";
+            pdf_filename = pdf_filename + "_mll" + bin_low_mll + "_" + bin_up_mll + "_pt" + bin_low_pt + "_" + bin_up_pt + "_eta" + bin_low_eta + "_" + bin_up_eta + "_truth";
         else
-            pdf_filename = pdf_filename + "_mll" + bin_low_mll + "_" + bin_up_mll + "_pt" + bin_low_pt + "_" + bin_up_pt + "_eta" + bin_low_eta + "_" + bin_up_eta + ".pdf";
+            pdf_filename = pdf_filename + "_mll" + bin_low_mll + "_" + bin_up_mll + "_pt" + bin_low_pt + "_" + bin_up_pt + "_eta" + bin_low_eta + "_" + bin_up_eta;
     }
+
+    if (trigger == "single_lepton_trigger")
+        pdf_filename += ".pdf";
+    else if (trigger == "tag_trigger_matched" || trigger == "single_lepton_trigger_tag_trigger_matched")
+        pdf_filename += "_tag_trigger_matched.pdf";
+    else if (trigger == "dilepton_trigger")
+        pdf_filename += "_dilepton_trigger.pdf";
+    else if (trigger == "dilepton_trigger_tag_trigger_matched")
+        pdf_filename += "_dilepton_trigger_tag_trigger_matched.pdf";
 
     c1->SaveAs(pdf_filename);
 }

@@ -30,8 +30,30 @@ RLE isMC ttbar muon > RLE_ttbar_muon.log 2>&1 &
 RLE isMC GG_ttn1 electron > RLE_GG_ttn1_elec.log 2>&1 &
 RLE isMC GG_ttn1 muon > RLE_GG_ttn1_muon.log 2>&1 &
 
-# for trigger uncertainties study without tag_trigger_matched
-# data only
+# For trigger uncertainties study. Data only.
+# single lepton with tag trigger matched
+RLE isData sample=merged_data15 electron tag_trigger_matched > RLE_merged_data15_elec_tag_trigger_matched.log 2>&1 &
+RLE isData sample=merged_data16_periodA electron tag_trigger_matched > RLE_merged_data16_periodA_elec_tag_trigger_matched.log 2>&1 &
+RLE isData sample=merged_data16_periodB electron tag_trigger_matched > RLE_merged_data16_periodB_elec_tag_trigger_matched.log 2>&1 &
+RLE isData sample=merged_data16_periodC electron tag_trigger_matched > RLE_merged_data16_periodC_elec_tag_trigger_matched.log 2>&1 &
+RLE isData sample=merged_data16_periodD electron tag_trigger_matched > RLE_merged_data16_periodD_elec_tag_trigger_matched.log 2>&1 &
+RLE isData sample=merged_data16_periodE electron tag_trigger_matched > RLE_merged_data16_periodE_elec_tag_trigger_matched.log 2>&1 &
+RLE isData sample=merged_data16_periodF electron tag_trigger_matched > RLE_merged_data16_periodF_elec_tag_trigger_matched.log 2>&1 &
+RLE isData sample=merged_data16_periodG electron tag_trigger_matched > RLE_merged_data16_periodG_elec_tag_trigger_matched.log 2>&1 &
+RLE isData sample=merged_data16_periodI electron tag_trigger_matched > RLE_merged_data16_periodI_elec_tag_trigger_matched.log 2>&1 &
+RLE isData sample=merged_data16_rest electron tag_trigger_matched > RLE_merged_data16_rest_elec_tag_trigger_matched.log 2>&1 &
+RLE isData sample=merged_data15 muon tag_trigger_matched > RLE_merged_data15_muon_tag_trigger_matched.log 2>&1 &
+RLE isData sample=merged_data16_periodA muon tag_trigger_matched > RLE_merged_data16_periodA_muon_tag_trigger_matched.log 2>&1 &
+RLE isData sample=merged_data16_periodB muon tag_trigger_matched > RLE_merged_data16_periodB_muon_tag_trigger_matched.log 2>&1 &
+RLE isData sample=merged_data16_periodC muon tag_trigger_matched > RLE_merged_data16_periodC_muon_tag_trigger_matched.log 2>&1 &
+RLE isData sample=merged_data16_periodD muon tag_trigger_matched > RLE_merged_data16_periodD_muon_tag_trigger_matched.log 2>&1 &
+RLE isData sample=merged_data16_periodE muon tag_trigger_matched > RLE_merged_data16_periodE_muon_tag_trigger_matched.log 2>&1 &
+RLE isData sample=merged_data16_periodF muon tag_trigger_matched > RLE_merged_data16_periodF_muon_tag_trigger_matched.log 2>&1 &
+RLE isData sample=merged_data16_periodG muon tag_trigger_matched > RLE_merged_data16_periodG_muon_tag_trigger_matched.log 2>&1 &
+RLE isData sample=merged_data16_periodI muon tag_trigger_matched > RLE_merged_data16_periodI_muon_tag_trigger_matched.log 2>&1 &
+RLE isData sample=merged_data16_rest muon tag_trigger_matched > RLE_merged_data16_rest_muon_tag_trigger_matched.log 2>&1 &
+
+# dilepton trigger
 RLE isData sample=merged_data15 electron trigger="dilepton_trigger" > RLE_merged_data15_elec_dilepton_trigger.log 2>&1 &
 RLE isData sample=merged_data16_periodA electron trigger="dilepton_trigger" > RLE_merged_data16_periodA_elec_dilepton_trigger.log 2>&1 &
 RLE isData sample=merged_data16_periodB electron trigger="dilepton_trigger" > RLE_merged_data16_periodB_elec_dilepton_trigger.log 2>&1 &
@@ -53,29 +75,7 @@ RLE isData sample=merged_data16_periodG muon trigger="dilepton_trigger" > RLE_me
 RLE isData sample=merged_data16_periodI muon trigger="dilepton_trigger" > RLE_merged_data16_periodI_muon_dilepton_trigger.log 2>&1 &
 RLE isData sample=merged_data16_rest muon trigger="dilepton_trigger" > RLE_merged_data16_rest_muon_dilepton_trigger.log 2>&1 &
 
-RLE isData sample=merged_data15 electron trigger="dilepton_trigger_but_fail_single_lepton_trigger" > RLE_merged_data15_elec_dilepton_trigger_but_fail_single_lepton_trigger.log 2>&1 &
-RLE isData sample=merged_data16_periodA electron trigger="dilepton_trigger_but_fail_single_lepton_trigger" > RLE_merged_data16_periodA_elec_dilepton_trigger_but_fail_single_lepton_trigger.log 2>&1 &
-RLE isData sample=merged_data16_periodB electron trigger="dilepton_trigger_but_fail_single_lepton_trigger" > RLE_merged_data16_periodB_elec_dilepton_trigger_but_fail_single_lepton_trigger.log 2>&1 &
-RLE isData sample=merged_data16_periodC electron trigger="dilepton_trigger_but_fail_single_lepton_trigger" > RLE_merged_data16_periodC_elec_dilepton_trigger_but_fail_single_lepton_trigger.log 2>&1 &
-RLE isData sample=merged_data16_periodD electron trigger="dilepton_trigger_but_fail_single_lepton_trigger" > RLE_merged_data16_periodD_elec_dilepton_trigger_but_fail_single_lepton_trigger.log 2>&1 &
-RLE isData sample=merged_data16_periodE electron trigger="dilepton_trigger_but_fail_single_lepton_trigger" > RLE_merged_data16_periodE_elec_dilepton_trigger_but_fail_single_lepton_trigger.log 2>&1 &
-RLE isData sample=merged_data16_periodF electron trigger="dilepton_trigger_but_fail_single_lepton_trigger" > RLE_merged_data16_periodF_elec_dilepton_trigger_but_fail_single_lepton_trigger.log 2>&1 &
-RLE isData sample=merged_data16_periodG electron trigger="dilepton_trigger_but_fail_single_lepton_trigger" > RLE_merged_data16_periodG_elec_dilepton_trigger_but_fail_single_lepton_trigger.log 2>&1 &
-RLE isData sample=merged_data16_periodI electron trigger="dilepton_trigger_but_fail_single_lepton_trigger" > RLE_merged_data16_periodI_elec_dilepton_trigger_but_fail_single_lepton_trigger.log 2>&1 &
-RLE isData sample=merged_data16_rest electron trigger="dilepton_trigger_but_fail_single_lepton_trigger" > RLE_merged_data16_rest_elec_dilepton_trigger_but_fail_single_lepton_trigger.log 2>&1 &
-RLE isData sample=merged_data15 muon trigger="dilepton_trigger_but_fail_single_lepton_trigger" > RLE_merged_data15_muon_dilepton_trigger_but_fail_single_lepton_trigger.log 2>&1 &
-RLE isData sample=merged_data16_periodA muon trigger="dilepton_trigger_but_fail_single_lepton_trigger" > RLE_merged_data16_periodA_muon_dilepton_trigger_but_fail_single_lepton_trigger.log 2>&1 &
-RLE isData sample=merged_data16_periodB muon trigger="dilepton_trigger_but_fail_single_lepton_trigger" > RLE_merged_data16_periodB_muon_dilepton_trigger_but_fail_single_lepton_trigger.log 2>&1 &
-RLE isData sample=merged_data16_periodC muon trigger="dilepton_trigger_but_fail_single_lepton_trigger" > RLE_merged_data16_periodC_muon_dilepton_trigger_but_fail_single_lepton_trigger.log 2>&1 &
-RLE isData sample=merged_data16_periodD muon trigger="dilepton_trigger_but_fail_single_lepton_trigger" > RLE_merged_data16_periodD_muon_dilepton_trigger_but_fail_single_lepton_trigger.log 2>&1 &
-RLE isData sample=merged_data16_periodE muon trigger="dilepton_trigger_but_fail_single_lepton_trigger" > RLE_merged_data16_periodE_muon_dilepton_trigger_but_fail_single_lepton_trigger.log 2>&1 &
-RLE isData sample=merged_data16_periodF muon trigger="dilepton_trigger_but_fail_single_lepton_trigger" > RLE_merged_data16_periodF_muon_dilepton_trigger_but_fail_single_lepton_trigger.log 2>&1 &
-RLE isData sample=merged_data16_periodG muon trigger="dilepton_trigger_but_fail_single_lepton_trigger" > RLE_merged_data16_periodG_muon_dilepton_trigger_but_fail_single_lepton_trigger.log 2>&1 &
-RLE isData sample=merged_data16_periodI muon trigger="dilepton_trigger_but_fail_single_lepton_trigger" > RLE_merged_data16_periodI_muon_dilepton_trigger_but_fail_single_lepton_trigger.log 2>&1 &
-RLE isData sample=merged_data16_rest muon trigger="dilepton_trigger_but_fail_single_lepton_trigger" > RLE_merged_data16_rest_muon_dilepton_trigger_but_fail_single_lepton_trigger.log 2>&1 &
-
-# for trigger uncertainties study with tag_trigger_matched requirement
-# data only
+# dilepton trigger with tag trigger matched
 RLE isData sample=merged_data15 electron trigger="dilepton_trigger" tag_trigger_matched > RLE_merged_data15_elec_dilepton_trigger_tag_trigger_matched.log 2>&1 &
 RLE isData sample=merged_data16_periodA electron trigger="dilepton_trigger" tag_trigger_matched > RLE_merged_data16_periodA_elec_dilepton_trigger_tag_trigger_matched.log 2>&1 &
 RLE isData sample=merged_data16_periodB electron trigger="dilepton_trigger" tag_trigger_matched > RLE_merged_data16_periodB_elec_dilepton_trigger_tag_trigger_matched.log 2>&1 &
@@ -96,24 +96,3 @@ RLE isData sample=merged_data16_periodF muon trigger="dilepton_trigger" tag_trig
 RLE isData sample=merged_data16_periodG muon trigger="dilepton_trigger" tag_trigger_matched > RLE_merged_data16_periodG_muon_dilepton_trigger_tag_trigger_matched.log 2>&1 &
 RLE isData sample=merged_data16_periodI muon trigger="dilepton_trigger" tag_trigger_matched > RLE_merged_data16_periodI_muon_dilepton_trigger_tag_trigger_matched.log 2>&1 &
 RLE isData sample=merged_data16_rest muon trigger="dilepton_trigger" tag_trigger_matched > RLE_merged_data16_rest_muon_dilepton_trigger_tag_trigger_matched.log 2>&1 &
-
-RLE isData sample=merged_data15 electron trigger="dilepton_trigger_but_fail_single_lepton_trigger" tag_trigger_matched > RLE_merged_data15_elec_dilepton_trigger_but_fail_single_lepton_trigger_tag_trigger_matched.log 2>&1 &
-RLE isData sample=merged_data16_periodA electron trigger="dilepton_trigger_but_fail_single_lepton_trigger" tag_trigger_matched > RLE_merged_data16_periodA_elec_dilepton_trigger_but_fail_single_lepton_trigger_tag_trigger_matched.log 2>&1 &
-RLE isData sample=merged_data16_periodB electron trigger="dilepton_trigger_but_fail_single_lepton_trigger" tag_trigger_matched > RLE_merged_data16_periodB_elec_dilepton_trigger_but_fail_single_lepton_trigger_tag_trigger_matched.log 2>&1 &
-RLE isData sample=merged_data16_periodC electron trigger="dilepton_trigger_but_fail_single_lepton_trigger" tag_trigger_matched > RLE_merged_data16_periodC_elec_dilepton_trigger_but_fail_single_lepton_trigger_tag_trigger_matched.log 2>&1 &
-RLE isData sample=merged_data16_periodD electron trigger="dilepton_trigger_but_fail_single_lepton_trigger" tag_trigger_matched > RLE_merged_data16_periodD_elec_dilepton_trigger_but_fail_single_lepton_trigger_tag_trigger_matched.log 2>&1 &
-RLE isData sample=merged_data16_periodE electron trigger="dilepton_trigger_but_fail_single_lepton_trigger" tag_trigger_matched > RLE_merged_data16_periodE_elec_dilepton_trigger_but_fail_single_lepton_trigger_tag_trigger_matched.log 2>&1 &
-RLE isData sample=merged_data16_periodF electron trigger="dilepton_trigger_but_fail_single_lepton_trigger" tag_trigger_matched > RLE_merged_data16_periodF_elec_dilepton_trigger_but_fail_single_lepton_trigger_tag_trigger_matched.log 2>&1 &
-RLE isData sample=merged_data16_periodG electron trigger="dilepton_trigger_but_fail_single_lepton_trigger" tag_trigger_matched > RLE_merged_data16_periodG_elec_dilepton_trigger_but_fail_single_lepton_trigger_tag_trigger_matched.log 2>&1 &
-RLE isData sample=merged_data16_periodI electron trigger="dilepton_trigger_but_fail_single_lepton_trigger" tag_trigger_matched > RLE_merged_data16_periodI_elec_dilepton_trigger_but_fail_single_lepton_trigger_tag_trigger_matched.log 2>&1 &
-RLE isData sample=merged_data16_rest electron trigger="dilepton_trigger_but_fail_single_lepton_trigger" tag_trigger_matched > RLE_merged_data16_rest_elec_dilepton_trigger_but_fail_single_lepton_trigger_tag_trigger_matched.log 2>&1 &
-RLE isData sample=merged_data15 muon trigger="dilepton_trigger_but_fail_single_lepton_trigger" tag_trigger_matched > RLE_merged_data15_muon_dilepton_trigger_but_fail_single_lepton_trigger_tag_trigger_matched.log 2>&1 &
-RLE isData sample=merged_data16_periodA muon trigger="dilepton_trigger_but_fail_single_lepton_trigger" tag_trigger_matched > RLE_merged_data16_periodA_muon_dilepton_trigger_but_fail_single_lepton_trigger_tag_trigger_matched.log 2>&1 &
-RLE isData sample=merged_data16_periodB muon trigger="dilepton_trigger_but_fail_single_lepton_trigger" tag_trigger_matched > RLE_merged_data16_periodB_muon_dilepton_trigger_but_fail_single_lepton_trigger_tag_trigger_matched.log 2>&1 &
-RLE isData sample=merged_data16_periodC muon trigger="dilepton_trigger_but_fail_single_lepton_trigger" tag_trigger_matched > RLE_merged_data16_periodC_muon_dilepton_trigger_but_fail_single_lepton_trigger_tag_trigger_matched.log 2>&1 &
-RLE isData sample=merged_data16_periodD muon trigger="dilepton_trigger_but_fail_single_lepton_trigger" tag_trigger_matched > RLE_merged_data16_periodD_muon_dilepton_trigger_but_fail_single_lepton_trigger_tag_trigger_matched.log 2>&1 &
-RLE isData sample=merged_data16_periodE muon trigger="dilepton_trigger_but_fail_single_lepton_trigger" tag_trigger_matched > RLE_merged_data16_periodE_muon_dilepton_trigger_but_fail_single_lepton_trigger_tag_trigger_matched.log 2>&1 &
-RLE isData sample=merged_data16_periodF muon trigger="dilepton_trigger_but_fail_single_lepton_trigger" tag_trigger_matched > RLE_merged_data16_periodF_muon_dilepton_trigger_but_fail_single_lepton_trigger_tag_trigger_matched.log 2>&1 &
-RLE isData sample=merged_data16_periodG muon trigger="dilepton_trigger_but_fail_single_lepton_trigger" tag_trigger_matched > RLE_merged_data16_periodG_muon_dilepton_trigger_but_fail_single_lepton_trigger_tag_trigger_matched.log 2>&1 &
-RLE isData sample=merged_data16_periodI muon trigger="dilepton_trigger_but_fail_single_lepton_trigger" tag_trigger_matched > RLE_merged_data16_periodI_muon_dilepton_trigger_but_fail_single_lepton_trigger_tag_trigger_matched.log 2>&1 &
-RLE isData sample=merged_data16_rest muon trigger="dilepton_trigger_but_fail_single_lepton_trigger" tag_trigger_matched > RLE_merged_data16_rest_muon_dilepton_trigger_but_fail_single_lepton_trigger_tag_trigger_matched.log 2>&1 &

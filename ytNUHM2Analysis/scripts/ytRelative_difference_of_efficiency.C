@@ -17,7 +17,7 @@ void ytRelative_difference_of_efficiency(float pt_low = 10., float pt_up = 200.,
     ss_pt_up << pt_up;
     string pt_range = ss_pt_low.str() + " GeV < pT < " + ss_pt_up.str() + " GeV";
 
-    TString path = "/Users/ytshen/Desktop/skim/Results/20170125_2/";
+    TString path = "/Users/ytshen/Desktop/skim/Results/20170128/";
 
     TFile *data_Zee = TFile::Open(path + "hist-RLE-merged-data-elec.root");
     TFile *data_Zmumu = TFile::Open(path + "hist-RLE-merged-data-muon.root");

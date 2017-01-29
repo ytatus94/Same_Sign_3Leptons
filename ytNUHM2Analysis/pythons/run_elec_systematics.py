@@ -1,6 +1,11 @@
 #!/usr/bin/python
 import os
 
+def main():
+    variate_template()
+    variate_fitting_range()
+    variate_mll_window()
+
 templates = ['baseline_template', 'template1', 'template2']
 fitting_ranges = ['range_baseline', 'range1', 'range2']
 mll_windows = [[80, 100], [75, 105], [85, 95]]
@@ -77,7 +82,8 @@ def calculate_real_electron_efficiencies_with_systematics(filename1, filename2, 
     systematics1 = float(central_values[1]) - float(central_values[0])
     systematics2 = float(central_values[2]) - float(central_values[0])
     systematics = max(abs(systematics1), abs(systematics2))
-    print "Real lepton efficiency = " + central_values[0] + " $pm$ " + uncertainties[0] + " (stat) $pm$ " + str(systematics) + " (syst)"
+    #print "Real lepton efficiency = " + central_values[0] + " $pm$ " + uncertainties[0] + " (stat) $pm$ " + str(systematics) + " (syst)"
+    return "Real lepton efficiency = " + central_values[0] + " $pm$ " + uncertainties[0] + " (stat) $pm$ " + str(systematics) + " (syst)"
 
 
 def variate_template():
@@ -97,18 +103,21 @@ def variate_template():
                     output_filename = template + "_range_baseline_mll80100" + pT + eta + ".txt"
                     if template is 'baseline_template':
                         if pt_range_index is 11:
-                            command1 = 'root -q -b \'../scripts/ytBackground_subtraction.C("baseline","range_baseline",true,60,120,80,100,' + str(pt_range_index) + ',' + str(13) + ',' + str(eta_range_low) + ',' + str(eta_range_up) + ')\' > ' + output_filename
+                            command1 = 'root -q -b \'../scripts/ytBackground_subtraction.C("single_lepton_trigger","baseline","range_baseline",true,60,120,80,100,' + str(pt_range_index) + ',' + str(13) + ',' + str(eta_range_low) + ',' + str(eta_range_up) + ')\' > ' + output_filename
                         else:
-                            command1 = 'root -q -b \'../scripts/ytBackground_subtraction.C("baseline","range_baseline",true,60,120,80,100,' + str(pt_range_index) + ',' + str(pt_range_index) + ',' + str(eta_range_low) + ',' + str(eta_range_up) + ')\' > ' + output_filename
+                            command1 = 'root -q -b \'../scripts/ytBackground_subtraction.C("single_lepton_trigger","baseline","range_baseline",true,60,120,80,100,' + str(pt_range_index) + ',' + str(pt_range_index) + ',' + str(eta_range_low) + ',' + str(eta_range_up) + ')\' > ' + output_filename
                     else:
                         if pt_range_index is 11:
-                            command1 = 'root -q -b \'../scripts/ytBackground_subtraction.C("' + template + '","range_baseline",true,60,120,80,100,' + str(pt_range_index) + ',' + str(11) + ',' + str(eta_range_low) + ',' + str(eta_range_up) + ')\' > ' + output_filename
+                            command1 = 'root -q -b \'../scripts/ytBackground_subtraction.C("single_lepton_trigger","' + template + '","range_baseline",true,60,120,80,100,' + str(pt_range_index) + ',' + str(11) + ',' + str(eta_range_low) + ',' + str(eta_range_up) + ')\' > ' + output_filename
                         else:
-                            command1 = 'root -q -b \'../scripts/ytBackground_subtraction.C("' + template + '","range_baseline",true,60,120,80,100,' + str(pt_range_index) + ',' + str(pt_range_index) + ',' + str(eta_range_low) + ',' + str(eta_range_up) + ')\' > ' + output_filename
+                            command1 = 'root -q -b \'../scripts/ytBackground_subtraction.C("single_lepton_trigger","' + template + '","range_baseline",true,60,120,80,100,' + str(pt_range_index) + ',' + str(pt_range_index) + ',' + str(eta_range_low) + ',' + str(eta_range_up) + ')\' > ' + output_filename
                     #print command1
                     os.system(command1)
 
-    print "Variate templates:"
+    fo = open("el_var_templates.txt", "w")
+
+    #print "Variate templates:"
+    fo.write("Variate templates:\n")
     for pt_range in pt_ranges:
         pt_range_index = pt_ranges.index(pt_range) + 1
         if pt_range_index < len(pt_ranges):
@@ -122,8 +131,13 @@ def variate_template():
                 file1 = "baseline_template_range_baseline_mll80100" + pT + eta + ".txt"
                 file2 = "template1_range_baseline_mll80100" + pT + eta + ".txt"
                 file3 = "template2_range_baseline_mll80100" + pT + eta + ".txt"
-                print str(pt_range) + " GeV < pT < " + str(pt_ranges[pt_range_index]) + " GeV, " + str(eta_low) + " < eta < " + str(eta_up),
-                calculate_real_electron_efficiencies_with_systematics(file1, file2, file3)
+                #print str(pt_range) + " GeV < pT < " + str(pt_ranges[pt_range_index]) + " GeV, " + str(eta_low) + " < eta < " + str(eta_up),
+                #print calculate_real_electron_efficiencies_with_systematics(file1, file2, file3)
+                write_to_file = str(pt_range) + " GeV < pT < " + str(pt_ranges[pt_range_index]) + " GeV, " + str(eta_low) + " < eta < " + str(eta_up) + " " + \
+                                calculate_real_electron_efficiencies_with_systematics(file1, file2, file3) + "\n"
+                fo.write(write_to_file)
+
+    fo.close()
 
 
 def variate_fitting_range():
@@ -142,13 +156,16 @@ def variate_fitting_range():
                     eta = eta_str(eta_low, eta_up)
                     output_filename = "baseline_template_" + fitting_range + "_mll80100" + pT + eta + ".txt"
                     if pt_range_index is 11:
-                        command2 = 'root -q -b \'../scripts/ytBackground_subtraction.C("baseline","' + fitting_range + '",true,60,120,80,100,' + str(pt_range_index) + ',' + str(13) + ',' + str(eta_range_low) + ',' + str(eta_range_up) + ')\' > ' + output_filename
+                        command2 = 'root -q -b \'../scripts/ytBackground_subtraction.C("single_lepton_trigger","baseline","' + fitting_range + '",true,60,120,80,100,' + str(pt_range_index) + ',' + str(13) + ',' + str(eta_range_low) + ',' + str(eta_range_up) + ')\' > ' + output_filename
                     else:
-                        command2 = 'root -q -b \'../scripts/ytBackground_subtraction.C("baseline","' + fitting_range + '",true,60,120,80,100,' + str(pt_range_index) + ',' + str(pt_range_index) + ',' + str(eta_range_low) + ',' + str(eta_range_up) + ')\' > ' + output_filename
+                        command2 = 'root -q -b \'../scripts/ytBackground_subtraction.C("single_lepton_trigger","baseline","' + fitting_range + '",true,60,120,80,100,' + str(pt_range_index) + ',' + str(pt_range_index) + ',' + str(eta_range_low) + ',' + str(eta_range_up) + ')\' > ' + output_filename
                     #print command2
                     os.system(command2)
 
-    print "Variate fitting ranges:"
+    fo = open("el_var_fitting_ranges.txt", "w")
+
+    #print "Variate fitting ranges:"
+    fo.write("Variate fitting ranges:\n")
     for pt_range in pt_ranges:
         pt_range_index = pt_ranges.index(pt_range) + 1
         if pt_range_index < len(pt_ranges):
@@ -162,8 +179,13 @@ def variate_fitting_range():
                 file1 = "baseline_template_range_baseline_mll80100" + pT + eta + ".txt"
                 file2 = "baseline_template_range1_mll80100" + pT + eta + ".txt"
                 file3 = "baseline_template_range2_mll80100" + pT + eta + ".txt"
-                print str(pt_range) + " GeV < pT < " + str(pt_ranges[pt_range_index]) + " GeV, " + str(eta_low) + " < eta < " + str(eta_up),
-                calculate_real_electron_efficiencies_with_systematics(file1, file2, file3)
+                #print str(pt_range) + " GeV < pT < " + str(pt_ranges[pt_range_index]) + " GeV, " + str(eta_low) + " < eta < " + str(eta_up),
+                #calculate_real_electron_efficiencies_with_systematics(file1, file2, file3)
+                write_to_file = str(pt_range) + " GeV < pT < " + str(pt_ranges[pt_range_index]) + " GeV, " + str(eta_low) + " < eta < " + str(eta_up) + " " + \
+                                calculate_real_electron_efficiencies_with_systematics(file1, file2, file3) + "\n"
+                fo.write(write_to_file)
+
+    fo.close()
 
 
 def variate_mll_window():
@@ -183,13 +205,16 @@ def variate_mll_window():
                     eta = eta_str(eta_low, eta_up)
                     output_filename = "baseline_template_range_baseline" + mll + pT + eta + ".txt"
                     if pt_range_index is 11:
-                        command3 = 'root -q -b \'../scripts/ytBackground_subtraction.C("baseline","range_baseline",true,60,120,' + str(mll_window[0]) + ',' + str(mll_window[1]) + ',' + str(pt_range_index) + ',' + str(13) + ',' + str(eta_range_low) + ',' + str(eta_range_up) + ')\' > ' + output_filename
+                        command3 = 'root -q -b \'../scripts/ytBackground_subtraction.C("single_lepton_trigger","baseline","range_baseline",true,60,120,' + str(mll_window[0]) + ',' + str(mll_window[1]) + ',' + str(pt_range_index) + ',' + str(13) + ',' + str(eta_range_low) + ',' + str(eta_range_up) + ')\' > ' + output_filename
                     else:
-                        command3 = 'root -q -b \'../scripts/ytBackground_subtraction.C("baseline","range_baseline",true,60,120,' + str(mll_window[0]) + ',' + str(mll_window[1]) + ',' + str(pt_range_index) + ',' + str(pt_range_index) + ',' + str(eta_range_low) + ',' + str(eta_range_up) + ')\' > ' + output_filename
+                        command3 = 'root -q -b \'../scripts/ytBackground_subtraction.C("single_lepton_trigger","baseline","range_baseline",true,60,120,' + str(mll_window[0]) + ',' + str(mll_window[1]) + ',' + str(pt_range_index) + ',' + str(pt_range_index) + ',' + str(eta_range_low) + ',' + str(eta_range_up) + ')\' > ' + output_filename
                     #print command3
                     os.system(command3)
 
-    print "Variate mll windows:"
+    fo = open("el_var_mll_windows.txt.txt", "w")
+
+    #print "Variate mll windows:"
+    fo.write("Variate mll windows:\n")
     for pt_range in pt_ranges:
         pt_range_index = pt_ranges.index(pt_range) + 1
         if pt_range_index < len(pt_ranges):
@@ -203,13 +228,14 @@ def variate_mll_window():
                 file1 = "baseline_template_range_baseline_mll80100" + pT + eta + ".txt"
                 file2 = "baseline_template_range_baseline_mll75105" + pT + eta + ".txt"
                 file3 = "baseline_template_range_baseline_mll8595" + pT + eta + ".txt"
-                print str(pt_range) + " GeV < pT < " + str(pt_ranges[pt_range_index]) + " GeV, " + str(eta_low) + " < eta < " + str(eta_up),
-                calculate_real_electron_efficiencies_with_systematics(file1, file2, file3)
+                #print str(pt_range) + " GeV < pT < " + str(pt_ranges[pt_range_index]) + " GeV, " + str(eta_low) + " < eta < " + str(eta_up),
+                #calculate_real_electron_efficiencies_with_systematics(file1, file2, file3)
+                write_to_file = str(pt_range) + " GeV < pT < " + str(pt_ranges[pt_range_index]) + " GeV, " + str(eta_low) + " < eta < " + str(eta_up) + " " + \
+                                calculate_real_electron_efficiencies_with_systematics(file1, file2, file3) + "\n"
+                fo.write(write_to_file)
 
-def main():
-    variate_template()
-    variate_fitting_range()
-    variate_mll_window()
+    fo.close()
+
 
 if __name__ == "__main__":
     main()

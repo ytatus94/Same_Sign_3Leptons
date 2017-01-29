@@ -17,7 +17,7 @@ def calculate_real_muon_efficiency(mll_window_low = 80.,
     verbose = False
 
     #print "Notice: Remember to modify the input file path!"
-    path = "/Users/ytshen/Desktop/skim/Results/20170112/"
+    path = "/Users/ytshen/Desktop/skim/Results/20170128/"
     data_file = ROOT.TFile.Open(path + "hist-RLE-merged-data-muon.root")
 
     if debug is True:
@@ -147,8 +147,6 @@ def variate_mll_windows():
                              "Real lepton efficiency = " + str(central_value_0) + " $pm$ " + str(total_uncertainty) + " (tot) : " + str(uncertainty_0) + " (stat) $pm$ " + str(systematics) + " (syst)\n")
 
     fo.close()
-
-#variate_mll_windows()
 
 if __name__ == "__main__":
     main()

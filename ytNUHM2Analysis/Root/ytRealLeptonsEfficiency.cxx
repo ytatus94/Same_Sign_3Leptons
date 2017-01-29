@@ -1824,7 +1824,7 @@ void ytRealLeptonsEfficiency::loop_over_electrons()
 
 
 
-void ytRealLeptonsEfficiency :: loop_over_muons()
+void ytRealLeptonsEfficiency::loop_over_muons()
 {
     for (int n_mu = 0; n_mu < NMu; n_mu++) {
         if (!Mu_isBaseline->at(n_mu)) // reject non baseline muons
