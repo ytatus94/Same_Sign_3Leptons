@@ -7,6 +7,17 @@ This is SS/3L+jet cutflows study v44.
 ### Setting:
 
 
+### v01-15-17. (newskim branch) Check the effect of `|eta|<2` cut for gtt
+1. `run_trigger_systematics.py`: Add percentage in trigger systematic uncertainty table
+2. `yt_check_gtt.py`: New python script. This is used to compare the number of events in |eta|>2 region in the baseline and signal leptons
+3. `ytBackground_subtraction.C`: Change the font size of the legends.
+4. `ytPlots.C`:
+   * Remove the non-used function: `yt_real_efficiency_with_trigger_eta_range()`
+   * `yt_real_efficiency_vs_AvgMu()`:
+     - Change the pt bins of the lower and upper bounds form values to variables.
+     - Change the output filename.
+
+
 ### v01-15-16. (newskim branch) Add trigger systematic uncertainty study
 1. `run_muon_efficiency.py`: Change name to `run_muon_systematics.py`
 2. `run_trigger_systematics.py`: New python script
