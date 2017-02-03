@@ -592,7 +592,7 @@ void ytBackground_subtraction(TString trigger = "single_lepton_trigger",
     leg->AddEntry(func_Z_peak, "bkg templage fit", "l");
     leg->SetBorderSize(0);
     leg->SetTextFont(42);
-    leg->SetTextSize(0.03);
+    leg->SetTextSize(0.05);
     leg->SetFillColor(0);
     leg->SetFillStyle(0);
     leg->Draw("same");

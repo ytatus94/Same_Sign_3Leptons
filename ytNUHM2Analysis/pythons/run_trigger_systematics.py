@@ -136,10 +136,13 @@ def trigger_systematic_uncertainty(lepton):
                 var1 = h_sin_tag_eff.GetBinContent(i) - central_value
                 var2 = h_di_eff.GetBinContent(i) - central_value
                 var3 = h_di_tag_eff.GetBinContent(i) - central_value
+                uncertainty = math.sqrt(var1**2 + var2**2 + var3**2)
+                uncertainty_in_percentage = uncertainty / central_value * 100
                 pt_low = int(h_sin_eff.GetXaxis().GetBinLowEdge(i))
                 pt_up = int(h_sin_eff.GetXaxis().GetBinUpEdge(i))
+
                 write_to_file = str(pt_low) + " GeV < pT < " + str(pt_up) + " GeV, " + str(eta) + " < |eta| < " + str(eta_next) + \
-                                " trigger systematic uncertainty = " + str(math.sqrt(var1**2 + var2**2 + var3**2)) + "\n"
+                                " trigger systematic uncertainty = " + str(uncertainty) + " (" + str(uncertainty_in_percentage) + "%)\n"
                 fo.write(write_to_file)
 
     fo.close()
