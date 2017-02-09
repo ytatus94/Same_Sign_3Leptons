@@ -18,7 +18,7 @@
 #include <vector>
 using namespace std;
 
-TString path = "~/Desktop/skim/Results/20170128/";
+TString path = "~/Desktop/skim/Results/20170205/";
 
 TString electron = "hist-RLE-merged-data-elec.root";
 TString muon = "hist-RLE-merged-data-muon.root";
@@ -32,20 +32,20 @@ TString muon_dilepton_trigger = "hist-RLE-merged-data-muon_dilepton_trigger.root
 TString electron_dilepton_trigger_tag_trigger_matched = "hist-RLE-merged-data-elec_dilepton_trigger_tag_trigger_matched.root";
 TString muon_dilepton_trigger_tag_trigger_matched = "hist-RLE-merged-data-muon_dilepton_trigger_tag_trigger_matched.root";
 
-TString Zee_root = "RLE_MC_Zee/hist-20170124.root";
-TString Zmumu_root = "RLE_MC_Zmumu/hist-20170124.root";
+TString Zee_root = "RLE_MC_Zee/hist-20170204.root";
+TString Zmumu_root = "RLE_MC_Zmumu/hist-20170204.root";
 
-TString Zee_truth_root = "RLE_MC_Zee_truth_match/hist-20170124.root";
-TString Zmumu_truth_root = "RLE_MC_Zmumu_truth_match/hist-20170124.root";
+TString Zee_truth_root = "RLE_MC_Zee_truth_match/hist-20170204.root";
+TString Zmumu_truth_root = "RLE_MC_Zmumu_truth_match/hist-20170204.root";
 
-TString Zee_TP_truth_root = "RLE_MC_Zee_TandP_truth_match/hist-20170124.root";
-TString Zmumu_TP_truth_root = "RLE_MC_Zmumu_TandP_truth_match/hist-20170124.root";
+TString Zee_TP_truth_root = "RLE_MC_Zee_TandP_truth_match/hist-20170204.root";
+TString Zmumu_TP_truth_root = "RLE_MC_Zmumu_TandP_truth_match/hist-20170204.root";
 
-TString ttbar_elec_root = "RLE_MC_ttbar_electron/hist-20170124.root";
-TString ttbar_muon_root = "RLE_MC_ttbar_muon/hist-20170124.root";
+TString ttbar_elec_root = "RLE_MC_ttbar_electron/hist-20170204.root";
+TString ttbar_muon_root = "RLE_MC_ttbar_muon/hist-20170204.root";
 
-TString Gtt_elec_root = "RLE_MC_GG_ttn1_electron/hist-20170124.root";
-TString Gtt_muon_root = "RLE_MC_GG_ttn1_muon/hist-20170124.root";
+TString Gtt_elec_root = "RLE_MC_GG_ttn1_electron/hist-20170204.root";
+TString Gtt_muon_root = "RLE_MC_GG_ttn1_muon/hist-20170204.root";
 
 TString Gtt_elec_all_signal_root = "RLE_MC_GG_ttn1_electron_all_signal/hist-20170118.root";
 TString Gtt_elec_Medium_only_root = "RLE_MC_GG_ttn1_electron_medium_only/hist-20170118.root";
@@ -53,6 +53,14 @@ TString Gtt_elec_track_iso_only_root = "RLE_MC_GG_ttn1_electron_Track_iso_only/h
 TString Gtt_elec_calo_iso_only_root = "RLE_MC_GG_ttn1_electron_Calo_iso_only/hist-20170118.root";
 TString Gtt_elec_z0_only_root = "RLE_MC_GG_ttn1_electron_z0_cut_only/hist-20170118.root";
 TString Gtt_elec_eta_only_root = "RLE_MC_GG_ttn1_electron_eta_cut_only/hist-20170118.root";
+
+TString Zee_tag_trigger_matched_root = "RLE_MC_Zee_tag_trigger_matched/hist-20170204.root";
+TString Zee_dilepton_trigger_root = "RLE_MC_Zee_dilepton_trigger/hist-20170204.root";
+TString Zee_dilepton_trigger_tag_trigger_matched_root = "RLE_MC_Zee_dilepton_trigger_tag_trigger_matched/hist-20170204.root";
+
+TString Zmumu_tag_trigger_matched_root = "RLE_MC_Zmumu_tag_trigger_matched/hist-20170204.root";
+TString Zmumu_dilepton_trigger_root = "RLE_MC_Zmumu_dilepton_trigger/hist-20170204.root";
+TString Zmumu_dilepton_trigger_tag_trigger_matched_root = "RLE_MC_Zmumu_dilepton_trigger_tag_trigger_matched/hist-20170204.root";
 
 //
 // Mll plots
@@ -1716,13 +1724,21 @@ void yt_make_electron_real_efficiency_plot() // Use 2-dim histograms
     TH1F *ratio_2 = (TH1F *)h_signal_eta_range_2->Clone();
     TH1F *ratio_3 = (TH1F *)h_signal_eta_range_3->Clone();
 
+    ratio_1->Reset();
+    ratio_2->Reset();
+    ratio_3->Reset();
+
     ratio_1->SetName("ratio_1");
     ratio_2->SetName("ratio_2");
     ratio_3->SetName("ratio_3");
 
-    ratio_1->Divide(h_baseline_eta_range_1);
-    ratio_2->Divide(h_baseline_eta_range_2);
-    ratio_3->Divide(h_baseline_eta_range_3);
+    // ratio_1->Divide(h_baseline_eta_range_1);
+    // ratio_2->Divide(h_baseline_eta_range_2);
+    // ratio_3->Divide(h_baseline_eta_range_3);
+
+    ratio_1->Divide(h_signal_eta_range_1, h_baseline_eta_range_1, 1, 1, "B");
+    ratio_2->Divide(h_signal_eta_range_2, h_baseline_eta_range_2, 1, 1, "B");
+    ratio_3->Divide(h_signal_eta_range_3, h_baseline_eta_range_3, 1, 1, "B");
 
     TCanvas *real_efficiency_plot = new TCanvas("real_efficiency_plot", "Electron Real Efficiency", 500, 500);
     real_efficiency_plot->SetLeftMargin(0.12);
@@ -1809,15 +1825,20 @@ void yt_make_muon_real_efficiency_plot() // Use 2-dim histograms
     TH1F *ratio_3 = (TH1F *)h_signal_eta_range_3->Clone();
     TH1F *ratio_4 = (TH1F *)h_signal_eta_range_4->Clone();
 
+    ratio_1->Reset();
+    ratio_2->Reset();
+    ratio_3->Reset();
+    ratio_4->Reset();
+
     ratio_1->SetName("ratio_1");
     ratio_2->SetName("ratio_2");
     ratio_3->SetName("ratio_3");
     ratio_4->SetName("ratio_4");
 
-    ratio_1->Divide(h_baseline_eta_range_1);
-    ratio_2->Divide(h_baseline_eta_range_2);
-    ratio_3->Divide(h_baseline_eta_range_3);
-    ratio_4->Divide(h_baseline_eta_range_4);
+    ratio_1->Divide(h_signal_eta_range_1, h_baseline_eta_range_1, 1, 1, "B");
+    ratio_2->Divide(h_signal_eta_range_2, h_baseline_eta_range_2, 1, 1, "B");
+    ratio_3->Divide(h_signal_eta_range_3, h_baseline_eta_range_3, 1, 1, "B");
+    ratio_4->Divide(h_signal_eta_range_4, h_baseline_eta_range_4, 1, 1, "B");
 
     TCanvas *real_efficiency_plot = new TCanvas("real_efficiency_plot", "Muon Real Efficiency", 500, 500);
     real_efficiency_plot->SetLeftMargin(0.12);
@@ -2433,24 +2454,40 @@ void yt_make_real_efficiency_plots(bool truth_match = false, bool ttbar = false,
     real_efficiency_plot->SaveAs("real_efficiency.pdf", "pdf");
 }
 
-void yt_real_efficiency_with_trigger_eta_range(TString lepton, int eta_low_bin, int eta_up_bin) // Use 2-dim histograms
+void yt_real_efficiency_with_trigger_eta_range(bool isData, TString lepton, int eta_low_bin, int eta_up_bin) // Use 2-dim histograms
 {
     TFile *file_single_lepton_trigger,
           *file_single_lepton_trigger_tag_trigger_matched,
           *file_dilepton_trigger,
           *file_dilepton_trigger_tag_trigger_matched;
 
-    if (lepton == "electron") {
-        file_single_lepton_trigger = TFile::Open(path + electron);
-        file_single_lepton_trigger_tag_trigger_matched = TFile::Open(path + electron_tag_trigger_matched);
-        file_dilepton_trigger = TFile::Open(path + electron_dilepton_trigger);
-        file_dilepton_trigger_tag_trigger_matched = TFile::Open(path + electron_dilepton_trigger_tag_trigger_matched);
+    if (isData) {
+        if (lepton == "electron") {
+            file_single_lepton_trigger = TFile::Open(path + electron);
+            file_single_lepton_trigger_tag_trigger_matched = TFile::Open(path + electron_tag_trigger_matched);
+            file_dilepton_trigger = TFile::Open(path + electron_dilepton_trigger);
+            file_dilepton_trigger_tag_trigger_matched = TFile::Open(path + electron_dilepton_trigger_tag_trigger_matched);
+        }
+        else if (lepton == "muon") {
+            file_single_lepton_trigger = TFile::Open(path + muon);
+            file_single_lepton_trigger_tag_trigger_matched = TFile::Open(path + muon_tag_trigger_matched);
+            file_dilepton_trigger = TFile::Open(path + muon_dilepton_trigger);
+            file_dilepton_trigger_tag_trigger_matched = TFile::Open(path + muon_dilepton_trigger_tag_trigger_matched);
+        }
     }
-    else if (lepton == "muon") {
-        file_single_lepton_trigger = TFile::Open(path + muon);
-        file_single_lepton_trigger_tag_trigger_matched = TFile::Open(path + muon_tag_trigger_matched);
-        file_dilepton_trigger = TFile::Open(path + muon_dilepton_trigger);
-        file_dilepton_trigger_tag_trigger_matched = TFile::Open(path + muon_dilepton_trigger_tag_trigger_matched);
+    else { // isMC
+        if (lepton == "electron") {
+            file_single_lepton_trigger = TFile::Open(path + Zee_root);
+            file_single_lepton_trigger_tag_trigger_matched = TFile::Open(path + Zee_tag_trigger_matched_root);
+            file_dilepton_trigger = TFile::Open(path + Zee_dilepton_trigger_root);
+            file_dilepton_trigger_tag_trigger_matched = TFile::Open(path + Zee_dilepton_trigger_tag_trigger_matched_root);
+        }
+        else if (lepton == "muon") {
+            file_single_lepton_trigger = TFile::Open(path + Zmumu_root);
+            file_single_lepton_trigger_tag_trigger_matched = TFile::Open(path + Zmumu_tag_trigger_matched_root);
+            file_dilepton_trigger = TFile::Open(path + Zmumu_dilepton_trigger_root);
+            file_dilepton_trigger_tag_trigger_matched = TFile::Open(path + Zmumu_dilepton_trigger_tag_trigger_matched_root);
+        }
     }
 
     // Naming:
@@ -2498,15 +2535,20 @@ void yt_real_efficiency_with_trigger_eta_range(TString lepton, int eta_low_bin, 
     eff_di->Sumw2();
     eff_di_tag->Sumw2();
 
+    eff_sin->Reset();
+    eff_sin_tag->Reset();
+    eff_di->Reset();
+    eff_di_tag->Reset();
+
     eff_sin->SetName("eff_sin");
     eff_sin_tag->SetName("eff_sin_tag");
     eff_di->SetName("eff_di");
     eff_di_tag->SetName("eff_di_tag");
 
-    eff_sin->Divide(h_sin_baseline);
-    eff_sin_tag->Divide(h_sin_tag_baseline);
-    eff_di->Divide(h_di_baseline);
-    eff_di_tag->Divide(h_di_tag_baseline);
+    eff_sin->Divide(h_sin_signal, h_sin_baseline, 1, 1, "B");
+    eff_sin_tag->Divide(h_sin_tag_signal, h_sin_tag_baseline, 1, 1, "B");
+    eff_di->Divide(h_di_signal, h_di_baseline, 1, 1, "B");
+    eff_di_tag->Divide(h_di_tag_signal, h_di_tag_baseline, 1, 1, "B");
 
     double eta_low_value;
     double eta_up_value;

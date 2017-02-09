@@ -1235,7 +1235,10 @@ EL::StatusCode ytEventSelection::execute ()
         m_skim->set_pileup_weight(pileup_weight /*PRWWeight*/);
         m_skim->set_baseline_weight(baseline_weight);
         m_skim->set_signal_weight(signal_weight);
-        m_skim->set_run_number(random_run_number /*PRWrandomRunNumber*/);
+        if (isData)
+            m_skim->set_run_number(RunNb);
+        else if (isMC)
+            m_skim->set_run_number(random_run_number /*PRWrandomRunNumber*/);
         m_skim->set_new_AvgMu(m_cutflow->get_AvgMu());
         m_skim->set_tag_pt_threshold(tag_pt_threshold);
         // Do skim

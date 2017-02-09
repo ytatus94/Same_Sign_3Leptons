@@ -121,24 +121,39 @@ int main( int argc, char* argv[] ) {
     if (isMC) {
         if (process == "Zee" || process == "Zmumu" ||
             process == "Zee_truth_match" || process == "Zmumu_truth_match" ||
-            process == "Zee_TandP_truth_match" || process == "Zmumu_TandP_truth_match") //||
+            process == "Zee_TandP_truth_match" || process == "Zmumu_TandP_truth_match") {//||
             // process == "Zee_Sherpa" || process == "Zmumu_Sherpa" ||
             // process == "Zee_Sherpa_truth_match" || process == "Zmumu_Sherpa_truth_match")
-            submitDir = "RLE_MC_" + process;
+            //submitDir = "RLE_MC_" + process;
+            if (trigger_type == "single_lepton_trigger") {
+                if (!tag_trigger_matched)
+                    submitDir = "RLE_MC_" + process;
+                else
+                    submitDir = "RLE_MC_" + process + "_tag_trigger_matched";
+            }
+            else {
+                if (!tag_trigger_matched)
+                    submitDir = "RLE_MC_" + process + "_" + trigger_type;
+                else
+                    submitDir = "RLE_MC_" + process + "_" + trigger_type + "_tag_trigger_matched";
+            }
+        }
         else if (process == "ttbar" || process == "GG_ttn1")
             submitDir = "RLE_MC_" + process + "_" + lepton_type;
     }
     else if (isData) {
-        if (trigger_type == "single_lepton_trigger")
+        if (trigger_type == "single_lepton_trigger") {
             if (!tag_trigger_matched)
                 submitDir = "RLE_Data_" + process + "_" + lepton_type;
             else
                 submitDir = "RLE_Data_" + process + "_" + lepton_type + "_tag_trigger_matched";
-        else
+        }
+        else {
             if (!tag_trigger_matched)
                 submitDir = "RLE_Data_" + process + "_" + lepton_type + "_" + trigger_type;
             else
                 submitDir = "RLE_Data_" + process + "_" + lepton_type + "_" + trigger_type + "_tag_trigger_matched";
+        }
     }
     cout << "submitDir=" << submitDir << endl;
 
@@ -154,7 +169,7 @@ int main( int argc, char* argv[] ) {
     //const char* inputFilePath = "/UserDisk2/yushen/Ximo_ntuples/v44/Skimmed/Data";
     //SH::ScanDir().filePattern("data_probes_all_periods.root").scan(sh, inputFilePath);
     const char* inputFilePath;
-    inputFilePath = "/raid05/users/shen/Ximo_ntuples/v47/Skimmed/20170124";
+    inputFilePath = "/raid05/users/shen/Ximo_ntuples/v47/Skimmed/20170204";
     if (isMC) {
         //inputFilePath = "/raid05/users/shen/Ximo_ntuples/v47/Skimmed/20170124";
         if (process == "Zee" ||

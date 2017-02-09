@@ -33,12 +33,14 @@ struct ZTandP_pair
     double  probe_pt;
     double  probe_eta;
     double  probe_phi;
-    bool    probe_is_baseline;
-    bool    probe_is_signal;
+    bool    probe_is_trigger_matched;
     double  probe_id_SFw;
     double  probe_iso_SFw;
+    double  probe_trigger_SFw;
+    bool    probe_is_baseline;
+    bool    probe_is_signal;
     //double  probe_deltaR_closest_jet;
-    // TandP
+    // Tag and Probe pair
     double  baseline_mll;
     double  signal_mll;
 };
@@ -105,16 +107,24 @@ public:
     vector<bool>    *El_isSignal;
     vector<bool>    *El_isZTag;
     vector<bool>    *El_isZProbe;
+    vector<int>     *El_Tag_index;
+    vector<int>     *El_Probe_index;
     vector<double>  *El_ZTandP_mll;
-    vector<bool>    *El_isZProbe_TriggerMatched;
+    vector<bool>    *El_isZProbe_TagTriggerMatched;
+    vector<bool>    *El_Tag_Trigger_Matched;
+    vector<bool>    *El_Probe_Trigger_Matched;
     vector<double>  *El_DR_closest_Jet;
 
     vector<bool>    *Mu_isBaseline;
     vector<bool>    *Mu_isSignal;
     vector<bool>    *Mu_isZTag;
     vector<bool>    *Mu_isZProbe;
+    vector<int>     *Mu_Tag_index;
+    vector<int>     *Mu_Probe_index;
     vector<double>  *Mu_ZTandP_mll;
-    vector<bool>    *Mu_isZProbe_TriggerMatched;
+    vector<bool>    *Mu_isZProbe_TagTriggerMatched;
+    vector<bool>    *Mu_Tag_Trigger_Matched;
+    vector<bool>    *Mu_Probe_Trigger_Matched;
     vector<double>  *Mu_DR_closest_Jet;
 
     //vector<bool>    *Jet_isBaseline;

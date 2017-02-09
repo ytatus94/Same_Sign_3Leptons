@@ -12,9 +12,10 @@ os.system("root -q -b '../scripts/ytRelative_difference_of_efficiency.C(10, 20, 
 os.system("root -q -b '../scripts/ytRelative_difference_of_efficiency.C(20, 30, true, true)' > ../scripts/relative_difference_of_efficiency_pt2030_eta020.txt")
 os.system("root -q -b '../scripts/ytRelative_difference_of_efficiency.C(30, 40, true, true)' > ../scripts/relative_difference_of_efficiency_pt3040_eta020.txt")
 os.system("root -q -b '../scripts/ytRelative_difference_of_efficiency.C(40, 50, true, true)' > ../scripts/relative_difference_of_efficiency_pt4050_eta020.txt")
-os.system("root -q -b '../scripts/ytRelative_difference_of_efficiency.C(50, 65, true, true)' > ../scripts/relative_difference_of_efficiency_pt5065_eta020.txt")
-os.system("root -q -b '../scripts/ytRelative_difference_of_efficiency.C(65, 80, true, true)' > ../scripts/relative_difference_of_efficiency_pt6580_eta020.txt")
-os.system("root -q -b '../scripts/ytRelative_difference_of_efficiency.C(80, 200, true, true)' > ../scripts/relative_difference_of_efficiency_pt80200_eta020.txt")
+os.system("root -q -b '../scripts/ytRelative_difference_of_efficiency.C(50, 60, true, true)' > ../scripts/relative_difference_of_efficiency_pt5060_eta020.txt")
+os.system("root -q -b '../scripts/ytRelative_difference_of_efficiency.C(60, 80, true, true)' > ../scripts/relative_difference_of_efficiency_pt6080_eta020.txt")
+os.system("root -q -b '../scripts/ytRelative_difference_of_efficiency.C(80, 150, true, true)' > ../scripts/relative_difference_of_efficiency_pt80150_eta020.txt")
+os.system("root -q -b '../scripts/ytRelative_difference_of_efficiency.C(150, 200, true, true)' > ../scripts/relative_difference_of_efficiency_pt150200_eta020.txt")
 
 dR_bin1 = []
 dR_bin2 = []
@@ -48,9 +49,10 @@ filelist = ['../scripts/relative_difference_of_efficiency_pt1020_eta020.txt',
             '../scripts/relative_difference_of_efficiency_pt2030_eta020.txt',
             '../scripts/relative_difference_of_efficiency_pt3040_eta020.txt',
             '../scripts/relative_difference_of_efficiency_pt4050_eta020.txt',
-            '../scripts/relative_difference_of_efficiency_pt5065_eta020.txt',
-            '../scripts/relative_difference_of_efficiency_pt6580_eta020.txt',
-            '../scripts/relative_difference_of_efficiency_pt80200_eta020.txt']
+            '../scripts/relative_difference_of_efficiency_pt5060_eta020.txt',
+            '../scripts/relative_difference_of_efficiency_pt6080_eta020.txt',
+            '../scripts/relative_difference_of_efficiency_pt80150_eta020.txt',
+            '../scripts/relative_difference_of_efficiency_pt150200_eta020.txt']
 
 for filename in filelist:
     with open(filename) as fopen:
@@ -212,8 +214,8 @@ def make_plot(canvas_name, y, y_err):
 
     #pt_bin_center = array.array("d", [(10.+20.)/2., (20.+30.)/2., (30.+50.)/2, (50.+80.)/2, (80.+200.)/2])
     #pt_bin_err = array.array("d", [(20.-10.)/2., (30.-20.)/2, (50.-30.)/2, (80.-50.)/2, (200.-80.)/2])
-    pt_bin_center = array.array("d", [(10.+20.)/2., (20.+30.)/2., (30.+40.)/2, (40.+50.)/2, (50.+65.)/2, (65.+80.)/2, (80.+200.)/2])
-    pt_bin_err = array.array("d", [(20.-10.)/2., (30.-20.)/2, (40.-30.)/2, (50.-40.)/2, (65.-50.)/2, (80.-65.)/2, (200.-80.)/2])
+    pt_bin_center = array.array("d", [(10.+20.)/2., (20.+30.)/2., (30.+40.)/2, (40.+50.)/2, (50.+60.)/2, (60.+80.)/2, (80.+150.)/2, (150.+200.)/2])
+    pt_bin_err = array.array("d", [(20.-10.)/2., (30.-20.)/2, (40.-30.)/2, (50.-40.)/2, (60.-50.)/2, (80.-60.)/2, (150.-80.)/2, (200.-150.)/2])
 
     canvas = ROOT.TCanvas("canvas_" + canvas_name, "Relative differences", 600, 600)
     canvas.SetLeftMargin(0.12)

@@ -106,7 +106,7 @@ def eta_str(eta_low, eta_up):
 
 
 mll_windows = [[80, 100], [75, 105], [85, 95]]
-pt_ranges = [10, 15, 20, 25, 30, 35, 40, 50, 60, 70, 80, 200]
+pt_ranges = [10, 15, 20, 25, 30, 35, 40, 50, 60, 70, 80, 150, 200]
 mu_eta_ranges = [0, 0.6, 1.2, 1.8, 2.5]
 
 
@@ -140,11 +140,11 @@ def variate_mll_windows():
                     # print to screen
                     print str(pt_range) + " GeV < pT < " + str(pt_ranges[pt_range_index]) + " GeV, ",
                     print str(eta_range) + " < eta < " + str(mu_eta_ranges[eta_range_index + 1]) + " ", 
-                    print "Real lepton efficiency = " + str(central_value_0) + " $pm$ " + str(total_uncertainty) + " (tot) : " + str(uncertainty_0) + " (stat) $pm$ " + str(systematics) + " (syst)"
+                    print "Real lepton efficiency = " + str(central_value_0) + " $pm$ " + str(total_uncertainty) + " (tot) $pm$ " + str(uncertainty_0) + " (stat) $pm$ " + str(systematics) + " (syst)"
                     # write to a file
                     fo.write(str(pt_range) + " GeV < pT < " + str(pt_ranges[pt_range_index]) + " GeV, " +\
                              str(eta_range) + " < eta < " + str(mu_eta_ranges[eta_range_index + 1]) + " " +\
-                             "Real lepton efficiency = " + str(central_value_0) + " $pm$ " + str(total_uncertainty) + " (tot) : " + str(uncertainty_0) + " (stat) $pm$ " + str(systematics) + " (syst)\n")
+                             "Real lepton efficiency = " + str(central_value_0) + " $pm$ " + str(total_uncertainty) + " (tot) $pm$ " + str(uncertainty_0) + " (stat) $pm$ " + str(systematics) + " (syst)\n")
 
     fo.close()
 

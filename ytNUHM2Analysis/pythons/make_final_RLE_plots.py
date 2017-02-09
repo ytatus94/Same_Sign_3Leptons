@@ -162,7 +162,7 @@ def make_real_muon_efficiency_total_systematic_plot():
                 total_uncertainty_eta_bin3.append(float(line[line.find("$pm")+5 : line.find("(tot)")-1]))
             elif "1.8 < eta < 2.5" in line:
                 central_value_eta_bin4.append(float(line[line.find("=")+2 : line.find("$pm")-1]))
-                total_uncertainty_eta_bin4.append(float(line[line.find("$pm")+5 : line.find("(tot)")-1]))		
+                total_uncertainty_eta_bin4.append(float(line[line.find("$pm")+5 : line.find("(tot)")-1]))
 
     pt_bin_center = array.array("d", [(10.+15.)/2., (15.+20.)/2., (20.+25.)/2, (25.+30.)/2, (30.+35.)/2, (35.+40.)/2, (40.+50.)/2, (50.+60.)/2, (60.+70.)/2, (70.+80.)/2, (80.+200.)/2])
     pt_bin_err = array.array("d", [(15.-10.)/2., (20.-15.)/2, (25.-20.)/2, (30.-25.)/2, (35.-30.)/2, (40.-35.)/2, (50.-40.)/2, (60.-50.)/2, (70.-60.)/2, (80.-70.)/2, (200.-80.)/2])

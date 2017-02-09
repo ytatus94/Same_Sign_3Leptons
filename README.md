@@ -7,6 +7,35 @@ This is SS/3L+jet cutflows study v44.
 ### Setting:
 
 
+### v01-15-18. (newskim branch) Correct run number for skim
+1. `RLE.cxx`:
+   * Add {} for if-else conditions.
+   * Add `_tag_trigger_matched` string in `submit_Dir` when tag trigger matched is required.
+2. `ytRelative_difference_of_efficiency.C`: Change the input path and filenames.
+3. `ytPlots.C`:
+   * Change input path and filenames.
+   * Add the w/ and w/o tag trigger matched root files for MC.
+   * In `yt_make_electron_real_efficiency_plot()`: Use the binominal function to calculate ratio.
+   * In `yt_real_efficiency_with_trigger_eta_range()`:
+     - Add isData and isMC selections to load different input files.
+     - Use the binominal function to calculate ratio.
+4. `ytBackground_subtraction.C`: Change the input path and filenames.
+5. `run_all_RLE.sh`: Add tag trigger matched studies for MC
+6. `run_relative_differences_of_efficiency.py`:
+   * Split 80 < pT < 200 into 80 < pT < 150 and 150 < pT < 200.
+   * Change 50 < pT < 65 and 65 < pT < 80 to 50 < pT < 60 and 60 < pT < 80.
+7. `make_AvgMu_and_mll.py`: Change the input filenames
+8. `make_final_RLE_plots.py`: change the space
+9. `run_making_plots.py`:
+   * Change the input path
+   * Add the first argument "true" in `yt_real_efficiency_with_trigger_eta_range()`
+10. `run_muon_systematics.py`
+   * Change the `pt_ranges`
+   * Modify " (tot) : " to " (tot) $pm$ "
+11. `ytEventSelection.cxx`: correct the `m_skim->set_run_number()`, if MC uses `random_run_number` and if data uses `RunNb`.
+12. `yt_skim.h`: Add new data members in `struct ZTandP_pair` and in the branches.
+
+
 ### v01-15-17. (newskim branch) Check the effect of `|eta|<2` cut for gtt
 1. `run_trigger_systematics.py`: Add percentage in trigger systematic uncertainty table
 2. `yt_check_gtt.py`: New python script. This is used to compare the number of events in |eta|>2 region in the baseline and signal leptons
