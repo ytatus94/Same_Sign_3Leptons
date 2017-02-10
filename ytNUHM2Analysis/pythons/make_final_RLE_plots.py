@@ -1,6 +1,11 @@
 #!/usr/bin/python
 import ROOT, array, math
 
+def main():
+    # remember to modify the input file path
+    make_real_electron_efficiency_total_systematic_plot()
+    make_real_muon_efficiency_total_systematic_plot()
+
 def make_real_electron_efficiency_total_systematic_plot():
     central_value_eta_bin1 = []
     stat_err_eta_bin1 = []
@@ -20,10 +25,9 @@ def make_real_electron_efficiency_total_systematic_plot():
     fitting_range_syst_err_eta_bin3 = []
     mll_syst_err_eta_bin3 = []
 
-    #variation_files = ["../logs/elec_vary_templates.txt", "../logs/elec_vary_fitting_ranges.txt", "../logs/elec_vary_mll_windows.txt"]
-    variation_files = ["/Users/ytshen/Desktop/skim/Results/20170112/logs/el_var_templates.txt",
-                       "/Users/ytshen/Desktop/skim/Results/20170112/logs/el_var_fitting_ranges.txt",
-                       "/Users/ytshen/Desktop/skim/Results/20170112/logs/el_var_mll_windows.txt"]
+    variation_files = ["/Users/ytshen/Desktop/skim/Results/20170205/logs/el_var_templates.txt",
+                       "/Users/ytshen/Desktop/skim/Results/20170205/logs/el_var_fitting_ranges.txt",
+                       "/Users/ytshen/Desktop/skim/Results/20170205/logs/el_var_mll_windows.txt"]
 
     with open(variation_files[0]) as fopen1:
         lines = fopen1.readlines()
@@ -147,8 +151,8 @@ def make_real_muon_efficiency_total_systematic_plot():
     total_uncertainty_eta_bin3 = []
     central_value_eta_bin4 = []
     total_uncertainty_eta_bin4 = []
-    #with open("../logs/muon_variations.txt") as fopen:
-    with open("/Users/ytshen/Desktop/skim/Results/20170112/logs/mu_efficiency_systematics.txt") as fopen:
+
+    with open("/Users/ytshen/Desktop/skim/Results/20170205/logs/mu_efficiency_systematics.txt") as fopen:
         lines = fopen.readlines()
         for line in lines:
             if "0 < eta < 0.6" in line:
@@ -241,5 +245,5 @@ def make_real_muon_efficiency_total_systematic_plot():
 
     canvas.SaveAs("real_muon_efficiency_total_systematics.pdf", "pdf")
 
-make_real_electron_efficiency_total_systematic_plot()
-make_real_muon_efficiency_total_systematic_plot()
+if __name__ == "__main__":
+    main()

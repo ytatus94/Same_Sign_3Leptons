@@ -7,6 +7,15 @@ This is SS/3L+jet cutflows study v44.
 ### Setting:
 
 
+### v01-15-19. (newskim branch)
+1. `run_muon_systematics.py`: Change the input path
+2. `run_elec_systematics.py`: Add 150 in the `pt_ranges` and correct typo of `el_var_mll_windows.txt`
+3. `make_final_RLE_plots.py`
+   * Add `main()`
+   * Change the input the path of files.
+4. `make_matrix_method_input.py`: New python script
+
+
 ### v01-15-18. (newskim branch) Correct run number for skim
 1. `RLE.cxx`:
    * Add {} for if-else conditions.
@@ -28,7 +37,7 @@ This is SS/3L+jet cutflows study v44.
 8. `make_final_RLE_plots.py`: change the space
 9. `run_making_plots.py`:
    * Change the input path
-   * Add the first argument "true" in `yt_real_efficiency_with_trigger_eta_range()`
+   * Add the first argument "true" for data in `yt_real_efficiency_with_trigger_eta_range()`
 10. `run_muon_systematics.py`
    * Change the `pt_ranges`
    * Modify " (tot) : " to " (tot) $pm$ "

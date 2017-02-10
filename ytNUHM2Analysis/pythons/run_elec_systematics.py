@@ -10,7 +10,7 @@ templates = ['baseline_template', 'template1', 'template2']
 fitting_ranges = ['range_baseline', 'range1', 'range2']
 mll_windows = [[80, 100], [75, 105], [85, 95]]
 #pt_ranges = [10, 15, 20, 25, 30, 35, 40, 50, 60, 70, 80, 120, 150, 200]
-pt_ranges = [10, 15, 20, 25, 30, 35, 40, 50, 60, 70, 80, 200]
+pt_ranges = [10, 15, 20, 25, 30, 35, 40, 50, 60, 70, 80, 150, 200]
 el_eta_ranges = [0., 0.1, 0.6, 0.8, 1.15, 1.37, 1.52, 1.81, 2.01, 2.37, 2.47]
 #mu_eta_ranges = [0, 0.6, 1.2, 1.8, 2.5]
 eta_ranges = [[1,3], [4,5], [7,8]]
@@ -211,7 +211,7 @@ def variate_mll_window():
                     #print command3
                     os.system(command3)
 
-    fo = open("el_var_mll_windows.txt.txt", "w")
+    fo = open("el_var_mll_windows.txt", "w")
 
     #print "Variate mll windows:"
     fo.write("Variate mll windows:\n")
