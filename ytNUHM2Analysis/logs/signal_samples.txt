@@ -1,0 +1,19 @@
+# strong NUHM2 signal
+user.yushen.Aug04.v44.370600.MGPy8EG_A14N23LO_NUHM2_m12_300_strong.DAOD_SUSY2.a766_r7676_output.root
+user.yushen.Aug04.v44.370601.MGPy8EG_A14N23LO_NUHM2_m12_350_strong.DAOD_SUSY2.a766_r7676_output.root
+user.yushen.Aug04.v44.370602.MGPy8EG_A14N23LO_NUHM2_m12_400_strong.DAOD_SUSY2.a766_r7676_output.root
+user.yushen.Aug04.v44.370602.MGPy8EG_A14N23LO_NUHM2_m12_400_strong.DAOD_SUSY2.s2608_r7676_output.root
+user.yushen.Aug04.v44.370603.MGPy8EG_A14N23LO_NUHM2_m12_500_strong.DAOD_SUSY2.a766_r7676_output.root
+user.yushen.Jul05.v39.370604.MGPy8EG_A14N23LO_NUHM2_m12_600_strong.DAOD_SUSY2.a766_r7676_output.root
+user.yushen.Aug04.v44.370605.MGPy8EG_A14N23LO_NUHM2_m12_700_strong.DAOD_SUSY2.a766_r7676_output.root
+user.yushen.Aug04.v44.370606.MGPy8EG_A14N23LO_NUHM2_m12_800_strong.DAOD_SUSY2.a766_r7676_output.root
+
+# weak NUHM2 signal
+user.yushen.Aug04.v44.370617.MGPy8EG_A14N23LO_NUHM2_m12_300_weak.DAOD_SUSY2.a766_r7676_output.root
+user.yushen.Aug04.v44.370618.MGPy8EG_A14N23LO_NUHM2_m12_350_weak.DAOD_SUSY2.a766_r7676_output.root
+user.yushen.Aug04.v44.370619.MGPy8EG_A14N23LO_NUHM2_m12_400_weak.DAOD_SUSY2.a766_r7676_output.root
+user.yushen.Aug04.v44.370619.MGPy8EG_A14N23LO_NUHM2_m12_400_weak.DAOD_SUSY2.s2608_r7676_output.root
+user.yushen.Aug04.v44.370620.MGPy8EG_A14N23LO_NUHM2_m12_500_weak.DAOD_SUSY2.a766_r7676_output.root
+user.yushen.Aug04.v44.370621.MGPy8EG_A14N23LO_NUHM2_m12_600_weak.DAOD_SUSY2.a766_r7676_output.root
+user.yushen.Aug04.v44.370622.MGPy8EG_A14N23LO_NUHM2_m12_700_weak.DAOD_SUSY2.a766_r7676_output.root
+user.yushen.Aug04.v44.370623.MGPy8EG_A14N23LO_NUHM2_m12_800_weak.DAOD_SUSY2.a766_r7676_output.root
