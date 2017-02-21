@@ -215,3 +215,16 @@ void ytEventSelection::debug_sum_of_weight_print()
     cout << "**************************************************" << endl;
 }
 */
+
+float deltaR(TLorentzVector tlv1, TLorentzVector tlv2) {
+
+    Float_t deltaEta = fabs(tlv1.Rapidity() - tlv2.Rapidity());
+    Float_t deltaPhi = fabs(tlv1.Phi() - tlv2.Phi());
+
+    if (deltaPhi > TMath::Pi()){
+        deltaPhi = 2 * TMath::Pi() - deltaPhi;
+    }
+
+    Float_t deltaR = sqrt(pow(deltaEta,2) + pow(deltaPhi,2));
+    return deltaR;
+}

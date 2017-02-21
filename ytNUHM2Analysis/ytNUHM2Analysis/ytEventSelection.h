@@ -27,6 +27,7 @@
 #include <string>
 #include <iterator>
 #include <typeinfo>
+#include <algorithm>
 using namespace std;
 
 #define Mu_Mass 105.6583715
@@ -83,6 +84,10 @@ public:
     vector<Jet>         vec_OR_jets; //!
 
     vector<Jet>         vec_JVT_jets; //!
+
+    vector<Electron>    vec_new_OR_elec; //!
+    vector<Muon>        vec_new_OR_muon; //!
+    vector<Lepton>      vec_new_OR_lept; //!
 
     vector<Electron>    vec_signal_elec; //!
     vector<Muon>        vec_signal_muon; //!
@@ -915,6 +920,10 @@ public:
     void fill_OR_jets(vector<Jet> jets);
 
     void fill_JVT_jets(vector<Jet> jets);
+
+    void fill_new_OR_electrons(vector<Electron> elec, vector<Jet> jets);
+    void fill_new_OR_muons(vector<Muon> muon, vector<Jet> jets);
+    void fill_new_OR_leptons(vector<Electron> elec, vector<Muon> muon);
 
     void fill_signal_electrons(vector<Electron> elec);
     void fill_signal_muons(vector<Muon> muon);

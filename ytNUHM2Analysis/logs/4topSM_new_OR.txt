@@ -1,0 +1,79 @@
+Running cutflow for 4topSM
+process = 4topSM
+isMC = true, isData = false
+submitDir = cutflow_MC_4topSM
+Submit jobs to DirectDriver...
+Read MC files...
+SampleHandler with 1 files
+Sample:name=MC,tags=()
+file:///raid05/users/shen/Ximo_ntuples/v50/Cutflow/../MC/4topSM.root
+
+
+isFullSim = false, isAF2Sim = false
+PathResolver              WARNING XMLPATH environment variable not defined!
+PathResolver              WARNING XMLPATH environment variable not defined!
+--- TGRLCollection      : Now merging GRLs where possible. Metadata required to be identical.[0m
+PropertyMgr               ERROR   /raid05/users/shen/Ximo_ntuples/v50/Cutflow/RootCoreBin/include/AsgTools/PropertyMgr.icc:33 (StatusCode PropertyMgr::setProperty(const string&, const T&) [with T = int; std::string = std::basic_string<char>]): Property not found: DefaultChannel
+myWeightTool              INFO    AsgTool myWeightTool @ 0x3149d30
+asg::ToolStore::put       WARNING Tool with name "GoodRunsListSelectionTool" already registered
+PathResolver              WARNING XMLPATH environment variable not defined!
+PathResolver              WARNING XMLPATH environment variable not defined!
+--- TGRLCollection      : Now merging GRLs where possible. Metadata required to be identical.[0m
+asg::ToolStore::put       WARNING Tool with name "Pileup" already registered
+asg::ToolStore::put       WARNING Tool with name "myWeightTool" already registered
+PropertyMgr               ERROR   /raid05/users/shen/Ximo_ntuples/v50/Cutflow/RootCoreBin/include/AsgTools/PropertyMgr.icc:33 (StatusCode PropertyMgr::setProperty(const string&, const T&) [with T = int; std::string = std::basic_string<char>]): Property not found: DefaultChannel
+myWeightTool              INFO    AsgTool myWeightTool @ 0xa29eb80
+asg::ToolStore::put       WARNING Tool with name "GoodRunsListSelectionTool" already registered
+PathResolver              WARNING XMLPATH environment variable not defined!
+PathResolver              WARNING XMLPATH environment variable not defined!
+--- TGRLCollection      : Now merging GRLs where possible. Metadata required to be identical.[0m
+asg::ToolStore::put       WARNING Tool with name "Pileup" already registered
+asg::ToolStore::put       WARNING Tool with name "myWeightTool" already registered
+PropertyMgr               ERROR   /raid05/users/shen/Ximo_ntuples/v50/Cutflow/RootCoreBin/include/AsgTools/PropertyMgr.icc:33 (StatusCode PropertyMgr::setProperty(const string&, const T&) [with T = int; std::string = std::basic_string<char>]): Property not found: DefaultChannel
+myWeightTool              INFO    AsgTool myWeightTool @ 0x10d84b00
+Running sample: MC
+Processing File: file:///raid05/users/shen/Ximo_ntuples/v50/Cutflow/../MC/4topSM.root
+Processed 10000 events
+Processed 20000 events
+Processed 30000 events
+Processed 40000 events
+Processed 50000 events
+Processed 60000 events
+Processed 70000 events
+Processed 80000 events
+**************************************************
+Cut 0: All events before derivations (DerivationStat_Weights) = 198800    
+Cut 1: All events in derivation/ntuple = 88868     
+Cut 2: GRL (for data only) = 88868     
+Cut 3: Primary vertex = 88868     
+Cut 4: Trigger       = 60528     
+Cut 5: Global flags (data only) = 60528     
+Cut 6: Bad muon      = 60523     
+Cut 7: >= 1 jet passes jet OR = 60523     
+Cut 8: Bad jet       = 60290     
+Cut 9: >= 1 signal jet = 60290     
+Cut 10: Cosmic muons veto = 59637     
+Cut 11: >= 2 baseline leptons > 10 GeV = 26614     
+Cut 12: >= 2 signal leptons > 20 GeV = 17343     
+Cut 13: Same sign    = 7347      
+***** El-El channel *****
+Cut 14: Channel seperation, same-sign [20, 20]: (el-el) = 1520      
+Cut 15: Trigger matching: (el-el) = 1509      
+Cut 16: >= 1 bjet > 20 GeV: (el-el) = 1473      
+Cut 17: 4 jets > 50 GeV: (el-el) = 1178      
+Cut 18: MET > 125 GeV: (el-el) = 572       
+***** El-Mu channel *****
+Cut 14: Channel seperation, same-sign [20, 20]: (el-mu) = 3527      
+Cut 15: Trigger matching: (el-mu) = 3391      
+Cut 16: >= 1 bjet > 20 GeV: (el-mu) = 3296      
+Cut 17: 4 jets > 50 GeV: (el-mu) = 2685      
+Cut 18: MET > 125 GeV: (el-mu) = 1298      
+***** Mu-Mu channel *****
+Cut 14: Channel seperation, same-sign [20, 20]: (mu-mu) = 2300      
+Cut 15: Trigger matching: (mu-mu) = 2275      
+Cut 16: >= 1 bjet > 20 GeV: (mu-mu) = 2218      
+Cut 17: 4 jets > 50 GeV: (mu-mu) = 1807      
+Cut 18: MET > 125 GeV: (mu-mu) = 840       
+**************************************************
+worker finished:
+Real time 0:00:08, CP time 8.540

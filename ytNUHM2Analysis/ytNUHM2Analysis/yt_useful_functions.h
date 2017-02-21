@@ -50,5 +50,6 @@ double calculate_weight(double event_weight, double PRW_weight, vector<Electron>
 //void update(int cut, bool passed, double weight);
 //void debug_sum_of_weight_print();
 
+float deltaR(TLorentzVector tlv1, TLorentzVector tlv2);
 
 #endif // #ifndef YT_USEFUL_FUNCTIONS_H

@@ -132,25 +132,6 @@ EL::StatusCode ytEventSelection::changeInput (bool firstFile)
     //const char * function_name = "changeInput()";
     //Info(function_name, "Function calls");
 
-    return EL::StatusCode::SUCCESS;
-}
-
-
-
-EL::StatusCode ytEventSelection::initialize ()
-{
-    // Here you do everything that you need to do after the first input
-    // file has been connected and before the first event is processed,
-    // e.g. create additional histograms based on which variables are
-    // available in the input files.  You can also create all of your
-    // histograms and trees in here, but be aware that this method
-    // doesn't get called if no events are processed.  So any objects
-    // you create here won't be available in the output if you have no
-    // input events.
-
-    //const char * function_name = "initialize()";
-    //Info(function_name, "Function calls");
-
     // Set object pointer
     Mu_eta = 0;
     Mu_phi = 0;
@@ -544,6 +525,25 @@ EL::StatusCode ytEventSelection::initialize ()
     fChain->SetBranchAddress("TruthPDGID1", &TruthPDGID1, &b_TruthPDGID1);
     fChain->SetBranchAddress("TruthPDGID2", &TruthPDGID2, &b_TruthPDGID2);
 
+    return EL::StatusCode::SUCCESS;
+}
+
+
+
+EL::StatusCode ytEventSelection::initialize ()
+{
+    // Here you do everything that you need to do after the first input
+    // file has been connected and before the first event is processed,
+    // e.g. create additional histograms based on which variables are
+    // available in the input files.  You can also create all of your
+    // histograms and trees in here, but be aware that this method
+    // doesn't get called if no events are processed.  So any objects
+    // you create here won't be available in the output if you have no
+    // input events.
+
+    //const char * function_name = "initialize()";
+    //Info(function_name, "Function calls");
+
     if (isSkim) {
         m_skim->set_isMC(isMC);
         m_skim->set_isData(isData);
@@ -633,6 +633,10 @@ EL::StatusCode ytEventSelection::execute ()
     vec_OR_jets.clear();
 
     vec_JVT_jets.clear();
+
+    vec_new_OR_elec.clear();
+    vec_new_OR_muon.clear();
+    vec_new_OR_lept.clear();
 
     vec_signal_elec.clear();
     vec_signal_muon.clear();
@@ -950,13 +954,13 @@ EL::StatusCode ytEventSelection::execute ()
                                                               EventNumber, ChannelNumber,
                                                               AvgMu, EventWeight, //PRWWeight,
                                                               LB, RunNb);
-*/
+//
     // This is temporary because I need to initial eventInfo in get_mc_random_event_number
     int temp = m_cutflow->get_mc_random_event_number(isData, isMC,
                                                      EventNumber, ChannelNumber,
                                                      AvgMu, EventWeight, //PRWWeight,
                                                      LB, RunNb);
-
+*/
     float pileup_weight = 1.;
     pileup_weight = PRWWeight;
     //pileup_weight = m_cutflow->get_pileup_weight();
@@ -1039,23 +1043,35 @@ EL::StatusCode ytEventSelection::execute ()
     // JVT cut applied after OR and jet quality
     fill_JVT_jets(vec_OR_jets);
 
+    // Apply new OR, on the top of old OR
+    // remove leptons overlapping with close-by jets passing the JVT selection when DR < min{0.4; 0.1 + 9.6 GeV / pT(l)};
+    fill_new_OR_electrons(vec_OR_elec, vec_JVT_jets);
+    fill_new_OR_muons(vec_OR_muon, vec_JVT_jets);
+    fill_new_OR_leptons(vec_new_OR_elec, vec_new_OR_muon);
+    // Now sort leptons by descending Pt
+    sort(vec_new_OR_lept.begin(), vec_new_OR_lept.end(), sort_descending_Pt<Lepton>);
+
     if (!isSkim) {
         bool cut9  = m_cutflow->pass_at_least_one_signal_jet(vec_JVT_jets);
         m_cutflow->update(At_least_one_signal_jet, cut9);
         if (!cut9) return EL::StatusCode::SUCCESS;
     }
 
-    bool cut10 = m_cutflow->pass_cosmic_muon_veto(vec_OR_muon);
+    // bool cut10 = m_cutflow->pass_cosmic_muon_veto(vec_OR_muon);
+    bool cut10 = m_cutflow->pass_cosmic_muon_veto(vec_new_OR_muon);
     m_cutflow->update(Cosmic_muons_veto, cut10);
     if (!cut10) return EL::StatusCode::SUCCESS;
 
-    bool cut11 = m_cutflow->pass_at_least_two_baseline_leptons_greater_than_10GeV(vec_OR_lept);
+    // bool cut11 = m_cutflow->pass_at_least_two_baseline_leptons_greater_than_10GeV(vec_OR_lept);
+    bool cut11 = m_cutflow->pass_at_least_two_baseline_leptons_greater_than_10GeV(vec_new_OR_lept);
     m_cutflow->update(At_least_two_baseline_leptons_greater_than_10GeV, cut11);
     if (!cut11) return EL::StatusCode::SUCCESS;
 
     // Fill signal electrons, signal muons, signal jets, and signal leptons into vectors.
-    fill_signal_electrons(vec_OR_elec);
-    fill_signal_muons(vec_OR_muon);
+    // fill_signal_electrons(vec_OR_elec);
+    // fill_signal_muons(vec_OR_muon);
+    fill_signal_electrons(vec_new_OR_elec);
+    fill_signal_muons(vec_new_OR_muon);
     fill_signal_leptons(vec_signal_elec, vec_signal_muon);
     fill_signal_jets(vec_JVT_jets);
     // Now sort leptons by descending Pt
@@ -2374,6 +2390,58 @@ void ytEventSelection::fill_JVT_jets(vector<Jet> vec_jets)
 }
 
 
+void ytEventSelection::fill_new_OR_electrons(vector<Electron> vec_elec, vector<Jet> vec_jets)
+{
+    for (auto & el_itr : vec_elec) {
+        bool keep_this = true;
+        for (auto & jet_itr : vec_jets) {
+            TLorentzVector el_tlv = el_itr.get_TLV();
+            TLorentzVector jet_tlv = jet_itr.get_TLV();
+            float DR = deltaR(el_tlv, jet_tlv);
+            // Remove leptons overlapping with close-by jets passing the JVT selection
+            // when DR < min{0.4, 0.1+9.6GeV/pT(lept)}
+            if (DR < min(0.4, 0.1 + 9.6 * 1000 / el_itr.get_pt()))
+                keep_this = false;
+        }
+        if (keep_this)
+            vec_new_OR_elec.push_back(el_itr);
+    }
+}
+
+
+
+void ytEventSelection::fill_new_OR_muons(vector<Muon> vec_muon, vector<Jet> vec_jets)
+{
+    for (auto mu_itr : vec_muon) {
+        bool keep_this = true;
+        for (auto & jet_itr : vec_jets) {
+            TLorentzVector mu_tlv = mu_itr.get_TLV();
+            TLorentzVector jet_tlv = jet_itr.get_TLV();
+            float DR = deltaR(mu_tlv, jet_tlv);
+            // Remove leptons overlapping with close-by jets passing the JVT selection
+            // when DR < min{0.4, 0.1+9.6GeV/pT(lept)}
+            if (DR < min(0.4, 0.1 + 9.6 * 1000 / mu_itr.get_pt()))
+                keep_this = false;
+        }
+        if (keep_this)
+            vec_new_OR_muon.push_back(mu_itr);
+    }
+}
+
+
+
+void ytEventSelection::fill_new_OR_leptons(vector<Electron> vec_elec, vector<Muon> vec_muon)
+{
+    for (auto & el_itr : vec_elec) {
+        vec_new_OR_lept.push_back(el_itr);
+    }
+
+    for (auto & mu_itr : vec_muon) {
+        vec_new_OR_lept.push_back(mu_itr);
+    }
+}
+
+
 
 //
 // signal objects
@@ -2458,7 +2526,8 @@ void ytEventSelection::set_baseline_and_signal_electrons()
             fabs(el_itr.get_eta()) <= 2. && // Use track eta this time
             el_itr.get_ptvarcone20() / el_itr.get_pt() < 0.06 &&
             el_itr.get_topoetcone20() / el_itr.get_pt() < 0.06 &&
-            fabs(el_itr.get_z0sinTheta()) < 0.5) {
+            fabs(el_itr.get_z0sinTheta()) < 0.5 &&
+            el_itr.get_passChargeFlipTaggerBDTmedium() > -0.28087) {
             el_itr.set_isSignal(1);
         }
         else {
