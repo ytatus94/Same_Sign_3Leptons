@@ -4034,7 +4034,7 @@ void yt_real_efficiency_vs_dR_electron()
 
     TH1F *h_elec_baseline_dRjet = (TH1F *)h_elec_baseline_pt_eta_dRjet->ProjectionZ("", 0, -1, eta_low_bin, eta_up_bin)->Clone();
     TH1F *h_Zee_baseline_dRjet = (TH1F *)h_Zee_pt_baseline_eta_dRjet->ProjectionZ("", 0, -1, eta_low_bin, eta_up_bin)->Clone();
-    TH1F *h_Zee_truthbaseline_dRjet = (TH1F *)h_Zee_truth_baseline_pt_eta_dRjet->ProjectionZ("", 0, -1, eta_low_bin, eta_up_bin)->Clone();
+    TH1F *h_Zee_truth_baseline_dRjet = (TH1F *)h_Zee_truth_baseline_pt_eta_dRjet->ProjectionZ("", 0, -1, eta_low_bin, eta_up_bin)->Clone();
     TH1F *h_ttbar_elec_baseline_dRjet = (TH1F *)h_ttbar_elec_baseline_pt_eta_dRjet->ProjectionZ("", 0, -1, eta_low_bin, eta_up_bin)->Clone();
     TH1F *h_Gtt_elec_baseline_dRjet = (TH1F *)h_Gtt_elec_baseline_pt_eta_dRjet->ProjectionZ("", 0, -1, eta_low_bin, eta_up_bin)->Clone();
 
@@ -4064,7 +4064,7 @@ void yt_real_efficiency_vs_dR_electron()
 
     h_elec_eff_dRjet->Divide(h_elec_signal_dRjet, h_elec_baseline_dRjet, 1, 1, "B");
     h_Zee_eff_dRjet->Divide(h_Zee_signal_dRjet, h_Zee_baseline_dRjet, 1, 1, "B");
-    h_Zee_truth_eff_dRjet->Divide(h_Zee_truth_signal_dRjet, h_Zee_truthbaseline_dRjet, 1, 1, "B");
+    h_Zee_truth_eff_dRjet->Divide(h_Zee_truth_signal_dRjet, h_Zee_truth_baseline_dRjet, 1, 1, "B");
     h_ttbar_elec_eff_dRjet->Divide(h_ttbar_elec_signal_dRjet, h_ttbar_elec_baseline_dRjet, 1, 1, "B");
     h_Gtt_elec_eff_dRjet->Divide(h_Gtt_elec_signal_dRjet, h_Gtt_elec_baseline_dRjet, 1, 1, "B");
 

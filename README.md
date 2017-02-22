@@ -9,6 +9,13 @@ This is SS/3L+jet cutflows study for v50 ntuples.
 * ST-00-08-45
 
 
+### v03. Change the 2015 single lepton trigger
+1. `yt_skim.cxx`: Use `get_trigMatch_e24_lhmedium_iloose_L1EM20VH()` because of get_trigMatch_e24_lhmedium_L1EM20VH() doesn't work correctly.
+2. `ytRealLeptonsEfficiency.cxx`: Use HLT_e24_lhmedium_iloose_L1EM20VH instead of using HLT_e24_lhmedium_L1EM20VH
+3. `run_all_skim.sh`: Turn ttbar skim
+4. `ytPlots.C`: Fix typo
+
+
 ### v02. New OR + signal elec object definition
 1. `yt_useful_functions`: Add new function `deltaR()` in header and implementation.
 2. `ytEventSelection.h`:

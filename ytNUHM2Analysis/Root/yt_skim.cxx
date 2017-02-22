@@ -536,11 +536,11 @@ void yt_skim::Z_tag_and_probe()
             bool is_tag_trigger_matched = false;
             bool is_probe_trigger_matched = false;
             if (run_number < 290000) { // 2015 data
-                if (tag_elec_itr.get_trigMatch_e24_lhmedium_L1EM20VH()) {
+                if (tag_elec_itr.get_trigMatch_e24_lhmedium_iloose_L1EM20VH()) { // use get_trigMatch_e24_lhmedium_iloose_L1EM20VH() because get_trigMatch_e24_lhmedium_L1EM20VH() doesn't work correctly.
                     is_tag_trigger_matched = true;
                     candidate.tag_is_trigger_matched = true;
                 }
-                if (probe_elec_itr.get_trigMatch_e24_lhmedium_L1EM20VH()) {
+                if (probe_elec_itr.get_trigMatch_e24_lhmedium_iloose_L1EM20VH()) {
                     is_probe_trigger_matched = true;
                     candidate.probe_is_trigger_matched = true;
                 }

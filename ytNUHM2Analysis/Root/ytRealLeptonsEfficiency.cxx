@@ -1314,7 +1314,7 @@ EL::StatusCode ytRealLeptonsEfficiency::execute ()
             // Electron: e24_lhmedium_L1EM20VH (2015)
             //           e26_lhtight_nod0_ivarloose (2016)
             if (run_number < 290000) { // 2015 data
-                if (!HLT_e24_lhmedium_L1EM20VH)
+                if (!HLT_e24_lhmedium_iloose_L1EM20VH) // use HLT_e24_lhmedium_iloose_L1EM20VH instead of using HLT_e24_lhmedium_L1EM20VH
                     return EL::StatusCode::SUCCESS; // Go to next event
             }
             else if (run_number > 290000) { // 2016 data
@@ -1336,7 +1336,7 @@ EL::StatusCode ytRealLeptonsEfficiency::execute ()
         }
         else if (trigger == "dilepton_trigger_but_fail_single_lepton_trigger") {
             if (run_number < 290000) { // 2015 data)
-                if ( !(HLT_2e12_lhloose_L12EM10VH && !HLT_e24_lhmedium_L1EM20VH) )
+                if ( !(HLT_2e12_lhloose_L12EM10VH && !HLT_e24_lhmedium_iloose_L1EM20VH) ) // use HLT_e24_lhmedium_iloose_L1EM20VH instead of using HLT_e24_lhmedium_L1EM20VH
                     return EL::StatusCode::SUCCESS; // Go to next event
             }
             else if (run_number > 290000) { // 2016 data
