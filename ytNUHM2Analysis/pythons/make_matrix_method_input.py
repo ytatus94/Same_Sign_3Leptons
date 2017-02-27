@@ -18,9 +18,9 @@ def main():
 
 
 def get_electron_real_efficiency():
-    variation_files = ["/Users/ytshen/Desktop/skim/Results/20170205/logs/el_var_templates.txt",
-                       "/Users/ytshen/Desktop/skim/Results/20170205/logs/el_var_fitting_ranges.txt",
-                       "/Users/ytshen/Desktop/skim/Results/20170205/logs/el_var_mll_windows.txt"]
+    variation_files = ["../../Results/20170222/logs/el_var_templates.txt",
+                       "../../Results/20170222/logs/el_var_fitting_ranges.txt",
+                       "../../Results/20170222/logs/el_var_mll_windows.txt"]
 
     pt_ranges = []
 
@@ -249,7 +249,7 @@ def get_electron_real_efficiency():
 
 
 def get_muon_real_efficiency():
-    variation_file = "/Users/ytshen/Desktop/skim/Results/20170205/logs/mu_efficiency_systematics.txt"
+    variation_file = "../../Results/20170222/logs/mu_efficiency_systematics.txt"
 
     pt_ranges = []
 
@@ -280,22 +280,22 @@ def get_muon_real_efficiency():
                 pt_ranges.append(str(line[0 : line.find("GeV,")+3]))
                 central_value_eta_bin1.append(float(line[line.find("=")+2 : line.find("$pm")-1]))
                 total_uncertainty_eta_bin1.append(float(line[line.find("$pm")+5 : line.find("(tot)")-1]))
-                stat_uncertainty_eta_bin1.append(float(line[line.find("(tot)")+11: line.find("(stat)")-1]))
+                stat_uncertainty_eta_bin1.append(float(line[line.find("(tot)")+8: line.find("(stat)")-1]))
                 syst_uncertainty_eta_bin1.append(float(line[line.find("(stat)")+12: line.find("(syst)")-1]))
             elif "0.6 < eta < 1.2" in line:
                 central_value_eta_bin2.append(float(line[line.find("=")+2 : line.find("$pm")-1]))
                 total_uncertainty_eta_bin2.append(float(line[line.find("$pm")+5 : line.find("(tot)")-1]))
-                stat_uncertainty_eta_bin2.append(float(line[line.find("(tot)")+11: line.find("(stat)")-1]))
+                stat_uncertainty_eta_bin2.append(float(line[line.find("(tot)")+8: line.find("(stat)")-1]))
                 syst_uncertainty_eta_bin2.append(float(line[line.find("(stat)")+12: line.find("(syst)")-1]))
             elif "1.2 < eta < 1.8" in line:
                 central_value_eta_bin3.append(float(line[line.find("=")+2 : line.find("$pm")-1]))
                 total_uncertainty_eta_bin3.append(float(line[line.find("$pm")+5 : line.find("(tot)")-1]))
-                stat_uncertainty_eta_bin3.append(float(line[line.find("(tot)")+11: line.find("(stat)")-1]))
+                stat_uncertainty_eta_bin3.append(float(line[line.find("(tot)")+8: line.find("(stat)")-1]))
                 syst_uncertainty_eta_bin3.append(float(line[line.find("(stat)")+12: line.find("(syst)")-1]))
             elif "1.8 < eta < 2.5" in line:
                 central_value_eta_bin4.append(float(line[line.find("=")+2 : line.find("$pm")-1]))
                 total_uncertainty_eta_bin4.append(float(line[line.find("$pm")+5 : line.find("(tot)")-1]))
-                stat_uncertainty_eta_bin4.append(float(line[line.find("(tot)")+11: line.find("(stat)")-1]))
+                stat_uncertainty_eta_bin4.append(float(line[line.find("(tot)")+8: line.find("(stat)")-1]))
                 syst_uncertainty_eta_bin4.append(float(line[line.find("(stat)")+12: line.find("(syst)")-1]))
 
     fo = open('realMuEfficiencyTables.h','w')

@@ -103,14 +103,14 @@ def variate_template():
                     output_filename = template + "_range_baseline_mll80100" + pT + eta + ".txt"
                     if template is 'baseline_template':
                         if pt_range_index is 11:
-                            command1 = 'root -q -b \'../scripts/ytBackground_subtraction.C("single_lepton_trigger","baseline","range_baseline",true,60,120,80,100,' + str(pt_range_index) + ',' + str(13) + ',' + str(eta_range_low) + ',' + str(eta_range_up) + ')\' > ' + output_filename
+                            command1 = 'root -q -b \'../scripts/ytBackground_subtraction.C("tag_trigger_matched","baseline","range_baseline",true,60,120,80,100,' + str(pt_range_index) + ',' + str(13) + ',' + str(eta_range_low) + ',' + str(eta_range_up) + ')\' > ' + output_filename
                         else:
-                            command1 = 'root -q -b \'../scripts/ytBackground_subtraction.C("single_lepton_trigger","baseline","range_baseline",true,60,120,80,100,' + str(pt_range_index) + ',' + str(pt_range_index) + ',' + str(eta_range_low) + ',' + str(eta_range_up) + ')\' > ' + output_filename
+                            command1 = 'root -q -b \'../scripts/ytBackground_subtraction.C("tag_trigger_matched","baseline","range_baseline",true,60,120,80,100,' + str(pt_range_index) + ',' + str(pt_range_index) + ',' + str(eta_range_low) + ',' + str(eta_range_up) + ')\' > ' + output_filename
                     else:
                         if pt_range_index is 11:
-                            command1 = 'root -q -b \'../scripts/ytBackground_subtraction.C("single_lepton_trigger","' + template + '","range_baseline",true,60,120,80,100,' + str(pt_range_index) + ',' + str(11) + ',' + str(eta_range_low) + ',' + str(eta_range_up) + ')\' > ' + output_filename
+                            command1 = 'root -q -b \'../scripts/ytBackground_subtraction.C("tag_trigger_matched","' + template + '","range_baseline",true,60,120,80,100,' + str(pt_range_index) + ',' + str(11) + ',' + str(eta_range_low) + ',' + str(eta_range_up) + ')\' > ' + output_filename
                         else:
-                            command1 = 'root -q -b \'../scripts/ytBackground_subtraction.C("single_lepton_trigger","' + template + '","range_baseline",true,60,120,80,100,' + str(pt_range_index) + ',' + str(pt_range_index) + ',' + str(eta_range_low) + ',' + str(eta_range_up) + ')\' > ' + output_filename
+                            command1 = 'root -q -b \'../scripts/ytBackground_subtraction.C("tag_trigger_matched","' + template + '","range_baseline",true,60,120,80,100,' + str(pt_range_index) + ',' + str(pt_range_index) + ',' + str(eta_range_low) + ',' + str(eta_range_up) + ')\' > ' + output_filename
                     #print command1
                     os.system(command1)
 
@@ -156,9 +156,9 @@ def variate_fitting_range():
                     eta = eta_str(eta_low, eta_up)
                     output_filename = "baseline_template_" + fitting_range + "_mll80100" + pT + eta + ".txt"
                     if pt_range_index is 11:
-                        command2 = 'root -q -b \'../scripts/ytBackground_subtraction.C("single_lepton_trigger","baseline","' + fitting_range + '",true,60,120,80,100,' + str(pt_range_index) + ',' + str(13) + ',' + str(eta_range_low) + ',' + str(eta_range_up) + ')\' > ' + output_filename
+                        command2 = 'root -q -b \'../scripts/ytBackground_subtraction.C("tag_trigger_matched","baseline","' + fitting_range + '",true,60,120,80,100,' + str(pt_range_index) + ',' + str(13) + ',' + str(eta_range_low) + ',' + str(eta_range_up) + ')\' > ' + output_filename
                     else:
-                        command2 = 'root -q -b \'../scripts/ytBackground_subtraction.C("single_lepton_trigger","baseline","' + fitting_range + '",true,60,120,80,100,' + str(pt_range_index) + ',' + str(pt_range_index) + ',' + str(eta_range_low) + ',' + str(eta_range_up) + ')\' > ' + output_filename
+                        command2 = 'root -q -b \'../scripts/ytBackground_subtraction.C("tag_trigger_matched","baseline","' + fitting_range + '",true,60,120,80,100,' + str(pt_range_index) + ',' + str(pt_range_index) + ',' + str(eta_range_low) + ',' + str(eta_range_up) + ')\' > ' + output_filename
                     #print command2
                     os.system(command2)
 
@@ -205,9 +205,9 @@ def variate_mll_window():
                     eta = eta_str(eta_low, eta_up)
                     output_filename = "baseline_template_range_baseline" + mll + pT + eta + ".txt"
                     if pt_range_index is 11:
-                        command3 = 'root -q -b \'../scripts/ytBackground_subtraction.C("single_lepton_trigger","baseline","range_baseline",true,60,120,' + str(mll_window[0]) + ',' + str(mll_window[1]) + ',' + str(pt_range_index) + ',' + str(13) + ',' + str(eta_range_low) + ',' + str(eta_range_up) + ')\' > ' + output_filename
+                        command3 = 'root -q -b \'../scripts/ytBackground_subtraction.C("tag_trigger_matched","baseline","range_baseline",true,60,120,' + str(mll_window[0]) + ',' + str(mll_window[1]) + ',' + str(pt_range_index) + ',' + str(13) + ',' + str(eta_range_low) + ',' + str(eta_range_up) + ')\' > ' + output_filename
                     else:
-                        command3 = 'root -q -b \'../scripts/ytBackground_subtraction.C("single_lepton_trigger","baseline","range_baseline",true,60,120,' + str(mll_window[0]) + ',' + str(mll_window[1]) + ',' + str(pt_range_index) + ',' + str(pt_range_index) + ',' + str(eta_range_low) + ',' + str(eta_range_up) + ')\' > ' + output_filename
+                        command3 = 'root -q -b \'../scripts/ytBackground_subtraction.C("tag_trigger_matched","baseline","range_baseline",true,60,120,' + str(mll_window[0]) + ',' + str(mll_window[1]) + ',' + str(pt_range_index) + ',' + str(pt_range_index) + ',' + str(eta_range_low) + ',' + str(eta_range_up) + ')\' > ' + output_filename
                     #print command3
                     os.system(command3)
 

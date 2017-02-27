@@ -9,6 +9,23 @@ This is SS/3L+jet cutflows study for v50 ntuples.
 * ST-00-08-45
 
 
+### v04. Use tag_trigger_matched as the nominal
+1. `make_AvgMu_and_mll.py`: Change the input file path
+2. `make_matrix_method_input.py`:
+	* Change the input file path
+	* `get_muon_real_efficiency()`: Correct the index while read the input file
+3. `run_elec_systematics.py`: Change from `single_lepton_trigger` to `tag_trigger_matched`
+4. `run_muon_systematics.py`: Change the input file path and use tag_trigger_matched as the nominal
+5. `run_trigger_systematics.py`: Use tag_trigger_matched as the nominal
+6. `run_all_RLE.sh`: Uncommont the ttbar
+7. `ytBackground_subtraction.C`: Change the input path
+8. `RLE.cxx`: Change the input path
+9. `run_everything.py`: Use tag_trigger_matched as the nominal
+10. `run_making_plots.py`:
+    * Change the input path
+    * Comment out the part related to Gtt because we don't have Gtt sample in v50.
+
+
 ### v03. Change the 2015 single lepton trigger
 1. `yt_skim.cxx`: Use `get_trigMatch_e24_lhmedium_iloose_L1EM20VH()` because of get_trigMatch_e24_lhmedium_L1EM20VH() doesn't work correctly.
 2. `ytRealLeptonsEfficiency.cxx`: Use HLT_e24_lhmedium_iloose_L1EM20VH instead of using HLT_e24_lhmedium_L1EM20VH

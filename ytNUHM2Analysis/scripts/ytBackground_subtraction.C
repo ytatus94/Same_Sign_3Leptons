@@ -79,7 +79,7 @@ void ytBackground_subtraction(TString trigger = "single_lepton_trigger",
 
     cout << "Current template = " << template_type << endl;
 
-    TString path = "../../Results/20170213/";
+    TString path = "../../Results/20170222/";
     TFile *data_file;
     if (trigger == "single_lepton_trigger")
         data_file = TFile::Open(path + "hist-RLE-merged-data-elec.root");
@@ -92,9 +92,9 @@ void ytBackground_subtraction(TString trigger = "single_lepton_trigger",
 
     TFile *mc_file;
     if (!truth_match)  // T&P
-        mc_file = TFile::Open(path + "RLE_MC_Zee/hist-20170213.root");
+        mc_file = TFile::Open(path + "RLE_MC_Zee/hist-20170222.root");
     else // truth_match
-        mc_file = TFile::Open(path + "RLE_MC_Zee_truth_match/hist-20170213.root");
+        mc_file = TFile::Open(path + "RLE_MC_Zee_truth_match/hist-20170222.root");
         // TandP + truth_match
         //mc_file = TFile::Open(path + "RLE_MC_Zmumu_TandP_truth_match/hist-20170112.root");
 

@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import os, ROOT, math
 
-path = "/Users/ytshen/Desktop/skim/Results/20170128/"
+path = "/Users/ytshen/Desktop/skim/Results/20170222/"
 
 electron = "hist-RLE-merged-data-elec.root";
 muon = "hist-RLE-merged-data-muon.root";
@@ -132,8 +132,10 @@ def trigger_systematic_uncertainty(lepton):
                 h_di_tag_eff.Divide(h_di_tag_baseline)
 
             #for i in range(1, h_sin_eff.GetXaxis().GetNbins() + 1):
-                central_value = h_sin_eff.GetBinContent(i)
-                var1 = h_sin_tag_eff.GetBinContent(i) - central_value
+                # central_value = h_sin_eff.GetBinContent(i)
+                # var1 = h_sin_tag_eff.GetBinContent(i) - central_value
+                central_value = h_sin_tag_eff.GetBinContent(i)
+                var1 = h_sin_eff.GetBinContent(i) - central_value
                 var2 = h_di_eff.GetBinContent(i) - central_value
                 var3 = h_di_tag_eff.GetBinContent(i) - central_value
                 uncertainty = math.sqrt(var1**2 + var2**2 + var3**2)
