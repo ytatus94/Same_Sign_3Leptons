@@ -114,8 +114,8 @@ EL::StatusCode ytEventSelection::fileExecute ()
     //const char * function_name = "fileExecute()";
     //Info(function_name, "Function calls");
 
-    TH1F *h1 = (TH1F *)wk()->inputFile()->Get("DerivationStat_Weights");
-    derivation_stat_weights = h1->GetBinContent(1);
+    // TH1F *h1 = (TH1F *)wk()->inputFile()->Get("DerivationStat_Weights");
+    // derivation_stat_weights = h1->GetBinContent(1);
     //cout <<   "derivation_stat_weights=" << h1->GetBinContent(1) << endl;
 
     return EL::StatusCode::SUCCESS;

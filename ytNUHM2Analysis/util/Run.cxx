@@ -271,22 +271,22 @@ int main( int argc, char* argv[] ) {
         //
         // For cutflow study
         if (process == "4topSM") {
-            SH::ScanDir().filePattern("4topSM.root").scan(sh, inputFilePath);
-            //SH::ScanDir().samplePattern("user.*.410080.*4topSM*").scan(sh, inputFilePath); // Get all root files in this dataset
+            //SH::ScanDir().filePattern("4topSM.root").scan(sh, inputFilePath);
+            SH::ScanDir().samplePattern("user.*.410080.*4topSM*").scan(sh, inputFilePath); // Get all root files in this dataset
         }
         //
         // For real lepton efficiency study
         else if (process == "Zee") {
-            SH::ScanDir().filePattern("Zee_merged.root").scan(sh, inputFilePath); // Get specific root file
-            //SH::ScanDir().samplePattern("user.*.361106.*Zee*").scan(sh, inputFilePath); // Get all root files in this dataset
+            //SH::ScanDir().filePattern("Zee_merged.root").scan(sh, inputFilePath); // Get specific root file
+            SH::ScanDir().samplePattern("user.*.361106.*Zee*").scan(sh, inputFilePath); // Get all root files in this dataset
         }
         else if (process == "Zmumu") {
-            SH::ScanDir().filePattern("Zmumu_merged.root").scan(sh, inputFilePath); // Get specific root file
-            //SH::ScanDir().samplePattern("user.*.361107.*Zmumu*").scan(sh, inputFilePath); // Get all root files in this dataset
+            //SH::ScanDir().filePattern("Zmumu_merged.root").scan(sh, inputFilePath); // Get specific root file
+            SH::ScanDir().samplePattern("user.*.361107.*Zmumu*").scan(sh, inputFilePath); // Get all root files in this dataset
         }
         else if (process == "ttbar") {
-            SH::ScanDir().filePattern("ttbar_merged.root").scan(sh, inputFilePath); // Get specific root file
-            //SH::ScanDir().samplePattern("user.*.410000.*ttbar*nonallhad*").scan(sh, inputFilePath); // Get all root files in this dataset
+            //SH::ScanDir().filePattern("ttbar_merged.root").scan(sh, inputFilePath); // Get specific root file
+            SH::ScanDir().samplePattern("user.*.410000.*ttbar*nonallhad*").scan(sh, inputFilePath); // Get all root files in this dataset
         }
         else if (process == "GG_ttn1") {
             SH::ScanDir().filePattern("GG_ttn1_merged.root").scan(sh, inputFilePath); // Get specific root file
@@ -490,7 +490,28 @@ int main( int argc, char* argv[] ) {
     sh.setMetaString("nc_tree", "AnaNtup");
 
     // Print what we found:
-    sh.print();
+    sh.print(); // list all the root files in the dataset
+    // cout << "sh.size()=" << sh.size() << endl; // number of dataset
+
+    //
+    // Get DerivationStat_Weights from input files
+    //
+    double derivation_stat_weights = 0;
+    SH::Sample *sample = sh.at(sh.size() - 1); // Because we only have one dataset at here
+    // cout << "sample name=" << sample->name() << endl; // dataset name
+    // cout << "numFiles()=" << sample->numFiles() << endl; // number of root files in dataset
+    for (unsigned int i = 0; i < sample->numFiles() ; i++) {
+        string fileName = sample->fileName(i); // this returns file://root file name and path
+        string remove = "file://"; // need to remove "file://" part
+        string::size_type find_remove_part = fileName.find(remove);
+        if (find_remove_part != string::npos)
+            fileName.erase(find_remove_part, remove.length()); // now contains root file name and path only
+        //cout << "fileName(" << i << ")=" << fileName << endl;
+        TFile *file = new TFile(fileName.c_str());
+        TH1D *h1 = (TH1D *)file->Get("DerivationStat_Weights");
+        derivation_stat_weights += h1->GetBinContent(1);
+    }
+    // cout << "DerivationStat_Weights=" << derivation_stat_weights << endl;
 
     // Get the dataset name
     string dataset_name = sh.at(0)->fileName(0);
@@ -522,6 +543,7 @@ int main( int argc, char* argv[] ) {
     alg->set_isAF2Sim(isAF2Sim);
     alg->set_process(process);
     alg->set_tag_pt_threshold(25000.);
+    alg->set_derivation_stat_weights(derivation_stat_weights);
 
     const double luminosity = 36.5; // unit: 1/fb 2015+2016
     alg->set_luminosity(luminosity);

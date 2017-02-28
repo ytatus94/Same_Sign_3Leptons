@@ -51,7 +51,7 @@ public:
     // user defined variables
     string process;
 
-    double derivation_stat_weights; //!
+    double derivation_stat_weights;
 
     float luminosity;
     float cross_section; //!
@@ -951,6 +951,7 @@ public:
     void set_process(string s) { process = s; }
     void set_luminosity(float f) { luminosity = f; }
     void set_tag_pt_threshold(float f) { tag_pt_threshold = f; }
+    void set_derivation_stat_weights(double d) { derivation_stat_weights = d; }
 
     // this is needed to distribute the algorithm to the workers
     ClassDef(ytEventSelection, 1);
