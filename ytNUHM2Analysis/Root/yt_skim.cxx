@@ -11,16 +11,24 @@ yt_skim::yt_skim()
     El_isSignal     = new vector<bool>();
     El_isZTag       = new vector<bool>();
     El_isZProbe     = new vector<bool>();
+    El_Tag_index    = new vector<int>();
+    El_Probe_index  = new vector<int>();
     El_ZTandP_mll   = new vector<double>();
-    El_isZProbe_TriggerMatched = new vector<bool>();
+    El_isZProbe_TagTriggerMatched = new vector<bool>();
+    El_Tag_Trigger_Matched = new vector<bool>();
+    El_Probe_Trigger_Matched = new vector<bool>();
     El_DR_closest_Jet = new vector<double>();
 
     Mu_isBaseline   = new vector<bool>();
     Mu_isSignal     = new vector<bool>();
     Mu_isZTag       = new vector<bool>();
     Mu_isZProbe     = new vector<bool>();
+    Mu_Tag_index    = new vector<int>();
+    Mu_Probe_index  = new vector<int>();
     Mu_ZTandP_mll   = new vector<double>();
-    Mu_isZProbe_TriggerMatched = new vector<bool>();
+    Mu_isZProbe_TagTriggerMatched = new vector<bool>();
+    Mu_Tag_Trigger_Matched = new vector<bool>();
+    Mu_Probe_Trigger_Matched = new vector<bool>();
     Mu_DR_closest_Jet = new vector<double>();
 
     //Jet_isBaseline  = new vector<bool>();
@@ -158,6 +166,8 @@ void yt_skim::initialize(TTree *tree)
     output_tree->Branch("run_number", &run_number);
     output_tree->Branch("new_AvgMu", &new_AvgMu);
     // Physics object variables
+    output_tree->Branch("EE_pair", &EE_pair);
+    output_tree->Branch("MuMu_pair", &MuMu_pair);
 /*
     output_tree->Branch("tag_flavor", &tag_flavor);
     output_tree->Branch("tag_index", &tag_index);
@@ -186,16 +196,24 @@ void yt_skim::initialize(TTree *tree)
     output_tree->Branch("El_isSignal",                  &El_isSignal);
     output_tree->Branch("El_isZTag",                    &El_isZTag);
     output_tree->Branch("El_isZProbe",                  &El_isZProbe);
+    output_tree->Branch("El_Tag_index",                 &El_Tag_index);
+    output_tree->Branch("El_Probe_index",               &El_Probe_index);
     output_tree->Branch("El_ZTandP_mll",                &El_ZTandP_mll);
-    output_tree->Branch("El_isZProbe_TriggerMatched",   &El_isZProbe_TriggerMatched);
+    output_tree->Branch("El_isZProbe_TagTriggerMatched",&El_isZProbe_TagTriggerMatched);
+    output_tree->Branch("El_Tag_Trigger_Matched",       &El_Tag_Trigger_Matched);
+    output_tree->Branch("El_Probe_Trigger_Matched",     &El_Probe_Trigger_Matched);
     output_tree->Branch("El_DR_closest_Jet",            &El_DR_closest_Jet);
 
     output_tree->Branch("Mu_isBaseline",                &Mu_isBaseline);
     output_tree->Branch("Mu_isSignal",                  &Mu_isSignal);
     output_tree->Branch("Mu_isZTag",                    &Mu_isZProbe);
     output_tree->Branch("Mu_isZProbe",                  &Mu_isZProbe);
+    output_tree->Branch("Mu_Tag_index",                 &Mu_Tag_index);
+    output_tree->Branch("Mu_Probe_index",               &Mu_Probe_index);
     output_tree->Branch("Mu_ZTandP_mll",                &Mu_ZTandP_mll);
-    output_tree->Branch("Mu_isZProbe_TriggerMatched",   &Mu_isZProbe_TriggerMatched);
+    output_tree->Branch("Mu_isZProbe_TagTriggerMatched",&Mu_isZProbe_TagTriggerMatched);
+    output_tree->Branch("Mu_Tag_Trigger_Matched",       &Mu_Tag_Trigger_Matched);
+    output_tree->Branch("Mu_Probe_Trigger_Matched",     &Mu_Probe_Trigger_Matched);
     output_tree->Branch("Mu_DR_closest_Jet",            &Mu_DR_closest_Jet);
 
     //output_tree->Branch("Jet_isBaseline",     &Jet_isBaseline);
@@ -269,15 +287,18 @@ void yt_skim::reset_vectors()
     dummy.tag_id_SFw = 1.;
     dummy.tag_iso_SFw = 1.;
     dummy.tag_trigger_SFw = 1.;
+    //
     dummy.probe_flavor = 0;
     dummy.probe_index = -1;
     dummy.probe_pt = 0.;
     dummy.probe_eta = 10.;
     dummy.probe_phi = 10.;
-    dummy.probe_is_baseline = false;
-    dummy.probe_is_signal = false;
+    dummy.probe_is_trigger_matched = false;
     dummy.probe_id_SFw = 1.;
     dummy.probe_iso_SFw = 1.;
+    dummy.probe_trigger_SFw = 1.;
+    dummy.probe_is_baseline = false;
+    dummy.probe_is_signal = false;
     //dummy.probe_deltaR_closest_jet = 100;
     dummy.baseline_mll = 0.;
     dummy.signal_mll = 0.;
@@ -298,16 +319,24 @@ void yt_skim::reset_vectors()
     El_isSignal->clear();
     El_isZTag->clear();
     El_isZProbe->clear();
+    El_Tag_index->clear();
+    El_Probe_index->clear();
     El_ZTandP_mll->clear();
-    El_isZProbe_TriggerMatched->clear();
+    El_isZProbe_TagTriggerMatched->clear();
+    El_Tag_Trigger_Matched->clear();
+    El_Probe_Trigger_Matched->clear();
     El_DR_closest_Jet->clear();
 
     Mu_isBaseline->clear();
     Mu_isSignal->clear();
     Mu_isZTag->clear();
     Mu_isZProbe->clear();
+    Mu_Tag_index->clear();
+    Mu_Probe_index->clear();
     Mu_ZTandP_mll->clear();
-    Mu_isZProbe_TriggerMatched->clear();
+    Mu_isZProbe_TagTriggerMatched->clear();
+    Mu_Tag_Trigger_Matched->clear();
+    Mu_Probe_Trigger_Matched->clear();
     Mu_DR_closest_Jet->clear();
 
     //Jet_isBaseline->clear();
@@ -319,8 +348,12 @@ void yt_skim::reset_vectors()
         El_isSignal->push_back(false);
         El_isZTag->push_back(false);
         El_isZProbe->push_back(false);
+        El_Tag_index->push_back(100);
+        El_Probe_index->push_back(100);
         El_ZTandP_mll->push_back(0);
-        El_isZProbe_TriggerMatched->push_back(false);
+        El_isZProbe_TagTriggerMatched->push_back(false);
+        El_Tag_Trigger_Matched->push_back(false);
+        El_Probe_Trigger_Matched->push_back(false);
         El_DR_closest_Jet->push_back(100);
     }
 
@@ -330,8 +363,12 @@ void yt_skim::reset_vectors()
         Mu_isSignal->push_back(false);
         Mu_isZTag->push_back(false);
         Mu_isZProbe->push_back(false);
+        Mu_Tag_index->push_back(100);
+        Mu_Probe_index->push_back(100);
         Mu_ZTandP_mll->push_back(0);
-        Mu_isZProbe_TriggerMatched->push_back(false);
+        Mu_isZProbe_TagTriggerMatched->push_back(false);
+        Mu_Tag_Trigger_Matched->push_back(false);
+        Mu_Probe_Trigger_Matched->push_back(false);
         Mu_DR_closest_Jet->push_back(100);
     }
 
@@ -493,14 +530,19 @@ void yt_skim::Z_tag_and_probe()
             // 2015: HLT_e24_lhmedium_L1EM20VH
             // 2016: HLT_e26_lhtight_nod0_ivarloose
             bool is_tag_trigger_matched = false;
-            if (run_number < 290000) { // 2015 data
+            bool is_probe_trigger_matched = false;
+            // if (run_number < 290000) { // 2015 data
                 if (tag_elec_itr.get_trigMatch_e24_lhmedium_iloose_L1EM20VH()) // no e24_lhmedium so use e24_lhmedium_iloose
                     is_tag_trigger_matched = true;
-            }
-            else if (run_number > 290000) {
-                if (tag_elec_itr.get_trigMatch_e24_lhtight_nod0_ivarloose()) // no e26 so use e24
-                    is_tag_trigger_matched = true;
-            }
+                if (probe_elec_itr.get_trigMatch_e24_lhmedium_iloose_L1EM20VH()) // no e24_lhmedium so use e24_lhmedium_iloose
+                    is_probe_trigger_matched = true;
+            // }
+            // else if (run_number > 290000) {
+            //     if (tag_elec_itr.get_trigMatch_e24_lhtight_nod0_ivarloose()) // no e26 so use e24
+            //         is_tag_trigger_matched = true;
+            //     if (probe_elec_itr.get_trigMatch_e24_lhtight_nod0_ivarloose()) // no e26 so use e24
+            //         is_probe_trigger_matched = true;
+            // }
 
             TLorentzVector tlv_tag;
             TLorentzVector tlv_probe;
@@ -513,8 +555,15 @@ void yt_skim::Z_tag_and_probe()
             if (current_mll > 80000. && current_mll < 100000.) {
                 El_isZTag->at(tag_elec_itr.get_index()) = true;
                 El_isZProbe->at(probe_elec_itr.get_index()) = true;
-                if (is_tag_trigger_matched)
-                    El_isZProbe_TriggerMatched->at(probe_elec_itr.get_index()) = true;
+                El_Tag_index->at(tag_elec_itr.get_index()) = tag_elec_itr.get_index();
+                El_Probe_index->at(probe_elec_itr.get_index()) = probe_elec_itr.get_index();
+                if (is_tag_trigger_matched) {
+                    El_isZProbe_TagTriggerMatched->at(probe_elec_itr.get_index()) = true;
+                    El_Tag_Trigger_Matched->at(tag_elec_itr.get_index()) = true;
+                }
+                if (is_probe_trigger_matched) {
+                    El_Probe_Trigger_Matched->at(probe_elec_itr.get_index()) = true;
+                }
                 N_tot_TandP_pair_electron++;
             }
         }
@@ -532,20 +581,36 @@ void yt_skim::Z_tag_and_probe()
             // Opposite Charge requirement
             if (tag_muon_itr.get_charge() == probe_muon_itr.get_charge())
                 continue;
+/*
             // Check does the tag tragger matched
             // muons:
             // 2015: HLT_mu20_iloose_L1MU15
             // 2016: HLT_mu26_ivarmedium
             bool is_tag_trigger_matched = false;
+            bool is_probe_trigger_matched = false;
             if (run_number < 290000) { // 2015 data
-                if (tag_muon_itr.get_trigMatch_mu24_iloose_L1MU15()) // no mu20 found, so use mu24
+                // if (tag_muon_itr.get_trigMatch_mu24_iloose_L1MU15()) // no mu20 found, so use mu24
+                //     is_tag_trigger_matched = true;
+                // if (probe_muon_itr.get_trigMatch_mu24_iloose_L1MU15()) // no mu20 found, so use mu24
+                //     is_probe_trigger_matched = true;
+                // Julien said use dimuon trigger matching
+                if (tag_muon_itr.get_trigMatchPair_mu18_mu8noL1(probe_muon_itr.get_index()))
                     is_tag_trigger_matched = true;
+                if (probe_muon_itr.get_trigMatchPair_mu18_mu8noL1(tag_muon_itr.get_index()))
+                    is_probe_trigger_matched = true;
             }
             else if (run_number > 290000) { // 2016 data
-                if (tag_muon_itr.get_trigMatch_mu26_imedium())
+                // if (tag_muon_itr.get_trigMatch_mu26_imedium())
+                //     is_tag_trigger_matched = true;
+                // if (probe_muon_itr.get_trigMatch_mu26_imedium())
+                //     is_probe_trigger_matched = true;
+                // Julien said use dimuon trigger matching
+                if (tag_muon_itr.get_trigMatchPair_mu22_mu8noL1(probe_muon_itr.get_index()))
                     is_tag_trigger_matched = true;
+                if (probe_muon_itr.get_trigMatchPair_mu22_mu8noL1(tag_muon_itr.get_index()))
+                    is_probe_trigger_matched = true;
             }
-
+*/
             TLorentzVector tlv_tag;
             TLorentzVector tlv_probe;
             tlv_tag.SetPtEtaPhiM(tag_muon_itr.get_pt(), tag_muon_itr.get_eta(), tag_muon_itr.get_phi(), tag_muon_itr.get_M());
@@ -557,8 +622,44 @@ void yt_skim::Z_tag_and_probe()
             if (current_mll > 80000. && current_mll < 100000.) {
                 Mu_isZTag->at(tag_muon_itr.get_index()) = true;
                 Mu_isZProbe->at(probe_muon_itr.get_index()) = true;
-                if (is_tag_trigger_matched)
-                    Mu_isZProbe_TriggerMatched->at(probe_muon_itr.get_index()) = true;
+                Mu_Tag_index->at(tag_muon_itr.get_index()) = tag_muon_itr.get_index();
+                Mu_Probe_index->at(probe_muon_itr.get_index()) = probe_muon_itr.get_index();
+
+                // Check does the tag tragger matched
+                // muons:
+                // 2015: HLT_mu20_iloose_L1MU15
+                // 2016: HLT_mu26_ivarmedium
+                bool is_tag_trigger_matched = false;
+                bool is_probe_trigger_matched = false;
+                if (run_number < 290000) { // 2015 data
+                    if (tag_muon_itr.get_trigMatch_mu24_iloose_L1MU15()) // no mu20 found, so use mu24
+                        is_tag_trigger_matched = true;
+                    if (probe_muon_itr.get_trigMatch_mu24_iloose_L1MU15()) // no mu20 found, so use mu24
+                        is_probe_trigger_matched = true;
+                    // Julien said use dimuon trigger matching
+                    // if (tag_muon_itr.get_trigMatchPair_mu18_mu8noL1(probe_muon_itr.get_index()))
+                    //     is_tag_trigger_matched = true;
+                    // if (probe_muon_itr.get_trigMatchPair_mu18_mu8noL1(tag_muon_itr.get_index()))
+                    //     is_probe_trigger_matched = true;
+                }
+                else if (run_number > 290000) { // 2016 data
+                    if (tag_muon_itr.get_trigMatch_mu26_imedium())
+                        is_tag_trigger_matched = true;
+                    if (probe_muon_itr.get_trigMatch_mu26_imedium())
+                        is_probe_trigger_matched = true;
+                    // Julien said use dimuon trigger matching
+                    // if (tag_muon_itr.get_trigMatchPair_mu22_mu8noL1(probe_muon_itr.get_index()))
+                    //     is_tag_trigger_matched = true;
+                    // if (probe_muon_itr.get_trigMatchPair_mu22_mu8noL1(tag_muon_itr.get_index()))
+                    //     is_probe_trigger_matched = true;
+                }
+                if (is_tag_trigger_matched) {
+                    Mu_isZProbe_TagTriggerMatched->at(probe_muon_itr.get_index()) = true;
+                    Mu_Tag_Trigger_Matched->at(tag_muon_itr.get_index()) = true;
+                }
+                if (is_probe_trigger_matched) {
+                    Mu_Probe_Trigger_Matched->at(probe_muon_itr.get_index()) = true;
+                }
                 N_tot_TandP_pair_muon++;
             }
         }

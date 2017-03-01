@@ -7,7 +7,16 @@ This is SS/3L+jet cutflows study v44.
 ### Setting:
 
 
-### v01-15-19. (newskim branch)
+### v01-15-20. (newskim branch) 
+1. `ytRealLeptonsEfficiency.cxx`:
+   * Use `run_number` instead of using `RunNb` to judge the 2015 or 2016 sample.
+   * Move Tag trigger matching code block to the place after bkg template code block.
+2. `yt_skim.cxx`:
+   * Add new branches to save the El and Mu tag and probe leptons information
+   * Codes for saving the above information into vectors.
+
+
+### v01-15-19. (newskim branch) Add new python script
 1. `run_muon_systematics.py`: Change the input path
 2. `run_elec_systematics.py`: Add 150 in the `pt_ranges` and correct typo of `el_var_mll_windows.txt`
 3. `make_final_RLE_plots.py`
