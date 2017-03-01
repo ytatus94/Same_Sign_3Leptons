@@ -168,25 +168,6 @@ EL::StatusCode ytEventSelection::changeInput (bool firstFile)
     //const char * function_name = "changeInput()";
     //Info(function_name, "Function calls");
 
-    return EL::StatusCode::SUCCESS;
-}
-
-
-
-EL::StatusCode ytEventSelection::initialize ()
-{
-    // Here you do everything that you need to do after the first input
-    // file has been connected and before the first event is processed,
-    // e.g. create additional histograms based on which variables are
-    // available in the input files.  You can also create all of your
-    // histograms and trees in here, but be aware that this method
-    // doesn't get called if no events are processed.  So any objects
-    // you create here won't be available in the output if you have no
-    // input events.
-
-    //const char * function_name = "initialize()";
-    //Info(function_name, "Function calls");
-
     // Set object pointer
     Mu_eta = 0;
     Mu_phi = 0;
@@ -585,6 +566,25 @@ EL::StatusCode ytEventSelection::initialize ()
     fChain->SetBranchAddress("SherpaNjetWeight", &SherpaNjetWeight, &b_SherpaNjetWeight);
     fChain->SetBranchAddress("TruthPDGID1", &TruthPDGID1, &b_TruthPDGID1);
     fChain->SetBranchAddress("TruthPDGID2", &TruthPDGID2, &b_TruthPDGID2);
+
+    return EL::StatusCode::SUCCESS;
+}
+
+
+
+EL::StatusCode ytEventSelection::initialize ()
+{
+    // Here you do everything that you need to do after the first input
+    // file has been connected and before the first event is processed,
+    // e.g. create additional histograms based on which variables are
+    // available in the input files.  You can also create all of your
+    // histograms and trees in here, but be aware that this method
+    // doesn't get called if no events are processed.  So any objects
+    // you create here won't be available in the output if you have no
+    // input events.
+
+    //const char * function_name = "initialize()";
+    //Info(function_name, "Function calls");
 
     if (isSkim) {
         m_skim->set_isMC(isMC);

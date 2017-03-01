@@ -44,7 +44,7 @@ public:
 
     TTree          *fChain;   //!pointer to the analyzed TTree or TChain
 
-    // Declaration of leaf types //!
+    // Declaration of leaf types
     Bool_t          HLT_e24_lhmedium_nod0_ivarloose; //!
     Bool_t          HLT_e24_lhtight_nod0_ivarloose; //!
     Bool_t          HLT_e24_lhmedium_nod0_L1EM20VH; //!

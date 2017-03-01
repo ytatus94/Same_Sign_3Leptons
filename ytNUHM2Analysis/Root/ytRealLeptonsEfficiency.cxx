@@ -654,25 +654,6 @@ EL::StatusCode ytRealLeptonsEfficiency::changeInput (bool firstFile)
 
     //Init (wk()->tree());
     //wk()->tree();
-    return EL::StatusCode::SUCCESS;
-}
-
-
-
-
-EL::StatusCode ytRealLeptonsEfficiency::initialize ()
-{
-    // Here you do everything that you need to do after the first input
-    // file has been connected and before the first event is processed,
-    // e.g. create additional histograms based on which variables are
-    // available in the input files.  You can also create all of your
-    // histograms and trees in here, but be aware that this method
-    // doesn't get called if no events are processed.  So any objects
-    // you create here won't be available in the output if you have no
-    // input events.
-
-    //const char * function_name = "initialize()";
-    //Info(function_name, "Function calls");
 
     // Set object pointer
     Mu_eta = 0;
@@ -1099,6 +1080,26 @@ EL::StatusCode ytRealLeptonsEfficiency::initialize ()
     fChain->SetBranchAddress("Mu_DR_closest_Jet", &Mu_DR_closest_Jet, &b_Mu_DR_closest_Jet);
     fChain->SetBranchAddress("baseline_mll", &baseline_mll, &b_baseline_mll);
     fChain->SetBranchAddress("signal_mll", &signal_mll, &b_signal_mll);
+    
+    return EL::StatusCode::SUCCESS;
+}
+
+
+
+
+EL::StatusCode ytRealLeptonsEfficiency::initialize ()
+{
+    // Here you do everything that you need to do after the first input
+    // file has been connected and before the first event is processed,
+    // e.g. create additional histograms based on which variables are
+    // available in the input files.  You can also create all of your
+    // histograms and trees in here, but be aware that this method
+    // doesn't get called if no events are processed.  So any objects
+    // you create here won't be available in the output if you have no
+    // input events.
+
+    //const char * function_name = "initialize()";
+    //Info(function_name, "Function calls");
 
     return EL::StatusCode::SUCCESS;
 }

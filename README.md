@@ -7,7 +7,12 @@ This is SS/3L+jet cutflows study v44.
 ### Setting:
 
 
-### v01-15-20. (newskim branch) 
+### v01-15-21. (newskim branch) Move the initialization to changeInput()
+1. `ytEventSelection.cxx` and `ytRealLeptonsEfficiency.cxx`: Move the initialization from initialize() to changeInput()
+2. `ytRealLeptonsEfficiency.h`: Remove the extra "//!"
+
+
+### v01-15-20. (newskim branch) Add new branches to save tag and probe information
 1. `ytRealLeptonsEfficiency.cxx`:
    * Use `run_number` instead of using `RunNb` to judge the 2015 or 2016 sample.
    * Move Tag trigger matching code block to the place after bkg template code block.
