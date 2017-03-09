@@ -4,6 +4,10 @@ This contains the codes for analysing Ximo's v12 ntuples.
 Use data SUSY9 and MC SUSY5 on grid: `user.jpoveda.t0609_v12.*_output.root/`
 
 
+### v12:
+Create `log/` directory and move `Data.log` and `MC.log` into `log/`.
+
+
 ### v11:
 Adding `Data.log` and `MC.log`
 
