@@ -93,11 +93,11 @@ public:
 
 
     // Cuts
-    static const int n_lept_cuts[5];
-    static const int n_bjet_cuts[6];
-    static const int n_jets_cuts[9];
-    static const int bjet_pt_cuts[9];
-    static const int jets_pt_cuts[9];
+    static const int n_lept_cuts[3];
+    static const int n_bjet_cuts[4];
+    static const int n_jets_cuts[5];
+    static const int bjet_pt_cuts[4];
+    static const int jets_pt_cuts[6];
     static const int met_cuts[10];
     static const int meff_cuts[21];
 
@@ -133,8 +133,8 @@ public:
                                   int cut_jet_pt, int cut_n_jet,
                                   int cut_met, int cut_meff,
                                   float weight);
-    void get_events_survived();
-    void get_events_survived_weighted();
+    // void get_events_survived();
+    // void get_events_survived_weighted();
 
     void debug_print();
 

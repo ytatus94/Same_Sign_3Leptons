@@ -7,6 +7,34 @@ This is SS/3L+jet cutflows study v44.
 ### Setting:
 
 
+### v01-15-23. (newskim branch) Use v47 ntuples
+1. `ytEventSelection.h`:
+   * Add nullptr for all vector variables
+   * Add new method set_derivation_stat_weights()
+2. `yt_optimization.h`:
+   * Change the cuts
+   * Comment `get_events_survived()` and `get_events_survived_weighted()`
+3. `Run.cxx`:
+   * Add background samples for v47 ntuples.
+   * Change the `NUHM2_inputFilePath`
+   * Add the calculation for the `DerivatinStat_Weights`. It becomes an input now.
+4. `yt_optimization.cxx`:
+   * Change the optimization cuts
+   * Change the unit of pt, met, meff from MeV to GeV.
+5. `ytEventSelection.cxx`:
+   * Comment the `derivation_stat_weights` part in `fileExecute()`
+   * Turn off cut 7 and cut 9 for optimization.
+
+
+### v01-15-22. (newskim branch) Add new scripts for the optimization
+1. Add new scripts for the optimization
+   * `run_bkg_samples.sh`
+   * `run_signal_samples.sh`
+   * `run_optimization.sh`
+   * `ytOptimization_plots.C`
+   * `make_optimization_plots.py`
+
+
 ### v01-15-21. (newskim branch) Move the initialization to changeInput()
 1. `ytEventSelection.cxx` and `ytRealLeptonsEfficiency.cxx`: Move the initialization from initialize() to changeInput()
 2. `ytRealLeptonsEfficiency.h`: Remove the extra "//!"

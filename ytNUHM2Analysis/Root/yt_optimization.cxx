@@ -3,11 +3,11 @@
 
 
 
-const int yt_optimization::n_lept_cuts[5] = {2, 3, 4, 5, 6};
-const int yt_optimization::n_bjet_cuts[6] = {0, 1, 2, 3, 4, 5};
-const int yt_optimization::n_jets_cuts[9] = {2, 3, 4, 5, 6, 7, 8, 9, 10};
-const int yt_optimization::bjet_pt_cuts[9] = {20, 25, 30, 35, 40, 50, 70, 100, 150};
-const int yt_optimization::jets_pt_cuts[9] = {20, 25, 30, 35, 40, 50, 70, 100, 150};
+const int yt_optimization::n_lept_cuts[3] = {2, 3, 4};
+const int yt_optimization::n_bjet_cuts[4] = {0, 1, 2, 3};
+const int yt_optimization::n_jets_cuts[5] = {2, 3, 4, 5, 6};
+const int yt_optimization::bjet_pt_cuts[4] = {20, 25, 30, 40};
+const int yt_optimization::jets_pt_cuts[6] = {20, 25, 30, 35, 40, 50};
 const int yt_optimization::met_cuts[10] = {0, 50, 100, 150, 200, 250, 300, 350, 400, 500};
 const int yt_optimization::meff_cuts[21] = {
     0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 
@@ -199,7 +199,7 @@ void yt_optimization::execute(vector<Electron> elec, vector<Muon> muon, vector<L
             //cout << "*bjet_pt_cuts=" << bjet_pt_cuts[i_bjet_pt] << endl;
             int nbjets = 0;
             for (auto & bjet_itr : vec_signal_bjet) {
-                if (bjet_itr.get_pt() >= bjet_pt_cuts[i_bjet_pt])
+                if (bjet_itr.get_pt() / 1000. >= bjet_pt_cuts[i_bjet_pt]) // in GeV
                     nbjets++;
             }
             // Number of b-jet requirement
@@ -216,7 +216,7 @@ void yt_optimization::execute(vector<Electron> elec, vector<Muon> muon, vector<L
                     //cout << "***jets_pt_cuts=" << jets_pt_cuts[i_jets_pt] << endl;
                     int njets = 0;
                     for (auto & jet_itr : vec_signal_jets) {
-                        if (jet_itr.get_pt() >= jets_pt_cuts[i_jets_pt])
+                        if (jet_itr.get_pt() / 1000. >= jets_pt_cuts[i_jets_pt]) // in GeV
                             njets++;
                     }
                     // Number of jet requirement
@@ -227,12 +227,13 @@ void yt_optimization::execute(vector<Electron> elec, vector<Muon> muon, vector<L
                         // MET requirement
                         for (unsigned int i_met = 0; i_met < sizeof(met_cuts) / sizeof(met_cuts[0]); i_met++) {
                             //cout << "*****met_cuts=" << met_cuts[i_met] << endl;
-                            if (met <= met_cuts[i_met])
+                            if (met / 1000. <= met_cuts[i_met]) // in GeV
                                 continue;
                             // Meff requirement
                             for (unsigned int i_meff = 0; i_meff < sizeof(meff_cuts) / sizeof(meff_cuts[0]); i_meff++) {
                                 //cout << "******meff_cuts=" << meff_cuts[i_meff] << endl;
                                 int bin = 1 + i_meff;
+
                                 bin += i_met * sizeof(meff_cuts) / sizeof(meff_cuts[0]);
                                 bin += i_jets * sizeof(met_cuts) / sizeof(met_cuts[0])
                                               * sizeof(meff_cuts) / sizeof(meff_cuts[0]);
@@ -254,13 +255,22 @@ void yt_optimization::execute(vector<Electron> elec, vector<Muon> muon, vector<L
                                               * sizeof(n_jets_cuts) / sizeof(n_jets_cuts[0])
                                               * sizeof(met_cuts) / sizeof(met_cuts[0])
                                               * sizeof(meff_cuts) / sizeof(meff_cuts[0]);
-                                if (meff <= meff_cuts[i_meff])
+                                if (meff / 1000. <= meff_cuts[i_meff]) // in getenv
                                     continue;
                                 else {
                                     h_yields->AddBinContent(bin);
                                     h_yields_weighted->AddBinContent(bin, weight);
                                 }
-                                //cout << "bin=" << bin << endl;
+                                // cout << "bin=" << bin << endl;
+                                // cout << "bin=" << bin
+                                //     << ", N_l=" << n_lept_cuts[i_lept]
+                                //     << ", bjet_pT=" << bjet_pt_cuts[i_bjet_pt]
+                                //     << ", N_bjet=" << n_bjet_cuts[i_bjet]
+                                //     << ", jet pT=" << jets_pt_cuts[i_jets_pt]
+                                //     << ", N_jets=" << n_jets_cuts[i_jets]
+                                //     << ", met=" << met_cuts[i_met]
+                                //     << ", Meff=" << meff_cuts[i_meff]
+                                //     << endl;
                             }
                         }
                     }
