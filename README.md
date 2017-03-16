@@ -9,6 +9,34 @@ This is SS/3L+jet cutflows study for v50 ntuples.
 * ST-00-08-45
 
 
+### v06. v52 branch 
+1. `run_all_skim.sh`: Add GG_ttn1 samples to run.
+2. `make_final_RLE_plots.py`: Change the path of input files.
+3. `make_matrix_method_input.py`: Change the path of input files.
+4. `run_elec_systematics.py`: Fix typo.
+5. `run_muon_systematics.py`: Change the path of input files.
+6. `run_trigger_systematics.py`: Change the path of input files.
+7. `run_relative_differences_of_efficiency.py`: Change pT bins from [50, 65, 80, 200] to [50, 60, 80, 150, 200].
+8. `run_making_plots.py`: Add some line of codes to make more plots.
+9. `run_everything.py`: Add trigger background scription.
+10.`run_trigger_bkg_subtraction.py`: New script.
+11.`ytBackground_subtraction.C`: Change the path of input files.
+12.`ytRelative_difference_of_efficiency.C`: Change the path of input files.
+13.`Run.cxx`: Add comments.
+14.`ytPlots.C`:
+   * Change the path of input files.
+   * Use `tag_trigger_matched` to make all plots.
+   * Change cosmatics
+   * Add new function `yt_real_efficiency_function_of_eta_with_different_pt()`
+   * Add new function `yt_truth_match_TandP_comparison_table()`
+
+
+### v05. DerivationStat_Weights becomes input
+1. `ytEventSelection.cxx`: comment the part to load `DerivationStat_Weights` from root file.
+2. `Run.cxx`: Add code for reading `DerivationStat_Weights` from root file.
+3. `ytEventSelection.h`: Add new method `set_derivation_stat_weights()`
+
+
 ### v04. Use tag_trigger_matched as the nominal
 1. `make_AvgMu_and_mll.py`: Change the input file path
 2. `make_matrix_method_input.py`:

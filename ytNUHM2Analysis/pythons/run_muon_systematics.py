@@ -17,7 +17,7 @@ def calculate_real_muon_efficiency(mll_window_low = 80.,
     verbose = False
 
     #print "Notice: Remember to modify the input file path!"
-    path = "../../Results/20170222/"
+    path = "~/Desktop/20170310/"
     data_file = ROOT.TFile.Open(path + "hist-RLE-merged-data-muon_tag_trigger_matched.root")
 
     if debug is True:

@@ -211,7 +211,7 @@ def variate_mll_window():
                     #print command3
                     os.system(command3)
 
-    fo = open("el_var_mll_windows.txt.txt", "w")
+    fo = open("el_var_mll_windows.txt", "w")
 
     #print "Variate mll windows:"
     fo.write("Variate mll windows:\n")

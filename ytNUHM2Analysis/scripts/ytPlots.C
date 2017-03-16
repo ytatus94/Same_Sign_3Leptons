@@ -18,7 +18,8 @@
 #include <vector>
 using namespace std;
 
-TString path = "../../Results/20170213/";
+// TString path = "../../Results/20170222/";
+TString path = "/Users/ytshen/Documents/Working/OU/HEP/my_codes/SS_v50/Results/20170310/";
 
 TString electron = "hist-RLE-merged-data-elec.root";
 TString muon = "hist-RLE-merged-data-muon.root";
@@ -32,20 +33,20 @@ TString muon_dilepton_trigger = "hist-RLE-merged-data-muon_dilepton_trigger.root
 TString electron_dilepton_trigger_tag_trigger_matched = "hist-RLE-merged-data-elec_dilepton_trigger_tag_trigger_matched.root";
 TString muon_dilepton_trigger_tag_trigger_matched = "hist-RLE-merged-data-muon_dilepton_trigger_tag_trigger_matched.root";
 
-TString Zee_root = "RLE_MC_Zee/hist-20170213.root";
-TString Zmumu_root = "RLE_MC_Zmumu/hist-20170213.root";
+TString Zee_root = "RLE_MC_Zee/hist-20170310.root";
+TString Zmumu_root = "RLE_MC_Zmumu/hist-20170310.root";
 
-TString Zee_truth_root = "RLE_MC_Zee_truth_match/hist-20170213.root";
-TString Zmumu_truth_root = "RLE_MC_Zmumu_truth_match/hist-20170213.root";
+TString Zee_truth_root = "RLE_MC_Zee_truth_match/hist-20170310.root";
+TString Zmumu_truth_root = "RLE_MC_Zmumu_truth_match/hist-20170310.root";
 
-TString Zee_TP_truth_root = "RLE_MC_Zee_TandP_truth_match/hist-20170213.root";
-TString Zmumu_TP_truth_root = "RLE_MC_Zmumu_TandP_truth_match/hist-20170213.root";
+TString Zee_TP_truth_root = "RLE_MC_Zee_TandP_truth_match/hist-20170310.root";
+TString Zmumu_TP_truth_root = "RLE_MC_Zmumu_TandP_truth_match/hist-20170310.root";
 
-TString ttbar_elec_root = "RLE_MC_ttbar_electron/hist-20170213.root";
-TString ttbar_muon_root = "RLE_MC_ttbar_muon/hist-20170213.root";
+TString ttbar_elec_root = "RLE_MC_ttbar_electron/hist-20170310.root";
+TString ttbar_muon_root = "RLE_MC_ttbar_muon/hist-20170310.root";
 
-TString Gtt_elec_root = "RLE_MC_GG_ttn1_electron/hist-20170213.root";
-TString Gtt_muon_root = "RLE_MC_GG_ttn1_muon/hist-20170213.root";
+TString Gtt_elec_root = "RLE_MC_GG_ttn1_electron_20170310/hist-20170310.root";
+TString Gtt_muon_root = "RLE_MC_GG_ttn1_muon_20170310/hist-20170310.root";
 
 TString Gtt_elec_all_signal_root = "RLE_MC_GG_ttn1_electron_all_signal/hist-20170118.root";
 TString Gtt_elec_Medium_only_root = "RLE_MC_GG_ttn1_electron_medium_only/hist-20170118.root";
@@ -54,13 +55,13 @@ TString Gtt_elec_calo_iso_only_root = "RLE_MC_GG_ttn1_electron_Calo_iso_only/his
 TString Gtt_elec_z0_only_root = "RLE_MC_GG_ttn1_electron_z0_cut_only/hist-20170118.root";
 TString Gtt_elec_eta_only_root = "RLE_MC_GG_ttn1_electron_eta_cut_only/hist-20170118.root";
 
-TString Zee_tag_trigger_matched_root = "RLE_MC_Zee_tag_trigger_matched/hist-20170213.root";
-TString Zee_dilepton_trigger_root = "RLE_MC_Zee_dilepton_trigger/hist-20170213.root";
-TString Zee_dilepton_trigger_tag_trigger_matched_root = "RLE_MC_Zee_dilepton_trigger_tag_trigger_matched/hist-20170213.root";
+TString Zee_tag_trigger_matched_root = "RLE_MC_Zee_tag_trigger_matched/hist-20170310.root";
+TString Zee_dilepton_trigger_root = "RLE_MC_Zee_dilepton_trigger/hist-20170310.root";
+TString Zee_dilepton_trigger_tag_trigger_matched_root = "RLE_MC_Zee_dilepton_trigger_tag_trigger_matched/hist-20170310.root";
 
-TString Zmumu_tag_trigger_matched_root = "RLE_MC_Zmumu_tag_trigger_matched/hist-20170213.root";
-TString Zmumu_dilepton_trigger_root = "RLE_MC_Zmumu_dilepton_trigger/hist-20170213.root";
-TString Zmumu_dilepton_trigger_tag_trigger_matched_root = "RLE_MC_Zmumu_dilepton_trigger_tag_trigger_matched/hist-20170213.root";
+TString Zmumu_tag_trigger_matched_root = "RLE_MC_Zmumu_tag_trigger_matched/hist-20170310.root";
+TString Zmumu_dilepton_trigger_root = "RLE_MC_Zmumu_dilepton_trigger/hist-20170310.root";
+TString Zmumu_dilepton_trigger_tag_trigger_matched_root = "RLE_MC_Zmumu_dilepton_trigger_tag_trigger_matched/hist-20170310.root";
 
 //
 // Mll plots
@@ -72,10 +73,15 @@ TString Zmumu_dilepton_trigger_tag_trigger_matched_root = "RLE_MC_Zmumu_dilepton
 // Set truth_match = true to turn on truth match on the plot.
 void yt_mll_plots()
 {
-    TFile *data_elec = TFile::Open(path + electron);
-    TFile *data_muon = TFile::Open(path + muon);
-    TFile *Zee_TandP = TFile::Open(path + Zee_root);
-    TFile *Zmumu_TandP = TFile::Open(path + Zmumu_root);
+    // TFile *data_elec = TFile::Open(path + electron);
+    // TFile *data_muon = TFile::Open(path + muon);
+    // TFile *Zee_TandP = TFile::Open(path + Zee_root);
+    // TFile *Zmumu_TandP = TFile::Open(path + Zmumu_root);
+
+    TFile *data_elec = TFile::Open(path + electron_tag_trigger_matched);
+    TFile *data_muon = TFile::Open(path + muon_tag_trigger_matched);
+    TFile *Zee_TandP = TFile::Open(path + Zee_tag_trigger_matched_root);
+    TFile *Zmumu_TandP = TFile::Open(path + Zmumu_tag_trigger_matched_root);
 
     TH3F *data_elec_baseline_pt_eta_mll = (TH3F *)data_elec->Get("h_baseline_pt_eta_mll");
     TH3F *data_muon_baseline_pt_eta_mll = (TH3F *)data_muon->Get("h_baseline_pt_eta_mll");
@@ -215,10 +221,14 @@ void yt_baseline_mll_plots(int pt_bin_low = 0, int pt_bin_up = -1, bool truth_ma
 
     bool debug = false;
 
-    TFile *data_elec = TFile::Open(path + electron);
-    TFile *data_muon = TFile::Open(path + muon);
-    TFile *Zee_TandP = TFile::Open(path + Zee_root);
-    TFile *Zmumu_TandP = TFile::Open(path + Zmumu_root);
+    // TFile *data_elec = TFile::Open(path + electron);
+    // TFile *data_muon = TFile::Open(path + muon);
+    // TFile *Zee_TandP = TFile::Open(path + Zee_root);
+    // TFile *Zmumu_TandP = TFile::Open(path + Zmumu_root);
+    TFile *data_elec = TFile::Open(path + electron_tag_trigger_matched);
+    TFile *data_muon = TFile::Open(path + muon_tag_trigger_matched);
+    TFile *Zee_TandP = TFile::Open(path + Zee_tag_trigger_matched_root);
+    TFile *Zmumu_TandP = TFile::Open(path + Zmumu_tag_trigger_matched_root);
 
     TFile *Zee_truth;
     TFile *Zmumu_truth;
@@ -424,10 +434,14 @@ void yt_baseline_mll_ratio_plots(int pt_bin_low = 0, int pt_bin_up = -1, bool tr
 
     bool debug = false;
 
-    TFile *data_elec = TFile::Open(path + electron);
-    TFile *data_muon = TFile::Open(path + muon);
-    TFile *Zee_TandP = TFile::Open(path + Zee_root);
-    TFile *Zmumu_TandP = TFile::Open(path + Zmumu_root);
+    // TFile *data_elec = TFile::Open(path + electron);
+    // TFile *data_muon = TFile::Open(path + muon);
+    // TFile *Zee_TandP = TFile::Open(path + Zee_root);
+    // TFile *Zmumu_TandP = TFile::Open(path + Zmumu_root);
+    TFile *data_elec = TFile::Open(path + electron_tag_trigger_matched);
+    TFile *data_muon = TFile::Open(path + muon_tag_trigger_matched);
+    TFile *Zee_TandP = TFile::Open(path + Zee_tag_trigger_matched_root);
+    TFile *Zmumu_TandP = TFile::Open(path + Zmumu_tag_trigger_matched_root);
 
     TFile *Zee_truth;
     TFile *Zmumu_truth;
@@ -469,10 +483,10 @@ void yt_baseline_mll_ratio_plots(int pt_bin_low = 0, int pt_bin_up = -1, bool tr
         }
     }
 
-    TH1D *data_elec_mll = (TH1D *)data_elec_baseline_pt_eta_mll->ProjectionZ("data_elec_mll", pt_bin_low, pt_bin_up);
-    TH1D *data_muon_mll = (TH1D *)data_muon_baseline_pt_eta_mll->ProjectionZ("data_muon_mll", pt_bin_low, pt_bin_up);
-    TH1D *Zee_TandP_mll = (TH1D *)Zee_TandP_baseline_pt_eta_mll->ProjectionZ("Zee_TandP_mll", pt_bin_low, pt_bin_up);
-    TH1D *Zmumu_TandP_mll = (TH1D *)Zmumu_TandP_baseline_pt_eta_mll->ProjectionZ("Zmumu_TandP_mll", pt_bin_low, pt_bin_up);
+    TH1D *data_elec_mll = (TH1D *)data_elec_baseline_pt_eta_mll->ProjectionZ("data_elec_mll", pt_bin_low, pt_bin_up)->Clone();
+    TH1D *data_muon_mll = (TH1D *)data_muon_baseline_pt_eta_mll->ProjectionZ("data_muon_mll", pt_bin_low, pt_bin_up)->Clone();
+    TH1D *Zee_TandP_mll = (TH1D *)Zee_TandP_baseline_pt_eta_mll->ProjectionZ("Zee_TandP_mll", pt_bin_low, pt_bin_up)->Clone();
+    TH1D *Zmumu_TandP_mll = (TH1D *)Zmumu_TandP_baseline_pt_eta_mll->ProjectionZ("Zmumu_TandP_mll", pt_bin_low, pt_bin_up)->Clone();
 
     TH1D *Zee_truth_mll;
     TH1D *Zmumu_truth_mll;
@@ -799,10 +813,14 @@ void yt_signal_mll_plots(int pt_bin_low = 0, int pt_bin_up = -1, bool truth_matc
 
     bool debug = false;
 
-    TFile *data_elec = TFile::Open(path + electron);
-    TFile *data_muon = TFile::Open(path + muon);
-    TFile *Zee_TandP = TFile::Open(path + Zee_root);
-    TFile *Zmumu_TandP = TFile::Open(path + Zmumu_root);
+    // TFile *data_elec = TFile::Open(path + electron);
+    // TFile *data_muon = TFile::Open(path + muon);
+    // TFile *Zee_TandP = TFile::Open(path + Zee_root);
+    // TFile *Zmumu_TandP = TFile::Open(path + Zmumu_root);
+    TFile *data_elec = TFile::Open(path + electron_tag_trigger_matched);
+    TFile *data_muon = TFile::Open(path + muon_tag_trigger_matched);
+    TFile *Zee_TandP = TFile::Open(path + Zee_tag_trigger_matched_root);
+    TFile *Zmumu_TandP = TFile::Open(path + Zmumu_tag_trigger_matched_root);
 
     TFile *Zee_truth;
     TFile *Zmumu_truth;
@@ -1008,10 +1026,14 @@ void yt_signal_mll_ratio_plots(int pt_bin_low = 0, int pt_bin_up = -1, bool trut
 
     bool debug = false;
 
-    TFile *data_elec = TFile::Open(path + electron);
-    TFile *data_muon = TFile::Open(path + muon);
-    TFile *Zee_TandP = TFile::Open(path + Zee_root);
-    TFile *Zmumu_TandP = TFile::Open(path + Zmumu_root);
+    // TFile *data_elec = TFile::Open(path + electron);
+    // TFile *data_muon = TFile::Open(path + muon);
+    // TFile *Zee_TandP = TFile::Open(path + Zee_root);
+    // TFile *Zmumu_TandP = TFile::Open(path + Zmumu_root);
+    TFile *data_elec = TFile::Open(path + electron_tag_trigger_matched);
+    TFile *data_muon = TFile::Open(path + muon_tag_trigger_matched);
+    TFile *Zee_TandP = TFile::Open(path + Zee_tag_trigger_matched_root);
+    TFile *Zmumu_TandP = TFile::Open(path + Zmumu_tag_trigger_matched_root);
     
     TFile *Zee_truth;
     TFile *Zmumu_truth;
@@ -1696,7 +1718,8 @@ void yt_make_cut_efficiency_plot_2(TString filename, TString lepton) // Use 3-di
 
 void yt_make_electron_real_efficiency_plot() // Use 2-dim histograms
 {
-    TFile *file = TFile::Open(path + electron);
+    // TFile *file = TFile::Open(path + electron);
+    TFile *file = TFile::Open(path + electron_tag_trigger_matched);
     TH2F *h_baseline_pt_eta = (TH2F *)file->Get("h_baseline_pt_eta");
     TH2F *h_signal_pt_eta = (TH2F *)file->Get("h_signal_pt_eta");
 
@@ -1794,7 +1817,8 @@ void yt_make_electron_real_efficiency_plot() // Use 2-dim histograms
 
 void yt_make_muon_real_efficiency_plot() // Use 2-dim histograms
 {
-    TFile *file = TFile::Open(path + muon);
+    // TFile *file = TFile::Open(path + muon);
+    TFile *file = TFile::Open(path + muon_tag_trigger_matched);
     TH2F *h_baseline_pt_eta = (TH2F *)file->Get("h_baseline_pt_eta");
     TH2F *h_signal_pt_eta = (TH2F *)file->Get("h_signal_pt_eta");
 
@@ -1902,10 +1926,14 @@ void yt_make_muon_real_efficiency_plot() // Use 2-dim histograms
 
 void yt_make_real_efficiency_plots(bool truth_match = false, bool ttbar = false, bool Gtt = false) // Use 1-dim histograms
 {
-    TFile *data_elec = TFile::Open(path + electron);
-    TFile *data_muon = TFile::Open(path + muon);
-    TFile *Zee_TandP = TFile::Open(path + Zee_root);
-    TFile *Zmumu_TandP = TFile::Open(path + Zmumu_root);
+    // TFile *data_elec = TFile::Open(path + electron);
+    // TFile *data_muon = TFile::Open(path + muon);
+    // TFile *Zee_TandP = TFile::Open(path + Zee_root);
+    // TFile *Zmumu_TandP = TFile::Open(path + Zmumu_root);
+    TFile *data_elec = TFile::Open(path + electron_tag_trigger_matched);
+    TFile *data_muon = TFile::Open(path + muon_tag_trigger_matched);
+    TFile *Zee_TandP = TFile::Open(path + Zee_tag_trigger_matched_root);
+    TFile *Zmumu_TandP = TFile::Open(path + Zmumu_tag_trigger_matched_root);
 
     TFile *Zee_truth;
     TFile *Zmumu_truth;
@@ -2157,7 +2185,7 @@ void yt_make_real_efficiency_plots(bool truth_match = false, bool ttbar = false,
         h_Gtt_elec_eff_pt->Draw("same");
     }
 
-    TLegend *leg1 = new TLegend(0.3, 0.2, 0.7, 0.5);
+    TLegend *leg1 = new TLegend(0.25, 0.2, 0.7, 0.5);
     leg1->SetBorderSize(0);
     leg1->SetFillColor(0);
     leg1->SetTextFont(42);
@@ -2216,7 +2244,7 @@ void yt_make_real_efficiency_plots(bool truth_match = false, bool ttbar = false,
         h_Gtt_elec_eff_eta->Draw("same");
     }
 
-    TLegend *leg2 = new TLegend(0.3, 0.2, 0.7, 0.5);
+    TLegend *leg2 = new TLegend(0.25, 0.2, 0.7, 0.5);
     leg2->SetBorderSize(0);
     leg2->SetFillColor(0);
     leg2->SetTextFont(42);
@@ -2274,7 +2302,7 @@ void yt_make_real_efficiency_plots(bool truth_match = false, bool ttbar = false,
         h_Gtt_elec_eff_dRjet->Draw("same");
     }
 
-    TLegend *leg3 = new TLegend(0.3, 0.2, 0.7, 0.5);
+    TLegend *leg3 = new TLegend(0.25, 0.2, 0.7, 0.5);
     leg3->SetBorderSize(0);
     leg3->SetFillColor(0);
     leg3->SetTextFont(42);
@@ -2331,7 +2359,7 @@ void yt_make_real_efficiency_plots(bool truth_match = false, bool ttbar = false,
         h_Gtt_muon_eff_pt->Draw("same");
     }
 
-    TLegend *leg4 = new TLegend(0.3, 0.2, 0.7, 0.5);
+    TLegend *leg4 = new TLegend(0.25, 0.2, 0.7, 0.5);
     leg4->SetBorderSize(0);
     leg4->SetFillColor(0);
     leg4->SetTextFont(42);
@@ -2389,7 +2417,7 @@ void yt_make_real_efficiency_plots(bool truth_match = false, bool ttbar = false,
         h_Gtt_muon_eff_eta->Draw("same");
     }
 
-    TLegend *leg5 = new TLegend(0.3, 0.2, 0.7, 0.5);
+    TLegend *leg5 = new TLegend(0.25, 0.2, 0.7, 0.5);
     leg5->SetBorderSize(0);
     leg5->SetFillColor(0);
     leg5->SetTextFont(42);
@@ -2447,7 +2475,7 @@ void yt_make_real_efficiency_plots(bool truth_match = false, bool ttbar = false,
         h_Gtt_muon_eff_dRjet->Draw("same");
     }
 
-    TLegend *leg6 = new TLegend(0.3, 0.2, 0.7, 0.5);
+    TLegend *leg6 = new TLegend(0.25, 0.2, 0.7, 0.5);
     leg6->SetBorderSize(0);
     leg6->SetFillColor(0);
     leg6->SetTextFont(42);
@@ -2470,10 +2498,14 @@ void yt_make_real_efficiency_plots(bool truth_match = false, bool ttbar = false,
 
 void yt_make_real_efficiency_ratio_plots(TString lepton, TString plot, bool truth_match = false, bool ttbar = false, bool Gtt = false) // Use 1-dim histograms
 {
-    TFile *data_elec = TFile::Open(path + electron);
-    TFile *data_muon = TFile::Open(path + muon);
-    TFile *Zee_TandP = TFile::Open(path + Zee_root);
-    TFile *Zmumu_TandP = TFile::Open(path + Zmumu_root);
+    // TFile *data_elec = TFile::Open(path + electron);
+    // TFile *data_muon = TFile::Open(path + muon);
+    // TFile *Zee_TandP = TFile::Open(path + Zee_root);
+    // TFile *Zmumu_TandP = TFile::Open(path + Zmumu_root);
+    TFile *data_elec = TFile::Open(path + electron_tag_trigger_matched);
+    TFile *data_muon = TFile::Open(path + muon_tag_trigger_matched);
+    TFile *Zee_TandP = TFile::Open(path + Zee_tag_trigger_matched_root);
+    TFile *Zmumu_TandP = TFile::Open(path + Zmumu_tag_trigger_matched_root);
 
     TFile *Zee_truth;
     TFile *Zmumu_truth;
@@ -2869,7 +2901,7 @@ void yt_make_real_efficiency_ratio_plots(TString lepton, TString plot, bool trut
             double x_min = h_muon_eff_pt->GetXaxis()->GetXmin();
             double x_max = h_muon_eff_pt->GetXaxis()->GetXmax();
 
-            TH1F *frame = pad2->DrawFrame(x_min, 0.9, x_max, 1.09);
+            TH1F *frame = pad2->DrawFrame(x_min, 0.9, x_max, 1.29);
             frame->GetXaxis()->SetNdivisions(510);
             frame->GetYaxis()->SetNdivisions(405);
             frame->SetLineWidth(1);
@@ -3556,7 +3588,10 @@ void yt_real_efficiency_with_trigger_eta_range(bool isData, TString lepton, int 
     eff_sin->SetYTitle("Events");
     eff_sin->GetYaxis()->SetTitleOffset(1.5);
     eff_sin->SetMaximum(max * 1.1);
-    eff_sin->SetMinimum(0.1);
+    if (lepton == "electron")
+        eff_sin->SetMinimum(0.51);
+    else if (lepton == "muon")
+        eff_sin->SetMinimum(0.71);
     eff_sin->SetStats(kFALSE);
     eff_sin->Draw();
 
@@ -3575,7 +3610,7 @@ void yt_real_efficiency_with_trigger_eta_range(bool isData, TString lepton, int 
     eff_di_tag->SetLineColor(kBlue);
     eff_di_tag->Draw("E1, same");
 
-    TLegend *leg1 = new TLegend(0.15, 0.05, 0.6, 0.3);
+    TLegend *leg1 = new TLegend(0.2, 0.05, 0.8, 0.4);
     leg1->AddEntry(eff_sin, "Single lepton trigger", "lp");
     leg1->AddEntry(eff_sin_tag, "Single lepton trigger + tag trigger matched", "lp");
     leg1->AddEntry(eff_di, "Dilepton trigger", "lp");
@@ -3587,21 +3622,21 @@ void yt_real_efficiency_with_trigger_eta_range(bool isData, TString lepton, int 
     leg1->SetFillStyle(0);
     leg1->Draw("same");
 
-    TPaveText *text1 = new TPaveText(0.2, 0.3, 0.3, 0.35, "NDC");
+    TPaveText *text1 = new TPaveText(0.3, 0.45, 0.4, 0.55, "NDC");
     text1->SetTextSize(0.05);
     text1->SetBorderSize(0);
     text1->SetFillStyle(0);
     text1->SetFillColor(0);
-    text1->AddText(string(sstream_eta_low.str() + " < |#eta| <" + sstream_eta_up.str()).c_str());
+    text1->AddText(string(sstream_eta_low.str() + " < |#eta| < " + sstream_eta_up.str()).c_str());
     text1->Draw("same");
 
     pad2->cd(); // pad2 becomes the current pad
 
     TH1F *frame;
     if (lepton == "electron")
-        frame = pad2->DrawFrame(10, 0.8, 200, 1.19);
+        frame = pad2->DrawFrame(10, 0.95, 200, 1.049);
     if (lepton == "muon")
-        frame = pad2->DrawFrame(10, 0.9, 200, 1.09);
+        frame = pad2->DrawFrame(10, 0.98, 200, 1.039);
     frame->GetXaxis()->SetNdivisions(510);
     frame->GetYaxis()->SetNdivisions(405);
     frame->SetLineWidth(1);
@@ -3619,22 +3654,31 @@ void yt_real_efficiency_with_trigger_eta_range(bool isData, TString lepton, int 
     frame->GetYaxis()->SetLabelSize(16);
     frame->Draw();
 
-    TH1F *ratio_sin_tag = (TH1F *)eff_sin_tag->Clone();
+    TH1F *ratio_sin = (TH1F *)eff_sin->Clone();
+    // TH1F *ratio_sin_tag = (TH1F *)eff_sin_tag->Clone();
     TH1F *ratio_di = (TH1F *)eff_di->Clone();
     TH1F *ratio_di_tag = (TH1F *)eff_di_tag->Clone();
 
-    ratio_sin_tag->Sumw2();
+    ratio_sin->Sumw2();
+    // ratio_sin_tag->Sumw2();
     ratio_di->Sumw2();
     ratio_di_tag->Sumw2();
 
-    ratio_sin_tag->Divide(eff_sin);
-    ratio_di->Divide(eff_sin);
-    ratio_di_tag->Divide(eff_sin);
+    ratio_sin->Divide(eff_sin_tag);
+    ratio_di->Divide(eff_sin_tag);
+    ratio_di_tag->Divide(eff_sin_tag);
+    // ratio_sin_tag->Divide(eff_sin);
+    // ratio_di->Divide(eff_sin);
+    // ratio_di_tag->Divide(eff_sin);
 
-    ratio_sin_tag->SetMarkerColor(kRed);
-    ratio_sin_tag->SetMarkerStyle(kFullSquare);
-    ratio_sin_tag->SetLineColor(kRed);
-    ratio_sin_tag->Draw("same");
+    ratio_sin->SetMarkerColor(kBlack);
+    ratio_sin->SetMarkerStyle(kFullCircle);
+    ratio_sin->SetLineColor(kBlack);
+    ratio_sin->Draw("same");
+    // ratio_sin_tag->SetMarkerColor(kRed);
+    // ratio_sin_tag->SetMarkerStyle(kFullSquare);
+    // ratio_sin_tag->SetLineColor(kRed);
+    // ratio_sin_tag->Draw("same");
 
     ratio_di->SetMarkerColor(kGreen);
     ratio_di->SetMarkerStyle(kFullTriangleUp);
@@ -3664,6 +3708,102 @@ void yt_real_efficiency_with_trigger_eta_range(bool isData, TString lepton, int 
         filename = "trigger_uncertainty_muon_eta" + sstream_eta_low.str() + sstream_eta_up.str() + "_ratio_plot.pdf";
     trigger_uncertainty->SaveAs(filename.c_str());
 }
+
+void yt_real_efficiency_function_of_eta_with_different_pt()
+{
+    TFile *data_elec = TFile::Open(path + electron);
+
+    TH2F *h_baseline_pt_eta = (TH2F *)data_elec->Get("h_baseline_pt_eta");
+    TH2F *h_signal_pt_eta = (TH2F *)data_elec->Get("h_signal_pt_eta");
+
+    int pt_range_1_bin_low = h_baseline_pt_eta->GetXaxis()->FindBin(10+0.1);
+    int pt_range_1_bin_up = h_baseline_pt_eta->GetXaxis()->FindBin(40-0.1);
+    int pt_range_2_bin_low = h_baseline_pt_eta->GetXaxis()->FindBin(40+0.1);
+    int pt_range_2_bin_up = h_baseline_pt_eta->GetXaxis()->FindBin(80-0.1);
+    int pt_range_3_bin_low = h_baseline_pt_eta->GetXaxis()->FindBin(80+0.1);
+    int pt_range_3_bin_up = h_baseline_pt_eta->GetXaxis()->FindBin(200-0.1);
+
+    // cout << "pt_range_1_bin_low=" << pt_range_1_bin_low << ", pt_range_1_bin_up=" << pt_range_1_bin_up << endl;
+    // cout << "pt_range_2_bin_low=" << pt_range_2_bin_low << ", pt_range_2_bin_up=" << pt_range_2_bin_up << endl;
+    // cout << "pt_range_3_bin_low=" << pt_range_3_bin_low << ", pt_range_3_bin_up=" << pt_range_3_bin_up << endl;
+
+    TH1F *h_baseline_pt_range_1 = (TH1F *)h_baseline_pt_eta->ProjectionY("h_baseline_pt_range_1", pt_range_1_bin_low, pt_range_1_bin_up); // 10 < pT < 40
+    TH1F *h_baseline_pt_range_2 = (TH1F *)h_baseline_pt_eta->ProjectionY("h_baseline_pt_range_2", pt_range_2_bin_low, pt_range_2_bin_up); // 40 < pT < 80
+    TH1F *h_baseline_pt_range_3 = (TH1F *)h_baseline_pt_eta->ProjectionY("h_baseline_pt_range_3", pt_range_3_bin_low, pt_range_3_bin_up); // 80 < pT < 200
+
+    TH1F *h_signal_pt_range_1 = (TH1F *)h_signal_pt_eta->ProjectionY("h_signal_pt_range_1", pt_range_1_bin_low, pt_range_1_bin_up); // 10 < pT < 40
+    TH1F *h_signal_pt_range_2 = (TH1F *)h_signal_pt_eta->ProjectionY("h_signal_pt_range_2", pt_range_2_bin_low, pt_range_2_bin_up); // 40 < pT < 80
+    TH1F *h_signal_pt_range_3 = (TH1F *)h_signal_pt_eta->ProjectionY("h_signal_pt_range_3", pt_range_3_bin_low, pt_range_3_bin_up); // 80 < pT < 200
+
+    TH1F *h_ratio_1 = (TH1F *)h_signal_pt_range_1->Clone();
+    TH1F *h_ratio_2 = (TH1F *)h_signal_pt_range_2->Clone();
+    TH1F *h_ratio_3 = (TH1F *)h_signal_pt_range_3->Clone();
+
+    h_ratio_1->Sumw2();
+    h_ratio_2->Sumw2();
+    h_ratio_3->Sumw2();
+
+    h_ratio_1->Reset();
+    h_ratio_2->Reset();
+    h_ratio_3->Reset();
+
+    h_ratio_1->SetName("ratio_1");
+    h_ratio_2->SetName("ratio_2");
+    h_ratio_3->SetName("ratio_3");
+
+    h_ratio_1->Divide(h_signal_pt_range_1, h_baseline_pt_range_1, 1, 1, "B");
+    h_ratio_2->Divide(h_signal_pt_range_2, h_baseline_pt_range_2, 1, 1, "B");
+    h_ratio_3->Divide(h_signal_pt_range_3, h_baseline_pt_range_3, 1, 1, "B");
+
+    TCanvas *real_efficiency_plot = new TCanvas("real_efficiency_plot", "Electron Real Efficiency as function of |#eta|", 500, 500);
+    real_efficiency_plot->SetLeftMargin(0.12);
+    real_efficiency_plot->cd();
+
+    h_ratio_1->SetLineColor(kBlack);
+    h_ratio_1->SetMarkerColor(kBlack);
+    h_ratio_1->SetMarkerStyle(kFullCircle);
+    h_ratio_1->SetXTitle("|#eta|");
+    h_ratio_1->SetYTitle("Electron Real Efficiency");
+    h_ratio_1->GetXaxis()->SetRangeUser(0, 2.);
+    h_ratio_1->GetYaxis()->SetTitleOffset(1.5);
+    h_ratio_1->SetStats(kFALSE);
+    h_ratio_1->SetMaximum(1.1);
+    h_ratio_1->SetMinimum(0.5);
+    h_ratio_1->SetTitle("");
+    h_ratio_1->Draw();
+
+    h_ratio_2->SetLineColor(kRed);
+    h_ratio_2->SetMarkerColor(kRed);
+    h_ratio_2->SetMarkerStyle(kFullSquare);
+    h_ratio_2->Draw("same");
+
+    h_ratio_3->SetLineColor(kBlue);
+    h_ratio_3->SetMarkerColor(kBlue);
+    h_ratio_3->SetMarkerStyle(kFullTriangleUp);
+    h_ratio_3->Draw("same");
+
+    // float X_max = h_ratio_1->GetXaxis()->GetXmax();
+    float X_min = h_ratio_1->GetXaxis()->GetXmin();
+
+    TLine *line = new TLine(X_min, 1., 2., 1.);
+    line->SetLineColor(kBlack);
+    line->SetLineStyle(2);
+    line->SetLineWidth(1);
+    line->Draw("SAME");
+
+    TLegend *leg = new TLegend(0.2, 0.2, 0.6, 0.4);
+    leg->SetBorderSize(0);
+    leg->SetFillColor(0);
+    leg->SetTextFont(42);
+    leg->SetTextSize(0.05);
+    leg->AddEntry("ratio_1", "10 < p_{T} < 40");
+    leg->AddEntry("ratio_2", "40 < p_{T} < 80");
+    leg->AddEntry("ratio_3", "80 < p_{T} < 200");
+    leg->Draw();
+
+    real_efficiency_plot->SaveAs("real_efficiency_electron_function_of_eta_with_different_pt.pdf", "pdf");
+}
+
 
 void yt_Gtt_electron_real_efficiency_individual_cut_study()
 {
@@ -4010,8 +4150,10 @@ void yt_Gtt_electron_real_efficiency_comparison()
 
 void yt_real_efficiency_vs_dR_electron()
 {
-    TFile *data_elec = TFile::Open(path + electron);
-    TFile *Zee_TandP = TFile::Open(path + Zee_root);
+    // TFile *data_elec = TFile::Open(path + electron);
+    // TFile *Zee_TandP = TFile::Open(path + Zee_root);
+    TFile *data_elec = TFile::Open(path + electron_tag_trigger_matched);
+    TFile *Zee_TandP = TFile::Open(path + Zee_tag_trigger_matched_root);
     TFile *Zee_truth = TFile::Open(path + Zee_truth_root);
     TFile *ttbar_elec = TFile::Open(path + ttbar_elec_root);
     TFile *Gtt_elec = TFile::Open(path + Gtt_elec_root);
@@ -4119,10 +4261,14 @@ void yt_real_efficiency_vs_dR_electron()
 
 void yt_real_efficiency_vs_AvgMu()
 {
-    TFile *data_elec = TFile::Open(path + electron);
-    TFile *data_muon = TFile::Open(path + muon);
-    TFile *Zee_TandP = TFile::Open(path + Zee_root);
-    TFile *Zmumu_TandP = TFile::Open(path + Zmumu_root);
+    // TFile *data_elec = TFile::Open(path + electron);
+    // TFile *data_muon = TFile::Open(path + muon);
+    // TFile *Zee_TandP = TFile::Open(path + Zee_root);
+    // TFile *Zmumu_TandP = TFile::Open(path + Zmumu_root);
+    TFile *data_elec = TFile::Open(path + electron_tag_trigger_matched);
+    TFile *data_muon = TFile::Open(path + muon_tag_trigger_matched);
+    TFile *Zee_TandP = TFile::Open(path + Zee_tag_trigger_matched_root);
+    TFile *Zmumu_TandP = TFile::Open(path + Zmumu_tag_trigger_matched_root);
     TFile *Zee_truth = TFile::Open(path + Zee_truth_root);
     TFile *Zmumu_truth = TFile::Open(path + Zmumu_truth_root);
     TFile *ttbar_elec = TFile::Open(path + ttbar_elec_root);
@@ -4351,13 +4497,15 @@ void yt_truth_match_TandP_comparison(TString lepton, TString x, bool TandP_truth
     TFile *truth_match_file;
     TFile *TandP_truth_match_file;
     if (lepton == "electron") {
-        TandP_file = TFile::Open(path + Zee_root);
+        // TandP_file = TFile::Open(path + Zee_root);
+        TandP_file = TFile::Open(path + Zee_tag_trigger_matched_root);
         truth_match_file = TFile::Open(path + Zee_truth_root);
         if (TandP_truth_match)
             TandP_truth_match_file = TFile::Open(path + Zee_TP_truth_root);
     }
     else if (lepton == "muon") {
-        TandP_file = TFile::Open(path + Zmumu_root);
+        // TandP_file = TFile::Open(path + Zmumu_root);
+        TandP_file = TFile::Open(path + Zmumu_tag_trigger_matched_root);
         truth_match_file = TFile::Open(path + Zmumu_truth_root);
         if (TandP_truth_match)
             TandP_truth_match_file = TFile::Open(path + Zmumu_TP_truth_root);
@@ -4536,6 +4684,59 @@ void yt_truth_match_TandP_comparison(TString lepton, TString x, bool TandP_truth
     c1->SaveAs("Compare_TandP_truth_match_" + lepton + "_" + x + ".pdf", "pdf");
 }
 
+void yt_truth_match_TandP_comparison_table(TString lepton, int eta_bin_low, int eta_bin_up)
+{
+    TFile *TandP_file;
+    TFile *truth_match_file;
+
+    if (lepton == "electron") {
+        // TandP_file = TFile::Open(path + Zee_root);
+        TandP_file = TFile::Open(path + Zee_tag_trigger_matched_root);
+        truth_match_file = TFile::Open(path + Zee_truth_root);
+    }
+    else if (lepton == "muon") {
+        // TandP_file = TFile::Open(path + Zmumu_root);
+        TandP_file = TFile::Open(path + Zmumu_tag_trigger_matched_root);
+        truth_match_file = TFile::Open(path + Zmumu_truth_root);
+    }
+
+    TH3F *h_TandP_baseline_pt_eta_dRjet = (TH3F *)TandP_file->Get("h_baseline_pt_eta_dRjet");
+    TH3F *h_truth_match_baseline_pt_eta_dRjet = (TH3F *)truth_match_file->Get("h_baseline_pt_eta_dRjet");
+    TH3F *h_TandP_signal_pt_eta_dRjet = (TH3F *)TandP_file->Get("h_signal_pt_eta_dRjet");
+    TH3F *h_truth_match_signal_pt_eta_dRjet = (TH3F *)truth_match_file->Get("h_signal_pt_eta_dRjet");
+
+    TH1F *h_TandP_baseline = (TH1F *)h_TandP_baseline_pt_eta_dRjet->ProjectionX("", eta_bin_low, eta_bin_up)->Clone();
+    TH1F *h_truth_match_baseline = (TH1F *)h_truth_match_baseline_pt_eta_dRjet->ProjectionX("", eta_bin_low, eta_bin_up)->Clone();
+    TH1F *h_TandP_signal = (TH1F *)h_TandP_signal_pt_eta_dRjet->ProjectionX("", eta_bin_low, eta_bin_up)->Clone();
+    TH1F *h_truth_match_signal = (TH1F *)h_truth_match_signal_pt_eta_dRjet->ProjectionX("", eta_bin_low, eta_bin_up)->Clone();
+
+    TH1F *h_TandP_eff = (TH1F *)h_TandP_signal->Clone();
+    TH1F *h_truth_match_eff = (TH1F *)h_truth_match_signal->Clone();
+
+    h_TandP_eff->Reset();
+    h_truth_match_eff->Reset();
+
+    h_TandP_eff->Sumw2();
+    h_truth_match_eff->Sumw2();
+
+    h_TandP_eff->Divide(h_TandP_signal, h_TandP_baseline, 1, 1, "B");
+    h_truth_match_eff->Divide(h_truth_match_signal, h_truth_match_baseline, 1, 1, "B");
+
+    // h_TandP_eff->SetLineColor(kBlue);
+    // h_TandP_eff->Draw();
+    // h_truth_match_eff->SetLineColor(kRed);
+    // h_truth_match_eff->Draw("same")
+
+    TH1F *ratio = (TH1F *)h_truth_match_eff->Clone();
+    ratio->Divide(h_TandP_eff);
+
+    // ratio->Draw();
+
+    for(int i = 1; i <= ratio->GetXaxis()->GetNbins(); i++) {
+        // do not include underflow and overflow bins
+        cout << ratio->GetBinContent(i) << endl;
+    }
+}
 
 //
 // Background plots
@@ -4543,7 +4744,8 @@ void yt_truth_match_TandP_comparison(TString lepton, TString x, bool TandP_truth
 
 void yt_background_subtraction_illustration()
 {
-    TFile *data_elec = TFile::Open(path + electron);
+    // TFile *data_elec = TFile::Open(path + electron);
+    TFile *data_elec = TFile::Open(path + electron_tag_trigger_matched);
     TH3F *data_elec_baseline_pt_eta_mll = (TH3F *)data_elec->Get("h_baseline_pt_eta_mll");
     TH1D *data_elec_mll = (TH1D *)data_elec_baseline_pt_eta_mll->ProjectionZ("data_elec_mll");
 
@@ -4588,7 +4790,8 @@ void yt_background_subtraction_illustration()
 
 void yt_background_template_mll_plot(int pt_bin_low = 0, int pt_bin_up = -1, int eta_bin_low = 0, int eta_bin_up = -1)
 {
-    TFile *data_elec = TFile::Open(path + electron);
+    // TFile *data_elec = TFile::Open(path + electron);
+    TFile *data_elec = TFile::Open(path + electron_tag_trigger_matched);
 
     TH1F *h_bkg_template_fail_id_and_CaloIso_and_TrackIso;
     TH1F *h_bkg_template_fail_id_and_CaloIso_and_TrackIso_tight;
@@ -4686,11 +4889,15 @@ void yt_background_template_mll_plot(int pt_bin_low = 0, int pt_bin_up = -1, int
 
 void yt_kinematics_distribution()
 {
-    TFile *data_elec = TFile::Open(path + electron);
-    TFile *data_muon = TFile::Open(path + muon);
+    // TFile *data_elec = TFile::Open(path + electron);
+    // TFile *data_muon = TFile::Open(path + muon);
+    TFile *data_elec = TFile::Open(path + electron_tag_trigger_matched);
+    TFile *data_muon = TFile::Open(path + muon_tag_trigger_matched);
 
-    TFile *TandP_elec = TFile::Open(path + Zee_root);
-    TFile *TandP_muon = TFile::Open(path + Zmumu_root);
+    // TFile *TandP_elec = TFile::Open(path + Zee_root);
+    // TFile *TandP_muon = TFile::Open(path + Zmumu_root);
+    TFile *TandP_elec = TFile::Open(path + Zee_tag_trigger_matched_root);
+    TFile *TandP_muon = TFile::Open(path + Zmumu_tag_trigger_matched_root);
 
     TFile *truth_match_elec = TFile::Open(path + Zee_truth_root);
     TFile *truth_match_muon = TFile::Open(path + Zmumu_truth_root);
@@ -4993,11 +5200,15 @@ void yt_kinematics_distribution()
 
 void yt_deltaR_and_NJets_distributions()
 {
-    TFile *data_elec = TFile::Open(path + electron);
-    TFile *data_muon = TFile::Open(path + muon);
+    // TFile *data_elec = TFile::Open(path + electron);
+    // TFile *data_muon = TFile::Open(path + muon);
+    TFile *data_elec = TFile::Open(path + electron_tag_trigger_matched);
+    TFile *data_muon = TFile::Open(path + muon_tag_trigger_matched);
 
-    TFile *TandP_elec = TFile::Open(path + Zee_root);
-    TFile *TandP_muon = TFile::Open(path + Zmumu_root);
+    // TFile *TandP_elec = TFile::Open(path + Zee_root);
+    // TFile *TandP_muon = TFile::Open(path + Zmumu_root);
+    TFile *TandP_elec = TFile::Open(path + Zee_tag_trigger_matched_root);
+    TFile *TandP_muon = TFile::Open(path + Zmumu_tag_trigger_matched_root);
 
     TFile *truth_match_elec = TFile::Open(path + Zee_truth_root);
     TFile *truth_match_muon = TFile::Open(path + Zmumu_truth_root);
@@ -5112,7 +5323,7 @@ void yt_deltaR_and_NJets_distributions()
     h_baseline_dRjet_data_elec->GetYaxis()->SetTitleOffset(1.5);
     //h_baseline_dRjet_data_elec->SetMaximum(h_baseline_dRjet_Gtt_elec->GetMaximum() * 1.1);
     h_baseline_dRjet_data_elec->SetMaximum(h_baseline_dRjet_ttbar_elec->GetMaximum() * 1.1);
-    h_baseline_dRjet_data_elec->GetXaxis()->SetRangeUser(0, 1);
+    h_baseline_dRjet_data_elec->GetXaxis()->SetRangeUser(0, 4);
     h_baseline_dRjet_data_elec->SetMarkerStyle(kFullCircle);
     h_baseline_dRjet_data_elec->SetMarkerColor(kBlack);
     h_baseline_dRjet_data_elec->SetLineColor(kBlack);
@@ -5154,7 +5365,7 @@ void yt_deltaR_and_NJets_distributions()
     h_baseline_dRjet_data_muon->GetYaxis()->SetTitleOffset(1.5);
     //h_baseline_dRjet_data_muon->SetMaximum(h_baseline_dRjet_Gtt_muon->GetMaximum() * 1.1);
     h_baseline_dRjet_data_muon->SetMaximum(h_baseline_dRjet_ttbar_muon->GetMaximum() * 1.1);
-    h_baseline_dRjet_data_muon->GetXaxis()->SetRangeUser(0, 1);
+    h_baseline_dRjet_data_muon->GetXaxis()->SetRangeUser(0, 4);
     h_baseline_dRjet_data_muon->SetMarkerStyle(kFullCircle);
     h_baseline_dRjet_data_muon->SetMarkerColor(kBlack);
     h_baseline_dRjet_data_muon->SetLineColor(kBlack);
@@ -5273,11 +5484,15 @@ void yt_deltaR_and_NJets_distributions()
 
 void yt_deltaR_baseline_and_signal_distributions()
 {
-    TFile *data_elec = TFile::Open(path + electron);
-    TFile *data_muon = TFile::Open(path + muon);
+    // TFile *data_elec = TFile::Open(path + electron);
+    // TFile *data_muon = TFile::Open(path + muon);
+    TFile *data_elec = TFile::Open(path + electron_tag_trigger_matched);
+    TFile *data_muon = TFile::Open(path + muon_tag_trigger_matched);
 
-    TFile *TandP_elec = TFile::Open(path + Zee_root);
-    TFile *TandP_muon = TFile::Open(path + Zmumu_root);
+    // TFile *TandP_elec = TFile::Open(path + Zee_root);
+    // TFile *TandP_muon = TFile::Open(path + Zmumu_root);
+    TFile *TandP_elec = TFile::Open(path + Zee_tag_trigger_matched_root);
+    TFile *TandP_muon = TFile::Open(path + Zmumu_tag_trigger_matched_root);
 
     TFile *truth_match_elec = TFile::Open(path + Zee_truth_root);
     TFile *truth_match_muon = TFile::Open(path + Zmumu_truth_root);

@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import os, ROOT, math
 
-path = "/Users/ytshen/Desktop/skim/Results/20170222/"
+path = "~/Desktop/20170310/"
 
 electron = "hist-RLE-merged-data-elec.root";
 muon = "hist-RLE-merged-data-muon.root";

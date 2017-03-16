@@ -83,6 +83,12 @@ ROOT.gROOT.ProcessLine("yt_make_electron_real_efficiency_plot()")
 ROOT.gROOT.ProcessLine("yt_make_muon_real_efficiency_plot()")
 # ROOT.gROOT.ProcessLine("yt_make_real_efficiency_plots(true,true,true)")
 ROOT.gROOT.ProcessLine("yt_make_real_efficiency_plots(true,true,false)")
+# ROOT.gROOT.ProcessLine("yt_make_real_efficiency_ratio_plots(\"electron\", \"pt\",true,true,true)")
+# ROOT.gROOT.ProcessLine("yt_make_real_efficiency_ratio_plots(\"electron\", \"eta\",true,true,true)")
+# ROOT.gROOT.ProcessLine("yt_make_real_efficiency_ratio_plots(\"electron\", \"dRjet\",true,true,true)")
+# ROOT.gROOT.ProcessLine("yt_make_real_efficiency_ratio_plots(\"muon\", \"pt\",true,true,true)")
+# ROOT.gROOT.ProcessLine("yt_make_real_efficiency_ratio_plots(\"muon\", \"eta\",true,true,true)")
+# ROOT.gROOT.ProcessLine("yt_make_real_efficiency_ratio_plots(\"muon\", \"dRjet\",true,true,true)")
 
 ROOT.gROOT.ProcessLine("yt_real_efficiency_with_trigger_eta_range(true, \"electron\", 1, 3)") # 0 < |eta| < 0.8
 ROOT.gROOT.ProcessLine("yt_real_efficiency_with_trigger_eta_range(true, \"electron\", 4, 5)") # 0.8 < |eta| < 1.37
@@ -94,6 +100,8 @@ ROOT.gROOT.ProcessLine("yt_real_efficiency_with_trigger_eta_range(true, \"muon\"
 ROOT.gROOT.ProcessLine("yt_real_efficiency_with_trigger_eta_range(true, \"muon\", 3, 3)") # 1.2 < |eta| < 1.8
 ROOT.gROOT.ProcessLine("yt_real_efficiency_with_trigger_eta_range(true, \"muon\", 4, 4)") # 1.8 < |eta| < 2.5
 ROOT.gROOT.ProcessLine("yt_real_efficiency_with_trigger_eta_range(true, \"muon\", 1, 4)") # 0 < |eta| < 2.5
+
+ROOT.gROOT.ProcessLine("yt_real_efficiency_function_of_eta_with_different_pt()")
 
 # ROOT.gROOT.ProcessLine("yt_real_efficiency_vs_AvgMu()")
 # ROOT.gROOT.ProcessLine("yt_real_efficiency_vs_dR_electron()")
@@ -112,6 +120,6 @@ ROOT.gROOT.ProcessLine("yt_truth_match_TandP_comparison(\"muon\", \"dRjet\",true
 ROOT.gROOT.ProcessLine("yt_background_subtraction_illustration()")
 ROOT.gROOT.ProcessLine("yt_background_template_mll_plot(1,1,1,8)")
 ROOT.gROOT.ProcessLine("yt_background_template_mll_plot(2,2,1,8)")
-# ROOT.gROOT.ProcessLine("yt_kinematics_distribution()")
-# ROOT.gROOT.ProcessLine("yt_deltaR_and_NJets_distributions()")
-# ROOT.gROOT.ProcessLine("yt_deltaR_baseline_and_signal_distributions()")
+ROOT.gROOT.ProcessLine("yt_kinematics_distribution()")
+ROOT.gROOT.ProcessLine("yt_deltaR_and_NJets_distributions()")
+ROOT.gROOT.ProcessLine("yt_deltaR_baseline_and_signal_distributions()")

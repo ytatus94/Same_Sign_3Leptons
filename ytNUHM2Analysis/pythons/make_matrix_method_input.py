@@ -18,9 +18,9 @@ def main():
 
 
 def get_electron_real_efficiency():
-    variation_files = ["../../Results/20170222/logs/el_var_templates.txt",
-                       "../../Results/20170222/logs/el_var_fitting_ranges.txt",
-                       "../../Results/20170222/logs/el_var_mll_windows.txt"]
+    variation_files = ["/Users/ytshen/Desktop/20170310/logs/el_var_templates.txt",
+                       "/Users/ytshen/Desktop/20170310/logs/el_var_fitting_ranges.txt",
+                       "/Users/ytshen/Desktop/20170310/logs/el_var_mll_windows.txt"]
 
     pt_ranges = []
 
@@ -168,14 +168,14 @@ def get_electron_real_efficiency():
     # Use relative uncertainties for busy environment
     # Because I already calculate the relative uncertainties in ytRelative_difference_of_efficiency.C
     # , I just need to read the values from the input file and write them into the output file.
-    busy_files = ["/Users/ytshen/Desktop/skim/Results/20170205/logs/relative_difference_of_efficiency_pt1020_eta020.txt",
-                  "/Users/ytshen/Desktop/skim/Results/20170205/logs/relative_difference_of_efficiency_pt2030_eta020.txt",
-                  "/Users/ytshen/Desktop/skim/Results/20170205/logs/relative_difference_of_efficiency_pt3040_eta020.txt",
-                  "/Users/ytshen/Desktop/skim/Results/20170205/logs/relative_difference_of_efficiency_pt4050_eta020.txt",
-                  "/Users/ytshen/Desktop/skim/Results/20170205/logs/relative_difference_of_efficiency_pt5060_eta020.txt",
-                  "/Users/ytshen/Desktop/skim/Results/20170205/logs/relative_difference_of_efficiency_pt6080_eta020.txt",
-                  "/Users/ytshen/Desktop/skim/Results/20170205/logs/relative_difference_of_efficiency_pt80150_eta020.txt",
-                  "/Users/ytshen/Desktop/skim/Results/20170205/logs/relative_difference_of_efficiency_pt150200_eta020.txt"]
+    busy_files = ["/Users/ytshen/Desktop/20170310/logs/relative_difference_of_efficiency_pt1020_eta020.txt",
+                  "/Users/ytshen/Desktop/20170310/logs/relative_difference_of_efficiency_pt2030_eta020.txt",
+                  "/Users/ytshen/Desktop/20170310/logs/relative_difference_of_efficiency_pt3040_eta020.txt",
+                  "/Users/ytshen/Desktop/20170310/logs/relative_difference_of_efficiency_pt4050_eta020.txt",
+                  "/Users/ytshen/Desktop/20170310/logs/relative_difference_of_efficiency_pt5060_eta020.txt",
+                  "/Users/ytshen/Desktop/20170310/logs/relative_difference_of_efficiency_pt6080_eta020.txt",
+                  "/Users/ytshen/Desktop/20170310/logs/relative_difference_of_efficiency_pt80150_eta020.txt",
+                  "/Users/ytshen/Desktop/20170310/logs/relative_difference_of_efficiency_pt150200_eta020.txt"]
 
     busy_uncertainties = []
 
@@ -249,7 +249,7 @@ def get_electron_real_efficiency():
 
 
 def get_muon_real_efficiency():
-    variation_file = "../../Results/20170222/logs/mu_efficiency_systematics.txt"
+    variation_file = "/Users/ytshen/Desktop/20170310/logs/mu_efficiency_systematics.txt"
 
     pt_ranges = []
 
@@ -367,14 +367,14 @@ def get_muon_real_efficiency():
     # Use relative uncertainties for busy environment
     # Because I already calculate the relative uncertainties in ytRelative_difference_of_efficiency.C
     # , I just need to read the values from the input file and write them into the output file.
-    busy_files = ["/Users/ytshen/Desktop/skim/Results/20170205/logs/relative_difference_of_efficiency_pt1020_eta020.txt",
-                  "/Users/ytshen/Desktop/skim/Results/20170205/logs/relative_difference_of_efficiency_pt2030_eta020.txt",
-                  "/Users/ytshen/Desktop/skim/Results/20170205/logs/relative_difference_of_efficiency_pt3040_eta020.txt",
-                  "/Users/ytshen/Desktop/skim/Results/20170205/logs/relative_difference_of_efficiency_pt4050_eta020.txt",
-                  "/Users/ytshen/Desktop/skim/Results/20170205/logs/relative_difference_of_efficiency_pt5060_eta020.txt",
-                  "/Users/ytshen/Desktop/skim/Results/20170205/logs/relative_difference_of_efficiency_pt6080_eta020.txt",
-                  "/Users/ytshen/Desktop/skim/Results/20170205/logs/relative_difference_of_efficiency_pt80150_eta020.txt",
-                  "/Users/ytshen/Desktop/skim/Results/20170205/logs/relative_difference_of_efficiency_pt150200_eta020.txt"]
+    busy_files = ["/Users/ytshen/Desktop/20170310/logs/relative_difference_of_efficiency_pt1020_eta020.txt",
+                  "/Users/ytshen/Desktop/20170310/logs/relative_difference_of_efficiency_pt2030_eta020.txt",
+                  "/Users/ytshen/Desktop/20170310/logs/relative_difference_of_efficiency_pt3040_eta020.txt",
+                  "/Users/ytshen/Desktop/20170310/logs/relative_difference_of_efficiency_pt4050_eta020.txt",
+                  "/Users/ytshen/Desktop/20170310/logs/relative_difference_of_efficiency_pt5060_eta020.txt",
+                  "/Users/ytshen/Desktop/20170310/logs/relative_difference_of_efficiency_pt6080_eta020.txt",
+                  "/Users/ytshen/Desktop/20170310/logs/relative_difference_of_efficiency_pt80150_eta020.txt",
+                  "/Users/ytshen/Desktop/20170310/logs/relative_difference_of_efficiency_pt150200_eta020.txt"]
 
     busy_uncertainties = []
 

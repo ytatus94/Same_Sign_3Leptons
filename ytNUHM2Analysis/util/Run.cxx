@@ -68,7 +68,7 @@ int main( int argc, char* argv[] ) {
             process = val;
         //
         //
-        // We 4topSM to compare cutflow.
+        // We use 4topSM to compare cutflow.
         else if (strcmp(key, "4topSM") == 0)
             process = "4topSM";
         // Zee, Zmumu, ttbar, GG_ttn1 are used to study real lepton efficiency.
@@ -497,7 +497,9 @@ int main( int argc, char* argv[] ) {
     // Get DerivationStat_Weights from input files
     //
     double derivation_stat_weights = 0;
-    SH::Sample *sample = sh.at(sh.size() - 1); // Because we only have one dataset at here
+    SH::Sample *sample = sh.at(sh.size() - 1); // Because we only have one dataset at here.
+    // The above line will cause problem when we have several sample loaded in to the SH.
+
     // cout << "sample name=" << sample->name() << endl; // dataset name
     // cout << "numFiles()=" << sample->numFiles() << endl; // number of root files in dataset
     for (unsigned int i = 0; i < sample->numFiles() ; i++) {

@@ -18,6 +18,7 @@ os.system("./run_background_subtraction.py -b --RLE-trigger tag_trigger_matched"
 os.system("./run_elec_systematics.py")
 os.system("./run_muon_systematics.py")
 os.system("./run_trigger_systematics.py")
+os.system("./run_trigger_bkg_subtraction.py")
 os.system("./run_relative_differences_of_efficiency.py")
 os.system("./make_matrix_method_input.py")
 os.system("./make_final_RLE_plots.py")
