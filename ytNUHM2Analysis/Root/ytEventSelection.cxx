@@ -22,7 +22,7 @@ ytEventSelection::ytEventSelection ()
 
     m_cutflow       = new yt_cutflows;
     m_skim          = new yt_skim;
-    //m_optimization  = new yt_optimization;
+    m_optimization  = new yt_optimization;
     m_XsecDB        = new SUSY::CrossSectionDB(PathResolverFindCalibDirectory("SUSYTools/mc15_13TeV/"));
 
     // initialize event weight sum to zero
@@ -550,14 +550,14 @@ EL::StatusCode ytEventSelection::initialize ()
         m_skim->set_process(process);
         m_skim->initialize(wk()->tree());
     }
-/*
+
     if (isOptimization) {
         m_optimization->set_isMC(isMC);
         m_optimization->set_isData(isData);
         m_optimization->set_process(process);
         m_optimization->initialize();
     }
-*/
+
     return EL::StatusCode::SUCCESS;
 }
 
@@ -1022,7 +1022,7 @@ EL::StatusCode ytEventSelection::execute ()
     m_cutflow->update(Bad_muon, cut6);
     if (!cut6) return EL::StatusCode::SUCCESS;
 
-    if (!isSkim) {
+    if (!isSkim && !isOptimization) {
         bool cut7  = m_cutflow->pass_at_least_one_jet_passes_jet_OR(vec_baseline_jets); // use baseline jets
         m_cutflow->update(At_least_one_jet_passes_jet_OR, cut7);
         if (!cut7) return EL::StatusCode::SUCCESS;
@@ -1051,7 +1051,7 @@ EL::StatusCode ytEventSelection::execute ()
     // Now sort leptons by descending Pt
     sort(vec_new_OR_lept.begin(), vec_new_OR_lept.end(), sort_descending_Pt<Lepton>);
 
-    if (!isSkim) {
+    if (!isSkim && !isOptimization) {
         bool cut9  = m_cutflow->pass_at_least_one_signal_jet(vec_JVT_jets);
         m_cutflow->update(At_least_one_signal_jet, cut9);
         if (!cut9) return EL::StatusCode::SUCCESS;
@@ -1273,7 +1273,7 @@ EL::StatusCode ytEventSelection::execute ()
         m_cutflow->update(mumu_MET_greater_than_125GeV, mumu_cut5);
     }
 
-/*
+
     if (isOptimization) {
         // require trigger matching
         if (!(ee_cut2 || emu_cut2 || mumu_cut2))
@@ -1294,6 +1294,7 @@ EL::StatusCode ytEventSelection::execute ()
 
             // DileptonTriggerWeight
             if(Etmiss_TST_Et < 250000 || !HLT_xe70 || !HLT_xe100_mht_L1XE50) {
+/*
                 // lepton scale factors
                 for (auto & el_itr : vec_signal_elec) {
                     m_dtwTool->AddElectron(el_itr.get_pt(), el_itr.get_eta(), RunNb, isFullSim);
@@ -1303,6 +1304,8 @@ EL::StatusCode ytEventSelection::execute ()
                 }
                 double uncertainty;
                 dilepton_trigger_weight = m_dtwTool->GetScaleFactor(uncertainty);
+*/
+                dilepton_trigger_weight = TriggerDileptonSF;
             }
         }
 
@@ -1311,7 +1314,7 @@ EL::StatusCode ytEventSelection::execute ()
         m_optimization->set_filter_efficiency(filter_efficiency);
         m_optimization->set_cross_section_kfactor_efficiency(cross_section_kfactor_efficiency);
 
-        //m_optimization->set_derivation_stat_weights(derivation_stat_weights);
+        // m_optimization->set_derivation_stat_weights(derivation_stat_weights);
 
         m_optimization->set_event_weight(EventWeight);
         m_optimization->set_lepton_weight(lepton_weight * dilepton_trigger_weight);
@@ -1322,7 +1325,7 @@ EL::StatusCode ytEventSelection::execute ()
 
         m_optimization->execute(vec_signal_elec, vec_signal_muon, vec_signal_lept, vec_signal_jets);
     }
-*/
+
     return EL::StatusCode::SUCCESS;
 }
 
@@ -1358,7 +1361,7 @@ EL::StatusCode ytEventSelection::finalize ()
     //Info(function_name, "Function calls");
 
     m_cutflow->print();
-/*
+
     if (isSkim) {
         m_skim->finalize();
         //m_skim->debug_print();
@@ -1367,7 +1370,7 @@ EL::StatusCode ytEventSelection::finalize ()
         m_optimization->set_derivation_stat_weights(derivation_stat_weights);
         m_optimization->finalize();
     }
-*/
+
     return EL::StatusCode::SUCCESS;
 }
 

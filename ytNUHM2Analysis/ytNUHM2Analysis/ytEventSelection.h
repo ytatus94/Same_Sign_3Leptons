@@ -18,7 +18,7 @@
 #include "ytNUHM2Analysis/Jet.h"
 #include "ytNUHM2Analysis/yt_cutflows.h"
 #include "ytNUHM2Analysis/yt_skim.h"
-//#include "ytNUHM2Analysis/yt_optimization.h"
+#include "ytNUHM2Analysis/yt_optimization.h"
 //#include "ytNUHM2Analysis/yt_useful_functions.h"
 
 
@@ -64,7 +64,7 @@ public:
 
     yt_cutflows         *m_cutflow; //!
     yt_skim             *m_skim; //!
-    //yt_optimization     *m_optimization; //!
+    yt_optimization     *m_optimization; //!
 
     SUSY::CrossSectionDB    *m_XsecDB; //!
 

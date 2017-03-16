@@ -9,7 +9,13 @@ This is SS/3L+jet cutflows study for v50 ntuples.
 * ST-00-08-45
 
 
+### v08. (master) Add optimization code
+1. Add optimization in `ytEventSelection`
+
+
 ### v07. (master) Add optimization code.
+1. Add new class `yt_optimization`
+2. Add class in `LinkDef.h`
 
 
 ### v06. v52 branch 
