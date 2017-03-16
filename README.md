@@ -9,6 +9,9 @@ This is SS/3L+jet cutflows study for v50 ntuples.
 * ST-00-08-45
 
 
+### v07. (master) Add optimization code.
+
+
 ### v06. v52 branch 
 1. `run_all_skim.sh`: Add GG_ttn1 samples to run.
 2. `make_final_RLE_plots.py`: Change the path of input files.
