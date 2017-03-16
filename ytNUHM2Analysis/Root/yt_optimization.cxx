@@ -255,7 +255,7 @@ void yt_optimization::execute(vector<Electron> elec, vector<Muon> muon, vector<L
                                               * sizeof(n_jets_cuts) / sizeof(n_jets_cuts[0])
                                               * sizeof(met_cuts) / sizeof(met_cuts[0])
                                               * sizeof(meff_cuts) / sizeof(meff_cuts[0]);
-                                if (meff / 1000. <= meff_cuts[i_meff]) // in getenv
+                                if (meff / 1000. <= meff_cuts[i_meff]) // in GeV
                                     continue;
                                 else {
                                     h_yields->AddBinContent(bin);
