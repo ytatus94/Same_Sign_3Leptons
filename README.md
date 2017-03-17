@@ -9,6 +9,9 @@ This is SS/3L+jet cutflows study for v50 ntuples.
 * ST-00-08-45
 
 
+### v10. (master) Use the correct optimization code from v47 newskim branch
+
+
 ### v09. (master) Add nw script run_all_optimization.sh
 
 
