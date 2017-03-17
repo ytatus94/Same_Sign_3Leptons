@@ -342,33 +342,183 @@ void yt_optimization::fill_signal_bjets(vector<Jet> signal_jets)
 
 
 
-void yt_optimization::apply_signal_region_cuts(int cut_n_leptons,
-                                               int cut_bjets_pT, int cut_n_bjets,
-                                               int cut_jet_pt, int cut_n_jet,
-                                               int cut_met, int cut_meff,
-                                               float weight)
+void yt_optimization::apply_signal_region_cuts(yt_SR_definitions SR_cuts, float weight)
 {
     int nlepts = vec_signal_lept.size();
     // Count the number of b-jets with pT > b-jet pT cut
     int nbjets = 0;
     for (auto & bjet_itr : vec_signal_bjet) {
-        if (bjet_itr.get_pt() >= cut_bjets_pT)
+        if (bjet_itr.get_pt() / 1000. > SR_cuts.get_bjets_pT())
             nbjets++;
     }
     // Count the number of jets with pT > jet pT cut
     int njets = 0;
     for (auto & jet_itr : vec_signal_jets) {
-        if (jet_itr.get_pt() >= cut_jet_pt)
+        if (jet_itr.get_pt() / 1000. > SR_cuts.get_jet_pT_cut())
             njets++;
     }
 
-    if (nlepts >= cut_n_leptons &&
-        nbjets >= cut_n_bjets &&
-        njets >= cut_n_jet &&
-        met > cut_met &&
-        meff > cut_meff) {
-        events_survived++;
-        events_survived_weighted = events_survived_weighted + (1 * weight);
+    // RPV models
+    if (SR_cuts.get_name() == "Rpv2L1bS" ||
+        SR_cuts.get_name() == "Rpv2L1bM" ||
+        SR_cuts.get_name() == "Rpv2L2bS" ||
+        SR_cuts.get_name() == "Rpv2L1bH" ||
+        SR_cuts.get_name() == "Rpv2L0b" ||
+        SR_cuts.get_name() == "Rpv2L2bH") {
+        if (SR_cuts.get_name() == "Rpv2L0b") {
+            if (nlepts == 2 &&
+                vec_signal_bjet.size() == 0 &&
+                njets >= SR_cuts.get_njets_cut() &&
+                meff / 1000. > SR_cuts.get_meff_cut()) {
+                if (vec_signal_lept[0].get_flavor() == 11 &&
+                    vec_signal_lept[1].get_flavor() == 11) {
+                    TLorentzVecotr tlv_lept0 = tlv_lept0.SetPtEtaPhiE(vec_signal_lept[0].get_pt(),
+                                                                      vec_signal_lept[0].get_eta(),
+                                                                      vec_signal_lept[0].get_phi(),
+                                                                      vec_signal_lept[0].get_E());
+                    TLorentzVecotr tlv_lept1 = tlv_lept0.SetPtEtaPhiE(vec_signal_lept[0].get_pt(),
+                                                                      vec_signal_lept[0].get_eta(),
+                                                                      vec_signal_lept[0].get_phi(),
+                                                                      vec_signal_lept[0].get_E());
+                    double mee = (tlv_lept0 + tlv_lept1).M();
+                    // veto 81 < mee < 101 GeV
+                    if (mee <= 80 || mll >= 101) {
+                        events_survived++;
+                        events_survived_weighted = events_survived_weighted + (1 * weight);
+                    }
+                }
+            }
+        }
+        else {
+            if (nlepts >= SR_cuts.get_n_lept_cut() &&
+                nbjets >= SR_cuts.get_n_bjets_20_cut() &&
+                njets >= SR_cuts.get_njets_cut() &&
+                met / 1000. > SR_cuts.get_met_cut() &&
+                meff / 1000. > SR_cuts.get_meff_cut() &&
+                met / meff > SR_cuts.get_met_over_meff_cut()) {
+                if (SR_cuts.get_name() == "Rpv2L2bH") {
+                    // veto 81 < mee < 101 GeV
+                    if (vec_signal_lept[0].get_flavor() == 11 &&
+                        vec_signal_lept[1].get_flavor() == 11) {
+                        TLorentzVecotr tlv_lept0 = tlv_lept0.SetPtEtaPhiE(vec_signal_lept[0].get_pt(),
+                                                                          vec_signal_lept[0].get_eta(),
+                                                                          vec_signal_lept[0].get_phi(),
+                                                                          vec_signal_lept[0].get_E());
+                        TLorentzVecotr tlv_lept1 = tlv_lept0.SetPtEtaPhiE(vec_signal_lept[0].get_pt(),
+                                                                          vec_signal_lept[0].get_eta(),
+                                                                          vec_signal_lept[0].get_phi(),
+                                                                          vec_signal_lept[0].get_E());
+                        double mee = (tlv_lept0 + tlv_lept1).M();
+                        // veto 81 < mee < 101 GeV
+                        if (mee <= 80 || mll >= 101) {
+                            events_survived++;
+                            events_survived_weighted = events_survived_weighted + (1 * weight);
+                        }
+                    }
+                }
+                else { // For Rpv2L1bS, Rpv2L1bM, and Rpv2L2bS
+                    // >= 2 negatively-charged leptons
+                    int n_negatively_charged_leptons = 0;
+                    for (unsigned int i = 0; i < vec_signal_lept.size() - 1; i++) {
+                        int charge0 = vec_signal_lept[i].get_charge();
+                        for (unsigned int j = i + 1; j < vec_signal_lept.size(); j++) {
+                            int charge1 = vec_signal_lept[j].get_charge();
+                            if (charge0 * charge1 == -1)
+                                n_negatively_charged_leptons++;
+                        }
+                    }
+                    if (n_negatively_charged_leptons >= 2) {
+                        events_survived++;
+                        events_survived_weighted = events_survived_weighted + (1 * weight);
+                    }
+                }
+            }
+        }
+    }
+
+    // RPC models
+    if (SR_cuts.get_name() == "Rpc3L0bS" ||
+        SR_cuts.get_name() == "Rpc3L0bH" ||
+        SR_cuts.get_name() == "Rpc2L0bS" ||
+        SR_cuts.get_name() == "Rpc2L0bH") {
+        if (nlepts >= SR_cuts.get_n_lept_cut() &&
+            vec_signal_bjet.size() == 0 &&
+            njets >= SR_cuts.get_njets_cut() &&
+            met / 1000. > SR_cuts.get_met_cut() &&
+            meff / 1000. > SR_cuts.get_meff_cut() &&
+            met / meff > SR_cuts.get_met_over_meff_cut()) {
+            events_survived++;
+            events_survived_weighted = events_survived_weighted + (1 * weight);
+        }
+    }
+    else if (SR_cuts.get_name() == "Rpc2L1bS" ||
+             SR_cuts.get_name() == "Rpc2L1bH" ||
+             SR_cuts.get_name() == "Rpc2L2bS" ||
+             SR_cuts.get_name() == "Rpc2L2bH") {
+        if (nlepts >= SR_cuts.get_n_lept_cut() &&
+            nbjets >= SR_cuts.get_n_bjets_20_cut() &&
+            njets >= SR_cuts.get_njets_cut() &&
+            met / 1000. > SR_cuts.get_met_cut() &&
+            meff / 1000. > SR_cuts.get_meff_cut() &&
+            met / meff > SR_cuts.get_met_over_meff_cut()) {
+            events_survived++;
+            events_survived_weighted = events_survived_weighted + (1 * weight);
+        }
+    }
+
+    // RPC models
+    if (SR_cuts.get_name() == "Rpc2Lsoft2b" ||
+        SR_cuts.get_name() == "Rpc2Lsoft1b") {
+        if (nlepts >= SR_cuts.get_n_lept_cut() &&
+            nbjets >= SR_cuts.get_n_bjets_20_cut() &&
+            njets >= SR_cuts.get_njets_cut() &&
+            met / 1000. > SR_cuts.get_met_cut() &&
+            meff / 1000. > SR_cuts.get_meff_cut() &&
+            met / meff > SR_cuts.get_met_over_meff_cut()) {
+            if (vec_signal_lept[0].get_pt() / 1000. > 20. &&
+                vec_signal_lept[0].get_pt() / 1000. < 100. &&
+                vec_signal_lept[1]/get_pt() / 1000. > 10.) {
+                events_survived++;
+                events_survived_weighted = events_survived_weighted + (1 * weight);
+            }
+        }
+    }
+    else if (SR_cuts.get_name() == "Rpc3LSS1b") {
+        // same-sign 3 leptons
+        if (nlepts >= 3 && nbjets >= 1) {
+            // Same sign requirement
+            // not implement yet.
+            // veto 81 < mee < 101 GeV
+            if (vec_signal_lept[0].get_flavor() == 11 &&
+                vec_signal_lept[1].get_flavor() == 11) {
+                TLorentzVecotr tlv_lept0 = tlv_lept0.SetPtEtaPhiE(vec_signal_lept[0].get_pt(),
+                                                                  vec_signal_lept[0].get_eta(),
+                                                                  vec_signal_lept[0].get_phi(),
+                                                                  vec_signal_lept[0].get_E());
+                TLorentzVecotr tlv_lept1 = tlv_lept0.SetPtEtaPhiE(vec_signal_lept[0].get_pt(),
+                                                                  vec_signal_lept[0].get_eta(),
+                                                                  vec_signal_lept[0].get_phi(),
+                                                                  vec_signal_lept[0].get_E());
+                double mee = (tlv_lept0 + tlv_lept1).M();
+                // veto 81 < mee < 101 GeV
+                if (mee <= 80 || mll >= 101) {
+                    events_survived++;
+                    events_survived_weighted = events_survived_weighted + (1 * weight);
+                }
+            }
+        }
+    }
+    else if (SR_cuts.get_name() == "Rpc3L1bS" ||
+             SR_cuts.get_name() == "Rpc3L1bH") {
+        if (nlepts >= SR_cuts.get_n_lept_cut() &&
+            nbjets >= SR_cuts.get_n_bjets_20_cut() &&
+            njets >= SR_cuts.get_njets_cut() &&
+            met / 1000. > SR_cuts.get_met_cut() &&
+            meff / 1000. > SR_cuts.get_meff_cut() &&
+            met / meff > SR_cuts.get_met_over_meff_cut()) {
+            events_survived++;
+            events_survived_weighted = events_survived_weighted + (1 * weight);
+        }
     }
 }
 

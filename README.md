@@ -9,6 +9,11 @@ This is SS/3L+jet cutflows study for v50 ntuples.
 * ST-00-08-45
 
 
+### v11. (master) Add the codes for SR optimization.
+1. In `yt_optimization`: `apply_signal_region_cuts()`
+2. `yt_SR_definitions.h`: New file.
+
+
 ### v10. (master) Use the correct optimization code from v47 newskim branch
 
 

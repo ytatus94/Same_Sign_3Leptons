@@ -9,6 +9,7 @@
 #include "ytNUHM2Analysis/Leptons.h"
 #include "ytNUHM2Analysis/Jet.h"
 #include "ytNUHM2Analysis/yt_useful_functions.h"
+#include "ytNUHM2Analysis/yt_SR_definitions.h"
 
 #include <iostream>
 #include <vector>
@@ -127,11 +128,7 @@ public:
     void copy_vectors(vector<Electron> elec, vector<Muon> muon, vector<Lepton> lept, vector<Jet> jets);
     void fill_signal_bjets(vector<Jet> signal_jets);
 
-    void apply_signal_region_cuts(int cut_n_leptons,
-                                  int cut_bjets_pT, int cut_n_bjets,
-                                  int cut_jet_pt, int cut_n_jet,
-                                  int cut_met, int cut_meff,
-                                  float weight);
+    void apply_signal_region_cuts(yt_SR_definitions SR_cuts, float weight);
     // void get_events_survived();
     // void get_events_survived_weighted();
 
