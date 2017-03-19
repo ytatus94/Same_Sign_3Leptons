@@ -137,7 +137,7 @@ void ytOptimization_plots(string signal_file = "optimization_MC_NUHM2_m12_400_st
     }
 
     
-    int max_significance = 0;
+    double max_significance = 0;
     int best_n_lept_cut = 0;
     int best_bjet_pt_cut = 0;
     int best_n_bjet_cut = 0;

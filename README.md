@@ -7,6 +7,10 @@ This is SS/3L+jet cutflows study v44.
 ### Setting:
 
 
+### v01-15-25. (newskim branch) Fix typo
+1. `ytOptimization_plots.C`: `max_significance` type should be float
+
+
 ### v01-15-24. (newskim branch) Fix typo
 
 
