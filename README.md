@@ -9,6 +9,10 @@ This is SS/3L+jet cutflows study for v50 ntuples.
 * ST-00-08-45
 
 
+### v12. (master) output the difference between truth match and T&P method
+1. `ytPlots.C`: output the difference between truth match and T&P method in `yt_truth_match_TandP_comparison_table()`
+
+
 ### v11. (master) Add the codes for SR optimization.
 1. In `yt_optimization`: `apply_signal_region_cuts()`
 2. `yt_SR_definitions.h`: New file.

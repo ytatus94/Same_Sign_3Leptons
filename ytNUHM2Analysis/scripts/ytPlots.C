@@ -4727,11 +4727,19 @@ void yt_truth_match_TandP_comparison_table(TString lepton, int eta_bin_low, int 
     // h_truth_match_eff->SetLineColor(kRed);
     // h_truth_match_eff->Draw("same")
 
+    // Difference between truth match and T&P
+    cout << "Difference between truth and T&P:" << endl;
+    for (int i = i; i <= h_TandP_eff->GetXaxis()->GetNbins(); i++) {
+        float truth_match = h_truth_match_eff->GetBinContent(i);
+        float t_and_p = h_TandP_eff->GetBinContent(i);
+        cout << truth_match - t_and_p << endl;
+    }
+
     TH1F *ratio = (TH1F *)h_truth_match_eff->Clone();
     ratio->Divide(h_TandP_eff);
 
     // ratio->Draw();
-
+    cout << "The ratio = truth_match / TandP:" << endl;
     for(int i = 1; i <= ratio->GetXaxis()->GetNbins(); i++) {
         // do not include underflow and overflow bins
         cout << ratio->GetBinContent(i) << endl;
