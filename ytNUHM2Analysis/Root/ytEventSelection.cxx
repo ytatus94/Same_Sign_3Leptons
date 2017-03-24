@@ -22,8 +22,6 @@ ytEventSelection::ytEventSelection ()
 
     m_cutflow       = new yt_cutflows;
     m_skim          = new yt_skim;
-    //m_skim_MC       = new yt_skim_MC;
-    //m_skim_data     = new yt_skim_data;
     m_optimization  = new yt_optimization;
     m_XsecDB        = new SUSY::CrossSectionDB(PathResolverFindCalibDirectory("SUSYTools/mc15_13TeV/"));
     m_dtwTool       = new DileptonTriggerWeight;
@@ -77,65 +75,32 @@ EL::StatusCode ytEventSelection::histInitialize ()
     wk()->addOutput(h_NLepts);
     wk()->addOutput(h_NJets);
 
-    // h_Nvtx_weighted      = new TH1F("h_Nvtx_weighted", "Nvtx (weighted);Nvtx;Events", 50, 0 , 50);
-    // h_AvgMu_weighted     = new TH1F("h_AvgMu_weighted", "AvgMu (weighted);<#mu>;Events", 50, 0 , 50);
-    // h_NLepts_weighted    = new TH1F("h_NLepts_weighted", "Number of leptons (weighted);N_{leptons};Events",10, 0, 10);
-    // h_NJets_weighted     = new TH1F("h_NJets_weighted", "Number of jets (weighted);N_{jets};Events", 40, 0, 40);
-    
-    // h_Nvtx_weighted->Sumw2();
-    // h_AvgMu_weighted->Sumw2();
-    // h_NLepts_weighted->Sumw2();
-    // h_NJets_weighted->Sumw2();
-
-    // wk()->addOutput(h_Nvtx_weighted);
-    // wk()->addOutput(h_AvgMu_weighted);
-    // wk()->addOutput(h_NLepts_weighted);
-    // wk()->addOutput(h_NJets_weighted);
-
     h_AvgMu_OSee            = new TH1F("h_AvgMu_OSee", "AvgMu;<#mu>;Events", 50, 0 , 50);
     h_AvgMu_OSmumu          = new TH1F("h_AvgMu_OSmumu", "AvgMu;<#mu>;Events", 50, 0 , 50);
-    // h_AvgMu_OSee_weighted   = new TH1F("h_AvgMu_OSee_weighted", "AvgMu (weighted);<#mu>;Events", 50, 0 , 50);
-    // h_AvgMu_OSmumu_weighted = new TH1F("h_AvgMu_OSmumu_weighted", "AvgMu (weighted);<#mu>;Events", 50, 0 , 50);
 
     h_AvgMu_OSee->Sumw2();
     h_AvgMu_OSmumu->Sumw2();
-    // h_AvgMu_OSee_weighted->Sumw2();
-    // h_AvgMu_OSmumu_weighted->Sumw2();
 
     wk()->addOutput(h_AvgMu_OSee);
     wk()->addOutput(h_AvgMu_OSmumu);
-    // wk()->addOutput(h_AvgMu_OSee_weighted);
-    // wk()->addOutput(h_AvgMu_OSmumu_weighted);
 
     h_baseline_OSee_mll = new TH1F("h_baseline_OSee_mll", "mll;M_{ll} [GeV];Events", 90, 60, 150);
     h_baseline_OSmumu_mll = new TH1F("h_baseline_OSmumu_mll", "mll;M_{ll} [GeV];Events", 90, 60, 150);
-    // h_baseline_OSee_mll_weighted = new TH1F("h_baseline_OSee_mll_weighted", "mll;M_{ll} [GeV];Events", 90, 60, 150);
-    // h_baseline_OSmumu_mll_weighted = new TH1F("h_baseline_OSmumu_mll_weighted", "mll;M_{ll} [GeV];Events", 90, 60, 150);
 
     h_baseline_OSee_mll->Sumw2();
     h_baseline_OSmumu_mll->Sumw2();
-    // h_baseline_OSee_mll_weighted->Sumw2();
-    // h_baseline_OSmumu_mll_weighted->Sumw2();
 
     wk()->addOutput(h_baseline_OSee_mll);
     wk()->addOutput(h_baseline_OSmumu_mll);
-    // wk()->addOutput(h_baseline_OSee_mll_weighted);
-    // wk()->addOutput(h_baseline_OSmumu_mll_weighted);
 
     h_signal_OSee_mll = new TH1F("h_signal_OSee_mll", "mll;M_{ll} [GeV];Events", 90, 60, 150);
     h_signal_OSmumu_mll = new TH1F("h_signal_OSmumu_mll", "mll;M_{ll} [GeV];Events", 90, 60, 150);
-    // h_signal_OSee_mll_weighted = new TH1F("h_signal_OSee_mll_weighted", "mll;M_{ll} [GeV];Events", 90, 60, 150);
-    // h_signal_OSmumu_mll_weighted = new TH1F("h_signal_OSmumu_mll_weighted", "mll;M_{ll} [GeV];Events", 90, 60, 150);
 
     h_signal_OSee_mll->Sumw2();
     h_signal_OSmumu_mll->Sumw2();
-    // h_signal_OSee_mll_weighted->Sumw2();
-    // h_signal_OSmumu_mll_weighted->Sumw2();
 
     wk()->addOutput(h_signal_OSee_mll);
     wk()->addOutput(h_signal_OSmumu_mll);
-    // wk()->addOutput(h_signal_OSee_mll_weighted);
-    // wk()->addOutput(h_signal_OSmumu_mll_weighted);
 
     return EL::StatusCode::SUCCESS;
 }
@@ -167,7 +132,7 @@ EL::StatusCode ytEventSelection::changeInput (bool firstFile)
 
     //const char * function_name = "changeInput()";
     //Info(function_name, "Function calls");
-/*
+
     // Set object pointer
     Mu_eta = 0;
     Mu_phi = 0;
@@ -315,7 +280,7 @@ EL::StatusCode ytEventSelection::changeInput (bool firstFile)
     TruthL_pT = 0;
     TruthL_id = 0;
     //#endif // #ifdef _IS_MC_
-*/
+
     // Set branch addresses and branch pointers
     fChain = wk()->tree();
     fChain->SetMakeClass(1);
@@ -591,17 +556,12 @@ EL::StatusCode ytEventSelection::initialize ()
         m_skim->set_isData(isData);
         m_skim->set_process(process);
         m_skim->initialize(wk()->tree());
-/*
-        if (isMC)
-            m_skim_MC->initialize(fChain, process);
-        else if (isData)
-            m_skim_data->initialize(fChain, process);
-*/
     }
     if (isOptimization) {
         m_optimization->set_isMC(isMC);
         m_optimization->set_isData(isData);
         m_optimization->set_process(process);
+        m_optimization->set_derivation_stat_weights(derivation_stat_weights);
         m_optimization->initialize();
     }
 
@@ -1245,24 +1205,6 @@ EL::StatusCode ytEventSelection::execute ()
         m_skim->execute(vec_elec, vec_muon, vec_lept, vec_jets,
                         vec_baseline_elec, vec_baseline_muon, vec_baseline_lept, vec_baseline_jets,
                         vec_signal_elec, vec_signal_muon, vec_signal_lept, vec_signal_jets);
-/*
-        // Skimming data and MC for real lepton efficiency study
-        if (isMC) {
-            m_skim_MC->set_luminosity(luminosity);
-            m_skim_MC->set_event_weight_sum(derivation_stat_weights);
-            m_skim_MC->execute(vec_elec, vec_muon, vec_lept, vec_jets,
-                               vec_baseline_elec, vec_baseline_muon, vec_baseline_lept, vec_baseline_jets,
-                               vec_signal_elec, vec_signal_muon, vec_signal_lept, vec_signal_jets,
-                               Etmiss_TST_Et, EventWeight, random_run_number, pileup_weight, baseline_weight, signal_weight, process);
-        }
-        else if (isData) {
-            m_skim_data->execute(vec_elec, vec_muon, vec_lept, vec_jets,
-                                 vec_baseline_elec, vec_baseline_muon, vec_baseline_lept, vec_baseline_jets,
-                                 vec_signal_elec, vec_signal_muon, vec_signal_lept, vec_signal_jets,
-                                 Etmiss_TST_Et, RunNb);
-
-        }
-*/
     }
 
     bool cut12 = m_cutflow->pass_at_least_two_signal_leptons_greater_than_20GeV(vec_signal_lept);
@@ -1454,6 +1396,13 @@ EL::StatusCode ytEventSelection::execute ()
         cout << "dilepton_trigger_weight=" << dilepton_trigger_weight << endl;
         */
 
+        m_optimization->set_event_number(EventNumber);
+        if (isData)
+            m_optimization->set_run_number(RunNb);
+        else if (isMC)
+            m_optimization->set_run_number(random_run_number);
+
+        m_optimization->set_luminosity(luminosity);
         m_optimization->set_cross_section(cross_section);
         m_optimization->set_k_factor(k_factor);
         m_optimization->set_filter_efficiency(filter_efficiency);
@@ -1512,7 +1461,7 @@ EL::StatusCode ytEventSelection::finalize ()
         //m_skim->debug_print();
     }
     if (isOptimization) {
-        m_optimization->set_derivation_stat_weights(derivation_stat_weights);
+        // m_optimization->set_derivation_stat_weights(derivation_stat_weights);
         m_optimization->finalize();
     }
 

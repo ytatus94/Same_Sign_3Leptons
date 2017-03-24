@@ -18,12 +18,9 @@
 #include "ytNUHM2Analysis/Jet.h"
 #include "ytNUHM2Analysis/yt_cutflows.h"
 #include "ytNUHM2Analysis/yt_skim.h"
-//#include "ytNUHM2Analysis/yt_skim_MC.h"
-//#include "ytNUHM2Analysis/yt_skim_data.h"
 #include "ytNUHM2Analysis/yt_optimization.h"
 //#include "ytNUHM2Analysis/yt_useful_functions.h"
 #include "ytNUHM2Analysis/DileptonTriggerWeight.h"
-
 
 #include <iostream>
 #include <vector>
@@ -70,8 +67,6 @@ public:
 
     yt_cutflows         *m_cutflow; //!
     yt_skim             *m_skim; //!
-    //yt_skim_MC          *m_skim_MC; //!
-    //yt_skim_data        *m_skim_data; //!
     yt_optimization     *m_optimization; //!
 
     SUSY::CrossSectionDB    *m_XsecDB; //!
@@ -180,143 +175,143 @@ public:
     Int_t           RunNb; //!
     Int_t           DetError; //!
     Int_t           NMu; //!
-    vector<double>  *Mu_eta = nullptr; //!
-    vector<double>  *Mu_phi = nullptr; //!
-    vector<double>  *Mu_pT = nullptr; //!
-    vector<double>  *Mu_SFw = nullptr; //!
-    vector<float>   *Mu_IsoSFw = nullptr; //!
-    vector<int>     *Mu_charge = nullptr; //!
-    vector<double>  *Mu_d0pvtx = nullptr; //!
-    vector<double>  *Mu_sigd0 = nullptr; //!
-    vector<double>  *Mu_z0sinTheta = nullptr; //!
-    vector<bool>    *Mu_isBad = nullptr; //!
-    vector<bool>    *Mu_passOR = nullptr; //!
-    vector<bool>    *Mu_isTight = nullptr; //!
-    vector<bool>    *Mu_isCosmic = nullptr; //!
+    vector<double>  *Mu_eta; //!
+    vector<double>  *Mu_phi; //!
+    vector<double>  *Mu_pT; //!
+    vector<double>  *Mu_SFw; //!
+    vector<float>   *Mu_IsoSFw; //!
+    vector<int>     *Mu_charge; //!
+    vector<double>  *Mu_d0pvtx; //!
+    vector<double>  *Mu_sigd0; //!
+    vector<double>  *Mu_z0sinTheta; //!
+    vector<bool>    *Mu_isBad; //!
+    vector<bool>    *Mu_passOR; //!
+    vector<bool>    *Mu_isTight; //!
+    vector<bool>    *Mu_isCosmic; //!
     //#ifdef _IS_MC_
-    vector<int>     *Mu_type = nullptr; //!
-    vector<int>     *Mu_origin = nullptr; //!
+    vector<int>     *Mu_type; //!
+    vector<int>     *Mu_origin; //!
     //#endif // #ifdef _IS_MC_
-    vector<double>  *Mu_ptcone20 = nullptr; //!
-    vector<double>  *Mu_ptcone30 = nullptr; //!
-    vector<double>  *Mu_ptcone40 = nullptr; //!
-    vector<double>  *Mu_ptvarcone20 = nullptr; //!
-    vector<double>  *Mu_ptvarcone30 = nullptr; //!
-    vector<double>  *Mu_ptvarcone40 = nullptr; //!
-    vector<double>  *Mu_topoetcone20 = nullptr; //!
-    vector<double>  *Mu_topoetcone30 = nullptr; //!
-    vector<double>  *Mu_topoetcone40 = nullptr; //!
-    vector<bool>    *Mu_passIsoLooseTO = nullptr; //!
-    vector<bool>    *Mu_passIsoLoose = nullptr; //!
-    vector<bool>    *Mu_passIsoTight = nullptr; //!
-    vector<bool>    *Mu_passIsoGrad = nullptr; //!
-    vector<bool>    *Mu_passIsoGradCustomTight = nullptr; //!
-    vector<bool>    *Mu_passIsoGradCustom = nullptr; //!
-    vector<bool>    *Mu_passIsoGradLoose = nullptr; //!
+    vector<double>  *Mu_ptcone20; //!
+    vector<double>  *Mu_ptcone30; //!
+    vector<double>  *Mu_ptcone40; //!
+    vector<double>  *Mu_ptvarcone20; //!
+    vector<double>  *Mu_ptvarcone30; //!
+    vector<double>  *Mu_ptvarcone40; //!
+    vector<double>  *Mu_topoetcone20; //!
+    vector<double>  *Mu_topoetcone30; //!
+    vector<double>  *Mu_topoetcone40; //!
+    vector<bool>    *Mu_passIsoLooseTO; //!
+    vector<bool>    *Mu_passIsoLoose; //!
+    vector<bool>    *Mu_passIsoTight; //!
+    vector<bool>    *Mu_passIsoGrad; //!
+    vector<bool>    *Mu_passIsoGradCustomTight; //!
+    vector<bool>    *Mu_passIsoGradCustom; //!
+    vector<bool>    *Mu_passIsoGradLoose; //!
     Float_t         MuTrigSF_HLT_mu20_iloose_L1MU15_OR_HLT_mu50; //!
-    vector<bool>    *Mu_trigMatch_mu26_imedium = nullptr; //!
-    vector<bool>    *Mu_trigMatch_mu50 = nullptr; //!
-    vector<bool>    *Mu_trigMatch_mu8noL1 = nullptr; //!
-    vector<bool>    *Mu_trigMatch_mu14 = nullptr; //!
-    vector<bool>    *Mu_trigMatch_mu18 = nullptr; //!
-    vector<bool>    *Mu_trigMatch_mu18_mu8noL1 = nullptr; //!
-    vector<bool>    *Mu_trigMatch_e17_lhloose_mu14 = nullptr; //!
-    vector<bool>    *Mu_trigMatch_e17_lhloose_nod0_mu14 = nullptr; //!
-    vector<bool>    *Mu_trigMatch_mu20_mu8noL1 = nullptr; //!
-    vector<bool>    *Mu_trigMatch_mu22_mu8noL1 = nullptr; //!
-    vector<bool>    *Mu_TrigMatch_mu24_iloose = nullptr; //!
-    vector<bool>    *Mu_TrigMatch_mu24_ivarloose = nullptr; //!
-    vector<bool>    *Mu_TrigMatch_mu24_iloose_L1MU15 = nullptr; //!
-    vector<bool>    *Mu_TrigMatch_mu24_ivarloose_L1MU15 = nullptr; //!
-    vector<vector<bool> > *Mu_trigMatchPair_mu18_mu8noL1 = nullptr; //!
-    vector<vector<bool> > *Mu_trigMatchPair_mu20_mu8noL1 = nullptr; //!
-    vector<vector<bool> > *Mu_trigMatchPair_mu22_mu8noL1 = nullptr; //!
+    vector<bool>    *Mu_trigMatch_mu26_imedium; //!
+    vector<bool>    *Mu_trigMatch_mu50; //!
+    vector<bool>    *Mu_trigMatch_mu8noL1; //!
+    vector<bool>    *Mu_trigMatch_mu14; //!
+    vector<bool>    *Mu_trigMatch_mu18; //!
+    vector<bool>    *Mu_trigMatch_mu18_mu8noL1; //!
+    vector<bool>    *Mu_trigMatch_e17_lhloose_mu14; //!
+    vector<bool>    *Mu_trigMatch_e17_lhloose_nod0_mu14; //!
+    vector<bool>    *Mu_trigMatch_mu20_mu8noL1; //!
+    vector<bool>    *Mu_trigMatch_mu22_mu8noL1; //!
+    vector<bool>    *Mu_TrigMatch_mu24_iloose; //!
+    vector<bool>    *Mu_TrigMatch_mu24_ivarloose; //!
+    vector<bool>    *Mu_TrigMatch_mu24_iloose_L1MU15; //!
+    vector<bool>    *Mu_TrigMatch_mu24_ivarloose_L1MU15; //!
+    vector<vector<bool> > *Mu_trigMatchPair_mu18_mu8noL1; //!
+    vector<vector<bool> > *Mu_trigMatchPair_mu20_mu8noL1; //!
+    vector<vector<bool> > *Mu_trigMatchPair_mu22_mu8noL1; //!
     Int_t           NEl; //!
-    vector<double>  *El_eta = nullptr; //!
-    vector<double>  *El_etaclus = nullptr; //!
-    vector<double>  *El_phi = nullptr; //!
-    vector<double>  *El_pT = nullptr; //!
-    vector<double>  *El_E = nullptr; //!
-    vector<int>     *El_charge = nullptr; //!
-    vector<double>  *El_sigd0 = nullptr; //!
-    vector<double>  *El_z0sinTheta = nullptr; //!
-    vector<double>  *El_d0pvtx = nullptr; //!
-    vector<bool>    *El_passOR = nullptr; //!
-    vector<double>  *El_SFwMediumLH = nullptr; //!
-    vector<float>   *El_IsoSFwMediumLH = nullptr; //!
-    vector<double>  *El_SFwTightLH = nullptr; //!
-    vector<double>  *El_SFwLooseAndBLayerLH = nullptr; //!
-    vector<double>  *El_SFwTrigMediumLH_e12_lhloose_L1EM10VH = nullptr; //!
-    vector<double>  *El_SFwTrigMediumLH_e17_lhloose = nullptr; //!
-    vector<double>  *El_SFwTrigMediumLH_single = nullptr; //!
-    vector<double>  *El_SFwTrigLooseAndBLayerLH_e12_lhloose_L1EM10VH = nullptr; //!
-    vector<bool>    *El_isLooseAndBLayerLH = nullptr; //!
-    vector<bool>    *El_isMediumLH = nullptr; //!
-    vector<bool>    *El_isTightLH = nullptr; //!
-    vector<int>     *El_nBLayerHits = nullptr; //!
-    vector<int>     *El_expectBLayerHit = nullptr; //!
+    vector<double>  *El_eta; //!
+    vector<double>  *El_etaclus; //!
+    vector<double>  *El_phi; //!
+    vector<double>  *El_pT; //!
+    vector<double>  *El_E; //!
+    vector<int>     *El_charge; //!
+    vector<double>  *El_sigd0; //!
+    vector<double>  *El_z0sinTheta; //!
+    vector<double>  *El_d0pvtx; //!
+    vector<bool>    *El_passOR; //!
+    vector<double>  *El_SFwMediumLH; //!
+    vector<float>   *El_IsoSFwMediumLH; //!
+    vector<double>  *El_SFwTightLH; //!
+    vector<double>  *El_SFwLooseAndBLayerLH; //!
+    vector<double>  *El_SFwTrigMediumLH_e12_lhloose_L1EM10VH; //!
+    vector<double>  *El_SFwTrigMediumLH_e17_lhloose; //!
+    vector<double>  *El_SFwTrigMediumLH_single; //!
+    vector<double>  *El_SFwTrigLooseAndBLayerLH_e12_lhloose_L1EM10VH; //!
+    vector<bool>    *El_isLooseAndBLayerLH; //!
+    vector<bool>    *El_isMediumLH; //!
+    vector<bool>    *El_isTightLH; //!
+    vector<int>     *El_nBLayerHits; //!
+    vector<int>     *El_expectBLayerHit; //!
     //#ifdef _IS_MC_
-    vector<int>     *El_truthType = nullptr; //!
-    vector<int>     *El_truthOrigin = nullptr; //!
-    vector<int>     *El_bkgTruthType = nullptr; //!
-    vector<int>     *El_bkgTruthOrigin = nullptr; //!
-    vector<int>     *El_bkgMotherPdgId = nullptr; //!
-    vector<int>     *El_firstEgMotherTruthType = nullptr; //!
-    vector<int>     *El_firstEgMotherTruthOrigin = nullptr; //!
-    vector<int>     *El_firstEgMotherPdgId = nullptr; //!
-    vector<int>     *El_chFlip = nullptr; //!
+    vector<int>     *El_truthType; //!
+    vector<int>     *El_truthOrigin; //!
+    vector<int>     *El_bkgTruthType; //!
+    vector<int>     *El_bkgTruthOrigin; //!
+    vector<int>     *El_bkgMotherPdgId; //!
+    vector<int>     *El_firstEgMotherTruthType; //!
+    vector<int>     *El_firstEgMotherTruthOrigin; //!
+    vector<int>     *El_firstEgMotherPdgId; //!
+    vector<int>     *El_chFlip; //!
     //#endif // #ifdef _IS_MC_
-    vector<double>  *El_ptcone20 = nullptr; //!
-    vector<double>  *El_ptcone30 = nullptr; //!
-    vector<double>  *El_ptcone40 = nullptr; //!
-    vector<double>  *El_ptvarcone20 = nullptr; //!
-    vector<double>  *El_ptvarcone30 = nullptr; //!
-    vector<double>  *El_ptvarcone40 = nullptr; //!
-    vector<double>  *El_topoetcone20 = nullptr; //!
-    vector<double>  *El_topoetcone30 = nullptr; //!
-    vector<double>  *El_topoetcone40 = nullptr; //!
-    vector<bool>    *El_passIsoLooseTO = nullptr; //!
-    vector<bool>    *El_passIsoLoose = nullptr; //!
-    vector<bool>    *El_passIsoTight = nullptr; //!
-    vector<bool>    *El_passIsoGrad = nullptr; //!
-    vector<bool>    *El_passIsoGradCustomTight = nullptr; //!
-    vector<bool>    *El_passIsoGradCustom = nullptr; //!
-    vector<bool>    *El_passIsoGradLoose = nullptr; //!
-    vector<bool>    *El_trigMatch_e12_lhloose_L1EM10VH = nullptr; //!
-    vector<bool>    *El_trigMatch_e17_lhloose = nullptr; //!
-    vector<bool>    *El_trigMatch_e60_lhmedium = nullptr; //!
-    vector<bool>    *El_trigMatch_e24_lhmedium_iloose_L1EM20VH = nullptr; //!
-    vector<bool>    *El_trigMatch_2e12_lhloose_L12EM10VH = nullptr; //!
-    vector<bool>    *El_trigMatch_2e15_lhloose_L12EM10VH = nullptr; //!
-    vector<bool>    *El_trigMatch_2e15_lhvloose_L12EM13VH = nullptr; //!
-    vector<bool>    *El_trigMatch_2e15_lhvloose_nod0_L12EM13VH = nullptr; //!
-    vector<bool>    *El_trigMatch_2e17_lhvloose_nod0 = nullptr; //!
-    vector<bool>    *El_trigMatch_e17_lhloose_mu14 = nullptr; //!
-    vector<bool>    *El_trigMatch_e17_lhloose_nod0_mu14 = nullptr; //!
-    vector<bool>    *El_TrigMatch_e24_lhmedium_nod0_ivarloose = nullptr; //!
-    vector<bool>    *El_TrigMatch_e24_lhtight_nod0_ivarloose = nullptr; //!
-    vector<bool>    *El_TrigMatch_e60_lhmedium_nod0 = nullptr; //!
-    vector<bool>    *El_passChargeFlipTagger = nullptr; //!
-    vector<float>   *El_passChargeFlipTaggerBDT = nullptr; //!
+    vector<double>  *El_ptcone20; //!
+    vector<double>  *El_ptcone30; //!
+    vector<double>  *El_ptcone40; //!
+    vector<double>  *El_ptvarcone20; //!
+    vector<double>  *El_ptvarcone30; //!
+    vector<double>  *El_ptvarcone40; //!
+    vector<double>  *El_topoetcone20; //!
+    vector<double>  *El_topoetcone30; //!
+    vector<double>  *El_topoetcone40; //!
+    vector<bool>    *El_passIsoLooseTO; //!
+    vector<bool>    *El_passIsoLoose; //!
+    vector<bool>    *El_passIsoTight; //!
+    vector<bool>    *El_passIsoGrad; //!
+    vector<bool>    *El_passIsoGradCustomTight; //!
+    vector<bool>    *El_passIsoGradCustom; //!
+    vector<bool>    *El_passIsoGradLoose; //!
+    vector<bool>    *El_trigMatch_e12_lhloose_L1EM10VH; //!
+    vector<bool>    *El_trigMatch_e17_lhloose; //!
+    vector<bool>    *El_trigMatch_e60_lhmedium; //!
+    vector<bool>    *El_trigMatch_e24_lhmedium_iloose_L1EM20VH; //!
+    vector<bool>    *El_trigMatch_2e12_lhloose_L12EM10VH; //!
+    vector<bool>    *El_trigMatch_2e15_lhloose_L12EM10VH; //!
+    vector<bool>    *El_trigMatch_2e15_lhvloose_L12EM13VH; //!
+    vector<bool>    *El_trigMatch_2e15_lhvloose_nod0_L12EM13VH; //!
+    vector<bool>    *El_trigMatch_2e17_lhvloose_nod0; //!
+    vector<bool>    *El_trigMatch_e17_lhloose_mu14; //!
+    vector<bool>    *El_trigMatch_e17_lhloose_nod0_mu14; //!
+    vector<bool>    *El_TrigMatch_e24_lhmedium_nod0_ivarloose; //!
+    vector<bool>    *El_TrigMatch_e24_lhtight_nod0_ivarloose; //!
+    vector<bool>    *El_TrigMatch_e60_lhmedium_nod0; //!
+    vector<bool>    *El_passChargeFlipTagger; //!
+    vector<float>   *El_passChargeFlipTaggerBDT; //!
     Int_t           NJet; //!
-    vector<double>  *Jet_eta = nullptr; //!
-    vector<double>  *Jet_phi = nullptr; //!
-    vector<double>  *Jet_pT = nullptr; //!
-    vector<double>  *Jet_E = nullptr; //!
-    vector<double>  *Jet_quality = nullptr; //!
-    vector<double>  *Jet_JVT = nullptr; //!
-    vector<double>  *Jet_JVTsf = nullptr; //!
-    vector<double>  *Jet_MV2c20 = nullptr; //!
-    vector<double>  *Jet_MV2c10 = nullptr; //!
-    vector<double>  *Jet_SFw = nullptr; //!
+    vector<double>  *Jet_eta; //!
+    vector<double>  *Jet_phi; //!
+    vector<double>  *Jet_pT; //!
+    vector<double>  *Jet_E; //!
+    vector<double>  *Jet_quality; //!
+    vector<double>  *Jet_JVT; //!
+    vector<double>  *Jet_JVTsf; //!
+    vector<double>  *Jet_MV2c20; //!
+    vector<double>  *Jet_MV2c10; //!
+    vector<double>  *Jet_SFw; //!
     //#ifdef _IS_MC_
-    vector<int>     *Jet_ConeTruthLabel = nullptr; //!
-    vector<int>     *Jet_PartonTruthLabel = nullptr; //!
-    vector<int>     *Jet_HadronConeExclTruthLabel = nullptr; //!
-    vector<double>  *Jet_deltaR = nullptr; //!
+    vector<int>     *Jet_ConeTruthLabel; //!
+    vector<int>     *Jet_PartonTruthLabel; //!
+    vector<int>     *Jet_HadronConeExclTruthLabel; //!
+    vector<double>  *Jet_deltaR; //!
     //#endif // #ifdef _IS_MC_
-    vector<int>     *Jet_nTrk = nullptr; //!
-    vector<bool>    *Jet_passOR = nullptr; //!
+    vector<int>     *Jet_nTrk; //!
+    vector<bool>    *Jet_passOR; //!
     Float_t         Etmiss_CST_Etx; //!
     Float_t         Etmiss_CST_Ety; //!
     Float_t         Etmiss_CST_Et; //!
@@ -331,17 +326,17 @@ public:
     Float_t         Etmiss_Truth_Et; //!
     //#ifdef _IS_MC_
     Int_t           NTruthJet; //!
-    vector<double>  *TruthJet_eta = nullptr; //!
-    vector<double>  *TruthJet_phi = nullptr; //!
-    vector<double>  *TruthJet_pT = nullptr; //!
-    vector<double>  *TruthJet_E = nullptr; //!
-    vector<int>     *TruthJet_ConeTruthLabel = nullptr; //!
-    vector<int>     *TruthJet_PartonTruthLabel = nullptr; //!
+    vector<double>  *TruthJet_eta; //!
+    vector<double>  *TruthJet_phi; //!
+    vector<double>  *TruthJet_pT; //!
+    vector<double>  *TruthJet_E; //!
+    vector<int>     *TruthJet_ConeTruthLabel; //!
+    vector<int>     *TruthJet_PartonTruthLabel; //!
     Int_t           NTruthL; //!
-    vector<double>  *TruthL_eta = nullptr; //!
-    vector<double>  *TruthL_phi = nullptr; //!
-    vector<double>  *TruthL_pT = nullptr; //!
-    vector<int>     *TruthL_id = nullptr; //!
+    vector<double>  *TruthL_eta; //!
+    vector<double>  *TruthL_phi; //!
+    vector<double>  *TruthL_pT; //!
+    vector<int>     *TruthL_id; //!
     Int_t           SUSY_Spart_pdgId1; //!
     Int_t           SUSY_Spart_pdgId2; //!
     Int_t           SUSY_Gluino_decay1; //!
@@ -612,25 +607,14 @@ public:
     TH1F *h_NLepts; //!
     TH1F *h_NJets; //!
 
-    // TH1F *h_Nvtx_weighted; //!
-    // TH1F *h_AvgMu_weighted; //!
-    // TH1F *h_NLepts_weighted; //!
-    // TH1F *h_NJets_weighted; //!
-
     TH1F *h_AvgMu_OSee; //!
     TH1F *h_AvgMu_OSmumu; //!
-    // TH1F *h_AvgMu_OSee_weighted; //!
-    // TH1F *h_AvgMu_OSmumu_weighted; //!
 
     TH1F *h_baseline_OSee_mll; //!
     TH1F *h_baseline_OSmumu_mll; //!
-    // TH1F *h_baseline_OSee_mll_weighted; //!
-    // TH1F *h_baseline_OSmumu_mll_weighted; //!
 
     TH1F *h_signal_OSee_mll; //!
     TH1F *h_signal_OSmumu_mll; //!
-    // TH1F *h_signal_OSee_mll_weighted; //!
-    // TH1F *h_signal_OSmumu_mll_weighted; //!
 
     // this is a standard constructor
     ytEventSelection ();
@@ -975,7 +959,6 @@ public:
     void set_luminosity(float f) { luminosity = f; }
     void set_tag_pt_threshold(float f) { tag_pt_threshold = f; }
     void set_derivation_stat_weights(double d) { derivation_stat_weights = d; }
-
 /*
     void set_cross_section(double d) { cross_section = d; }
     void set_k_factor(double d) { k_factor = d; }

@@ -7,9 +7,23 @@ This is SS/3L+jet cutflows study v44.
 ### Setting:
 
 
-### v01-15-27. (newskim branch) Copy the yt_optimization.h anc yt_optimization.cxx from NUHM2
+### v01-15-27. (newskim branch) Redirect the output to log files
+1. `run_bkg_samples.sh`: Redirect the output to log files.
+2. `run_signal_samples.sh`: Comment weak interaction part.
+3. `ytEventSelection.h`:
+    * Remove `yt_skim_mc` and `yt_skim_data` related codes
+    * Remove the unnecessary code snippets.
+    * Remove `nullptr` for all vectors.
+4. `ytEventSelection.cxx`:
+    * Remove `yt_skim_mc` and `yt_skim_data` related codes
+    * Remove the unnecessary code snippets.
+    * `set_derivation_stat_weights()` is moved from `ytEventSelection::finalize()` to `ytEventSelection::initialize()`
+    * Add event number, run number, and luminosity information to optimization.
 
-### v01-15-26. (newskim branch) Copy the yt_optimization.h anc yt_optimization.cxx from NUHM2
+
+### v01-15-26. (newskim branch) Copy the yt_optimization.h and yt_optimization.cxx from NUHM2
+1. This version can get the same events as Othmane's results in SR1b1, SR1b2, SR3b1, SR3b2
+2. The weighted events have very small differences but can be ignored.
 
 
 ### v01-15-25. (newskim branch) Fix typo
