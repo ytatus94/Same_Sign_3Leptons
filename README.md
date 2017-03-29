@@ -7,6 +7,14 @@ This is SS/3L+jet cutflows study v44.
 ### Setting:
 
 
+### v01-15-28. (newskim branch) Use merged root files.
+1. `Run.cxx` and `run_bkg_samples.sh`: Fix typo of `lllvjj_EW6`
+2. Copy `yt_optimization.h` and `yt_optimization.cxx` from NUHM2
+3. `run_signal_samples.sh`: Change the output log filename
+4. `Run.cxx`: Use merged root files.
+5. `ytOptimization_plots.C`: Copy from NUHM2 and modify the `background_files` to v47
+
+
 ### v01-15-27. (newskim branch) Redirect the output to log files
 1. `run_bkg_samples.sh`: Redirect the output to log files.
 2. `run_signal_samples.sh`: Comment weak interaction part.

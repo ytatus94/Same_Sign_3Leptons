@@ -35,7 +35,7 @@ Run optimization isMC ZZZ_2l4v > optimization_MC_ZZZ_2l4v.log 2>&1 &
 
 Run optimization isMC llvvjj_ss_EW4 > optimization_MC_llvvjj_ss_EW4.log 2>&1 &
 Run optimization isMC llvvjj_ss_EW6 > optimization_MC_llvvjj_ss_EW6.log 2>&1 &
-Run optimization isMC llvvjj_EW6 > optimization_MC_llvvjj_EW6.log 2>&1 &
+Run optimization isMC lllvjj_EW6 > optimization_MC_lllvjj_EW6.log 2>&1 &
 Run optimization isMC lllljj_EW6 > optimization_MC_lllljj_EW6.log 2>&1 &
 Run optimization isMC ggllll > optimization_MC_ggllll.log 2>&1 &
 
