@@ -327,8 +327,8 @@ int main( int argc, char* argv[] ) {
         if (process == "4topSM") {
             //inputFilePath = "/UserDisk2/yushen/Ximo_ntuples/v44/MC/user.jpoveda.t0789_v44.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.DAOD_SUSY2.s2608_r7725_p2666_output.root";
             //SH::ScanDir().filePattern("user.jpoveda.9048853._000001.output.root").scan(sh, inputFilePath);
-            // SH::ScanDir().samplePattern("user.othrif.t0812_v47.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.DAOD_SUSY2.s2608_r7725_p2666_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
-            SH::ScanDir().filePattern("4topSM_merged.root").scan(sh, inputFilePath);
+            SH::ScanDir().samplePattern("user.othrif.t0812_v47.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.DAOD_SUSY2.s2608_r7725_p2666_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
+            // SH::ScanDir().filePattern("4topSM_merged.root").scan(sh, inputFilePath);
         }
         // For real lepton efficiency study
         else if (process == "Zee") {
@@ -467,44 +467,44 @@ int main( int argc, char* argv[] ) {
             SH::ScanDir().filePattern("ggllll_merged.root").scan(sh, inputFilePath);
         }
         else if (process == "llll_BFilter") {
-            // SH::ScanDir().samplePattern("user.othrif.t0812_v47.344422.Sherpa_CT10_llll_BFilter.DAOD_SUSY2.s2726_r7676_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
-            SH::ScanDir().filePattern("llll_BFilter_merged.root").scan(sh, inputFilePath);
+            SH::ScanDir().samplePattern("user.othrif.t0812_v47.344422.Sherpa_CT10_llll_BFilter.DAOD_SUSY2.s2726_r7676_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
+            // SH::ScanDir().filePattern("llll_BFilter_merged.root").scan(sh, inputFilePath);
         }
         else if (process == "lllvSFMinus_BFilter") {
-            // SH::ScanDir().samplePattern("user.othrif.t0812_v47.344424.Sherpa_CT10_lllvSFMinus_BFilter.DAOD_SUSY2.s2726_r7676_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
-            SH::ScanDir().filePattern("lllvSFMinus_BFilter_merged.root").scan(sh, inputFilePath);
+            SH::ScanDir().samplePattern("user.othrif.t0812_v47.344424.Sherpa_CT10_lllvSFMinus_BFilter.DAOD_SUSY2.s2726_r7676_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
+            // SH::ScanDir().filePattern("lllvSFMinus_BFilter_merged.root").scan(sh, inputFilePath);
         }
         else if (process == "lllvOFMinus_BFilter") {
-            // SH::ScanDir().samplePattern("user.othrif.t0812_v47.344426.Sherpa_CT10_lllvOFMinus_BFilter.DAOD_SUSY2.s2726_r7676_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
-            SH::ScanDir().filePattern("lllvOFMinus_BFilter_merged.root").scan(sh, inputFilePath);
+            SH::ScanDir().samplePattern("user.othrif.t0812_v47.344426.Sherpa_CT10_lllvOFMinus_BFilter.DAOD_SUSY2.s2726_r7676_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
+            // SH::ScanDir().filePattern("lllvOFMinus_BFilter_merged.root").scan(sh, inputFilePath);
         }
         else if (process == "lllvSFPlus_BFilter") {
-            // SH::ScanDir().samplePattern("user.othrif.t0812_v47.344428.Sherpa_CT10_lllvSFPlus_BFilter.DAOD_SUSY2.s2726_r7676_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
-            SH::ScanDir().filePattern("lllvSFPlus_BFilter_merged.root").scan(sh, inputFilePath);
+            SH::ScanDir().samplePattern("user.othrif.t0812_v47.344428.Sherpa_CT10_lllvSFPlus_BFilter.DAOD_SUSY2.s2726_r7676_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
+            // SH::ScanDir().filePattern("lllvSFPlus_BFilter_merged.root").scan(sh, inputFilePath);
         }
         else if (process == "lllvOFPlus_BFilter") {
-            // SH::ScanDir().samplePattern("user.othrif.t0812_v47.344430.Sherpa_CT10_lllvOFPlus_BFilter.DAOD_SUSY2.s2726_r7676_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
-            SH::ScanDir().filePattern("lllvOFPlus_BFilter_merged.root").scan(sh, inputFilePath);
+            SH::ScanDir().samplePattern("user.othrif.t0812_v47.344430.Sherpa_CT10_lllvOFPlus_BFilter.DAOD_SUSY2.s2726_r7676_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
+            // SH::ScanDir().filePattern("lllvOFPlus_BFilter_merged.root").scan(sh, inputFilePath);
         }
         else if (process == "llll_BVeto") {
-            // SH::ScanDir().samplePattern("user.othrif.t0812_v47.344423.Sherpa_CT10_llll_BVeto.DAOD_SUSY2.s2726_r7676_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
-            SH::ScanDir().filePattern("llll_BVeto_merged.root").scan(sh, inputFilePath);
+            SH::ScanDir().samplePattern("user.othrif.t0812_v47.344423.Sherpa_CT10_llll_BVeto.DAOD_SUSY2.s2726_r7676_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
+            // SH::ScanDir().filePattern("llll_BVeto_merged.root").scan(sh, inputFilePath);
         }
         else if (process == "lllvSFMinus_BVeto") {
-            // SH::ScanDir().samplePattern("user.othrif.t0812_v47.344425.Sherpa_CT10_lllvSFMinus_BVeto.DAOD_SUSY2.s2726_r7676_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
-            SH::ScanDir().filePattern("lllvSFMinus_BVeto_merged.root").scan(sh, inputFilePath);
+            SH::ScanDir().samplePattern("user.othrif.t0812_v47.344425.Sherpa_CT10_lllvSFMinus_BVeto.DAOD_SUSY2.s2726_r7676_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
+            // SH::ScanDir().filePattern("lllvSFMinus_BVeto_merged.root").scan(sh, inputFilePath);
         }
         else if (process == "lllvOFMinus_BVeto") {
-            // SH::ScanDir().samplePattern("user.othrif.t0812_v47.344427.Sherpa_CT10_lllvOFMinus_BVeto.DAOD_SUSY2.s2726_r7676_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
-            SH::ScanDir().filePattern("lllvOFMinus_BVeto_merged.root").scan(sh, inputFilePath);
+            SH::ScanDir().samplePattern("user.othrif.t0812_v47.344427.Sherpa_CT10_lllvOFMinus_BVeto.DAOD_SUSY2.s2726_r7676_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
+            // SH::ScanDir().filePattern("lllvOFMinus_BVeto_merged.root").scan(sh, inputFilePath);
         }
         else if (process == "lllvSFPlus_BVeto") {
-            // SH::ScanDir().samplePattern("user.othrif.t0812_v47.344429.Sherpa_CT10_lllvSFPlus_BVeto.DAOD_SUSY2.s2726_r7676_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
-            SH::ScanDir().filePattern("lllvSFPlus_BVeto_merged.root").scan(sh, inputFilePath);
+            SH::ScanDir().samplePattern("user.othrif.t0812_v47.344429.Sherpa_CT10_lllvSFPlus_BVeto.DAOD_SUSY2.s2726_r7676_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
+            // SH::ScanDir().filePattern("lllvSFPlus_BVeto_merged.root").scan(sh, inputFilePath);
         }
         else if (process == "lllvOFPlus_BVeto") {
-            // SH::ScanDir().samplePattern("user.othrif.t0812_v47.344431.Sherpa_CT10_lllvOFPlus_BVeto.DAOD_SUSY2.s2726_r7676_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
-            SH::ScanDir().filePattern("lllvOFPlus_BVeto_merged.root").scan(sh, inputFilePath);
+            SH::ScanDir().samplePattern("user.othrif.t0812_v47.344431.Sherpa_CT10_lllvOFPlus_BVeto.DAOD_SUSY2.s2726_r7676_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
+            // SH::ScanDir().filePattern("lllvOFPlus_BVeto_merged.root").scan(sh, inputFilePath);
         }
         else if (process == "ttW") {
             // SH::ScanDir().samplePattern("user.othrif.t0812_v47.410155.aMcAtNloPythia8EvtGen_MEN30NLO_A14N23LO_ttW.DAOD_SUSY2.s2726_r7676_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
@@ -519,8 +519,8 @@ int main( int argc, char* argv[] ) {
             SH::ScanDir().filePattern("ttmumu_merged.root").scan(sh, inputFilePath);
         }
         else if (process == "tttautau") {
-            // SH::ScanDir().samplePattern("user.othrif.t0812_v47.410220.aMcAtNloPythia8EvtGen_MEN30NLO_A14N23LO_tttautau.DAOD_SUSY2.s2726_r7676_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
-            SH::ScanDir().filePattern("tttautau_merged.root").scan(sh, inputFilePath);
+            SH::ScanDir().samplePattern("user.othrif.t0812_v47.410220.aMcAtNloPythia8EvtGen_MEN30NLO_A14N23LO_tttautau.DAOD_SUSY2.s2726_r7676_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
+            // SH::ScanDir().filePattern("tttautau_merged.root").scan(sh, inputFilePath);
         }
         // else if (process == "ttW_Np0") {
         //     SH::ScanDir().samplePattern("user.jpoveda.t0789_v44.410066.MadGraphPythia8EvtGen_A14NNPDF23LO_ttW_Np0.DAOD_SUSY2.s2608_r7725_p2666_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
@@ -550,44 +550,44 @@ int main( int argc, char* argv[] ) {
         //     SH::ScanDir().samplePattern("user.jpoveda.t0789_v44.410116.MadGraphPythia8EvtGen_A14NNPDF23LO_tttautau_Np1.DAOD_SUSY2.s2726_r7676_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
         // }
         else if (process == "ttbarWW") {
-            // SH::ScanDir().samplePattern("user.othrif.t0812_v47.410081.MadGraphPythia8EvtGen_A14NNPDF23_ttbarWW.DAOD_SUSY2.s2608_r7725_p2666_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
-            SH::ScanDir().filePattern("ttbarWW_merged.root").scan(sh, inputFilePath);
+            SH::ScanDir().samplePattern("user.othrif.t0812_v47.410081.MadGraphPythia8EvtGen_A14NNPDF23_ttbarWW.DAOD_SUSY2.s2608_r7725_p2666_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
+            // SH::ScanDir().filePattern("ttbarWW_merged.root").scan(sh, inputFilePath);
         }
         else if (process == "3top_SM") {
-            // SH::ScanDir().samplePattern("user.othrif.t0812_v47.304014.MadGraphPythia8EvtGen_A14NNPDF23_3top_SM.DAOD_SUSY2.a766_r7676_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
-            SH::ScanDir().filePattern("3top_SM_merged.root").scan(sh, inputFilePath);
+            SH::ScanDir().samplePattern("user.othrif.t0812_v47.304014.MadGraphPythia8EvtGen_A14NNPDF23_3top_SM.DAOD_SUSY2.a766_r7676_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
+            // SH::ScanDir().filePattern("3top_SM_merged.root").scan(sh, inputFilePath);
         }
         else if (process == "WWW_3l3v") {
-            // SH::ScanDir().samplePattern("user.othrif.t0812_v47.361620.Sherpa_CT10_WWW_3l3v.DAOD_SUSY2.s2608_r8112_p2666_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
-            SH::ScanDir().filePattern("WWW_3l3v_merged.root").scan(sh, inputFilePath);
+            SH::ScanDir().samplePattern("user.othrif.t0812_v47.361620.Sherpa_CT10_WWW_3l3v.DAOD_SUSY2.s2608_r8112_p2666_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
+            // SH::ScanDir().filePattern("WWW_3l3v_merged.root").scan(sh, inputFilePath);
         }
         else if (process == "WWZ_4l2v") {
-            // SH::ScanDir().samplePattern("user.othrif.t0812_v47.361621.Sherpa_CT10_WWZ_4l2v.DAOD_SUSY2.s2608_r8112_p2666_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
-            SH::ScanDir().filePattern("WWZ_4l2v_merged.root").scan(sh, inputFilePath);
+            SH::ScanDir().samplePattern("user.othrif.t0812_v47.361621.Sherpa_CT10_WWZ_4l2v.DAOD_SUSY2.s2608_r8112_p2666_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
+            // SH::ScanDir().filePattern("WWZ_4l2v_merged.root").scan(sh, inputFilePath);
         }
         else if (process == "WWZ_2l4v") {
-            // SH::ScanDir().samplePattern("user.othrif.t0812_v47.361622.Sherpa_CT10_WWZ_2l4v.DAOD_SUSY2.s2608_r8112_p2666_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
-            SH::ScanDir().filePattern("WWZ_2l4v_merged.root").scan(sh, inputFilePath); 
+            SH::ScanDir().samplePattern("user.othrif.t0812_v47.361622.Sherpa_CT10_WWZ_2l4v.DAOD_SUSY2.s2608_r8112_p2666_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
+            // SH::ScanDir().filePattern("WWZ_2l4v_merged.root").scan(sh, inputFilePath); 
         }
         else if (process == "WZZ_5l1v") {
-            // SH::ScanDir().samplePattern("user.othrif.t0812_v47.361623.Sherpa_CT10_WZZ_5l1v.DAOD_SUSY2.s2608_r8112_p2666_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
-            SH::ScanDir().filePattern("WZZ_5l1v_merged.root").scan(sh, inputFilePath);
+            SH::ScanDir().samplePattern("user.othrif.t0812_v47.361623.Sherpa_CT10_WZZ_5l1v.DAOD_SUSY2.s2608_r8112_p2666_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
+            // SH::ScanDir().filePattern("WZZ_5l1v_merged.root").scan(sh, inputFilePath);
         }
         else if (process == "WZZ_3l3v") {
-            // SH::ScanDir().samplePattern("user.othrif.t0812_v47.361624.Sherpa_CT10_WZZ_3l3v.DAOD_SUSY2.s2608_r8112_p2839_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
-            SH::ScanDir().filePattern("WZZ_3l3v_merged.root").scan(sh, inputFilePath);
+            SH::ScanDir().samplePattern("user.othrif.t0812_v47.361624.Sherpa_CT10_WZZ_3l3v.DAOD_SUSY2.s2608_r8112_p2839_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
+            // SH::ScanDir().filePattern("WZZ_3l3v_merged.root").scan(sh, inputFilePath);
         }
         else if (process == "ZZZ_6l0v") {
-            // SH::ScanDir().samplePattern("user.othrif.t0812_v47.361625.Sherpa_CT10_ZZZ_6l0v.DAOD_SUSY2.s2608_r7772_p2666_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
-            SH::ScanDir().filePattern("ZZZ_6l0v_merged.root").scan(sh, inputFilePath);
+            SH::ScanDir().samplePattern("user.othrif.t0812_v47.361625.Sherpa_CT10_ZZZ_6l0v.DAOD_SUSY2.s2608_r7772_p2666_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
+            // SH::ScanDir().filePattern("ZZZ_6l0v_merged.root").scan(sh, inputFilePath);
         }
         else if (process == "ZZZ_4l2v") {
-            // SH::ScanDir().samplePattern("user.othrif.t0812_v47.361626.Sherpa_CT10_ZZZ_4l2v.DAOD_SUSY2.s2608_r7772_p2666_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
-            SH::ScanDir().filePattern("ZZZ_4l2v_merged.root").scan(sh, inputFilePath);
+            SH::ScanDir().samplePattern("user.othrif.t0812_v47.361626.Sherpa_CT10_ZZZ_4l2v.DAOD_SUSY2.s2608_r7772_p2666_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
+            // SH::ScanDir().filePattern("ZZZ_4l2v_merged.root").scan(sh, inputFilePath);
         }
         else if (process == "ZZZ_2l4v") {
-            // SH::ScanDir().samplePattern("user.othrif.t0812_v47.361627.Sherpa_CT10_ZZZ_2l4v.DAOD_SUSY2.s2608_r7772_p2839_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
-            SH::ScanDir().filePattern("ZZZ_2l4v_merged.root").scan(sh, inputFilePath);
+            SH::ScanDir().samplePattern("user.othrif.t0812_v47.361627.Sherpa_CT10_ZZZ_2l4v.DAOD_SUSY2.s2608_r7772_p2839_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
+            // SH::ScanDir().filePattern("ZZZ_2l4v_merged.root").scan(sh, inputFilePath);
         }
         else if (process == "ttbarHT6c_1k_hdamp172p5") {
             // SH::ScanDir().samplePattern("user.othrif.t0812_v47.407009.PowhegPythiaEvtGen_P2012CT10_ttbarHT6c_1k_hdamp172p5_.DAOD_SUSY2.s2608_r7676_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
@@ -598,8 +598,8 @@ int main( int argc, char* argv[] ) {
             SH::ScanDir().filePattern("ttbarHT1k_1k5_hdamp172p5_merged.root").scan(sh, inputFilePath);
         }
         else if (process == "ttbarHT1k5_hdamp172p5_no") {
-            // SH::ScanDir().samplePattern("user.othrif.t0812_v47.407011.PowhegPythiaEvtGen_P2012CT10_ttbarHT1k5_hdamp172p5_no.DAOD_SUSY2.s2608_r7676_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
-            SH::ScanDir().filePattern("ttbarHT1k5_hdamp172p5_no_merged.root").scan(sh, inputFilePath);
+            SH::ScanDir().samplePattern("user.othrif.t0812_v47.407011.PowhegPythiaEvtGen_P2012CT10_ttbarHT1k5_hdamp172p5_no.DAOD_SUSY2.s2608_r7676_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
+            // SH::ScanDir().filePattern("ttbarHT1k5_hdamp172p5_no_merged.root").scan(sh, inputFilePath);
         }
 
         else if (process == "tZ_4fl_tchan_noAllHad") {
@@ -607,8 +607,8 @@ int main( int argc, char* argv[] ) {
             SH::ScanDir().filePattern("tZ_4fl_tchan_noAllHad_merged.root").scan(sh, inputFilePath);
         }
         else if (process == "tWZDR") {
-            // SH::ScanDir().samplePattern("user.othrif.t0812_v47.410215.aMcAtNloPythia8EvtGen_A14_NNPDF23LO_260000_tWZDR.DAOD_SUSY2.s2726_r7676_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
-            SH::ScanDir().filePattern("tWZDR_merged.root").scan(sh, inputFilePath);
+            SH::ScanDir().samplePattern("user.othrif.t0812_v47.410215.aMcAtNloPythia8EvtGen_A14_NNPDF23LO_260000_tWZDR.DAOD_SUSY2.s2726_r7676_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
+            // SH::ScanDir().filePattern("tWZDR_merged.root").scan(sh, inputFilePath);
         }
         else if (process == "ttH125_di") {
             // SH::ScanDir().samplePattern("user.othrif.t0812_v47.343365.aMcAtNloPythia8EvtGen_A14_NNPDF23_NNPDF30ME_ttH125_di.DAOD_SUSY2.s2726_r7676_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
@@ -623,12 +623,12 @@ int main( int argc, char* argv[] ) {
             SH::ScanDir().filePattern("ttH125_al_merged.root").scan(sh, inputFilePath);
         }
         else if (process == "WH125_inc") {
-            // SH::ScanDir().samplePattern("user.othrif.t0812_v47.342284.Pythia8EvtGen_A14NNPDF23LO_WH125_inc.DAOD_SUSY2.s2608_r7772_p2666_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
-            SH::ScanDir().filePattern("WH125_inc_merged.root").scan(sh, inputFilePath);
+            SH::ScanDir().samplePattern("user.othrif.t0812_v47.342284.Pythia8EvtGen_A14NNPDF23LO_WH125_inc.DAOD_SUSY2.s2608_r7772_p2666_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
+            // SH::ScanDir().filePattern("WH125_inc_merged.root").scan(sh, inputFilePath);
         }
         else if (process == "ZH125_inc") {
-            // SH::ScanDir().samplePattern("user.othrif.t0812_v47.342285.Pythia8EvtGen_A14NNPDF23LO_ZH125_inc.DAOD_SUSY2.s2608_r7772_p2839_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
-            SH::ScanDir().filePattern("ZH125_inc_merged.root").scan(sh, inputFilePath);
+            SH::ScanDir().samplePattern("user.othrif.t0812_v47.342285.Pythia8EvtGen_A14NNPDF23LO_ZH125_inc.DAOD_SUSY2.s2608_r7772_p2839_output.root").scan(sh, inputFilePath); // Get all root files in this dataset
+            // SH::ScanDir().filePattern("ZH125_inc_merged.root").scan(sh, inputFilePath);
         }
         // else if (process == "llvv") {
         //     SH::ScanDir().samplePattern("user.jpoveda.t0789_v44.361068.Sherpa_CT10_llvv.DAOD_SUSY2.s2608_r7725_p2666_output.root").scan(sh, inputFilePath); // Get all root files in this dataset

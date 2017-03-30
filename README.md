@@ -7,6 +7,12 @@ This is SS/3L+jet cutflows study v44.
 ### Setting:
 
 
+### v01-15-29. (newskim branch) Use the correct root files.
+1. `Run.cxx`:
+    * Because Chris put symbolic links in some datasets, I need to merge those datasets by myself to avoid something wrong.
+    * If the dataset contains only one root file, then the merged root file gives wrong weight events. I need to do `cp` instead of using `hadd`
+
+
 ### v01-15-28. (newskim branch) Use merged root files.
 1. `Run.cxx` and `run_bkg_samples.sh`: Fix typo of `lllvjj_EW6`
 2. Copy `yt_optimization.h` and `yt_optimization.cxx` from NUHM2
