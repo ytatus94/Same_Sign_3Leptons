@@ -9,6 +9,12 @@ This is SS/3L+jet cutflows study for v50 ntuples.
 * ST-00-08-45
 
 
+### v14. (master) Add background samples
+1. `Run.cxx`: Add correct bkg samples
+2. Copy `run_signal_samples.sh`, `run_optimization.sh` and `ytOptimization_plots.C` from `SS_v47`
+3. Copy `run_bkg_samples.sh` from `SS_v47` and modify the bkg samples to run.
+
+
 ### v13. (master) Copy the `yt_optimization.h` and `yt_optimization.cxx` from NUHM2
 
 
