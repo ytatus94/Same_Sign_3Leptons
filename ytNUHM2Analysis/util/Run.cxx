@@ -336,10 +336,10 @@ int main( int argc, char* argv[] ) {
         else if (process == "ggllll") {
             SH::ScanDir().filePattern("ggllll_merged.root").scan(sh, inputFilePath);
         }
-        else if (process == "NNPDF30NNLO_llll") {
+        else if (process == "llll") {
             SH::ScanDir().filePattern("llll_merged.root").scan(sh, inputFilePath);
         }
-        else if (process == "NNPDF30NNLO_lllv") {
+        else if (process == "lllv") {
             SH::ScanDir().filePattern("lllv_merged.root").scan(sh, inputFilePath);
         }
         else if (process == "3top_SM") {

@@ -9,6 +9,11 @@ This is SS/3L+jet cutflows study for v50 ntuples.
 * ST-00-08-45
 
 
+### v15. (master) Fix the derivation weight function call
+1. `Run.cxx`: Correct process for `NNPDF30NNLO_llll` and `NNPDF30NNLO_lllv`
+2. `ytEventSelection.cxx`: fix the derivation weight function call of the `m_optimitzation`
+
+
 ### v14. (master) Add background samples
 1. `Run.cxx`: Add correct bkg samples
 2. Copy `run_signal_samples.sh`, `run_optimization.sh` and `ytOptimization_plots.C` from `SS_v47`
