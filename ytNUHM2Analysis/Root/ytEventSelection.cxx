@@ -22,7 +22,7 @@ ytEventSelection::ytEventSelection ()
 
     m_cutflow       = new yt_cutflows;
     m_skim          = new yt_skim;
-    //m_optimization  = new yt_optimization;
+    m_optimization  = new yt_optimization;
     m_XsecDB        = new SUSY::CrossSectionDB(PathResolverFindCalibDirectory("SUSYTools/mc15_13TeV/"));
 
     // initialize event weight sum to zero
@@ -1294,6 +1294,7 @@ EL::StatusCode ytEventSelection::execute ()
 
             // DileptonTriggerWeight
             if(Etmiss_TST_Et < 250000 || !HLT_xe70 || !HLT_xe100_mht_L1XE50) {
+/*
                 // lepton scale factors
                 for (auto & el_itr : vec_signal_elec) {
                     m_dtwTool->AddElectron(el_itr.get_pt(), el_itr.get_eta(), RunNb, isFullSim);
@@ -1303,6 +1304,8 @@ EL::StatusCode ytEventSelection::execute ()
                 }
                 double uncertainty;
                 dilepton_trigger_weight = m_dtwTool->GetScaleFactor(uncertainty);
+*/
+                dilepton_trigger_weight = TriggerDileptonSF;
             }
         }
 
