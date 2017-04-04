@@ -9,6 +9,12 @@ This is SS/3L+jet cutflows study for v50 ntuples.
 * ST-00-08-45
 
 
+### v16. (master) Copy from SS_v47.
+1. `ytEventSelection.cxx`: pass new variables to `m_optimization`.
+2. `yt_optimization.h`: add new variables and new set methods.
+3. `yt_optimization.cxx`: add mee and pT requirements.
+
+
 ### v15. (master) Fix the derivation weight function call
 1. `Run.cxx`: Correct process for `NNPDF30NNLO_llll` and `NNPDF30NNLO_lllv`
 2. `ytEventSelection.cxx`: fix the derivation weight function call of the `m_optimitzation`
