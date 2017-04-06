@@ -7,6 +7,14 @@ This is SS/3L+jet cutflows study v44.
 ### Setting:
 
 
+### v01-15-30. (newskim branch) Add new data members
+1. `yt_optimization.h`:
+    * Add 3 data members.
+    * Add 3 methods to set new data members
+2. `yt_optimization.cxx`: Comment out the mee and pT requirements
+3. `ytEventSelection.cxx`: Calculate mee and pTl1, pTl2, then pass to `m_optimization`.
+
+
 ### v01-15-29. (newskim branch) Use the correct root files.
 1. `Run.cxx`:
     * Because Chris put symbolic links in some datasets, I need to merge those datasets by myself to avoid something wrong.
