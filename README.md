@@ -7,6 +7,12 @@ This is SS/3L+jet cutflows study v44.
 ### Setting:
 
 
+### v01-15-31. (newskim branch) Add pT and mee requirements
+1. `yt_optimization.cxx`:
+    * Correct Rpc3LSS1b
+    * Add pT and mee requirements in `apply_signal_region_cuts()`
+
+
 ### v01-15-30. (newskim branch) Add new data members
 1. `yt_optimization.h`:
     * Add 3 data members.
