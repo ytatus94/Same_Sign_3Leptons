@@ -30,4 +30,4 @@ Run optimization isMC tZ_4fl_tchan_noAllHad > optimization_MC_tZ_4fl_tchan_noAll
 Run optimization isMC 4topSM > optimization_MC_4topSM.log 2>&1 &
 Run optimization isMC ttbarWW > optimization_MC_ttbarWW.log 2>&1 &
 Run optimization isMC tWZDR > optimization_MC_tWZDR.log 2>&1 &
-
+Run optimization isMC ttbarWll > optimization_MC_ttbarWll.log 2>&1 &

@@ -550,14 +550,15 @@ EL::StatusCode ytEventSelection::initialize ()
         m_skim->set_process(process);
         m_skim->initialize(wk()->tree());
     }
-/*
+
     if (isOptimization) {
         m_optimization->set_isMC(isMC);
         m_optimization->set_isData(isData);
         m_optimization->set_process(process);
+        m_optimization->set_derivation_stat_weights(derivation_stat_weights);
         m_optimization->initialize();
     }
-*/
+
     return EL::StatusCode::SUCCESS;
 }
 
@@ -1022,7 +1023,7 @@ EL::StatusCode ytEventSelection::execute ()
     m_cutflow->update(Bad_muon, cut6);
     if (!cut6) return EL::StatusCode::SUCCESS;
 
-    if (!isSkim) {
+    if (!isSkim && !isOptimization) {
         bool cut7  = m_cutflow->pass_at_least_one_jet_passes_jet_OR(vec_baseline_jets); // use baseline jets
         m_cutflow->update(At_least_one_jet_passes_jet_OR, cut7);
         if (!cut7) return EL::StatusCode::SUCCESS;
@@ -1051,7 +1052,7 @@ EL::StatusCode ytEventSelection::execute ()
     // Now sort leptons by descending Pt
     sort(vec_new_OR_lept.begin(), vec_new_OR_lept.end(), sort_descending_Pt<Lepton>);
 
-    if (!isSkim) {
+    if (!isSkim && !isOptimization) {
         bool cut9  = m_cutflow->pass_at_least_one_signal_jet(vec_JVT_jets);
         m_cutflow->update(At_least_one_signal_jet, cut9);
         if (!cut9) return EL::StatusCode::SUCCESS;
@@ -1308,7 +1309,23 @@ EL::StatusCode ytEventSelection::execute ()
                 dilepton_trigger_weight = TriggerDileptonSF;
             }
         }
+/*
+        cout << "***In ytEventSelection***" << endl;
+        cout << "elec_ID_weight=" << elec_ID_weight << endl;
+        cout << "elec_iso_weight=" << elec_iso_weight << endl;
+        cout << "muon_ID_weight=" << muon_ID_weight << endl;
+        cout << "muon_iso_weight=" << muon_iso_weight << endl;
+        cout << "lepton_weight=" << lepton_weight << endl;
+        cout << "jet_weight=" << jet_weight << endl;
+        cout << "dilepton_trigger_weight=" << dilepton_trigger_weight << endl;
+*/
+        m_optimization->set_event_number(EventNumber);
+        if (isData)
+            m_optimization->set_run_number(RunNb);
+        else if (isMC)
+            m_optimization->set_run_number(random_run_number);
 
+        m_optimization->set_luminosity(luminosity);
         m_optimization->set_cross_section(cross_section);
         m_optimization->set_k_factor(k_factor);
         m_optimization->set_filter_efficiency(filter_efficiency);
@@ -1374,16 +1391,16 @@ EL::StatusCode ytEventSelection::finalize ()
     //Info(function_name, "Function calls");
 
     m_cutflow->print();
-/*
+
     if (isSkim) {
         m_skim->finalize();
         //m_skim->debug_print();
     }
     if (isOptimization) {
-        m_optimization->set_derivation_stat_weights(derivation_stat_weights);
+        // m_optimization->set_derivation_stat_weights(derivation_stat_weights);
         m_optimization->finalize();
     }
-*/
+
     return EL::StatusCode::SUCCESS;
 }
 
