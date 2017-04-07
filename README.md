@@ -9,6 +9,10 @@ This is SS/3L+jet cutflows study for v50 ntuples.
 * ST-00-08-45
 
 
+### v17. (master) Add mee and pT requirements.
+1. `yt_optimization.cxx`: add mee and pT requirements.
+
+
 ### v16. (master) Copy from SS_v47.
 1. `ytEventSelection.cxx`: pass new variables to `m_optimization`.
 2. `yt_optimization.h`: add new variables and new set methods.

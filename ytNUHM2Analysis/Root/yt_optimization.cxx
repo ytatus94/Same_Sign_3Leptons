@@ -472,8 +472,8 @@ void yt_optimization::execute(vector<Electron> elec, vector<Muon> muon, vector<L
     // this->apply_signal_region_cuts(2, 20, 1, 50, 4, 0, 1800, 0, weight); // Rpv2L1bM (SR1b-DD-high) >= 2 negatively-charged leptons
     // this->apply_signal_region_cuts(2, 20, 3, 50, 3, 0, 1200, 0, weight); // Rpv2L3bS (SR3b-DD) >= 2 negatively-charged leptons
     // this->apply_signal_region_cuts(2, 20, 1, 50, 6, 0, 2200, 0, weight); // Rpv2L1bH (SR1b-GG)
-    // this->apply_signal_region_cuts(2, 20, 0, 40, 6, 0, 1800, 0, weight); // Rpv2L0b (SRPV0b) 81 < mee < 101
-    // this->apply_signal_region_cuts(2, 20, 3, 40, 6, 0, 1800, 0, weight); // Rpv2L3bH (SRPV3b) 81 < mee < 101
+    // this->apply_signal_region_cuts(2, 20, 0, 40, 6, 0, 1800, 0, weight); // Rpv2L0b (SRPV0b) veto 81 < mee < 101
+    // this->apply_signal_region_cuts(2, 20, 3, 40, 6, 0, 1800, 0, weight); // Rpv2L3bH (SRPV3b) veto 81 < mee < 101
     // // RPC
     // this->apply_signal_region_cuts(3, 20, 0, 40, 4, 200, 600, 0, weight); // Rpc3L0bS (SR3L0b1)
     // this->apply_signal_region_cuts(3, 20, 0, 40, 4, 200, 1600, 0, weight); // Rpc3L0bH (SR3L0b2)
@@ -484,9 +484,9 @@ void yt_optimization::execute(vector<Electron> elec, vector<Muon> muon, vector<L
     // this->apply_signal_region_cuts(2, 20, 3, 25, 6, 150, 0, 0.2, weight); // Rpc2L3bS (SR3b1)
     // this->apply_signal_region_cuts(2, 20, 3, 25, 6, 250, 1200, 0., weight); // Rpc2L3bH (SR3b2)
     // // RPC
-    // this->apply_signal_region_cuts(2, 20, 3, 25, 6, 200, 600, 0.25, weight); // Rpc2Lsoft2b (SRhigh) 20<pT(l1)<100, pT(l2)>10
+    // this->apply_signal_region_cuts(2, 20, 2, 25, 6, 200, 600, 0.25, weight); // Rpc2Lsoft2b (SRhigh) 20<pT(l1)<100, pT(l2)>10
     // this->apply_signal_region_cuts(2, 20, 1, 25, 6, 100, 0, 0.3, weight); // Rpc2Lsoft1b (SRlow) 20<pT(l1)<100, pT(l2)>10
-    // this->apply_signal_region_cuts(3, 20, 1, 0, 0, 0, 0, 0., weight); // Rpc3LSS1b (SR1b-3LSS) 81 < mee < 101
+    // this->apply_signal_region_cuts(3, 20, 1, 0, 0, 0, 0, 0., weight); // Rpc3LSS1b (SR1b-3LSS) veto 81 < mee < 101
     // this->apply_signal_region_cuts(3, 20, 1, 40, 4, 200, 600, 0., weight); // Rpc3L1bS (SR3L1b1)
     // this->apply_signal_region_cuts(3, 20, 1, 40, 4, 200, 1600, 0., weight); // Rpc3L1bH (SR3L1b2)
 
@@ -624,6 +624,15 @@ void yt_optimization::apply_signal_region_cuts(int cut_n_leptons,
     if (met_over_meff > cut_met_over_meff)
         met_over_meff_cut_flag = true;
 
+    bool other_pT_cut_flag = false;
+    if (pTl1 > 20 && pTl1 < 100 &&
+        pTl2 > 10)
+        other_pT_cut_flag = true;
+
+    bool other_mee_cut_flag = false;
+    if (mee <= 81 || mee >= 101)
+        other_mee_cut_flag = true;
+
     if (n_lept_cut_flag &&
         n_bjet_cut_flag &&
         n_jets_cut_flag &&
@@ -632,19 +641,6 @@ void yt_optimization::apply_signal_region_cuts(int cut_n_leptons,
         met_over_meff_cut_flag) {
         events_survived++;
         events_survived_weighted += weight;
-
-        // For Rpv2L0b, Rpv2L2bH, and Rpc3LSS1b
-        // if (mee <= 81 || mee >= 101) {
-        //     events_survived++;
-        //     events_survived_weighted += weight;
-        // }
-
-        // For Rpc2Lsoft1b and Rpc2Lsoft2b
-        // if (pTl1 > 20 && pTl1 < 100 &&
-        //     pTl2 > 10) {
-        //     events_survived++;
-        //     events_survived_weighted += weight;
-        // }
     }
 }
 
