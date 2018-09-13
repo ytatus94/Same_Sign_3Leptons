@@ -1,0 +1,34 @@
+Cut 0: All events before derivations (DerivationStat_Weights) = 1997000   
+Cut 1: All events in derivation/ntuple = 1469463   
+Cut 2: GRL (for data only) = 1469463   
+Cut 3: Trigger       = 1441950   
+Cut 4: Global flags (data only) = 1441950   
+Cut 5: Jet and muon cleaning = 1434207   
+Cut 6: Primary Vertex = 1434204   
+Cut 7: Cosmics veto  = 1419768   
+Cut 8: ≥ 2 baseline leptons (>10 GeV) = 155065    
+Cut 9: ≥ 2 signal leptons (>20 GeV) = 71738     
+**********
+Cut 10: Channel selection (20, 20 GeV): el-el = 201       
+Cut 11: Trigger: el-el = 0         
+Cut 12: ml1l2 > 12 GeV: el-el = 0         
+Cut 13: ≥ 1 b jet (>20 GeV): el-el = 158       
+Cut 14: ≥ 4 jets (>50GeV): el-el = 4         
+Cut 15: Same sign leptons: el-el = 0         
+Cut 16: MET > 150 GeV: el-el = 1         
+**********
+Cut 10: Channel selection (20, 20 GeV): el-mu = 285       
+Cut 11: Trigger: el-mu = 0         
+Cut 12: ml1l2 > 12 GeV: el-mu = 0         
+Cut 13: ≥ 1 b jet (>20 GeV): el-mu = 210       
+Cut 14: ≥ 4 jets (>50GeV): el-mu = 8         
+Cut 15: Same sign leptons: el-mu = 0         
+Cut 16: MET > 150 GeV: el-mu = 1         
+**********
+Cut 10: Channel selection (20, 20 GeV): mu-mu = 87        
+Cut 11: Trigger: mu-mu = 0         
+Cut 12: ml1l2 > 12 GeV: mu-mu = 0         
+Cut 13: ≥ 1 b jet (>20 GeV): mu-mu = 62        
+Cut 14: ≥ 4 jets (>50GeV): mu-mu = 0         
+Cut 15: Same sign leptons: mu-mu = 0         
+Cut 16: MET > 150 GeV: mu-mu = 0         
