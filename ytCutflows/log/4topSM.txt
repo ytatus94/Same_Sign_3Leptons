@@ -1,0 +1,39 @@
+Add MC files to TChain...
+PathResolver              WARNING XMLPATH environment variable not defined!
+PathResolver              WARNING XMLPATH environment variable not defined!
+--- TGRLCollection      : Now merging GRLs where possible. Metadata required to be identical.[0m
+myWeightTool              INFO    AsgTool myWeightTool @ 0x37b6300
+**************************************************
+Cut 0: All events before derivations (DerivationStat_Weights) = 198800    
+Cut 1: All events in derivation/ntuple = 100242    
+Cut 2: GRL (for data only) = 100242    
+Cut 3: Primary vertex = 100242    
+Cut 4: Trigger       = 62470     
+Cut 5: Global flags (data only) (+ MET cleaning in data & MC) = 62470     
+Cut 6: Bad muon      = 62469     
+Cut 7: >= 1 jet passes jet OR = 62469     
+Cut 8: Bad jet       = 62231     
+Cut 9: >= 1 signal jet = 62231     
+Cut 10: Cosmic muons veto = 61387     
+Cut 11: >= 2 baseline leptons > 10 GeV = 29114     
+Cut 12: >= 2 signal leptons > 20 GeV = 19156     
+Cut 13: Same sign    = 8262      
+***** El-El channel *****
+Cut 14: Channel seperation, same-sign [20, 20]: (el-el) = 1725      
+Cut 15: Trigger matching: (el-el) = 1702      
+Cut 16: >= 1 bjet > 20 GeV: (el-el) = 1663      
+Cut 17: 4 jets > 50 GeV: (el-el) = 1335      
+Cut 18: MET > 125 GeV: (el-el) = 655       
+***** El-Mu channel *****
+Cut 14: Channel seperation, same-sign [20, 20]: (el-mu) = 3972      
+Cut 15: Trigger matching: (el-mu) = 3800      
+Cut 16: >= 1 bjet > 20 GeV: (el-mu) = 3701      
+Cut 17: 4 jets > 50 GeV: (el-mu) = 2997      
+Cut 18: MET > 125 GeV: (el-mu) = 1460      
+***** Mu-Mu channel *****
+Cut 14: Channel seperation, same-sign [20, 20]: (mu-mu) = 2565      
+Cut 15: Trigger matching: (mu-mu) = 2539      
+Cut 16: >= 1 bjet > 20 GeV: (mu-mu) = 2475      
+Cut 17: 4 jets > 50 GeV: (mu-mu) = 2013      
+Cut 18: MET > 125 GeV: (mu-mu) = 919       
+**************************************************
