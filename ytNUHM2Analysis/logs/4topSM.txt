@@ -1,0 +1,35 @@
+**************************************************
+Cut 0: All events before derivations (DerivationStat_Weights) = 0         
+Cut 1: All events in derivation/ntuple = 86839     
+Cut 2: GRL (for data only) = 86839     
+Cut 3: Primary vertex = 86839     
+Cut 4: Trigger       = 59513     
+Cut 5: Global flags (data only) = 59513     
+Cut 6: Bad muon      = 59508     
+Cut 7: >= 1 jet passes jet OR = 59508     
+Cut 8: Bad jet       = 59281     
+Cut 9: >= 1 signal jet = 59281     
+Cut 10: Cosmic muons veto = 58473     
+Cut 11: >= 2 baseline leptons > 10 GeV = 28921     
+Cut 12: >= 2 signal leptons > 20 GeV = 18862     
+Cut 13: Same sign    = 8076      
+***** El-El channel *****
+Cut 14: Channel seperation, same-sign [20, 20]: (el-el) = 1642      
+Cut 15: Trigger matching: (el-el) = 1626      
+Cut 16: >= 1 bjet > 20 GeV: (el-el) = 1587      
+Cut 17: 4 jets > 50 GeV: (el-el) = 1274      
+Cut 18: MET > 125 GeV: (el-el) = 622       
+***** El-Mu channel *****
+Cut 14: Channel seperation, same-sign [20, 20]: (el-mu) = 3873      
+Cut 15: Trigger matching: (el-mu) = 3712      
+Cut 16: >= 1 bjet > 20 GeV: (el-mu) = 3616      
+Cut 17: 4 jets > 50 GeV: (el-mu) = 2945      
+Cut 18: MET > 125 GeV: (el-mu) = 1436      
+***** Mu-Mu channel *****
+Cut 14: Channel seperation, same-sign [20, 20]: (mu-mu) = 2561      
+Cut 15: Trigger matching: (mu-mu) = 2536      
+Cut 16: >= 1 bjet > 20 GeV: (mu-mu) = 2472      
+Cut 17: 4 jets > 50 GeV: (mu-mu) = 2012      
+Cut 18: MET > 125 GeV: (mu-mu) = 920       
+**************************************************
+
