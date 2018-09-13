@@ -29,7 +29,9 @@ git checkout SS_vOLD # cd to the new branch
 git remote add SS_vOLD path/to/SS_vOLD # link the remove to the GitHub
 git fetch SS_vOLD # download everything to local
 git merge --allow-unrelated-histories SS_vOLD/branch_name # merge with remote branch_name
-resolve the merge conflict in README.md
+```
+The merge process has some conflicts in README.md, resolve it and add to the stage area.
+```
 git add . # stage all files
 git remote rm SS_vOLD # disconnect with original SS_vOLD on GitHub
 git commit -m "some messages here"
