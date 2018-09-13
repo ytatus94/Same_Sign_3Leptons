@@ -1,0 +1,39 @@
+Add MC files to TChain...
+--- TGRLCollection      : Now merging GRLs where possible. Metadata required to be identical.
+--- RegularFormula      : Now parsing regular expression : 1
+--- RegularFormula      : Number of interpreted input parameters : 0
+--- RegularFormula      : Parsed regular expression : 1
+**************************************************
+Cut 0: All events before derivations (DerivationStat_Weights) = 198800    
+Cut 1: All events in derivation/ntuple = 12789937  
+Cut 2: GRL (for data only) = 12789937  
+Cut 3: Primary vertex = 12789937  
+Cut 4: Trigger       = 6241950   
+Cut 5: Global flags (data only) (+ MET cleaning in data & MC) = 6235099   
+Cut 6: Bad muon      = 6235086   
+Cut 7: >= 1 jet passes jet OR = 6216980   
+Cut 8: Bad jet       = 6196510   
+Cut 9: >= 1 signal jet = 6196505   
+Cut 10: Cosmic muons veto = 6124787   
+Cut 11: >= 2 baseline leptons > 10 GeV = 2661455   
+Cut 12: >= 2 signal leptons > 20 GeV = 1538198   
+Cut 13: Same sign    = 12175     
+***** El-El channel *****
+Cut 14: Channel seperation, same-sign [20, 20]: (el-el) = 3712      
+Cut 15: Trigger matching: (el-el) = 3712      
+Cut 16: >= 1 bjet > 20 GeV: (el-el) = 2873      
+Cut 17: 4 jets > 50 GeV: (el-el) = 129       
+Cut 18: MET > 125 GeV: (el-el) = 38        
+***** El-Mu channel *****
+Cut 14: Channel seperation, same-sign [20, 20]: (el-mu) = 5955      
+Cut 15: Trigger matching: (el-mu) = 5955      
+Cut 16: >= 1 bjet > 20 GeV: (el-mu) = 4345      
+Cut 17: 4 jets > 50 GeV: (el-mu) = 190       
+Cut 18: MET > 125 GeV: (el-mu) = 47        
+***** Mu-Mu channel *****
+Cut 14: Channel seperation, same-sign [20, 20]: (mu-mu) = 2508      
+Cut 15: Trigger matching: (mu-mu) = 2508      
+Cut 16: >= 1 bjet > 20 GeV: (mu-mu) = 1469      
+Cut 17: 4 jets > 50 GeV: (mu-mu) = 42        
+Cut 18: MET > 125 GeV: (mu-mu) = 5         
+**************************************************
