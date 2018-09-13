@@ -22,12 +22,13 @@ Each old respository is put in different branch and all of the old repository hi
 * SS_v52
 
 ## Method to merge
+From the master branch do the following steps:
 ```
 git branch SS_vOLD # create a new branch for SS_vOLD
 git checkout SS_vOLD # cd to the new branch
 git remote add SS_vOLD path/to/SS_vOLD # link the remove to the GitHub
 git fetch SS_vOLD # download everything to local
-git merge --allow-unrelated-histories SS_vOLD/master # merge with remote master
+git merge --allow-unrelated-histories SS_vOLD/branch_name # merge with remote branch_name
 resolve the merge conflict in README.md
 git add . # stage all files
 git remote rm SS_vOLD # disconnect with original SS_vOLD on GitHub
