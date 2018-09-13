@@ -8,12 +8,18 @@ Each old respository is put in different branch and all of the old repository hi
 * SS_v04_bunch_spacing_study
 * SS_v12
 * SS_v16
-* SS_v37
+* SS_v37 (master)
+* SS_v37_debug
 * SS_v39
 * SS_v43
-* SS_v44
-* SS_v47
+* SS_v44 (master)
+* SS_v44_MC_weight_comparison
+* SS_v47 (master)
+* SS_v47_oldskim
+* SS_v47_newskim
+* SS_v47_hotfix
 * SS_v50
+* SS_v52
 
 ## Method to merge
 ```
