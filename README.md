@@ -16,6 +16,7 @@ Each old respository is put in different branch and all of the old repository hi
 * SS_v50
 
 ## Method to merge
+```
 git branch SS_vOLD # create a new branch for SS_vOLD
 git checkout SS_vOLD # cd to the new branch
 git remote add SS_vOLD path/to/SS_vOLD # link the remove to the GitHub
@@ -26,3 +27,4 @@ git add . # stage all files
 git remote rm SS_vOLD # disconnect with original SS_vOLD on GitHub
 git commit -m "some messages here"
 git push --set-upstream origin SS_vOLD
+```
