@@ -1,0 +1,23 @@
+69a70
+>    Bool_t          HLT_xe100_mht_L1XE50;
+84c85
+<    UInt_t          EventNumber;
+---
+>    ULong64_t       EventNumber;
+88a90
+>    Int_t           PRWrandomRunNumber;
+135a138,143
+>    vector<bool>    *Mu_TrigMatch_mu24_iloose;
+>    vector<bool>    *Mu_TrigMatch_mu24_ivarloose;
+>    vector<bool>    *Mu_TrigMatch_mu24_iloose_L1MU15;
+>    vector<bool>    *Mu_TrigMatch_mu24_ivarloose_L1MU15;
+>    vector<vector<bool> > *Mu_trigMatchPair_mu18_mu8noL1;
+>    vector<vector<bool> > *Mu_trigMatchPair_mu20_mu8noL1;
+189c197
+<    vector<bool>    *El_trigMatch_2e17_lhvloose_nod0_L12EM15VH;
+---
+>    vector<bool>    *El_trigMatch_2e17_lhvloose_nod0;
+191a200,202
+>    vector<bool>    *El_TrigMatch_e24_lhmedium_nod0_ivarloose;
+>    vector<bool>    *El_TrigMatch_e24_lhtight_nod0_ivarloose;
+>    vector<bool>    *El_TrigMatch_e60_lhmedium_nod0;
